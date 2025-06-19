@@ -55,7 +55,11 @@ yarn workspace @repo/ui build
 ```tsx
 npx turbo build
 ```
-9. 앱 실행
+8. yarn pnp가 Typescript 인식 못하는 문제 해결 (좌측 하단의 Allow 버튼 꼭 눌러야 함, 누르지 못할 시 완전히 종료 후 재실행)
+```tsx
+yarn dlx @yarnpkg/sdks vscode
+```
+10. 앱 실행
 ```tsx
 yarn dev:user    # 사용자용 앱 실행  
 yarn dev:admin   # 관리자용 앱 실행
