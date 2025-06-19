@@ -1,0 +1,17 @@
+{
+  "name": "monorepo-nowaitFE",
+  "private": true,
+  "packageManager": "yarn@4.9.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:admin": "turbo run dev --filter=nowait-admin",
+    "dev:user": "turbo run dev --filter=nowait-user"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.4",
+    "typescript": "^5.8.3"
+  }
+}

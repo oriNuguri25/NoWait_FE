@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/* UI 패키지 공통 스타일 */
+.ui-card-base {
+  @apply relative block p-6 rounded-xl border shadow-lg hover:shadow-xl;
+  @apply transition-all duration-300 ease-in-out hover:scale-105 hover:-translate-y-1;
+  @apply backdrop-blur-sm;
+}
+
+.ui-card-glow {
+  @apply absolute inset-0 rounded-xl opacity-0 group-hover:opacity-20;
+  @apply blur-xl transition-opacity duration-300;
+}
+
+.ui-card-content {
+  @apply relative z-10;
+}
+
+.ui-card-title {
+  @apply mb-4 text-2xl font-bold text-white;
+}
+
+.ui-card-arrow {
+  @apply inline-block transition-transform duration-300;
+  @apply group-hover:translate-x-2 group-hover:text-yellow-400;
+}
+
+.ui-card-description {
+  @apply text-gray-300 leading-relaxed text-sm max-w-[30ch];
+}
+
+.ui-card-decoration {
+  @apply mt-4 h-1 w-12 rounded-full group-hover:w-20 transition-all duration-300;
+}
+
+.ui-corner-decoration {
+  @apply absolute top-4 right-4 w-2 h-2 bg-white rounded-full;
+  @apply opacity-20 group-hover:opacity-40 transition-opacity duration-300;
+}

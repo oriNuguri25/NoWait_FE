@@ -1,0 +1,233 @@
+/* ===== 공통 CSS 변수 ===== */
+:root {
+  /* 브랜드 색상 */
+  --brand-primary: #6366f1;
+  --brand-secondary: #8b5cf6;
+  --brand-accent: #06b6d4;
+
+  /* 확장 색상 팔레트 */
+  --purple-50: #faf5ff;
+  --purple-100: #f3e8ff;
+  --purple-200: #e9d5ff;
+  --purple-300: #d8b4fe;
+  --purple-400: #c084fc;
+  --purple-500: #a855f7;
+  --purple-600: #9333ea;
+  --purple-700: #7c3aed;
+  --purple-800: #6b21a8;
+  --purple-900: #581c87;
+  --purple-950: #1a0b2e;
+
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-200: #bfdbfe;
+  --blue-300: #93c5fd;
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  --blue-800: #1e40af;
+  --blue-900: #1e3a8a;
+  --blue-950: #0a1629;
+
+  --emerald-50: #ecfdf5;
+  --emerald-100: #d1fae5;
+  --emerald-200: #a7f3d0;
+  --emerald-300: #6ee7b7;
+  --emerald-400: #34d399;
+  --emerald-500: #10b981;
+  --emerald-600: #059669;
+  --emerald-700: #047857;
+  --emerald-800: #065f46;
+  --emerald-900: #064e3b;
+
+  /* 상태 색상 */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+
+  /* 폰트 설정 */
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --font-heading: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Consolas", "Monaco", monospace;
+  --font-brand: "Poppins", "Inter", sans-serif;
+
+  /* 그림자 */
+  --shadow-soft: 0 2px 15px -3px rgba(0, 0, 0, 0.07),
+    0 10px 20px -2px rgba(0, 0, 0, 0.04);
+  --shadow-medium: 0 4px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-hard: 0 10px 40px -10px rgba(0, 0, 0, 0.2);
+
+  /* 그라디언트 */
+  --gradient-purple-blue: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-emerald-blue: linear-gradient(135deg, #667eea 0%, #059669 100%);
+  --gradient-sunset: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* ===== 폰트 패밀리 적용 ===== */
+body {
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+}
+
+/* ===== 공통 컴포넌트 클래스 ===== */
+@layer components {
+  /* 브랜드 버튼 */
+  .btn-brand {
+    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300;
+    background: var(--brand-primary);
+    color: white;
+  }
+
+  .btn-brand:hover {
+    background: var(--brand-secondary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+  }
+
+  /* 카드 스타일 */
+  .card-base {
+    @apply rounded-2xl backdrop-blur-sm transition-all duration-300;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .card-base:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-4px);
+  }
+
+  /* 그라디언트 배경 */
+  .bg-gradient-purple-blue {
+    background: var(--gradient-purple-blue);
+  }
+
+  .bg-gradient-emerald-blue {
+    background: var(--gradient-emerald-blue);
+  }
+
+  .bg-gradient-sunset {
+    background: var(--gradient-sunset);
+  }
+
+  /* 텍스트 그라디언트 */
+  .text-gradient-purple {
+    background: linear-gradient(135deg, var(--purple-600), var(--blue-600));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* 상태 색상 유틸리티 */
+  .text-success {
+    color: var(--success);
+  }
+  .text-warning {
+    color: var(--warning);
+  }
+  .text-error {
+    color: var(--error);
+  }
+  .text-info {
+    color: var(--info);
+  }
+
+  .bg-success {
+    background-color: var(--success);
+  }
+  .bg-warning {
+    background-color: var(--warning);
+  }
+  .bg-error {
+    background-color: var(--error);
+  }
+  .bg-info {
+    background-color: var(--info);
+  }
+}
+
+/* ===== 애니메이션 ===== */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.5s ease-out;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
+  }
+  to {
+    box-shadow: 0 0 30px rgba(167, 139, 250, 0.6);
+  }
+}
