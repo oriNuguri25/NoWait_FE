@@ -29,10 +29,10 @@ NoWait_FE/
   import { Card } from "@repo/ui/card";
   ```
 - 각 앱 별 Tailwind 설정(padding, margin 등)은 아래의 경로에서 개별적으로 수정할 수 있습니다.
-```txt
-apps/admin/tailwind.config.js
-apps/user/tailwind.config.js
-```
+  ```txt
+  apps/admin/tailwind.config.js
+  apps/user/tailwind.config.js
+  ```
 ## ⚙️ 설치 및 실행 방법
 1. 원하는 폴더에 저장소 클론
 ```tsx
