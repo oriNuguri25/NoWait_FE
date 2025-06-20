@@ -14,9 +14,9 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./card": {
-      "types": "./dist/card.d.ts",
-      "default": "./dist/card.js"
+    "./button": {
+      "types": "./dist/button.d.ts",
+      "default": "./dist/button.js"
     },
     "./styles.css": "./dist/index.css"
   },

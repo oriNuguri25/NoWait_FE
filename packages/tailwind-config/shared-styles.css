@@ -1,17 +1,12 @@
+/* ===== 폰트 Import ===== */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css");
+
 /* ===== 공통 CSS 변수 ===== */
 :root {
-  --brand-primary: #ff4c0d;
-  --brand-secondary: #972dff;
-  --brand-accent: #ffdeb7;
-
-  --success: #27ae60;
-  --warning: #f2994a;
-  --error: #eb5757;
-  --info: #2d9cdb;
-
+  /* Primary Color */
   --primary: #ff4103;
-  --white: #ffffff;
 
+  /* Black Scale */
   --black-100: #000000;
   --black-90: #222222;
   --black-85: #333333;
@@ -22,18 +17,20 @@
   --black-55: #999999;
   --black-50: #aaaaaa;
   --black-45: #bbbbbb;
-  --black-40: #dddddd;
-  --black-35: #e6e6e6;
-  --black-30: #ececec;
-  --black-25: #f4f4f4;
-  --black-20: #f7f7f7;
-  --black-15: #f9f9f9;
-  --black-10: #fafafa;
+  --black-40: #cccccc;
+  --black-35: #dddddd;
+  --black-30: #e6e6e6;
+  --black-25: #ececec;
+  --black-20: #f4f4f4;
+  --black-15: #f7f7f7;
+  --black-10: #f9f9f9;
+  --black-5: #fafafa;
 
+  /* Navy Scale */
   --navy-100: #16191e;
   --navy-90: #21252d;
-  --navy-80: #2c323b;
-  --navy-75: #363e4a;
+  --navy-85: #2c323b;
+  --navy-80: #363e4a;
   --navy-70: #414a59;
   --navy-65: #4c5668;
   --navy-60: #576376;
@@ -49,16 +46,67 @@
   --navy-10: #e2e5ea;
   --navy-5: #f1f2f5;
 
-  --sub-purple: #972dff;
-  --sub-gray: #b3b3b3;
-  --sub-brown: #a26f3c;
-  --sub-beige: #ffdeb7;
-  --sub-whitegray: #e6e6e7;
+  /* White */
+  --white-100: #ffffff;
+
+  /* 상태 색상 */
+  --success: #27ae60;
+  --warning: #f2994a;
+  --error: #eb5757;
+
+  /* Sub Color */
+  --purple: #7300ff;
+  --light-purple: #edeff2;
+  --cool-black: #16191e;
+  --brown: #ff4103;
+  --orange: #ff961b;
+  --red: #ff4103;
+  --gray: #edeff2;
+
+  /* Icon Size */
+  --icon-xs: 16px;
+  --icon-s: 20px;
+  --icon-m: 24px;
+  --icon-l: 40px;
+  --icon-xl: 48px;
+
+  /* Layout Guide - Grid System */
+  /* PC (1920px) - 60px margin, 24px gutter */
+  --layout-pc-margin: 60px;
+  --layout-pc-gutter: 24px;
+
+  /* Tablet (1600px) - 60px margin, 20px gutter */
+  --layout-tablet-margin: 60px;
+  --layout-tablet-gutter: 20px;
+
+  /* Small Tablet (1024px) - 40px margin, 16px gutter */
+  --layout-small-tablet-margin: 40px;
+  --layout-small-tablet-gutter: 16px;
+
+  /* Mobile Large (768px) - 30px margin, 12px gutter */
+  --layout-mobile-large-margin: 30px;
+  --layout-mobile-large-gutter: 12px;
+
+  /* Mobile (375px) - 20px margin, 12px gutter */
+  --layout-mobile-margin: 20px;
+  --layout-mobile-gutter: 12px;
 }
 
 /* ===== 폰트 패밀리 적용 ===== */
+* {
+  font-family: "Pretendard Variable", "Pretendard", -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
 body {
-  font-family: var(--font-sans);
+  font-family: "Pretendard Variable", "Pretendard", -apple-system,
+    BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1,
@@ -67,12 +115,133 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-heading);
+  font-family: "Pretendard Variable", "Pretendard", -apple-system,
+    BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 600;
 }
 
 code,
 pre {
-  font-family: var(--font-mono);
+  font-family: "JetBrains Mono", "Fira Code", "Monaco", "Consolas",
+    "Liberation Mono", "Courier New", monospace;
+}
+
+/* ===== 모바일 폰트 사이즈 유틸리티 ===== */
+@layer utilities {
+  /* [MO] Headline */
+  .text-headline-28-bold {
+    font-size: 28px;
+    line-height: 130%;
+    letter-spacing: -2%;
+    font-weight: 700;
+  }
+
+  .text-headline-24-bold {
+    font-size: 24px;
+    line-height: 130%;
+    letter-spacing: -2%;
+    font-weight: 700;
+  }
+
+  .text-headline-22-bold {
+    font-size: 22px;
+    line-height: 136%;
+    letter-spacing: -1%;
+    font-weight: 700;
+  }
+
+  /* [MO] Title */
+  .text-title-20-bold {
+    font-size: 20px;
+    line-height: 136%;
+    letter-spacing: -1%;
+    font-weight: 700;
+  }
+
+  .text-title-20-semibold {
+    font-size: 20px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 600;
+  }
+
+  .text-title-18-bold {
+    font-size: 18px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 700;
+  }
+
+  .text-title-18-semibold {
+    font-size: 18px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 600;
+  }
+
+  .text-title-16-bold {
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    font-weight: 700;
+  }
+
+  /* [MO] Text */
+  .text-16-medium {
+    font-size: 16px;
+    line-height: 144%;
+    letter-spacing: -1%;
+    font-weight: 500;
+  }
+
+  .text-15-semibold {
+    font-size: 15px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 600;
+  }
+
+  .text-15-medium {
+    font-size: 15px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 500;
+  }
+
+  .text-15-regular {
+    font-size: 15px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 400;
+  }
+
+  .text-14-medium {
+    font-size: 14px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 500;
+  }
+
+  .text-13-regular {
+    font-size: 13px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 400;
+  }
+
+  .text-12-semibold {
+    font-size: 12px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 600;
+  }
+
+  .text-12-medium {
+    font-size: 12px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 500;
+  }
 }
 
 /* ===== 공통 컴포넌트 클래스 ===== */
@@ -121,6 +290,244 @@ pre {
     -webkit-text-fill-color: transparent;
   }
 
+  /* Primary 색상 유틸리티 */
+  .text-primary {
+    color: var(--primary);
+  }
+  .bg-primary {
+    background-color: var(--primary);
+  }
+
+  /* Black 색상 유틸리티 */
+  .text-black-100 {
+    color: var(--black-100);
+  }
+  .text-black-90 {
+    color: var(--black-90);
+  }
+  .text-black-85 {
+    color: var(--black-85);
+  }
+  .text-black-80 {
+    color: var(--black-80);
+  }
+  .text-black-70 {
+    color: var(--black-70);
+  }
+  .text-black-65 {
+    color: var(--black-65);
+  }
+  .text-black-60 {
+    color: var(--black-60);
+  }
+  .text-black-55 {
+    color: var(--black-55);
+  }
+  .text-black-50 {
+    color: var(--black-50);
+  }
+  .text-black-45 {
+    color: var(--black-45);
+  }
+  .text-black-40 {
+    color: var(--black-40);
+  }
+  .text-black-35 {
+    color: var(--black-35);
+  }
+  .text-black-30 {
+    color: var(--black-30);
+  }
+  .text-black-25 {
+    color: var(--black-25);
+  }
+  .text-black-20 {
+    color: var(--black-20);
+  }
+  .text-black-15 {
+    color: var(--black-15);
+  }
+  .text-black-10 {
+    color: var(--black-10);
+  }
+  .text-black-5 {
+    color: var(--black-5);
+  }
+
+  .bg-black-100 {
+    background-color: var(--black-100);
+  }
+  .bg-black-90 {
+    background-color: var(--black-90);
+  }
+  .bg-black-85 {
+    background-color: var(--black-85);
+  }
+  .bg-black-80 {
+    background-color: var(--black-80);
+  }
+  .bg-black-70 {
+    background-color: var(--black-70);
+  }
+  .bg-black-65 {
+    background-color: var(--black-65);
+  }
+  .bg-black-60 {
+    background-color: var(--black-60);
+  }
+  .bg-black-55 {
+    background-color: var(--black-55);
+  }
+  .bg-black-50 {
+    background-color: var(--black-50);
+  }
+  .bg-black-45 {
+    background-color: var(--black-45);
+  }
+  .bg-black-40 {
+    background-color: var(--black-40);
+  }
+  .bg-black-35 {
+    background-color: var(--black-35);
+  }
+  .bg-black-30 {
+    background-color: var(--black-30);
+  }
+  .bg-black-25 {
+    background-color: var(--black-25);
+  }
+  .bg-black-20 {
+    background-color: var(--black-20);
+  }
+  .bg-black-15 {
+    background-color: var(--black-15);
+  }
+  .bg-black-10 {
+    background-color: var(--black-10);
+  }
+  .bg-black-5 {
+    background-color: var(--black-5);
+  }
+
+  /* Navy 색상 유틸리티 */
+  .text-navy-100 {
+    color: var(--navy-100);
+  }
+  .text-navy-90 {
+    color: var(--navy-90);
+  }
+  .text-navy-85 {
+    color: var(--navy-85);
+  }
+  .text-navy-80 {
+    color: var(--navy-80);
+  }
+  .text-navy-70 {
+    color: var(--navy-70);
+  }
+  .text-navy-65 {
+    color: var(--navy-65);
+  }
+  .text-navy-60 {
+    color: var(--navy-60);
+  }
+  .text-navy-55 {
+    color: var(--navy-55);
+  }
+  .text-navy-50 {
+    color: var(--navy-50);
+  }
+  .text-navy-45 {
+    color: var(--navy-45);
+  }
+  .text-navy-40 {
+    color: var(--navy-40);
+  }
+  .text-navy-35 {
+    color: var(--navy-35);
+  }
+  .text-navy-30 {
+    color: var(--navy-30);
+  }
+  .text-navy-25 {
+    color: var(--navy-25);
+  }
+  .text-navy-20 {
+    color: var(--navy-20);
+  }
+  .text-navy-15 {
+    color: var(--navy-15);
+  }
+  .text-navy-10 {
+    color: var(--navy-10);
+  }
+  .text-navy-5 {
+    color: var(--navy-5);
+  }
+
+  .bg-navy-100 {
+    background-color: var(--navy-100);
+  }
+  .bg-navy-90 {
+    background-color: var(--navy-90);
+  }
+  .bg-navy-85 {
+    background-color: var(--navy-85);
+  }
+  .bg-navy-80 {
+    background-color: var(--navy-80);
+  }
+  .bg-navy-70 {
+    background-color: var(--navy-70);
+  }
+  .bg-navy-65 {
+    background-color: var(--navy-65);
+  }
+  .bg-navy-60 {
+    background-color: var(--navy-60);
+  }
+  .bg-navy-55 {
+    background-color: var(--navy-55);
+  }
+  .bg-navy-50 {
+    background-color: var(--navy-50);
+  }
+  .bg-navy-45 {
+    background-color: var(--navy-45);
+  }
+  .bg-navy-40 {
+    background-color: var(--navy-40);
+  }
+  .bg-navy-35 {
+    background-color: var(--navy-35);
+  }
+  .bg-navy-30 {
+    background-color: var(--navy-30);
+  }
+  .bg-navy-25 {
+    background-color: var(--navy-25);
+  }
+  .bg-navy-20 {
+    background-color: var(--navy-20);
+  }
+  .bg-navy-15 {
+    background-color: var(--navy-15);
+  }
+  .bg-navy-10 {
+    background-color: var(--navy-10);
+  }
+  .bg-navy-5 {
+    background-color: var(--navy-5);
+  }
+
+  /* White 색상 유틸리티 */
+  .text-white-100 {
+    color: var(--white-100);
+  }
+  .bg-white-100 {
+    background-color: var(--white-100);
+  }
+
   /* 상태 색상 유틸리티 */
   .text-success {
     color: var(--success);
@@ -130,9 +537,6 @@ pre {
   }
   .text-error {
     color: var(--error);
-  }
-  .text-info {
-    color: var(--info);
   }
 
   .bg-success {
@@ -144,8 +548,194 @@ pre {
   .bg-error {
     background-color: var(--error);
   }
-  .bg-info {
-    background-color: var(--info);
+
+  /* Sub Color 유틸리티 */
+  .text-purple {
+    color: var(--purple);
+  }
+  .text-light-purple {
+    color: var(--light-purple);
+  }
+  .text-cool-black {
+    color: var(--cool-black);
+  }
+  .text-brown {
+    color: var(--brown);
+  }
+  .text-orange {
+    color: var(--orange);
+  }
+  .text-red {
+    color: var(--red);
+  }
+  .text-gray {
+    color: var(--gray);
+  }
+
+  .bg-purple {
+    background-color: var(--purple);
+  }
+  .bg-light-purple {
+    background-color: var(--light-purple);
+  }
+  .bg-cool-black {
+    background-color: var(--cool-black);
+  }
+  .bg-brown {
+    background-color: var(--brown);
+  }
+  .bg-orange {
+    background-color: var(--orange);
+  }
+  .bg-red {
+    background-color: var(--red);
+  }
+  .bg-gray {
+    background-color: var(--gray);
+  }
+
+  /* Icon Size 유틸리티 */
+  .icon-xs {
+    width: var(--icon-xs);
+    height: var(--icon-xs);
+  }
+  .icon-s {
+    width: var(--icon-s);
+    height: var(--icon-s);
+  }
+  .icon-m {
+    width: var(--icon-m);
+    height: var(--icon-m);
+  }
+  .icon-l {
+    width: var(--icon-l);
+    height: var(--icon-l);
+  }
+  .icon-xl {
+    width: var(--icon-xl);
+    height: var(--icon-xl);
+  }
+
+  /* Layout 컨테이너 유틸리티 */
+  .container-pc {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding-left: var(--layout-pc-margin);
+    padding-right: var(--layout-pc-margin);
+  }
+
+  .container-tablet {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding-left: var(--layout-tablet-margin);
+    padding-right: var(--layout-tablet-margin);
+  }
+
+  .container-small-tablet {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding-left: var(--layout-small-tablet-margin);
+    padding-right: var(--layout-small-tablet-margin);
+  }
+
+  .container-mobile-large {
+    max-width: 768px;
+    margin: 0 auto;
+    padding-left: var(--layout-mobile-large-margin);
+    padding-right: var(--layout-mobile-large-margin);
+  }
+
+  .container-mobile {
+    max-width: 375px;
+    margin: 0 auto;
+    padding-left: var(--layout-mobile-margin);
+    padding-right: var(--layout-mobile-margin);
+  }
+
+  /* 반응형 컨테이너 */
+  .container-responsive {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding-left: var(--layout-mobile-margin);
+    padding-right: var(--layout-mobile-margin);
+  }
+
+  @media (min-width: 768px) {
+    .container-responsive {
+      padding-left: var(--layout-mobile-large-margin);
+      padding-right: var(--layout-mobile-large-margin);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-responsive {
+      padding-left: var(--layout-small-tablet-margin);
+      padding-right: var(--layout-small-tablet-margin);
+    }
+  }
+
+  @media (min-width: 1600px) {
+    .container-responsive {
+      padding-left: var(--layout-tablet-margin);
+      padding-right: var(--layout-tablet-margin);
+    }
+  }
+
+  @media (min-width: 1920px) {
+    .container-responsive {
+      padding-left: var(--layout-pc-margin);
+      padding-right: var(--layout-pc-margin);
+    }
+  }
+
+  /* Grid Gutter 유틸리티 */
+  .grid-gutter-pc {
+    gap: var(--layout-pc-gutter);
+  }
+
+  .grid-gutter-tablet {
+    gap: var(--layout-tablet-gutter);
+  }
+
+  .grid-gutter-small-tablet {
+    gap: var(--layout-small-tablet-gutter);
+  }
+
+  .grid-gutter-mobile-large {
+    gap: var(--layout-mobile-large-gutter);
+  }
+
+  .grid-gutter-mobile {
+    gap: var(--layout-mobile-gutter);
+  }
+
+  /* 반응형 Grid Gutter */
+  .grid-gutter-responsive {
+    gap: var(--layout-mobile-gutter);
+  }
+
+  @media (min-width: 768px) {
+    .grid-gutter-responsive {
+      gap: var(--layout-mobile-large-gutter);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-gutter-responsive {
+      gap: var(--layout-small-tablet-gutter);
+    }
+  }
+
+  @media (min-width: 1600px) {
+    .grid-gutter-responsive {
+      gap: var(--layout-tablet-gutter);
+    }
+  }
+
+  @media (min-width: 1920px) {
+    .grid-gutter-responsive {
+      gap: var(--layout-pc-gutter);
+    }
   }
 }
 
