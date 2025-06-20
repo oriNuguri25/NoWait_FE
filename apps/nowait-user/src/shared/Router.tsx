@@ -32,7 +32,7 @@ const Router = () => {
 
         {/* ==== 메뉴 주문 페이지 (order) ==== */}
         <Route path="/:storeId" element={<StorePage />} />
-        <Route path="/:storeId/menu/add" element={<AddMenuPage />} />
+        <Route path="/:storeId/menu/:menuId" element={<AddMenuPage />} />
         <Route path="/:storeId/order" element={<OrderListPage />} />
         <Route path="/:storeId/order/success" element={<OrderSuccessPage />} />
         <Route
