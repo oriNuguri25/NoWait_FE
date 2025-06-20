@@ -1,70 +1,59 @@
 /* ===== 공통 CSS 변수 ===== */
 :root {
-  /* 브랜드 색상 */
-  --brand-primary: #6366f1;
-  --brand-secondary: #8b5cf6;
-  --brand-accent: #06b6d4;
+  --brand-primary: #ff4c0d;
+  --brand-secondary: #972dff;
+  --brand-accent: #ffdeb7;
 
-  /* 확장 색상 팔레트 */
-  --purple-50: #faf5ff;
-  --purple-100: #f3e8ff;
-  --purple-200: #e9d5ff;
-  --purple-300: #d8b4fe;
-  --purple-400: #c084fc;
-  --purple-500: #a855f7;
-  --purple-600: #9333ea;
-  --purple-700: #7c3aed;
-  --purple-800: #6b21a8;
-  --purple-900: #581c87;
-  --purple-950: #1a0b2e;
+  --success: #27ae60;
+  --warning: #f2994a;
+  --error: #eb5757;
+  --info: #2d9cdb;
 
-  --blue-50: #eff6ff;
-  --blue-100: #dbeafe;
-  --blue-200: #bfdbfe;
-  --blue-300: #93c5fd;
-  --blue-400: #60a5fa;
-  --blue-500: #3b82f6;
-  --blue-600: #2563eb;
-  --blue-700: #1d4ed8;
-  --blue-800: #1e40af;
-  --blue-900: #1e3a8a;
-  --blue-950: #0a1629;
+  --primary: #ff4103;
+  --white: #ffffff;
 
-  --emerald-50: #ecfdf5;
-  --emerald-100: #d1fae5;
-  --emerald-200: #a7f3d0;
-  --emerald-300: #6ee7b7;
-  --emerald-400: #34d399;
-  --emerald-500: #10b981;
-  --emerald-600: #059669;
-  --emerald-700: #047857;
-  --emerald-800: #065f46;
-  --emerald-900: #064e3b;
+  --black-100: #000000;
+  --black-90: #222222;
+  --black-85: #333333;
+  --black-80: #444444;
+  --black-70: #666666;
+  --black-65: #777777;
+  --black-60: #888888;
+  --black-55: #999999;
+  --black-50: #aaaaaa;
+  --black-45: #bbbbbb;
+  --black-40: #dddddd;
+  --black-35: #e6e6e6;
+  --black-30: #ececec;
+  --black-25: #f4f4f4;
+  --black-20: #f7f7f7;
+  --black-15: #f9f9f9;
+  --black-10: #fafafa;
 
-  /* 상태 색상 */
-  --success: #10b981;
-  --warning: #f59e0b;
-  --error: #ef4444;
-  --info: #3b82f6;
+  --navy-100: #16191e;
+  --navy-90: #21252d;
+  --navy-80: #2c323b;
+  --navy-75: #363e4a;
+  --navy-70: #414a59;
+  --navy-65: #4c5668;
+  --navy-60: #576376;
+  --navy-55: #626f85;
+  --navy-50: #6c7b94;
+  --navy-45: #7b889e;
+  --navy-40: #8a96a9;
+  --navy-35: #99a3b4;
+  --navy-30: #a7b0bf;
+  --navy-25: #b6bdc9;
+  --navy-20: #c5cbd4;
+  --navy-15: #d3d8df;
+  --navy-10: #e2e5ea;
+  --navy-5: #f1f2f5;
 
-  /* 폰트 설정 */
-  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "Roboto", "Helvetica Neue", Arial, sans-serif;
-  --font-heading: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", "Consolas", "Monaco", monospace;
-  --font-brand: "Poppins", "Inter", sans-serif;
-
-  /* 그림자 */
-  --shadow-soft: 0 2px 15px -3px rgba(0, 0, 0, 0.07),
-    0 10px 20px -2px rgba(0, 0, 0, 0.04);
-  --shadow-medium: 0 4px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-hard: 0 10px 40px -10px rgba(0, 0, 0, 0.2);
-
-  /* 그라디언트 */
-  --gradient-purple-blue: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-emerald-blue: linear-gradient(135deg, #667eea 0%, #059669 100%);
-  --gradient-sunset: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --sub-purple: #972dff;
+  --sub-gray: #b3b3b3;
+  --sub-brown: #a26f3c;
+  --sub-beige: #ffdeb7;
+  --sub-whitegray: #e6e6e7;
 }
 
 /* ===== 폰트 패밀리 적용 ===== */

@@ -11,6 +11,7 @@
     "dev:user": "turbo run dev --filter=nowait-user"
   },
   "devDependencies": {
+    "@yarnpkg/sdks": "^3.2.2",
     "turbo": "^2.5.4",
     "typescript": "^5.8.3"
   }
