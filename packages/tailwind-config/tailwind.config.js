@@ -114,21 +114,21 @@ module.exports = {
         // [MO] Headline - Pretendard Bold
         "headline-28-bold": [
           "28px",
-          { lineHeight: "130%", letterSpacing: "-2.00%", fontWeight: "700" },
+          { lineHeight: "130%", letterSpacing: "-0.02em", fontWeight: "700" },
         ],
         "headline-24-bold": [
           "24px",
-          { lineHeight: "130%", letterSpacing: "-2.00%", fontWeight: "700" },
+          { lineHeight: "130%", letterSpacing: "-0.02em", fontWeight: "700" },
         ],
         "headline-22-bold": [
           "22px",
-          { lineHeight: "136%", letterSpacing: "-1.00%", fontWeight: "700" },
+          { lineHeight: "136%", letterSpacing: "-0.01em", fontWeight: "700" },
         ],
 
         // [MO] Title - Pretendard Bold/SemiBold
         "title-20-bold": [
           "20px",
-          { lineHeight: "136%", letterSpacing: "-1.00%", fontWeight: "700" },
+          { lineHeight: "136%", letterSpacing: "-0.01em", fontWeight: "700" },
         ],
         "title-20-semibold": [
           "20px",
@@ -150,7 +150,7 @@ module.exports = {
         // [MO] Text - Pretendard Medium/SemiBold/Regular
         "text-16-medium": [
           "16px",
-          { lineHeight: "144%", letterSpacing: "-1.00%", fontWeight: "500" },
+          { lineHeight: "144%", letterSpacing: "-0.01em", fontWeight: "500" },
         ],
         "text-15-semibold": [
           "15px",
