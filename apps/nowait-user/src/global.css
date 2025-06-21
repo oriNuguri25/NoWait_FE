@@ -36,12 +36,13 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
+  min-width: 100vw;
   min-height: 100vh;
 }
 
 #root {
-  max-width: 1280px;
+  max-width: 375px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -92,7 +93,6 @@ body {
   margin: 0 auto;
   padding-left: var(--container-padding);
   padding-right: var(--container-padding);
-
 }
 
 .user-card-grid {
