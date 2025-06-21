@@ -20,12 +20,12 @@ const RemittanceRequestPage = () => {
           <h1 className="text-15-semibold text-navy-60">
             노웨잇대디자인과학생회
           </h1>
-          <div className="flex gap-1">
+          <button className="flex gap-1">
             <p className="inline text-16-medium underline text-navy-90">
               기업은행 611-000202-01-010
             </p>
             <img src={copy} alt="복사 아이콘" />
-          </div>
+          </button>
           <p className="text-headline-24-bold">23,800원</p>
         </div>
       </div>
