@@ -7,14 +7,13 @@ body,
   min-height: 100% !important;
 }
 /* Admin 앱 CSS 변수 오버라이드 */
-/* :root {
+:root {
   --dashboard-gap: 2rem;
   --sidebar-width: 16rem;
   --header-height: 4rem;
   --content-padding: 2rem;
   --table-row-padding: 1.25rem;
   --admin-sidebar-height: calc(100vh - 4rem);
-
 
   line-height: 1.5;
   font-weight: 400;
@@ -28,14 +27,14 @@ body,
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-} */
+}
 
-/* * {
+* {
   box-sizing: border-box;
-} */
+}
 
 /* Admin 앱 전용 스타일 */
-/* .admin-container {
+.admin-container {
   max-width: 1600px;
   margin: 0 auto;
   padding: var(--content-padding, 2rem);
@@ -57,4 +56,4 @@ body,
   background: linear-gradient(135deg, var(--emerald-900), var(--blue-900));
   width: var(--sidebar-width, 280px);
   height: var(--admin-sidebar-height, calc(100vh - 4rem));
-} */
+}

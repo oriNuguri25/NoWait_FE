@@ -1,4 +1,7 @@
 import React from "react";
+import CloseButton from "../../../components/closeButton";
+import callIcon from "../../../assets/Call.svg";
+import openDoorIcon from "../../../assets/door_open.svg";
 
 interface WaitingCardProps {
   number: number;
@@ -24,58 +27,59 @@ export function WaitingCard({
   onClose,
 }: WaitingCardProps) {
   return (
-    <div className="relative w-[372px] h-[200px] bg-white rounded-2xl shadow-md px-5 py-4">
+    <div className="shadow-[0_10px_20px_rgba(0,0,0,0.25)] relative w-[372px] h-[200px] bg-white rounded-2xl shadow-soft px-5 py-[18px]">
       {/* 헤더 */}
       <div className="flex justify-between items-start mb-4">
-        <div>
-          <span className="text-[28px] font-bold text-black-80">
-            #{number < 10 ? `0${number}` : number}번
-          </span>
-        </div>
-        <div className="flex items-center gap-2 text-sm text-black-50 font-medium">
+        <p className="text-title-18-bold text-black-80">
+          #{number < 10 ? `0${number}` : number}번
+        </p>
+        <div className="flex items-center gap-2 text-text-12-medium text-black-50">
           <span>{time}</span>
           <span>· {waitMinutes}분 대기 중</span>
-          {onClose && (
-            <button onClick={onClose} className="text-black-30 text-lg ml-1">
-              ×
-            </button>
-          )}
+          {onClose && <CloseButton onClick={onClose} />}
         </div>
       </div>
 
-      {/* 정보 구역 */}
-      <div className="flex text-center border border-[#E5E5E5] rounded-lg overflow-hidden mb-4">
-        <div className="flex-1 py-2">
-          <div className="text-xs font-medium text-black-40 mb-1">입장인원</div>
-          <div className="text-base font-bold text-black-80">
-            {peopleCount}명
-          </div>
+      {/* 정보 영역 */}
+      <div className="flex justify-between text-left rounded-lg overflow-hidden mb-4">
+        {/* 입장인원 */}
+        <div className="flex flex-col py-2 w-[20%]">
+          <div className="text-12-medium text-black-40 mb-1">입장인원</div>
+          <div className="text-15-semibold text-black-80">{peopleCount}명</div>
         </div>
-        <div className="w-px bg-[#E5E5E5]" />
-        <div className="flex-1 py-2">
-          <div className="text-xs font-medium text-black-40 mb-1">이름</div>
-          <div className="text-base font-bold text-black-80">{name}</div>
+        <div className="w-px bg-black-10 mr-[5%]" />
+        {/* 이름 */}
+        <div className="flex flex-col py-2 w-[20%]">
+          <div className="text-12-medium text-black-40 mb-1">이름</div>
+          <div className="text-15-semibold text-black-80">{name}</div>
         </div>
-        <div className="w-px bg-[#E5E5E5]" />
-        <div className="flex-1 py-2">
-          <div className="text-xs font-medium text-black-40 mb-1">전화번호</div>
-          <div className="text-base font-bold text-black-80">{phone}</div>
+        <div className="w-px bg-black-10 mr-[5%]" />
+        {/* 전화번호 */}
+        <div className="flex flex-col py-2 w-[50%]">
+          <div className="text-12-medium text-black-40 mb-1">전화번호</div>
+          <div className="text-15-semibold text-black-80">{phone}</div>
         </div>
       </div>
 
-      {/* 버튼 구역 */}
-      <div className="flex gap-2">
+      {/* 버튼 영역 */}
+      <div className="flex justify-between">
         <button
           onClick={onCall}
-          className="flex-1 py-2 rounded-lg bg-[#FFF0EB] text-[#FF6736] font-semibold text-sm flex justify-center items-center gap-1 hover:bg-[#ffe5dc]"
+          className="flex w-[60%] bg-[#FFF0EB] text-[#FF6736] p-[4px] rounded-[8px] text-14-medium flex justify-center items-center"
         >
-          <span className="text-lg">🔔</span> 호출
+          <span className="text-lg">
+            <img src={callIcon} />
+          </span>{" "}
+          호출
         </button>
         <button
           onClick={onEnter}
-          className="flex-1 py-2 rounded-lg bg-[#E8F3FF] text-[#2C7CF6] font-semibold text-sm flex justify-center items-center gap-1 hover:bg-[#d2e9ff]"
+          className="flex w-[35%] py-2 rounded-[8px] bg-[#E8F3FF] text-[#2C7CF6] font-semibold text-14-medium flex justify-center items-center gap-1 bg-primary/20"
         >
-          <span className="text-lg">🏢</span> 입장
+          <span className="text-lg">
+            <img src={openDoorIcon} />
+          </span>{" "}
+          입장
         </button>
       </div>
     </div>
