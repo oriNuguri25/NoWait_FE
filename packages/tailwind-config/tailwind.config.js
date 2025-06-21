@@ -152,6 +152,10 @@ module.exports = {
           "16px",
           { lineHeight: "144%", letterSpacing: "-0.01em", fontWeight: "500" },
         ],
+        "text-16-regular": [
+          "16px",
+          { lineHeight: "144%", letterSpacing: "-0.01em", fontWeight: "400" },
+        ],
         "text-15-semibold": [
           "15px",
           { lineHeight: "144%", letterSpacing: "0%", fontWeight: "600" },
