@@ -1,4 +1,3 @@
-import React from "react";
 import CloseButton from "../../../components/closeButton";
 import callIcon from "../../../assets/Call.svg";
 import openDoorIcon from "../../../assets/door_open.svg";
