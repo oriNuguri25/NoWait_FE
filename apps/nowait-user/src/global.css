@@ -4,7 +4,7 @@
 
 /* User 앱 CSS 변수 오버라이드 */
 :root {
-  --container-padding: 1rem;
+  --container-padding: 20px;
   --card-gap: 1.5rem;
   --section-gap: 3rem;
 
@@ -13,8 +13,8 @@
   font-weight: 400;
 
   color-scheme: dark;
-  color: #222222;
-  background-color: #242424;
+  color: var(--color-black-90);
+  background-color: var(--color-white);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -85,9 +85,14 @@ body {
 
 /* User 앱 전용 스타일 */
 .user-container {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 430px;
+  min-width: 375px;
+  height: 100dvh;
   margin: 0 auto;
-  /* padding: var(--container-padding, 1rem); */
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+
 }
 
 .user-card-grid {
