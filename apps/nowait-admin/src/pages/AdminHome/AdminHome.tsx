@@ -2,6 +2,8 @@ import { WaitingCard } from "./components/WaitingCard";
 import CardBox from "./components/CardBox";
 import RoundTabButton from "./components/RoundTabButton";
 import { useState } from "react";
+import RedBadge from "../../components/RedBadge";
+import ImageBox from "../../components/ImageBox";
 
 const AdminHome = () => {
   const handleCall = () => alert("🔔 고객 호출");
@@ -10,6 +12,7 @@ const AdminHome = () => {
   const [activeTab, setActiveTab] = useState("전체 보기");
   return (
     <div>
+      <RedBadge label="웨이팅 관리" />
       <WaitingCard
         number={1}
         time="오후 7:49"
