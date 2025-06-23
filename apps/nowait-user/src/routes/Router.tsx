@@ -11,25 +11,19 @@ import OrderSuccessPage from "../pages/order/OrderSuccessPage";
 import RemittanceRequestPage from "../pages/order/RemittanceRequestPage";
 import StoreReservePage from "../pages/reserve/StoreReservePage";
 import LoginPage from "../pages/login/LoginPage";
+import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
+import AuthGuard from "../components/AuthGuard";
 
 const Router = () => {
   return (
     <Routes>
-      {/* ==== 주점 예약 페이지 (reserve) ==== */}
-      <Route path="/" element={<HomePage />} />
+      {/* 공개 라우트 - 인증 불필요 */}
+      {/* 로그인 페이지 */}
+      <Route path="/login/success" element={<KakaoRedirectHandler />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/store/:id" element={<StoreDetailPage />} />
-      <Route path="/store/:id/reserve" element={<StoreReservePage />} />
-      <Route
-        path="/store/:id/reserve/success"
-        element={<ReserveSuccessPage />}
-      />
-      <Route path="/map" element={<MapPage />} />
 
-      {/* ==== QR 링크용 리다이렉트 (order) ==== */}
+      {/* QR 코드 접속 페이지 */}
       <Route path="/:storeId/:tableId" element={<RedirectToStorePage />} />
-
-      {/* ==== 메뉴 주문 페이지 (order) ==== */}
       <Route path="/:storeId" element={<StorePage />} />
       <Route path="/:storeId/menu/add" element={<AddMenuPage />} />
       <Route path="/:storeId/order" element={<OrderListPage />} />
@@ -37,6 +31,25 @@ const Router = () => {
       <Route
         path="/:storeId/remittance/request"
         element={<RemittanceRequestPage />}
+      />
+
+      {/* 보호된 라우트 - 인증 필요 */}
+      <Route
+        path="/*"
+        element={
+          <AuthGuard>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/store/:id" element={<StoreDetailPage />} />
+              <Route path="/store/:id/reserve" element={<StoreReservePage />} />
+              <Route
+                path="/store/:id/reserve/success"
+                element={<ReserveSuccessPage />}
+              />
+              <Route path="/map" element={<MapPage />} />
+            </Routes>
+          </AuthGuard>
+        }
       />
     </Routes>
   );
