@@ -1,5 +1,5 @@
 import React from "react";
-import QuantitySelector from "./QuantitySelector";
+import QuantitySelector from "../common/QuantitySelector";
 import close from "../../assets/icon/close.svg";
 
 const MenuItem = () => {

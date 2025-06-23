@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useCallback, useRef, useState } from "react";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import copy from "../../assets/icon/copy.svg";
+import useThrottle from "../../hooks/useThrottle";
+import Toast from "../../components/order/Toast";
 
 const RemittanceRequestPage = () => {
+  const [showToast, setShowToast] = useState(false);
   const account = "기업은행 611-000202-01-010";
-  const handleCopyClipBoard = async (account: string) => {
-    try {
-      await navigator.clipboard.writeText(account);
-      alert("복사가 완료되었습니다.")
-    } catch (e) {}
-  };
+  const clipBoardDelay = 3000;
+
+  const handleCopyClipBoard = useThrottle(() => {
+    // 복사 기능
+    navigator.clipboard.writeText(account);
+    // 복사 완료 Toast 띄우기
+    setShowToast(true);
+    // 복사 완료 Toast 감추기
+    setTimeout(() => setShowToast(false), clipBoardDelay);
+  }, clipBoardDelay);
+
   return (
     <div className="flex min-h-full">
       <div className="flex-1 flex flex-col justify-center items-center">
@@ -27,10 +35,7 @@ const RemittanceRequestPage = () => {
           <h1 className="text-15-semibold text-navy-60">
             노웨잇대디자인과학생회
           </h1>
-          <button
-            onClick={() => handleCopyClipBoard(account)}
-            className="flex gap-1"
-          >
+          <button onClick={handleCopyClipBoard} className="flex gap-1">
             <p className="inline text-16-medium underline text-navy-90">
               {account}
             </p>
@@ -39,10 +44,13 @@ const RemittanceRequestPage = () => {
           <p className="text-headline-24-bold">23,800원</p>
         </div>
       </div>
+      <div className="fixed left-1/2 bottom-[124px] -translate-x-1/2">
+        {showToast && <Toast message="계좌번호가 복사되었습니다" />}
+      </div>
       <PageFooterButton
         onClick={() => alert("클릭 시 주문 완료 페이지로 이동(confirm 이후)")}
       >
-        입금 완료
+        다음
       </PageFooterButton>
     </div>
   );
