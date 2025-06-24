@@ -118,7 +118,7 @@ h5,
 h6 {
   font-family: "Pretendard Variable", "Pretendard", -apple-system,
     BlinkMacSystemFont, system-ui, sans-serif;
-  font-weight: 600;
+  /* font-weight: 600; */
 }
 
 code,
@@ -185,7 +185,12 @@ pre {
     letter-spacing: 0%;
     font-weight: 600;
   }
-
+  .text-title-18-medium {
+    font-size : 18px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 500;
+  }
   .text-title-16-bold {
     font-size: 16px;
     line-height: 150%;

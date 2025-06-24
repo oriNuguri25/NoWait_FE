@@ -4,7 +4,7 @@
 
 /* User 앱 CSS 변수 오버라이드 */
 :root {
-  --container-padding: 1rem;
+  --container-padding: 20px;
   --card-gap: 1.5rem;
   --section-gap: 3rem;
 
@@ -13,8 +13,8 @@
   font-weight: 400;
 
   color-scheme: dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #ffffff;
+  color: var(--color-black-90);
+  background-color: var(--color-white);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -40,10 +40,9 @@ body {
 }
 
 #root {
-  max-width: 375px;
+  /* max-width: 375px; */
   width: 100%;
   margin: 0 auto;
-  text-align: center;
 }
 
 .logo {
@@ -70,6 +69,19 @@ body {
   }
 }
 
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fade-in 0.2s ease-in forwards;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
@@ -86,9 +98,13 @@ body {
 
 /* User 앱 전용 스타일 */
 .user-container {
-  max-width: 375px;
+  width: 100%;
+  max-width: 430px;
+  min-width: 375px;
+  height: 100dvh;
   margin: 0 auto;
-  padding: var(--container-padding, 1rem);
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
 }
 
 .user-card-grid {
