@@ -2,8 +2,8 @@ import { useRef, useState, useEffect } from "react";
 import HomeHeader from "./HomeHeader";
 import search from "../../assets/icon/search.svg";
 import HomeCard from "./components/HomeCard";
-import StoreCard from "./components/StoreCard";
 import HomeWaitingCard from "./components/HomeWaitingCard";
+import InfiniteStoreList from "./components/InfiniteStoreList";
 
 const HomePage = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -91,24 +91,8 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* 모든 주점 */}
-        <div className="mt-9.25 flex flex-col">
-          <div className="mb-0.25 text-start text-headline-22-bold text-black-90">
-            모든 주점
-          </div>
-          <div className="flex flex-col">
-            {/* 무한 스크롤 적용되어야 함 */}
-            {Array.from({ length: 8 }, (_, index) => (
-              <StoreCard
-                key={index}
-                storeName={`주점${index + 1}`}
-                department={index % 2 === 0 ? "컴퓨터공학과" : "경영학과"}
-                status={index % 3 === 0 ? "closed" : "open"}
-                waitingCount={[5, 3, 7, 2, 9, 1, 4, 6][index]}
-              />
-            ))}
-          </div>
-        </div>
+        {/* 무한 스크롤 주점 목록 */}
+        <InfiniteStoreList />
       </div>
     </div>
   );
