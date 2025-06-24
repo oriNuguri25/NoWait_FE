@@ -1,8 +1,10 @@
 import { Button } from "@repo/ui/button";
 import RedBadge from "../../components/RedBadge";
 import redLogo from "../../assets/redLogo.svg";
+import { useNavigate } from "react-router";
 
 const AdminAuth = () => {
+  const navigate = useNavigate();
   return (
     <div className="relative min-h-screen flex flex-col bg-white">
       {/* 1. Hero Section */}
@@ -70,7 +72,11 @@ const AdminAuth = () => {
   [@media(max-width:431px)]:mb-0 
   [@media(max-width:431px)]:w-[325px] rounded-[12px]"
       >
-        <Button buttonType="big" className="text-15-semibold">
+        <Button
+          buttonType="big"
+          className="text-15-semibold"
+          onClick={() => navigate("login")}
+        >
           계정으로 시작하기
         </Button>
       </div>
