@@ -1,5 +1,4 @@
 import { useState } from "react";
-import RedBadge from "../../components/RedBadge";
 import CardBox from "./components/CardBox";
 import RoundTabButton from "./components/RoundTabButton";
 import refreshIcon from "../../assets/refresh.svg";
