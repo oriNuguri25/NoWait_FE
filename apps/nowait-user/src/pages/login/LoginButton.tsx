@@ -2,13 +2,20 @@ import { Button } from "@repo/ui";
 import kakao from "../../assets/KaKaoLogo.png";
 
 const LoginButton = () => {
+  const SERVER_URI = import.meta.env.VITE_SERVER_URI;
+  const loginURL = `${SERVER_URI}/oauth/kakao/callback`;
+
+  const handleKaKaoLogin = () => {
+    window.location.href = loginURL;
+  };
+
   return (
     <div className="pt-8 py-6.25 flex justify-center items-center sticky bottom-0">
       <Button
         buttonType="big"
         backgroundColor="#FEE500"
         textColor="#262200"
-        onClick={() => {}}
+        onClick={handleKaKaoLogin}
         className="text-title-18-semibold"
       >
         <img src={kakao} alt="kakao" className="w-4 h-4 mr-0.25" />
