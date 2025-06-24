@@ -37,11 +37,11 @@ export const Button: React.FC<ButtonProps> = ({
   const getButtonConfig = () => {
     const configs = {
       big: {
-        width: "325px",
+        width: "100%",
         height: "60px",
         textClass: "text-15-semibold gap-2",
         defaultBg: "var(--cool-black)",
-        defaultText: "var(--white)",
+        defaultText: "var(--white-100)",
       },
       "call-status": {
         width: "158.5px",
