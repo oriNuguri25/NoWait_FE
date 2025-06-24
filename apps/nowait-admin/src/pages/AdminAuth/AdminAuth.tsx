@@ -8,7 +8,7 @@ const AdminAuth = () => {
   return (
     <div className="relative min-h-screen flex flex-col bg-white">
       {/* 1. Hero Section */}
-      <section className="w-[576px] [@media(max-width:431px)]:w-[325px]   text-left mx-auto mt-[50px] ">
+      <section className="w-[576px] [@media(max-width:431px)]:w-[325px] text-left mx-auto mt-[50px] ">
         <div>
           <img src={redLogo} />
         </div>
