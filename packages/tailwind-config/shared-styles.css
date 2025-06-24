@@ -130,6 +130,12 @@ pre {
 /* ===== 모바일 폰트 사이즈 유틸리티 ===== */
 @layer utilities {
   /* [MO] Headline */
+  .text-headline-32-bold {
+    font-size: 32px;
+    line-height: 136%;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
   .text-headline-28-bold {
     font-size: 28px;
     line-height: 130%;
