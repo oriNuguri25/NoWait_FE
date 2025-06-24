@@ -14,3 +14,4 @@ yarn.lock
 .pnp
 .pnp.js
 .pnp.cjs
+.yarn/install-state.gz
