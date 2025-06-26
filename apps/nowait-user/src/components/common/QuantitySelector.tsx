@@ -2,11 +2,21 @@ import React from "react";
 import minus from "../../assets/icon/minus.svg";
 import plus from "../../assets/icon/plus.svg";
 
-interface PropsType {}
+interface PropsType {
+  quantity: number;
+  setQuantity: React.Dispatch<React.SetStateAction<number>>;
+}
 
-const QuantitySelector = () => {
-  const decreaseQuantity = () => {};
-  const increaseQuantity = () => {};
+const QuantitySelector = ({
+  quantity,
+  setQuantity,
+}: PropsType) => {
+  const decreaseQuantity = () => {
+    setQuantity(quantity - 1);
+  };
+  const increaseQuantity = () => {
+    setQuantity(quantity + 1);
+  };
   return (
     <div className="flex items-center justify-end gap-3">
       <button
@@ -15,7 +25,7 @@ const QuantitySelector = () => {
       >
         <img src={minus} alt="수량 마이너스 아이콘" />
       </button>
-      <p className="text-16-semibold text-balck-80">1</p>
+      <p className="text-16-semibold text-balck-80">{quantity}</p>
       <button
         className="bg-[#F2F6F9] rounded-[7px] w-[28px] h-[28px]  flex items-center justify-center"
         onClick={increaseQuantity}

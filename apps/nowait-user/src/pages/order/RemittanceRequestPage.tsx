@@ -46,7 +46,7 @@ const RemittanceRequestPage = () => {
           <p className="text-headline-24-bold">23,800원</p>
         </div>
       </div>
-      <div className="fixed left-1/2 bottom-[124px] -translate-x-1/2">
+      <div className="fixed left-1/2 bottom-[124px] -translate-x-1/2 z-50">
         {showToast && <Toast message="계좌번호가 복사되었습니다" />}
       </div>
       {modal.isOpen && (

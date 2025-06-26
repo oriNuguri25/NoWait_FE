@@ -13,7 +13,6 @@ import StoreReservePage from "../pages/reserve/StoreReservePage";
 import LoginPage from "../pages/login/LoginPage";
 import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
-import Layout from "../layout/Layout";
 
 const Router = () => {
   return (
@@ -26,7 +25,7 @@ const Router = () => {
       {/* QR 코드 접속 페이지 */}
       <Route path="/:storeId/:tableId" element={<RedirectToStorePage />} />
       <Route path="/:storeId" element={<StorePage />} />
-      <Route path="/:storeId/menu/add" element={<AddMenuPage />} />
+      <Route path="/:storeId/menu/:menuId" element={<AddMenuPage />} />
       <Route path="/:storeId/order" element={<OrderListPage />} />
       <Route path="/:storeId/order/success" element={<OrderSuccessPage />} />
       <Route
