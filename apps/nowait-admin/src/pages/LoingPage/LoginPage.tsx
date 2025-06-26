@@ -1,12 +1,32 @@
 import React from "react";
 import loginLogo from "../../assets/login_logo.svg";
 import { useState } from "react";
+import { usePostLoginMutation } from "../../hooks/usePostAdminLogin.tsx";
 
 const LoginPage = () => {
   const [isIdFocused, setIsIdFocused] = useState(false);
   const [isPwFocused, setIsPwFocused] = useState(false);
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
+
+  const loginMutation = usePostLoginMutation();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    loginMutation.mutate(
+      { id, pw },
+      {
+        onSuccess: (res) => {
+          console.log("✅ 로그인 성공:", res.data);
+          // 예: 토큰 저장, 라우팅
+        },
+        onError: (err) => {
+          console.error("❌ 로그인 실패:", err);
+          alert("로그인 실패. 아이디/비밀번호를 확인해주세요.");
+        },
+      }
+    );
+  };
   return (
     <div className="min-h-screen flex flex-col justify-center items-center px-4 bg-white">
       {/* Logo */}
@@ -15,7 +35,10 @@ const LoginPage = () => {
       </div>
 
       {/* Form */}
-      <form className="w-full flex flex-col items-center gap-3">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full flex flex-col items-center gap-3"
+      >
         <div className="relative">
           <input
             type="text"

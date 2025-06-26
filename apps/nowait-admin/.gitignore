@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+.env*
+.yarn/install-state.gz
+pnp.cjs
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
