@@ -14,7 +14,7 @@ export const getcart = (): CartItem[] => {
 
 export const addToCart = (newItem: CartItem) => {
   const cart = getcart();
-  const existingItem = cart.find((item) => item.itemId === newItem.itemId);
+  const existingItem = cart.find((item) => item.id === newItem.id);
   if (existingItem) {
     existingItem.quantity += newItem.quantity;
     existingItem.price += newItem.price;

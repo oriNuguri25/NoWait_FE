@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PageFooterButton from "../../components/order/PageFooterButton";
+import { Button } from "@repo/ui";
 import copy from "../../assets/icon/copy.svg";
 import useThrottle from "../../hooks/useThrottle";
 import Toast from "../../components/order/Toast";
@@ -52,7 +53,9 @@ const RemittanceRequestPage = () => {
       {modal.isOpen && (
         <ConfirmModal open={() => navigate("/")} close={modal.close} />
       )}
-      <PageFooterButton onClick={() => modal.open()}>다음</PageFooterButton>
+      <PageFooterButton>
+        <Button onClick={() => modal.open()}>다음</Button>
+      </PageFooterButton>
     </div>
   );
 };
