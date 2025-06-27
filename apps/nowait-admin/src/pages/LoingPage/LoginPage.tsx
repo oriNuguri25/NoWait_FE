@@ -95,7 +95,7 @@ const LoginPage = () => {
         <button
           type="submit"
           disabled={!id || !pw}
-          className={`fixed w-[576px] bottom-[30px] mt-8 h-[52px]  rounded-[12px] cursor-not-allowed transition-all duration-300 ease-in-out ${
+          className={`fixed w-[576px] bottom-[30px] mt-8 h-[52px] rounded-[12px] cursor-not-allowed transition-all duration-300 ease-in-out ${
             id && pw
               ? "cursor-pointer bg-black-100 text-white-100"
               : "cursor-not-allowed bg-black-25 text-black-55"
