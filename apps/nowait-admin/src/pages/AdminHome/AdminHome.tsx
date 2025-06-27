@@ -10,6 +10,9 @@ const AdminHome = () => {
   const handleClose = () => alert("❌ 카드 닫기");
   const [activeTab, setActiveTab] = useState("전체 보기");
 
+  const token = localStorage.getItem("adminToken");
+  console.log(token);
+
   return (
     <div className="container-responsive space-y-6">
       <section
