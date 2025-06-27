@@ -5,17 +5,18 @@ import copy from "../../assets/icon/copy.svg";
 import useThrottle from "../../hooks/useThrottle";
 import Toast from "../../components/order/Toast";
 import useModal from "../../hooks/useModal";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ConfirmModal from "../../components/order/ConfirmModal";
 
 const RemittanceRequestPage = () => {
   const [showToast, setShowToast] = useState(false);
-  const account = "기업은행 611-000202-01-010";
-  const clipBoardDelay = 3000;
+
   const navigate = useNavigate();
+  const { storeId } = useParams();
   const modal = useModal();
   const price = useLocation().state;
-  console.log(location);
+  const account = "기업은행 611-000202-01-010";
+  const clipBoardDelay = 3000;
 
   const handleCopyClipBoard = useThrottle(() => {
     navigator.clipboard.writeText(account);
@@ -53,7 +54,10 @@ const RemittanceRequestPage = () => {
         {showToast && <Toast message="계좌번호가 복사되었습니다" />}
       </div>
       {modal.isOpen && (
-        <ConfirmModal open={() => navigate("/:storeId/payer")} close={modal.close} />
+        <ConfirmModal
+          open={() => navigate(`/${storeId}/payer`)}
+          close={modal.close}
+        />
       )}
       <PageFooterButton>
         <Button onClick={() => modal.open()}>다음</Button>

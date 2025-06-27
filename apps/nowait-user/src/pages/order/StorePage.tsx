@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { MenuType } from "../../types/order/menu";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
@@ -49,6 +49,7 @@ const dummyData: MenuType[] = [
 
 const StorePage = () => {
   const navigate = useNavigate();
+  const { storeId } = useParams();
   const { cart } = useCartStore();
 
   return (
@@ -74,7 +75,7 @@ const StorePage = () => {
                 <li key={data.id} className="mb-5">
                   <button
                     onClick={() =>
-                      navigate(`/asd/menu/${data.id}`, { state: data })
+                      navigate(`/${storeId}/menu/${data.id}`, { state: data })
                     }
                     className="w-full flex justify-between cursor-pointer text-left"
                   >
@@ -100,7 +101,7 @@ const StorePage = () => {
       </div>
       {cart && cart.length > 0 && (
         <PageFooterButton>
-          <Button textColor="white" onClick={() => navigate("/:storeId/order")}>
+          <Button textColor="white" onClick={() => navigate(`/${storeId}/order`)}>
             <TotalButton />
           </Button>
         </PageFooterButton>

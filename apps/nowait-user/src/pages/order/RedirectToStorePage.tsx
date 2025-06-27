@@ -9,7 +9,7 @@ const RedirectToStorePage = () => {
     if (storeId && tableId) {
       //테이블 아이디 로컬스토리지 저장(다른 방법 생각)
       localStorage.setItem("tableId", tableId);
-      navigate(`/${storeId}?table=${tableId}`, { replace: true });
+      navigate(`/${storeId}`, { replace: true });
     }
   }, [storeId, tableId, navigate]);
 

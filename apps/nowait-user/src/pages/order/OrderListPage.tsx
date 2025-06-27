@@ -1,19 +1,42 @@
 import MenuItem from "../../components/order/MenuItem";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TotalButton from "../../components/order/TotalButton";
 import { useCartStore } from "../../stores/cartStore";
 import EmptyCart from "../../components/order/EmptyCart";
 import { sumTotalPrice } from "../../utils/sumUtils";
+import axios from "axios";
+import { getTableId } from "../../utils/cartStorage";
 
 const OrderListPage = () => {
   const navigate = useNavigate();
-
+  const { storeId } = useParams();
+  console.log(storeId);
+  const tableId = getTableId();
+  console.log(tableId, "테이블아이디");
   const { cart } = useCartStore();
 
-  const orderHandleButton = () => {
-    navigate("/:storeId/remittance/request", { state: sumTotalPrice(cart) });
+  const SERVER_URI = import.meta.env.VITE_SERVER_URI;
+
+  const orderHandleButton = async () => {
+    try {
+      const payload = {
+        // tableId: tableId,
+        items: cart.map((item) => ({
+          menuId: Number(item.id),
+          quantity: item.quantity,
+        })),
+      };
+      const url = `${SERVER_URI}/orders/create/${storeId}/${tableId}`;
+      console.log("요청 주소:", url);
+      await axios.post(url, payload);
+      navigate(`/${storeId}/remittance/request`, {
+        state: sumTotalPrice(cart),
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   if (cart.length === 0) return <EmptyCart />;

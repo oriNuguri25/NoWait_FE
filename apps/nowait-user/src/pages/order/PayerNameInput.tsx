@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Button } from "@repo/ui";
 import PageFooterButton from "../../components/order/PageFooterButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const PayerNameInput = () => {
-    const navigate = useNavigate()
   const [payer, setPayer] = useState("");
+  const navigate = useNavigate();
+  const { storeId } = useParams();
+
   const handlePayerSubmit = () => {
-    alert("?")
-    navigate("/:storeId/order/success")
+    navigate(`/${storeId}/order/success`);
   };
+  
   return (
     <div className="min-h-screen">
       <div className="min-h-screen flex flex-col justify-center items-center text-center">
