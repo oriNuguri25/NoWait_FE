@@ -25,7 +25,7 @@ const AddMenuPage = () => {
   };
   return (
     <div>
-      <div className="px-5">
+      <div className="h-[calc(100%-163px)] px-5">
         <h1 className="-mx-5 h-[375px] bg-amber-400">
           <img className="w-full" src={image} alt="음식 메뉴 이미지" />
         </h1>
