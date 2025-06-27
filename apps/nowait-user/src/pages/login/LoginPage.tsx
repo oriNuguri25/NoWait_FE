@@ -1,11 +1,11 @@
-import logo from "../../assets/logo.png";
+import Logo from "../../assets/logo.svg?react";
 import LoginButton from "./LoginButton";
 
 const LoginPage = () => {
   return (
     <div className="flex flex-col px-6">
       <div className="mt-15 flex justify-start">
-        <img src={logo} alt="logo" className="w-14.5 h-6" />
+        <Logo className="w-14.5 h-6" />
       </div>
       <div className="mt-3 text-start">
         <text className="text-headline-28-bold text-black-100">
