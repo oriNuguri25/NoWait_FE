@@ -1,5 +1,6 @@
 import React from "react";
 import PageFooterButton from "../order/PageFooterButton";
+import { Button } from "@repo/ui";
 
 interface PropsType {
   imageSrc: string;
@@ -27,9 +28,15 @@ const SuccessMessagePage = ({
           alt={imageAlt}
         />
         <h1 className="text-headline-24-bold mb-2">{title}</h1>
-        <h2 className="whitespace-pre-line text-16-regular text-black-70">{message}</h2>
+        <h2 className="whitespace-pre-line text-16-regular text-black-70">
+          {message}
+        </h2>
       </div>
-      <PageFooterButton onClick={onClick}>{buttonText}</PageFooterButton>
+      <PageFooterButton>
+        <Button textColor="white" onClick={onClick}>
+          {buttonText}
+        </Button>
+      </PageFooterButton>
     </div>
   );
 };

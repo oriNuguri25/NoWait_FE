@@ -1,11 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import type { MenuType } from "../../types/order/menu";
-import { useEffect, useState } from "react";
-import { getcart } from "../../utils/cartStorage";
-import type { CartItem } from "../../types/order/cart";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
-import { sumQuantity, sumTotalPrice } from "../../utils/sumUtils";
 import TotalButton from "../../components/order/TotalButton";
 import { useCartStore } from "../../stores/cartStore";
 

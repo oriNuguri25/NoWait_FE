@@ -8,16 +8,7 @@ module.exports = {
 
   theme: {
     extend: {
-      // Admin 앱 전용 브레이크포인트 (더 큰 화면 중심)
-      screens: {
-        xs: "475px", // 모바일
-        sm: "640px", // 작은 태블릿
-        md: "768px", // 태블릿
-        lg: "1024px", // 노트북
-        xl: "1280px", // 데스크톱
-        "2xl": "1536px", // 큰 데스크톱
-        "3xl": "1920px", // 관리자용 큰 화면
-      },
+      // Admin 앱 전용 브레이크포인트 (더 큰 화면 중심
 
       // Admin 앱 전용 Spacing (더 넓은 간격)
       spacing: {
