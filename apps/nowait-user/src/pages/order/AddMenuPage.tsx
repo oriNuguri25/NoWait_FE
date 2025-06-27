@@ -21,10 +21,8 @@ const AddMenuPage = () => {
       price: price * quantity,
     };
     addToCart(item);
-    // addToCart(item);
     navigate(-1);
   };
-
   return (
     <div>
       <div className="px-5">
@@ -48,7 +46,7 @@ const AddMenuPage = () => {
       </div>
       <PageFooterButton>
         <Button textColor="white" onClick={addToCartButton}>
-          주문하기
+          추가하기
         </Button>
       </PageFooterButton>
     </div>
