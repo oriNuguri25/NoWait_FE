@@ -18,7 +18,7 @@ const AdminSidebar = () => {
   return (
     <aside
       className={`
-        h-screen flex flex-col justify-between border-r border-gray-100 bg-white px-4 py-6
+        h-screen flex flex-col justify-between border-r border-gray-100 bg-white px-4 py-6 fixed
         ${isCompact ? "w-[60px] items-center" : "w-[220px]"}
       `}
     >
