@@ -1,5 +1,4 @@
 import React from "react";
-import PageFooterButton from "../../components/order/PageFooterButton";
 import { useNavigate } from "react-router-dom";
 import SuccessMessagePage from "../../components/common/SuccessMessagePage";
 

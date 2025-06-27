@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PageFooterButton from "../../components/order/PageFooterButton";
+import { Button } from "@repo/ui";
 import copy from "../../assets/icon/copy.svg";
 import useThrottle from "../../hooks/useThrottle";
 import Toast from "../../components/order/Toast";
@@ -46,13 +47,15 @@ const RemittanceRequestPage = () => {
           <p className="text-headline-24-bold">23,800원</p>
         </div>
       </div>
-      <div className="fixed left-1/2 bottom-[124px] -translate-x-1/2">
+      <div className="fixed left-1/2 bottom-[124px] -translate-x-1/2 z-50">
         {showToast && <Toast message="계좌번호가 복사되었습니다" />}
       </div>
       {modal.isOpen && (
         <ConfirmModal open={() => navigate("/")} close={modal.close} />
       )}
-      <PageFooterButton onClick={() => modal.open()}>다음</PageFooterButton>
+      <PageFooterButton>
+        <Button onClick={() => modal.open()}>다음</Button>
+      </PageFooterButton>
     </div>
   );
 };

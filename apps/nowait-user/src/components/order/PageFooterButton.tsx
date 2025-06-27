@@ -1,19 +1,9 @@
 import React from "react";
-import { Button } from "@repo/ui";
 
-interface PropsType {
-  children: string;
-  onClick: () => void;
-}
-
-const PageFooterButton = ({ children, onClick }: PropsType) => {
+const PageFooterButton = ({ children }: { children: React.ReactNode }) => {
   return (
-    <footer className="w-full bg-white fixed bottom-0 left-0">
-      <div className="text-center py-8 px-6">
-        <Button textColor={"white"} onClick={onClick}>
-          {children}
-        </Button>
-      </div>
+    <footer className=" bg-white sticky bottom-0">
+      <div className="flex justify-center py-8 px-5">{children}</div>
     </footer>
   );
 };

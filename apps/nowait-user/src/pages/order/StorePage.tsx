@@ -1,33 +1,47 @@
-import React from "react";
-import { Button } from "@repo/ui";
 import { useNavigate } from "react-router-dom";
+import type { MenuType } from "../../types/order/menu";
+import { useEffect, useState } from "react";
+import { getcart } from "../../utils/cartStorage";
+import type { CartItem } from "../../types/order/cart";
+import PageFooterButton from "../../components/order/PageFooterButton";
+import { Button } from "@repo/ui";
+import { sumQuantity, sumTotalPrice } from "../../utils/sumUtils";
+import TotalButton from "../../components/order/TotalButton";
+import { useCartStore } from "../../stores/cartStore";
 
-const dummyData = [
+const dummyData: MenuType[] = [
   {
     id: "1",
-    menu: "우리 학과 최고의 자랑거리 메뉴인 숙주 삽결살 볶음 입니다. 많이 드시러 오세요.",
-    price: "12,000원",
+    name: "우리 학과 최고의 자랑거리 메뉴인 숙주 삼결살 볶음 입니다.",
+    description:
+      "숙주 삼겹살에 대한 메뉴 설명입니다.숙주 삼겹살에 대한 메뉴 설명입니다.",
+    price: 12000,
     image: "",
   },
   {
     id: "2",
-    menu: "과일 화채",
-    price: "10,000원",
+    name: "과일 화채",
+    description: "시원한 과일 화채 입니다.",
+    price: 10000,
     image: "",
   },
   {
     id: "3",
-    menu: "파인애플 샤베트",
-    price: "9,000원",
+    name: "파인애플 샤베트",
+    description:
+      "시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.",
+    price: 9000,
     image: "",
   },
 ];
 
 const StorePage = () => {
   const navigate = useNavigate();
+  const { cart } = useCartStore();
+
   return (
     <div>
-      <div className="py-8 px-5">
+      <div className="mt-8 pb-[124px]">
         <div className="flex justify-between items-start mb-12">
           <div>
             <h1 className="text-headline-24-bold">스페이시스</h1>
@@ -54,13 +68,15 @@ const StorePage = () => {
                   >
                     <div className="max-w-[224px]">
                       <h2 className="text-black-90 mb-1 text-ellipsis line-clamp-2">
-                        {data.menu}
+                        {data.name}
                       </h2>
-                      <h2 className="text-black-70">{data.price}</h2>
+                      <h2 className="text-black-70">
+                        {data.price.toLocaleString()}원
+                      </h2>
                     </div>
                     <img
                       className="w-[90px] h-[90px] bg-black-70"
-                      src={data.image}
+                      src={`${data.image}`}
                       alt="음식 메뉴 이미지"
                     />
                   </button>
@@ -70,6 +86,13 @@ const StorePage = () => {
           </ul>
         </div>
       </div>
+      {cart && cart.length > 0 && (
+        <PageFooterButton>
+          <Button textColor="white" onClick={() => navigate("/:storeId/order")}>
+            <TotalButton />
+          </Button>
+        </PageFooterButton>
+      )}
     </div>
   );
 };
