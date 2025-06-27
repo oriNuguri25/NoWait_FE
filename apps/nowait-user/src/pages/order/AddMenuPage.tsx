@@ -34,7 +34,7 @@ const AddMenuPage = () => {
           <h2>{description}</h2>
         </div>
         <div className="flex justify-between items-center -mx-5 sticky left-0 bottom-[124px] bg-white px-5">
-          <h1 className="text-[26px] font-semibold">
+          <h1 className="text-[24px] font-semibold">
             {(price * quantity).toLocaleString()}원
           </h1>
           <QuantitySelector

@@ -4,8 +4,8 @@ import { persist } from "zustand/middleware";
 
 interface CartState {
   cart: CartItem[];
-  increaseQuantity: (id: string) => void;
-  decreaseQuantity: (id: string) => void;
+  increaseQuantity: (id: string, price: number) => void;
+  decreaseQuantity: (id: string, price: number) => void;
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
@@ -15,19 +15,27 @@ export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
       cart: [],
-      increaseQuantity: (id) =>
+      increaseQuantity: (id, price) =>
         set(({ cart }) => ({
           cart: cart.map((item) => {
             return item.id === id
-              ? { ...item, quantity: item.quantity + 1 }
+              ? {
+                  ...item,
+                  quantity: item.quantity + 1,
+                  price: item.price + price,
+                }
               : item;
           }),
         })),
-      decreaseQuantity: (id) =>
+      decreaseQuantity: (id, price) =>
         set(({ cart }) => ({
           cart: cart.map((item) => {
             return item.id === id
-              ? { ...item, quantity: item.quantity - 1 }
+              ? {
+                  ...item,
+                  quantity: item.quantity - 1,
+                  price: item.price - price,
+                }
               : item;
           }),
         })),

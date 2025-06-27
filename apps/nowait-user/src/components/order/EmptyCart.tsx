@@ -10,17 +10,15 @@ const EmptyCart = () => {
         <br />
         마음에 드는 메뉴를 담아주세요!
       </h1>
-      <div className="flex justify-center items-center gap-0.5 py-2 px-4 rounded-[12px] border border-[#ececec]">
-        <button
-          className="font-[14px] font-bold text-black-70"
-          onClick={() => navigate("/:storeId")}
-        >
-          추가하기
-        </button>
-        <span className="inline-block text-black-70">
-          <Add fill="#666" />
-        </span>
-      </div>
+      <button
+        type="button"
+        aria-label="메뉴 추가"
+        className="flex justify-center items-center gap-1 py-2 px-4 rounded-[12px] border border-[#ececec] text-black-70"
+        onClick={() => navigate("/:storeId")}
+      >
+        <span className="text-[14px] font-bold">추가하기</span>
+        <Add className="w-4 h-4" fill="currentColor" />
+      </button>
     </div>
   );
 };

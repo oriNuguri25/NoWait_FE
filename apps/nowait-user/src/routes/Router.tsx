@@ -13,6 +13,7 @@ import StoreReservePage from "../pages/reserve/StoreReservePage";
 import LoginPage from "../pages/login/LoginPage";
 import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
+import PayerNameInput from "../pages/order/PayerNameInput";
 
 const Router = () => {
   return (
@@ -27,11 +28,15 @@ const Router = () => {
       <Route path="/:storeId" element={<StorePage />} />
       <Route path="/:storeId/menu/:menuId" element={<AddMenuPage />} />
       <Route path="/:storeId/order" element={<OrderListPage />} />
-      <Route path="/:storeId/order/success" element={<OrderSuccessPage />} />
       <Route
         path="/:storeId/remittance/request"
         element={<RemittanceRequestPage />}
       />
+      <Route
+        path="/:storeId/payer"
+        element={<PayerNameInput />}
+      />
+      <Route path="/:storeId/order/success" element={<OrderSuccessPage />} />
 
       {/* 보호된 라우트 - 인증 필요 */}
       <Route

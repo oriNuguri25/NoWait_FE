@@ -52,8 +52,8 @@ const StorePage = () => {
   const { cart } = useCartStore();
 
   return (
-    <div>
-      <div className="mt-7.5 h-[calc(100%-124px)] px-5">
+    <div className="flex flex-col h-screen">
+      <div className="flex-1 overflow-y-auto mt-7.5 px-5">
         <div className="flex justify-between items-start mb-12">
           <div>
             <h1 className="text-headline-24-bold">스페이시스</h1>
