@@ -40,7 +40,8 @@ body {
 }
 
 #root {
-  /* max-width: 375px; */
+  max-width: 430px;
+  min-width: 360px;
   width: 100%;
   margin: 0 auto;
 }

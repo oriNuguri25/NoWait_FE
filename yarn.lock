@@ -1385,6 +1385,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/react-virtual@npm:^3.13.11":
+  version: 3.13.11
+  resolution: "@tanstack/react-virtual@npm:3.13.11"
+  dependencies:
+    "@tanstack/virtual-core": "npm:3.13.11"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/8cc96a719ea7be1e067051eb443c5570fb61aa332725d513d6cc1b7624948d52dc9487df8486cf9c8aaa1fe78904da769dbe0505850393af03dd77ddc490b1fa
+  languageName: node
+  linkType: hard
+
+"@tanstack/virtual-core@npm:3.13.11":
+  version: 3.13.11
+  resolution: "@tanstack/virtual-core@npm:3.13.11"
+  checksum: 10c0/8a835c531bf0cbbc4ee558442b80e3f1cc78c96b4e6cdc4d7cdbe3b31d6457f1458e17c6f1fccf1e456593795c218b7f3a064aad5d01ffacdba90cccc677dd31
+  languageName: node
+  linkType: hard
+
 "@tybys/wasm-util@npm:^0.9.0":
   version: 0.9.0
   resolution: "@tybys/wasm-util@npm:0.9.0"
@@ -3712,6 +3731,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     turbo: "npm:^2.5.4"
     typescript: "npm:^5.8.3"
+    zustand: "npm:^5.0.6"
   languageName: unknown
   linkType: soft
 
@@ -3868,6 +3888,7 @@ __metadata:
     "@repo/ui": "workspace:*"
     "@tailwindcss/postcss": "npm:^4.1.5"
     "@tanstack/react-query": "npm:^5.80.10"
+    "@tanstack/react-virtual": "npm:^3.13.11"
     "@types/node": "npm:^24.0.3"
     "@types/react": "npm:^19.1.2"
     "@types/react-dom": "npm:^19.1.2"
@@ -3886,6 +3907,7 @@ __metadata:
     typescript: "npm:~5.8.3"
     typescript-eslint: "npm:^8.30.1"
     vite: "npm:^6.3.5"
+    zustand: "npm:^5.0.6"
   languageName: unknown
   linkType: soft
 
@@ -4925,5 +4947,26 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: 10c0/dceb44c28578b31641e13695d200d34ec4ab3966a5729814d5445b194933c096b7ced71494ce53a0e8820685d1d010df8b2422e5bf2cdea7e469d97ffbea306f
+  languageName: node
+  linkType: hard
+
+"zustand@npm:^5.0.6":
+  version: 5.0.6
+  resolution: "zustand@npm:5.0.6"
+  peerDependencies:
+    "@types/react": ">=18.0.0"
+    immer: ">=9.0.6"
+    react: ">=18.0.0"
+    use-sync-external-store: ">=1.2.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    immer:
+      optional: true
+    react:
+      optional: true
+    use-sync-external-store:
+      optional: true
+  checksum: 10c0/28e0c83978173741fe0d1f8c8d51b2708d6ad3d49968585c179a6ece45b7b149e489f89af9764b56dced842efe2914d89d5ba2d3890e026a4e4b072308fcd11c
   languageName: node
   linkType: hard
