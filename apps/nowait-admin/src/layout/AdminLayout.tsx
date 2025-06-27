@@ -8,7 +8,7 @@ const AdminLayout = () => {
   return (
     <div className="flex [@media(max-width:431px)]:flex-col">
       {width <= 431 ? <MobileMenuBar /> : <AdminSidebar />}
-      <main className="flex justify-between bg-[#F2F6F9] mx-auto min-h-screen py-6 md:px-[30px] [@media(max-width:431px)]:px-[15px]">
+      <main className="flex justify-between bg-[#F2F6F9] mx-auto min-h-screen py-6 md:px-[30px]">
         <Outlet />
       </main>
     </div>
