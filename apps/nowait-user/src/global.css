@@ -113,17 +113,17 @@ body {
   gap: var(--card-gap, 1.5rem);
 }
 
-/* 스크롤바 숨김 유틸리티 */
-.scrollbar-hide {
+/* 전역 스크롤바 숨김 */
+* {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
 
-.scrollbar-hide::-webkit-scrollbar {
+*::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
 }
 
-/* 스크롤바 숨김 유틸리티 */
+/* 스크롤바 숨김 유틸리티 클래스 */
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
