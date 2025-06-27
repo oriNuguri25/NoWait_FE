@@ -40,7 +40,8 @@ body {
 }
 
 #root {
-  /* max-width: 375px; */
+  max-width: 430px;
+  min-width: 360px;
   width: 100%;
   margin: 0 auto;
 }
@@ -97,14 +98,12 @@ body {
 }
 
 /* User 앱 전용 스타일 */
-.user-container {
+.mobile-container {
   width: 100%;
   max-width: 430px;
-  min-width: 375px;
+  min-width: 320px;
   height: 100dvh;
   margin: 0 auto;
-  padding-left: var(--container-padding);
-  padding-right: var(--container-padding);
 }
 
 .user-card-grid {
@@ -113,17 +112,17 @@ body {
   gap: var(--card-gap, 1.5rem);
 }
 
-/* 스크롤바 숨김 유틸리티 */
-.scrollbar-hide {
+/* 전역 스크롤바 숨김 */
+* {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
 
-.scrollbar-hide::-webkit-scrollbar {
+*::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
 }
 
-/* 스크롤바 숨김 유틸리티 */
+/* 스크롤바 숨김 유틸리티 클래스 */
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
