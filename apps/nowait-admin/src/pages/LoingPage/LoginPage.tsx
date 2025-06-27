@@ -1,4 +1,3 @@
-import React from "react";
 import loginLogo from "../../assets/login_logo.svg";
 import { useState } from "react";
 import { usePostLoginMutation } from "../../hooks/usePostAdminLogin.tsx";
@@ -11,7 +10,7 @@ const LoginPage = () => {
 
   const loginMutation = usePostLoginMutation();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     loginMutation.mutate(
       { id, pw },
