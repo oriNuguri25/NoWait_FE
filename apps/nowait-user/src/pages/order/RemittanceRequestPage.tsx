@@ -23,7 +23,7 @@ const RemittanceRequestPage = () => {
 
   return (
     <div className="flex min-h-full">
-      <div className="flex-1 flex flex-col justify-center items-center">
+      <div className="px-5 flex-1 flex flex-col justify-center items-center">
         <div className="mb-6 text-center">
           <h1 className="text-headline-24-bold mb-2.5">
             주문을 위해 이체해 주세요

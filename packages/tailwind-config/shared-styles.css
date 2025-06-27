@@ -158,6 +158,20 @@ pre {
   }
 
   /* [MO] Title */
+  .text-title-26-semibold {
+    font-size: 26px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 600;
+  }
+
+  .text-title-24-semibold {
+    font-size: 24px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 600;
+  }
+  
   .text-title-20-bold {
     font-size: 20px;
     line-height: 136%;
@@ -186,7 +200,7 @@ pre {
     font-weight: 600;
   }
   .text-title-18-medium {
-    font-size : 18px;
+    font-size: 18px;
     line-height: 136%;
     letter-spacing: 0%;
     font-weight: 500;
