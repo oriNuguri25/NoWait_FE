@@ -7,6 +7,7 @@ import { useGetReservationList } from "../../hooks/useGetReservationList";
 import on from "../../assets/on.svg";
 import onIcon from "../../assets/toggleOn.svg"; // 켜짐 상태 이미지
 import offIcon from "../../assets/toggleOFF.svg";
+import { useWindowWidth } from "../../hooks/useWindowWidth";
 type WaitingStatus = "대기 중" | "호출 중" | "입장 완료" | "대기 취소";
 
 interface Reservation {
@@ -24,6 +25,13 @@ const AdminHome = () => {
   const handleCall = () => alert("🔔 고객 호출");
   const handleEnter = () => alert("🏢 고객 입장 처리");
   const handleClose = () => alert("❌ 카드 닫기");
+
+  const width = useWindowWidth();
+
+  console.log(width);
+
+  const isCompact = width < 1024;
+
   const [activeTab, setActiveTab] = useState("전체 보기");
   const storeId = 1; //현재는 임시로 mockdata씀
   const [isOn, setIsOn] = useState(false);
@@ -59,10 +67,12 @@ const AdminHome = () => {
   }, [numberedReservations, activeTab]);
 
   return (
-    <div className=" container-responsive space-y-6">
+    <div
+      className={`w-full max-w-[804px] flex flex-col items-center mx-auto space-y-6 min-[375px]:px-[20px] lg:px-[30px]`}
+    >
       <section
         id="대기 현황"
-        className="flex [@media(min-width:375px)_and_(max-width:431px)]:justify-center"
+        className="flex w-full [@media(min-width:375px)_and_(max-width:431px)]:justify-center"
       >
         <div className="flex flex-col w-full">
           <div className="flex justify-between mb-5">
@@ -87,7 +97,7 @@ const AdminHome = () => {
         </div>
       </section>
 
-      <section id="대기자 목록" className="flex flex-col">
+      <section id="대기자 목록" className="flex flex-col w-full">
         <h1 className="title-20-bold mb-5">대기자 목록</h1>
         <div className="flex justify-between items-center">
           <div className="flex flex-wrap gap-2">
@@ -111,7 +121,7 @@ const AdminHome = () => {
         </div>
       </section>
 
-      <div className="grid grid-cols-1 grid-gutter-responsive md:grid-cols-2 [@media(max-width:431px)]:place-items-center">
+      <div className="w-full grid grid-cols-1 gap-[10px] md:grid-cols-2 [@media(max-width:431px)]:place-items-center">
         {filteredReservations.map((res) => (
           <WaitingCard
             key={res.id}
