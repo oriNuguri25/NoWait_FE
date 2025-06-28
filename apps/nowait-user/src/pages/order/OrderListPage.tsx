@@ -22,7 +22,7 @@ const OrderListPage = () => {
   const orderHandleButton = async () => {
     try {
       const payload = {
-        // tableId: tableId,
+        tableId: tableId,
         items: cart.map((item) => ({
           menuId: Number(item.id),
           quantity: item.quantity,
@@ -42,7 +42,7 @@ const OrderListPage = () => {
   if (cart.length === 0) return <EmptyCart />;
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-[100dvh]">
       <div className="flex-1 overflow-y-auto pt-7 px-5">
         <h1 className="text-headline-24-bold mb-5">총 주문 {cart.length}건</h1>
         <ul>

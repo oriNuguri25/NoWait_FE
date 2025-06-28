@@ -2,7 +2,7 @@ import React from "react";
 
 const PageFooterButton = ({ children }: { children: React.ReactNode }) => {
   return (
-    <footer className=" bg-white sticky bottom-0">
+    <footer className="bg-white sticky bottom-0 w-full">
       <div className="flex justify-center py-8 px-5">{children}</div>
     </footer>
   );
