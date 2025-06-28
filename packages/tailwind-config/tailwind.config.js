@@ -142,12 +142,17 @@ module.exports = {
           "18px",
           { lineHeight: "136%", letterSpacing: "0%", fontWeight: "600" },
         ],
+        "title-17-bold": [
+          "17px",
+          { lineHeight: "136%", letterSpacing: "0%", fontWeight: "700" },
+        ],
         "title-16-bold": [
           "16px",
           { lineHeight: "150%", letterSpacing: "0%", fontWeight: "700" },
         ],
 
-        // [MO] Text - Pretendard Medium/SemiBold/Regular
+        // [MO] Text - Pretendard /Medium/SemiBold/Regular
+
         "text-16-medium": [
           "16px",
           { lineHeight: "144%", letterSpacing: "-0.01em", fontWeight: "500" },
@@ -170,6 +175,10 @@ module.exports = {
         ],
         "text-14-medium": [
           "14px",
+          { lineHeight: "144%", letterSpacing: "0%", fontWeight: "500" },
+        ],
+        "text-13-medium": [
+          "13px",
           { lineHeight: "144%", letterSpacing: "0%", fontWeight: "500" },
         ],
         "text-13-regular": [

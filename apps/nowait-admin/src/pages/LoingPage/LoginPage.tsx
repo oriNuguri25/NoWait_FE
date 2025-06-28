@@ -1,6 +1,7 @@
 import loginLogo from "../../assets/login_logo.svg";
 import { useState } from "react";
 import { usePostLoginMutation } from "../../hooks/usePostAdminLogin.tsx";
+import { useNavigate } from "react-router";
 
 const LoginPage = () => {
   const [isIdFocused, setIsIdFocused] = useState(false);
@@ -9,15 +10,20 @@ const LoginPage = () => {
   const [pw, setPw] = useState("");
 
   const loginMutation = usePostLoginMutation();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(id);
+    console.log(pw);
+
     loginMutation.mutate(
-      { id, pw },
+      { email: id, password: pw },
       {
         onSuccess: (res) => {
-          console.log("✅ 로그인 성공:", res.data);
-          // 예: 토큰 저장, 라우팅
+          const token = res.data.response.accessToken;
+          localStorage.setItem("adminToken", token);
+          navigate("/admin");
         },
         onError: (err) => {
           console.error("❌ 로그인 실패:", err);
@@ -89,7 +95,7 @@ const LoginPage = () => {
         <button
           type="submit"
           disabled={!id || !pw}
-          className={`fixed w-[576px] bottom-[30px] mt-8 h-[52px]  rounded-[12px] cursor-not-allowed transition-all duration-300 ease-in-out ${
+          className={`fixed w-[576px] bottom-[30px] mt-8 h-[52px] rounded-[12px] cursor-not-allowed transition-all duration-300 ease-in-out ${
             id && pw
               ? "cursor-pointer bg-black-100 text-white-100"
               : "cursor-not-allowed bg-black-25 text-black-55"
