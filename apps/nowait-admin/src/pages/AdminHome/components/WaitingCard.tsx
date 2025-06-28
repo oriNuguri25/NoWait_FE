@@ -26,7 +26,7 @@ export function WaitingCard({
   onClose,
 }: WaitingCardProps) {
   return (
-    <div className="[@media(min-width:768px)_and_(max-width:821px)]:w-[329px] relative lg:w-[372px] h-[200px] bg-white rounded-[16px] px-6 py-[18px]">
+    <div className="[@media(max-width:431px)]:w-[335px] [@media(min-width:768px)_and_(max-width:821px)]:w-[329px] relative lg:w-[372px] h-[200px] bg-white rounded-[16px] px-6 py-[18px]">
       {/* 헤더 */}
       <div className="flex justify-between items-start mb-4">
         <p className="text-title-20-bold text-black-80">
