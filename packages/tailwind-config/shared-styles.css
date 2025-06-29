@@ -192,6 +192,12 @@ pre {
     letter-spacing: 0%;
     font-weight: 700;
   }
+  .text-title-17-bold {
+    font-size: 17px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 700;
+  }
 
   .text-title-18-semibold {
     font-size: 18px;
@@ -288,6 +294,13 @@ pre {
     line-height: 144%;
     letter-spacing: 0%;
     font-weight: 400;
+  }
+
+  .text-13-medium {
+    font-size: 13px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 500;
   }
 
   .text-12-semibold {
