@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import QuantitySelector from "../../components/common/QuantitySelector";
 import { useLocation, useNavigate } from "react-router-dom";
 import PageFooterButton from "../../components/order/PageFooterButton";

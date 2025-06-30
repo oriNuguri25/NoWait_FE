@@ -40,7 +40,7 @@ const Router = () => {
           <AuthGuard>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/store/:id" element={<StoreDetailPage />} />
+              <Route path="/store/:id/11" element={<StoreDetailPage />} />
               <Route path="/store/:id/reserve" element={<StoreReservePage />} />
               <Route
                 path="/store/:id/reserve/success"
