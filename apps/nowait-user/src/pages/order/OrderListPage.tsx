@@ -22,13 +22,13 @@ const OrderListPage = () => {
   const orderHandleButton = async () => {
     try {
       const payload = {
-        tableId: tableId,
+        tableId: Number(tableId),
         items: cart.map((item) => ({
           menuId: Number(item.id),
           quantity: item.quantity,
         })),
       };
-      const url = `${SERVER_URI}/orders/create/${storeId}/${tableId}`;
+      const url = `${SERVER_URI}/orders/create/${Number(storeId)}/${Number(tableId)}`;
       console.log("요청 주소:", url);
       await axios.post(url, payload);
       navigate(`/${storeId}/remittance/request`, {

@@ -11,7 +11,7 @@ const AddMenuPage = () => {
   const navigate = useNavigate();
   const { id, image, name, description, price } = location.state;
   const [quantity, setQuantity] = useState(1);
-  const { cart, addToCart } = useCartStore();
+  const { addToCart } = useCartStore();
 
   const addToCartButton = () => {
     const item: CartItem = {
