@@ -4,6 +4,7 @@ import { Button } from "@repo/ui";
 import { useNavigate } from "react-router-dom";
 import TotalButton from "../../components/order/TotalButton";
 import { useCartStore } from "../../stores/cartStore";
+import { AnimatePresence } from "framer-motion";
 
 const OrderListPage = () => {
   const navigate = useNavigate();
@@ -15,17 +16,19 @@ const OrderListPage = () => {
       <div className="pt-8 pb-24 px-5">
         <h1 className="text-headline-24-bold mb-5">총 주문 3건</h1>
         <ul>
-          {cart.map((item) => {
-            return (
-              <MenuItem
-                key={item.id}
-                id={item.id}
-                name={item.name}
-                price={item.price}
-                quantity={item.quantity}
-              />
-            );
-          })}
+          <AnimatePresence mode="sync">
+            {cart.map((item) => {
+              return (
+                <MenuItem
+                  key={item.id}
+                  id={item.id}
+                  name={item.name}
+                  price={item.price}
+                  quantity={item.quantity}
+                />
+              );
+            })}
+          </AnimatePresence>
         </ul>
       </div>
       <PageFooterButton>
