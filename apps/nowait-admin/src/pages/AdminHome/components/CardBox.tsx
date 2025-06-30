@@ -10,7 +10,7 @@ interface CardBoxProps {
 
 const CardBox: React.FC<CardBoxProps> = ({ title, count, bottomLabel }) => {
   return (
-    <div className="w-[170px] sm:w-[220px] [@media(min-width:375px)_and_(max-width:431px)]:w-[48%] h-[119px] rounded-[16px] bg-white border border-gray-200 shadow p-4 flex flex-col justify-between sm:mr-4">
+    <div className="w-[170px] sm:w-[220px] [@media(min-width:375px)_and_(max-width:431px)]:w-[48%] h-[119px] rounded-[16px] bg-white border border-gray-200 p-4 flex flex-col justify-between sm:mr-4">
       <span className="text-sm text-gray-500">{title}</span>
       <span className="text-2xl font-semibold">{count}팀</span>
       <span className="text-sm text-gray-400 flex items-center gap-1">
