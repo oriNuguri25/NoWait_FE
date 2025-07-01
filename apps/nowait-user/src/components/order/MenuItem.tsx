@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import QuantitySelector from "../common/QuantitySelector";
 import close from "../../assets/icon/close.svg";
 import { useCartStore } from "../../stores/cartStore";
@@ -30,6 +29,7 @@ const MenuItem = ({ id, name, price, quantity }: PropsType) => {
           mode="store"
           id={id}
           quantity={quantity}
+          price={price / quantity}
           increaseQuantity={increaseQuantity}
           decreaseQuantity={decreaseQuantity}
         />

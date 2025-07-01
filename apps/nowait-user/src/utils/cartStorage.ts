@@ -2,6 +2,11 @@ import type { CartItem } from "../types/order/cart";
 
 const CART_KEY = "cart";
 
+export const getTableId = (): string => {
+  const tableId = localStorage.getItem("tableId");
+  return tableId || "";
+};
+
 export const getcart = (): CartItem[] => {
   const cartString = localStorage.getItem(CART_KEY);
   try {
