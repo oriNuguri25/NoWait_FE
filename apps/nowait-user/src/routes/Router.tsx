@@ -41,17 +41,15 @@ const Router = () => {
 
       {/* QR 코드 접속 페이지 - 인증 불필요 (일반적인 경로 나중에) */}
       <Route path="/:storeId/:tableId" element={<RedirectToStorePage />} />
+      <Route path="/:storeId" element={<StorePage />} />
       <Route path="/:storeId/menu/:menuId" element={<AddMenuPage />} />
-      <Route path="/:storeId/order/success" element={<OrderSuccessPage />} />
       <Route path="/:storeId/order" element={<OrderListPage />} />
+      <Route path="/:storeId/payer" element={<PayerNameInput />} />
       <Route
         path="/:storeId/remittance/request"
         element={<RemittanceRequestPage />}
       />
-      <Route
-        path="/:storeId/payer"
-        element={<PayerNameInput />}
-      />
+
       <Route path="/:storeId/order/success" element={<OrderSuccessPage />} />
 
       {/* 보호된 라우트 - 인증 필요 */}
@@ -61,7 +59,7 @@ const Router = () => {
           <AuthGuard>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/store/:id/11" element={<StoreDetailPage />} />
+              <Route path="/store/:id" element={<StoreDetailPage />} />
               <Route path="/store/:id/reserve" element={<StoreReservePage />} />
               <Route
                 path="/store/:id/reserve/success"
@@ -72,7 +70,6 @@ const Router = () => {
           </AuthGuard>
         }
       />
-
     </Routes>
   );
 };

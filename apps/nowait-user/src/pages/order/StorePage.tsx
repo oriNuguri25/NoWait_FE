@@ -1,16 +1,25 @@
 import { useNavigate, useParams } from "react-router-dom";
-import type { MenuType } from "../../types/order/menu";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import TotalButton from "../../components/order/TotalButton";
 import { useCartStore } from "../../stores/cartStore";
 import MenuList from "../../components/MenuList";
+import axios from "axios";
 
 
 const StorePage = () => {
   const navigate = useNavigate();
   const { storeId } = useParams();
   const { cart } = useCartStore();
+const SERVER_URI = import.meta.env.VITE_SERVER_URI;
+  const a = async() => {
+    try {
+      const  res = await axios.get(`${SERVER_URI}/orders/items/7/1`)
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="flex flex-col h-screen">
@@ -21,13 +30,13 @@ const StorePage = () => {
             <h2 className="text-text-16-medium">5번 테이블</h2>
           </div>
           <button
-            onClick={() => alert("주문 내역")}
+            onClick={a}
             className="text-14-medium bg-black-20 py-2 px-2.5 rounded-[8px] text-black-70 cursor-pointer"
           >
             주문내역
           </button>
         </div>
-        <MenuList />
+        <MenuList mode="order" />
       </div>
       {cart && cart.length > 0 && (
         <PageFooterButton>

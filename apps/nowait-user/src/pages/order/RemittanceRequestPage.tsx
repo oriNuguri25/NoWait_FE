@@ -55,8 +55,12 @@ const RemittanceRequestPage = () => {
       </div>
       {modal.isOpen && (
         <ConfirmModal
-          open={() => navigate(`/${storeId}/payer`)}
+          open={() => navigate(`/${storeId}/order/success`)}
           close={modal.close}
+          title="이체 완료 하셨나요?"
+          description={`아직 이체하지 않으셨다면 주문이\n정상적으로 접수되지 않을 수 있어요.\n계좌로 송금을 마치셨다면 버튼을 눌러주세요.`}
+          positiveButton="이체했어요"
+          negativeButton="아직 안했어요"
         />
       )}
       <PageFooterButton>

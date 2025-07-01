@@ -1,5 +1,5 @@
 import QuantitySelector from "../common/QuantitySelector";
-import close from "../../assets/icon/close.svg";
+import Close from "../../assets/icon/close.svg?react";
 import { useCartStore } from "../../stores/cartStore";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -37,7 +37,7 @@ const MenuItem = ({ id, name, price, quantity }: PropsType) => {
               setTimeout(() => removeFromCart(id), 300);
             }}
           >
-            <img className="text-black-50" src={close} alt="메뉴 삭제 아이콘" />
+            <Close />
           </button>
         </div>
         <QuantitySelector
