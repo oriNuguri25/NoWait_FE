@@ -3,19 +3,20 @@ import QuantitySelector from "../../components/common/QuantitySelector";
 import { useLocation, useNavigate } from "react-router-dom";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
-import type { CartItem } from "../../types/order/cart";
+import type { CartType } from "../../types/order/cart";
 import { useCartStore } from "../../stores/cartStore";
+import type { MenuType } from "../../types/order/menu";
 
 const AddMenuPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { id, image, name, description, price } = location.state;
+  const { id, image, name, description, price } = location.state as MenuType;
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCartStore();
 
   const addToCartButton = () => {
-    const item: CartItem = {
-      id,
+    const item: CartType = {
+      menuId: id,
       name,
       quantity,
       price: price * quantity,
@@ -26,8 +27,8 @@ const AddMenuPage = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-1 overflow-y-auto px-5">
-        <h1 className="-mx-5 h-[375px] bg-amber-400">
-          <img className="w-full" src={image} alt="음식 메뉴 이미지" />
+        <h1 className="-mx-5 h-[375px] bg-black-25">
+          <img className="w-full" src={image || ""} alt="음식 메뉴 이미지" />
         </h1>
         <div className="py-8">
           <h1 className="text-[24px] font-semibold">{name}</h1>

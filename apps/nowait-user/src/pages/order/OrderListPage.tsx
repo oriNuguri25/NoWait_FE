@@ -4,17 +4,15 @@ import { Button } from "@repo/ui";
 import { useNavigate, useParams } from "react-router-dom";
 import TotalButton from "../../components/order/TotalButton";
 import { useCartStore } from "../../stores/cartStore";
+import { AnimatePresence } from "framer-motion";
 import EmptyCart from "../../components/order/EmptyCart";
-import { sumTotalPrice } from "../../utils/sumUtils";
 import axios from "axios";
 import { getTableId } from "../../utils/cartStorage";
 
 const OrderListPage = () => {
   const navigate = useNavigate();
   const { storeId } = useParams();
-  console.log(storeId);
   const tableId = getTableId();
-  console.log(tableId, "테이블아이디");
   const { cart } = useCartStore();
 
   const SERVER_URI = import.meta.env.VITE_SERVER_URI;
@@ -22,18 +20,23 @@ const OrderListPage = () => {
   const orderHandleButton = async () => {
     try {
       const payload = {
-        tableId: Number(tableId),
+        depositorName: "홍길동",
         items: cart.map((item) => ({
-          menuId: Number(item.id),
+          menuId: item.menuId,
           quantity: item.quantity,
         })),
       };
-      const url = `${SERVER_URI}/orders/create/${Number(storeId)}/${Number(tableId)}`;
-      console.log("요청 주소:", url);
-      await axios.post(url, payload);
-      navigate(`/${storeId}/remittance/request`, {
-        state: sumTotalPrice(cart),
-      });
+      const url = `${SERVER_URI}/orders/create/${storeId}/${tableId}`;
+      const res = await axios.post(url, payload);
+      if (res.status === 201 && res.data.success) {
+        console.log(res);
+        localStorage.setItem("sessionId", res.data.response.sessionId);
+        localStorage.setItem("depositorName", res.data.response.depositorName);
+      } else {
+        console.log("error");
+      }
+
+      navigate(`/${storeId}/payer`);
     } catch (e) {
       console.log(e);
     }
@@ -46,17 +49,19 @@ const OrderListPage = () => {
       <div className="flex-1 overflow-y-auto pt-7 px-5">
         <h1 className="text-headline-24-bold mb-5">총 주문 {cart.length}건</h1>
         <ul>
-          {cart.map((item) => {
-            return (
-              <MenuItem
-                key={item.id}
-                id={item.id}
-                name={item.name}
-                price={item.price}
-                quantity={item.quantity}
-              />
-            );
-          })}
+          <AnimatePresence mode="sync">
+            {cart.map((item) => {
+              return (
+                <MenuItem
+                  key={item.id}
+                  id={item.id}
+                  name={item.name}
+                  price={item.price}
+                  quantity={item.quantity}
+                />
+              );
+            })}
+          </AnimatePresence>
         </ul>
       </div>
       <PageFooterButton>

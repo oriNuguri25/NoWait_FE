@@ -15,27 +15,41 @@ import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
 import PayerNameInput from "../pages/order/PayerNameInput";
 
+// AuthGuard로 래핑하는 헬퍼 함수
+const withAuth = (Component: React.ComponentType) => (
+  <AuthGuard>
+    <Component />
+  </AuthGuard>
+);
+
 const Router = () => {
   return (
     <Routes>
       {/* 공개 라우트 - 인증 불필요 */}
-      {/* 로그인 페이지 */}
       <Route path="/login/success" element={<KakaoRedirectHandler />} />
       <Route path="/login" element={<LoginPage />} />
 
-      {/* QR 코드 접속 페이지 */}
+      {/* 보호된 라우트 - 인증 필요 (구체적인 경로 먼저) */}
+      <Route
+        path="/store/:id/reserve/success"
+        element={withAuth(ReserveSuccessPage)}
+      />
+      <Route path="/store/:id/reserve" element={withAuth(StoreReservePage)} />
+      <Route path="/store/:id" element={withAuth(StoreDetailPage)} />
+      <Route path="/map" element={withAuth(MapPage)} />
+      <Route path="/" element={withAuth(HomePage)} />
+
+      {/* QR 코드 접속 페이지 - 인증 불필요 (일반적인 경로 나중에) */}
       <Route path="/:storeId/:tableId" element={<RedirectToStorePage />} />
       <Route path="/:storeId" element={<StorePage />} />
       <Route path="/:storeId/menu/:menuId" element={<AddMenuPage />} />
       <Route path="/:storeId/order" element={<OrderListPage />} />
+      <Route path="/:storeId/payer" element={<PayerNameInput />} />
       <Route
         path="/:storeId/remittance/request"
         element={<RemittanceRequestPage />}
       />
-      <Route
-        path="/:storeId/payer"
-        element={<PayerNameInput />}
-      />
+
       <Route path="/:storeId/order/success" element={<OrderSuccessPage />} />
 
       {/* 보호된 라우트 - 인증 필요 */}

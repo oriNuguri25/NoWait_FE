@@ -59,7 +59,7 @@ const CookCard = ({ tableNumber, menus }: CookCardProps) => {
         <div className="flex flex-col gap-2.5 ml-2.5">
           {menus.map((menu, index) => (
             <div key={index} className="flex flex-row justify-between w-full">
-              <div className="text-16-semibold text-black-80 truncate max-w-[25ch] overflow-hidden whitespace-nowrap">
+              <div className="text-16-semibold text-black-80 truncate max-w-[15ch] overflow-hidden whitespace-nowrap">
                 {menu.name}
               </div>
               <div className="flex text-16-medium text-black-80 ml-4">
