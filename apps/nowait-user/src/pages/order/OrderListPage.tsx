@@ -4,10 +4,12 @@ import { Button } from "@repo/ui";
 import { useNavigate, useParams } from "react-router-dom";
 import TotalButton from "../../components/order/TotalButton";
 import { useCartStore } from "../../stores/cartStore";
+import { AnimatePresence } from "framer-motion";
 import EmptyCart from "../../components/order/EmptyCart";
 import { sumTotalPrice } from "../../utils/sumUtils";
 import axios from "axios";
 import { getTableId } from "../../utils/cartStorage";
+
 
 const OrderListPage = () => {
   const navigate = useNavigate();
@@ -46,17 +48,19 @@ const OrderListPage = () => {
       <div className="flex-1 overflow-y-auto pt-7 px-5">
         <h1 className="text-headline-24-bold mb-5">총 주문 {cart.length}건</h1>
         <ul>
-          {cart.map((item) => {
-            return (
-              <MenuItem
-                key={item.id}
-                id={item.id}
-                name={item.name}
-                price={item.price}
-                quantity={item.quantity}
-              />
-            );
-          })}
+          <AnimatePresence mode="sync">
+            {cart.map((item) => {
+              return (
+                <MenuItem
+                  key={item.id}
+                  id={item.id}
+                  name={item.name}
+                  price={item.price}
+                  quantity={item.quantity}
+                />
+              );
+            })}
+          </AnimatePresence>
         </ul>
       </div>
       <PageFooterButton>
