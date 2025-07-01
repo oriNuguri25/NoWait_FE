@@ -51,7 +51,7 @@ const AdminOrders = () => {
       minutesAgo: 20,
       status: "cooking", // 조리 중
       menus: [
-        { name: "매뉴명한줄로떨어져야야야야피피피피", quantity: 1 },
+        { name: "메뉴명한줄로떨어져야야야야피피피피", quantity: 1 },
         { name: "된장된장찌개", quantity: 1 },
         { name: "계란후라이", quantity: 1 },
         { name: "달달한 쏘야볶음", quantity: 1 },
@@ -103,7 +103,7 @@ const AdminOrders = () => {
             }`}
             onClick={() => setActiveTab("전체")}
           >
-            전체
+            진행 중
           </div>
           <div
             className={`rounded-full px-4 py-2 cursor-pointer ${
@@ -113,11 +113,11 @@ const AdminOrders = () => {
             }`}
             onClick={() => setActiveTab("조리 완료")}
           >
-            조리 완료
+            완료된 주문 {cookedData.length}
           </div>
         </div>
 
-        <div className="flex icon-m items-center justify-center">
+        <div className="flex icon-m items-center justify-center cursor-pointer">
           <RefreshIcon />
         </div>
       </div>
@@ -125,13 +125,17 @@ const AdminOrders = () => {
       {activeTab === "전체" ? (
         <div className="flex flex-row mt-7.5 gap-2.5 h-full w-full">
           {/* 입금 대기 블럭 */}
-          <div className="flex flex-1 flex-col gap-3.5">
+          <div className="flex flex-1 flex-col">
             <div className="flex flex-row ml-1.5 gap-1.5">
               <div className="text-title-20-bold text-[#363D4A]">입금 대기</div>
               <div className="text-title-20-bold text-primary">5</div>
             </div>
 
-            <div className="flex flex-col gap-7.5 rounded-2xl border border-black-30 h-full bg-white px-6 py-5.5">
+            <div className="flex flex-row mt-3.5 border border-black-30 rounded-t-2xl px-5 py-2.5 gap-2.5 bg-white">
+              <div className="flex text-14-medium text-black-60">테이블</div>
+              <div className="flex text-14-medium text-black-60">입금 내역</div>
+            </div>
+            <div className="flex flex-col gap-7.5 rounded-b-2xl border border-t-0 border-black-30 h-full bg-white px-6 py-5.5">
               {paymentWaitingData.map((payment) => (
                 <PaymentCard
                   key={payment.id}
@@ -148,13 +152,20 @@ const AdminOrders = () => {
           </div>
 
           {/* 조리 중 블럭 */}
-          <div className="flex flex-1 flex-col gap-3.5">
+          <div className="flex flex-1 flex-col">
             <div className="flex flex-row ml-1.5 gap-1.5">
               <div className="text-title-20-bold text-[#363D4A]">조리 중</div>
               <div className="text-title-20-bold text-[#363D4A]">3</div>
             </div>
 
-            <div className="flex flex-col gap-7.5 rounded-2xl border border-black-30 h-full bg-white px-6 py-5.5">
+            <div className="flex flex-row mt-3.5 border border-black-30 rounded-t-2xl px-5 py-2.5 gap-2.5 bg-white">
+              <div className="flex text-14-medium text-black-60">테이블</div>
+              <div className="flex text-14-medium text-black-60 mr-[15ch]">
+                메뉴
+              </div>
+              <div className="flex text-14-medium text-black-60">수량</div>
+            </div>
+            <div className="flex flex-col gap-7.5 rounded-b-2xl border border-t-0 border-black-30 h-full bg-white px-6 py-5.5">
               {cookingData.map((cooking) => (
                 <CookCard
                   key={cooking.id}
