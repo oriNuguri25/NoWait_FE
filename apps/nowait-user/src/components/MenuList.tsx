@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { MenuType } from "../types/order/menu";
 
 const dummyData: MenuType[] = [
@@ -27,8 +27,9 @@ const dummyData: MenuType[] = [
   },
 ];
 
-const MenuList = () => {
+const MenuList = ({ mode } : { mode: string }) => {
   const navigate = useNavigate();
+  const { storeId } = useParams();
   return (
     <div>
       <h1 className="text-title-20-semibold mb-3">메뉴</h1>
@@ -38,12 +39,18 @@ const MenuList = () => {
             <li key={data.id} className="mb-5">
               <button
                 onClick={() =>
-                  navigate(`/asd/menu/${data.id}`, { state: data })
+                  navigate(`/${storeId}/menu/${data.id}`, { state: data })
                 }
                 className="w-full flex justify-between cursor-pointer text-left"
               >
                 <div className="max-w-[224px]">
-                  <h2 className="text-black-90 mb-1 text-ellipsis line-clamp-2">
+                  <h2
+                    className={`${
+                      mode === "order"
+                        ? "text-title-18-semibold"
+                        : "text-title-16-bold"
+                    } text-black-90 mb-1 text-ellipsis line-clamp-2`}
+                  >
                     {data.name}
                   </h2>
                   <h2 className="text-black-70">
@@ -51,8 +58,8 @@ const MenuList = () => {
                   </h2>
                 </div>
                 <img
-                  className="w-[90px] h-[90px] bg-black-70"
-                  src={`${data.image}`}
+                  className="w-[90px] h-[90px] bg-black-25 rounded-[12px]"
+                  src={`${data.image}` || ""}
                   alt="음식 메뉴 이미지"
                 />
               </button>

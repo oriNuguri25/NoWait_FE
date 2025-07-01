@@ -2,15 +2,17 @@ import { useState } from "react";
 import { Button } from "@repo/ui";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import { useNavigate, useParams } from "react-router-dom";
+import useModal from "../../hooks/useModal";
+import ConfirmModal from "../../components/order/ConfirmModal";
+import { useCartStore } from "../../stores/cartStore";
+import { sumTotalPrice } from "../../utils/sumUtils";
 
 const PayerNameInput = () => {
   const [payer, setPayer] = useState("");
   const navigate = useNavigate();
+  const modal = useModal();
   const { storeId } = useParams();
-
-  const handlePayerSubmit = () => {
-    navigate(`/${storeId}/order/success`);
-  };
+  const { cart } = useCartStore();
 
   return (
     <div className="flex flex-col h-[100dvh]">
@@ -32,9 +34,23 @@ const PayerNameInput = () => {
           onChange={(e) => setPayer(e.target.value)}
         />
       </div>
+      {modal.isOpen && (
+        <ConfirmModal
+          open={() =>
+            navigate(`/${storeId}/remittance/request`, {
+              state: sumTotalPrice(cart),
+            })
+          }
+          close={modal.close}
+          title="입금자명이 맞는지 확인해주세요"
+          description={`입금자명이 정확하지 않다면 주문이\n정상적으로 접수되지 않을 수 있어요.`}
+          positiveButton="확인했어요"
+          negativeButton="다시 입력할게요"
+        />
+      )}
       <PageFooterButton>
         <Button
-          onClick={handlePayerSubmit}
+          onClick={() => modal.open()}
           backgroundColor={
             payer.trim() === "" ? "var(--black-25)" : "var(--navy-100)"
           }
