@@ -1,4 +1,3 @@
-import React from "react";
 import PageFooterButton from "../order/PageFooterButton";
 import { Button } from "@repo/ui";
 
@@ -20,8 +19,8 @@ const SuccessMessagePage = ({
   buttonText,
 }: PropsType) => {
   return (
-    <div className="flex min-h-full">
-      <div className="flex-1 flex flex-col justify-center items-center text-center">
+    <div>
+      <div className="min-h-screen flex flex-col justify-center items-center text-center">
         <img
           className="mb-2.5 w-[210px] h-[210px] bg-amber-300"
           src={imageSrc}
