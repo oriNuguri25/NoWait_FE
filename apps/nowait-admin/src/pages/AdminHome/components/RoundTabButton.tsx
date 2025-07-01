@@ -18,6 +18,7 @@ const RoundTabButton: React.FC<RoundTabButtonProps> = ({
       onClick={onClick}
       className={clsx(
         "px-4 h-[33px] rounded-full text-14-medium font-semibold transition cursor-pointer",
+        "whitespace-nowrap",
         active ? "text-white bg-navy-80" : "bg-white text-black"
       )}
     >

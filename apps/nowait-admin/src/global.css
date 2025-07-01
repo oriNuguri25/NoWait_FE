@@ -57,3 +57,11 @@ body,
   width: var(--sidebar-width, 280px);
   height: var(--admin-sidebar-height, calc(100vh - 4rem));
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
