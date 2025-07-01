@@ -1,5 +1,6 @@
 import nwIcon from "../assets/nwLogo.svg";
 import nwTextIcon from "../assets/nw_text_logo.svg";
+import menuIcon from "../assets/Menu.svg";
 
 const MobileMenuBar = () => {
   return (
@@ -15,10 +16,8 @@ const MobileMenuBar = () => {
       </div>
 
       {/* 우측: 햄버거 메뉴 */}
-      <button className="w-[24px] h-[24px] flex flex-col justify-between items-center cursor-pointer">
-        <span className="block w-full h-[2px] bg-black-90"></span>
-        <span className="block w-full h-[2px] bg-black-90"></span>
-        <span className="block w-full h-[2px] bg-black-90"></span>
+      <button className="cursor-pointer">
+        <img src={menuIcon} />
       </button>
     </div>
   );

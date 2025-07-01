@@ -9,4 +9,12 @@ const UserApi = axios.create({
   },
 });
 
+// UserApi.interceptors.request.use((config) => {
+//   const token = localStorage.getItem("adminToken"); // 또는 context에서 가져오기
+//   if (token) {
+//     config.headers.Authorization = `Bearer ${token}`;
+//   }
+//   return config;
+// });
+
 export default UserApi;
