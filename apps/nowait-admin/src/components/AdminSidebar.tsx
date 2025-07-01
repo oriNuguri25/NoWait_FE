@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Clock, Layers, BarChart2 } from "lucide-react";
 import { useWindowWidth } from "../hooks/useWindowWidth";
 import nwIcon from "../assets/nwLogo.svg";
@@ -8,6 +8,7 @@ import profile from "../assets/profile.png";
 
 const AdminSidebar = () => {
   const width = useWindowWidth();
+  const navigate = useNavigate();
 
   // 375px 이하에서는 사이드바 완전히 숨김
   if (width <= 375) return null;
@@ -18,7 +19,7 @@ const AdminSidebar = () => {
   return (
     <aside
       className={`
-        h-screen flex flex-col justify-between border-r border-gray-100 bg-white px-4 py-6
+        h-screen flex flex-col justify-between bg-white px-4 py-6 fixed
         ${isCompact ? "w-[60px] items-center" : "w-[220px]"}
       `}
     >
@@ -27,12 +28,15 @@ const AdminSidebar = () => {
         {/* 로고 */}
         <div className="mb-8">
           {isCompact ? (
-            <div className="flex justify-center">
+            <div
+              className="flex justify-center"
+              onClick={() => navigate("/admin")}
+            >
               <img src={nwIcon} />
             </div>
           ) : (
             <div className="flex">
-              <img src={nwTextIcon} />
+              <img src={nwTextIcon} onClick={() => navigate("/admin")} />
             </div>
           )}
         </div>
