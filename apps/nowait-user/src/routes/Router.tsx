@@ -47,7 +47,26 @@ const Router = () => {
         path="/:storeId/remittance/request"
         element={<RemittanceRequestPage />}
       />
-      <Route path="/:storeId" element={<StorePage />} />
+
+      {/* 보호된 라우트 - 인증 필요 */}
+      <Route
+        path="/*"
+        element={
+          <AuthGuard>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/store/:id/11" element={<StoreDetailPage />} />
+              <Route path="/store/:id/reserve" element={<StoreReservePage />} />
+              <Route
+                path="/store/:id/reserve/success"
+                element={<ReserveSuccessPage />}
+              />
+              <Route path="/map" element={<MapPage />} />
+            </Routes>
+          </AuthGuard>
+        }
+      />
+
     </Routes>
   );
 };
