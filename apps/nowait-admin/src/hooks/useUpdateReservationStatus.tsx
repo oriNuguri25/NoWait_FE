@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import UserApi from "../utils/UserApi";
+import AdminApi from "../utils/AdminApi";
 export const useUpdateReservationStatus = () => {
   const token = localStorage.getItem("adminToken");
 
@@ -11,7 +11,7 @@ export const useUpdateReservationStatus = () => {
       reservationId: number;
       status: "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED" | "NO_SHOW";
     }) => {
-      const res = await UserApi.patch(
+      const res = await AdminApi.patch(
         `/reservations/admin/updates/${reservationId}`,
         { status },
         {

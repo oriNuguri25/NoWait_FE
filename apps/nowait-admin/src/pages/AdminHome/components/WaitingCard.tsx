@@ -2,12 +2,9 @@ import CloseButton from "../../../components/closeButton";
 import callIcon from "../../../assets/Call.svg";
 import openDoorIcon from "../../../assets/door_open.svg";
 import { useEffect, useState } from "react";
-type WaitingCardStatus =
-  | "WAITING"
-  | "CALLING"
-  | "CONFIRMED"
-  | "CANCELLED"
-  | "NO_SHOW";
+
+const totalDurationSec = 600;
+type WaitingCardStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 interface WaitingCardProps {
   number: number;
   time: string;
@@ -16,7 +13,8 @@ interface WaitingCardProps {
   name: string;
   phone: string;
   status: WaitingCardStatus;
-  calledAt?: string;
+  calledAt: string | undefined;
+  isNoShow: boolean;
   onCall: () => void;
   onEnter: () => void;
   onClose: () => void;
@@ -35,34 +33,35 @@ export function WaitingCard({
   phone,
   status,
   calledAt,
+  isNoShow,
   onCall,
   onEnter,
   onClose,
   onNoShow,
 }: WaitingCardProps) {
-  const [currentStatus, setCurrentStatus] = useState(status);
-  const [elapsed, setElapsed] = useState("00:00");
+  const [elapsed, setElapsed] = useState("10:00");
 
   useEffect(() => {
-    if (status === "CALLING" && currentStatus !== "NO_SHOW") {
+    if (status === "CALLING") {
       const timer = setTimeout(() => {
-        setCurrentStatus("NO_SHOW");
         onNoShow();
-      }, 10 * 60 * 1000);
+      }, 10 * 1 * 1000);
 
       return () => clearTimeout(timer);
     }
-  }, [status, currentStatus]);
+  }, [status]);
 
   useEffect(() => {
-    if (currentStatus === "CALLING" && calledAt) {
+    if (status === "CALLING" && calledAt) {
       const start = new Date(calledAt).getTime();
 
       const updateElapsed = () => {
         const now = Date.now();
         const diffSec = Math.floor((now - start) / 1000);
-        const min = String(Math.floor(diffSec / 60)).padStart(2, "0");
-        const sec = String(diffSec % 60).padStart(2, "0");
+        const remainingSec = Math.max(totalDurationSec - diffSec, 0); // 음수 방지
+
+        const min = String(Math.floor(remainingSec / 60)).padStart(2, "0");
+        const sec = String(remainingSec % 60).padStart(2, "0");
         setElapsed(`${min}:${sec}`);
       };
 
@@ -70,7 +69,7 @@ export function WaitingCard({
       const interval = setInterval(updateElapsed, 1000);
       return () => clearInterval(interval);
     }
-  }, [currentStatus, calledAt]);
+  }, [status, calledAt]);
   return (
     <div className="[@media(max-width:431px)]:w-[335px] [@media(min-width:768px)_and_(max-width:821px)]:w-[329px] relative lg:w-[372px] h-[200px] bg-white rounded-[16px] px-6 py-[18px]">
       {/* 헤더 */}
@@ -112,7 +111,7 @@ export function WaitingCard({
 
       {/* 버튼 영역 */}
       <div className="flex justify-between">
-        {currentStatus === "WAITING" && (
+        {status === "WAITING" && (
           <>
             <button
               onClick={onCall}
@@ -129,7 +128,7 @@ export function WaitingCard({
           </>
         )}
 
-        {currentStatus === "CALLING" && (
+        {status === "CALLING" && (
           <>
             <div className="w-[60%] bg-black-15 text-black-60 py-2 rounded-[8px] flex justify-center items-center gap-1">
               ⏱ {elapsed}
@@ -142,22 +141,20 @@ export function WaitingCard({
             </button>
           </>
         )}
+        {status === "CANCELLED" &&
+          (isNoShow === true ? (
+            <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
+              미입장
+            </div>
+          ) : (
+            <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
+              취소된 입장
+            </div>
+          ))}
 
-        {currentStatus === "NO_SHOW" && (
-          <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
-            미입장
-          </div>
-        )}
-
-        {currentStatus === "CONFIRMED" && (
+        {status === "CONFIRMED" && (
           <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
             완료된 입장
-          </div>
-        )}
-
-        {currentStatus === "CANCELLED" && (
-          <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
-            취소된 입장
           </div>
         )}
       </div>
