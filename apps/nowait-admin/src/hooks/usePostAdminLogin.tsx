@@ -1,9 +1,9 @@
 // hooks/useLoginMutation.ts
 import { useMutation } from "@tanstack/react-query";
-import userApi from "../utils/UserApi";
+import adminApi from "../utils/AdminApi";
 
 const postLogin = (data: { email: string; password: string }) => {
-  return userApi.post(`/admin/users/login`, data);
+  return adminApi.post(`/admin/users/login`, data);
 };
 
 export const usePostLoginMutation = () => {
