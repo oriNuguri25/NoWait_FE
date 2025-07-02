@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import type { MenuType } from "../types/order/menu";
+import type { MenuType } from "../../types/order/menu";
 
 const dummyData: MenuType[] = [
   {

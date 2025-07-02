@@ -8,6 +8,8 @@ import { AnimatePresence } from "framer-motion";
 import EmptyCart from "../../components/order/EmptyCart";
 import axios from "axios";
 import { getTableId } from "../../utils/cartStorage";
+import { SmallActionButton } from "../../components/SmallActionButton";
+import Add from "../../assets/icon/Add.svg?react";
 
 const OrderListPage = () => {
   const navigate = useNavigate();
@@ -48,13 +50,13 @@ const OrderListPage = () => {
     <div className="flex flex-col min-h-[100dvh]">
       <div className="flex-1 overflow-y-auto pt-7 px-5">
         <h1 className="text-headline-24-bold mb-5">총 주문 {cart.length}건</h1>
-        <ul>
+        <ul className="flex justify-center flex-col">
           <AnimatePresence mode="sync">
             {cart.map((item) => {
               return (
                 <MenuItem
-                  key={item.id}
-                  id={item.id}
+                  key={item.menuId}
+                  id={item.menuId}
                   name={item.name}
                   price={item.price}
                   quantity={item.quantity}
@@ -62,11 +64,21 @@ const OrderListPage = () => {
               );
             })}
           </AnimatePresence>
+          <SmallActionButton
+            type="button"
+            ariaLabel="메뉴 추가하기"
+            onClick={() => navigate(`/${storeId}`)}
+            icon={<Add className="w-4 h-4" fill="currentColor" />}
+            className="py-5 border-none"
+          >
+            메뉴 추가하기
+            <Add className="inline-block w-4 h-4" fill="currentColor" />
+          </SmallActionButton>
         </ul>
       </div>
       <PageFooterButton>
         <Button textColor="white" onClick={orderHandleButton}>
-          <TotalButton />
+          <TotalButton variant="orderPage" actionText="이체하기" />
         </Button>
       </PageFooterButton>
     </div>

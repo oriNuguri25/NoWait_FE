@@ -1,4 +1,4 @@
-import type { CartItem } from "../types/order/cart";
+import type { CartType } from "../types/order/cart";
 
 export const sumQuantity = <T, K extends keyof T>(
   items: T[],
@@ -7,7 +7,7 @@ export const sumQuantity = <T, K extends keyof T>(
   return items.reduce((acc, cur) => acc + Number(cur[key]), 0);
 };
 
-export const sumTotalPrice = (items: CartItem[]) => {
+export const sumTotalPrice = (items: CartType[]) => {
   const totalPrice = items.reduce(
     (acc, cur) => acc + cur.price,
     0

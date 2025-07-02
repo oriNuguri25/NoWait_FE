@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 
 interface PropsType {
@@ -8,8 +7,8 @@ interface PropsType {
 const Toast = ({ message }: PropsType) => {
   return (
     <motion.div
-      initial={{ y: "100%" }}
-      animate={{ y: 0 }}
+      initial={{ opacity: 0, y: "100%" }}
+      animate={{ opacity: 1, y: "30%" }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
       className="flex justify-center items-center px-4 py-2.5 rounded-[999px] bg-[#F2F6F9]"
     >

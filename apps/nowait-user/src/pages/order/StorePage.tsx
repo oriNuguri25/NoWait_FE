@@ -1,25 +1,40 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import TotalButton from "../../components/order/TotalButton";
 import { useCartStore } from "../../stores/cartStore";
-import MenuList from "../../components/MenuList";
+import MenuList from "../../components/common/MenuList";
 import axios from "axios";
-
+import { useEffect, useState } from "react";
+import Toast from "../../components/order/Toast";
 
 const StorePage = () => {
   const navigate = useNavigate();
   const { storeId } = useParams();
+  const location = useLocation();
+  const added = (location.state as { added?: boolean } | null)?.added;
   const { cart } = useCartStore();
-const SERVER_URI = import.meta.env.VITE_SERVER_URI;
-  const a = async() => {
+  const SERVER_URI = import.meta.env.VITE_SERVER_URI;
+  const [showToast, setShowToast] = useState(false);
+  const clipBoardDelay = 3000;
+
+  useEffect(() => {
+    if (added) setShowToast(true);
+    const timeout = setTimeout(() => {
+      setShowToast(false);
+    }, clipBoardDelay);
+    navigate(location.pathname, { replace: true });
+    return () => clearTimeout(timeout);
+  }, [added]);
+
+  const getMyOrderList = async () => {
     try {
-      const  res = await axios.get(`${SERVER_URI}/orders/items/7/1`)
-      console.log(res)
+      const res = await axios.get(`${SERVER_URI}/orders/items/7/1`);
+      console.log(res);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col h-screen">
@@ -30,7 +45,7 @@ const SERVER_URI = import.meta.env.VITE_SERVER_URI;
             <h2 className="text-text-16-medium">5번 테이블</h2>
           </div>
           <button
-            onClick={a}
+            onClick={getMyOrderList}
             className="text-14-medium bg-black-20 py-2 px-2.5 rounded-[8px] text-black-70 cursor-pointer"
           >
             주문내역
@@ -38,10 +53,16 @@ const SERVER_URI = import.meta.env.VITE_SERVER_URI;
         </div>
         <MenuList mode="order" />
       </div>
+      <div className="fixed left-1/2 bottom-[124px] -translate-x-1/2 z-50">
+        {showToast && <Toast message="메뉴를 담았습니다" />}
+      </div>
       {cart && cart.length > 0 && (
         <PageFooterButton>
-          <Button textColor="white" onClick={() => navigate(`/${storeId}/order`)}>
-            <TotalButton />
+          <Button
+            textColor="white"
+            onClick={() => navigate(`/${storeId}/order`)}
+          >
+            <TotalButton actionText="주문하기" />
           </Button>
         </PageFooterButton>
       )}

@@ -1,5 +1,7 @@
 import PageFooterButton from "../order/PageFooterButton";
 import { Button } from "@repo/ui";
+import { SmallActionButton } from "../SmallActionButton";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface PropsType {
   imageSrc: string;
@@ -18,19 +20,31 @@ const SuccessMessagePage = ({
   onClick,
   buttonText,
 }: PropsType) => {
+  const navigate = useNavigate();
+  const { storeId } = useParams();
   return (
     <div>
       <div className="min-h-screen flex flex-col justify-center items-center text-center">
         <img
-          className="mb-2.5 w-[210px] h-[210px] bg-amber-300"
+          className="mb-2.5 w-[210px] h-[210px] bg-black-25"
           src={imageSrc}
           alt={imageAlt}
         />
         <h1 className="text-headline-24-bold mb-2">{title}</h1>
-        <h2 className="whitespace-pre-line text-16-regular text-black-70">
+        <h2 className="whitespace-pre-line text-16-regular text-black-70 mb-3.5">
           {message}
         </h2>
+        {storeId && (
+          <SmallActionButton
+            type="button"
+            ariaLabel="주문내역 확인"
+            onClick={() => navigate(`/${storeId}`)} //주문 내역 페이지로 변경하기
+          >
+            주문내역 확인
+          </SmallActionButton>
+        )}
       </div>
+
       <PageFooterButton>
         <Button textColor="white" onClick={onClick}>
           {buttonText}

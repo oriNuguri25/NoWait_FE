@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Add from "../../assets/icon/Add.svg?react";
+import { SmallActionButton } from "../SmallActionButton";
 
 const EmptyCart = () => {
   const navigate = useNavigate();
@@ -11,15 +12,14 @@ const EmptyCart = () => {
         <br />
         마음에 드는 메뉴를 담아주세요!
       </h1>
-      <button
+      <SmallActionButton
         type="button"
-        aria-label="메뉴 추가"
-        className="flex justify-center items-center gap-1 py-2 px-4 rounded-[12px] border border-[#ececec] text-black-70"
+        ariaLabel="메뉴 추가"
         onClick={() => navigate(`/${storeId}`)}
       >
-        <span className="text-[14px] font-bold">추가하기</span>
+        추가하기
         <Add className="w-4 h-4" fill="currentColor" />
-      </button>
+      </SmallActionButton>
     </div>
   );
 };
