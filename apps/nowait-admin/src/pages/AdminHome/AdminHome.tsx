@@ -9,12 +9,7 @@ import onIcon from "../../assets/toggleOn.svg"; // 켜짐 상태 이미지
 import offIcon from "../../assets/toggleOFF.svg";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
 import { useUpdateReservationStatus } from "../../hooks/useUpdateReservationStatus";
-type WaitingStatus =
-  | "WAITING"
-  | "CALLING"
-  | "CONFIRMED"
-  | "CANCELLED"
-  | "NO_SHOW";
+type WaitingStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 
 interface Reservation {
   id: number;
@@ -30,6 +25,7 @@ interface Reservation {
 
 const AdminHome = () => {
   const width = useWindowWidth();
+  const [noShowIds, setNoShowIds] = useState<number[]>([]);
   const { mutate: updateStatus } = useUpdateReservationStatus();
 
   console.log(width);
@@ -43,6 +39,20 @@ const AdminHome = () => {
   const { data, isLoading, isError } = useGetReservationList(storeId);
 
   const toggle = () => setIsOn((prev) => !prev);
+
+  const waitingCount = reservations.filter(
+    (res) => res.status === "WAITING"
+  ).length;
+  const callingCount = reservations.filter(
+    (res) => res.status === "CALLING"
+  ).length;
+  const confirmedCount = reservations.filter(
+    (res) => res.status === "CONFIRMED"
+  ).length;
+  const cancelledCount = reservations.filter(
+    (res) => res.status === "CANCELLED"
+  ).length;
+
   const statusMap = {
     WAITING: "대기 중",
     CALLING: "호출 중",
@@ -51,6 +61,7 @@ const AdminHome = () => {
   };
 
   const filteredReservations = useMemo(() => {
+    const sorted = [...reservations].sort((a, b) => a.id - b.id);
     if (activeTab === "전체 보기") return reservations;
 
     const targetStatus = Object.entries(statusMap).find(
@@ -59,7 +70,7 @@ const AdminHome = () => {
 
     if (!targetStatus) return [];
 
-    return reservations.filter((res) => res.status === targetStatus);
+    return sorted.filter((res) => res.status === targetStatus);
   }, [reservations, activeTab]);
 
   // 호출 버튼 클릭 이벤트
@@ -120,16 +131,18 @@ const AdminHome = () => {
 
   const handleNoShow = (id: number) => {
     const target = reservations.find((res) => res.id === id);
-    if (target?.status === "NO_SHOW") return;
+    if (!target || target.status === "CANCELLED") return;
+
     updateStatus(
-      { reservationId: id, status: "NO_SHOW" },
+      { reservationId: id, status: "CANCELLED" },
       {
         onSuccess: () => {
           setReservations((prev) =>
             prev.map((res) =>
-              res.id === id ? { ...res, status: "NO_SHOW" } : res
+              res.id === id ? { ...res, status: "CANCELLED" } : res
             )
           );
+          setNoShowIds((prev) => [...prev, id]);
         },
       }
     );
@@ -188,8 +201,16 @@ const AdminHome = () => {
             </button>
           </div>
           <div className="flex [@media(min-width:375px)_and_(max-width:431px)]:justify-between">
-            <CardBox title="대기 팀 수" count={14} bottomLabel="호출 중 3팀" />
-            <CardBox title="입장 완료" count={6} bottomLabel="대기 취소 1팀" />
+            <CardBox
+              title="대기 팀 수"
+              count={waitingCount}
+              bottomLabel={`호출 중 ${callingCount}팀`}
+            />
+            <CardBox
+              title="입장 완료"
+              count={confirmedCount}
+              bottomLabel={`대기 취소 ${cancelledCount}팀`}
+            />
           </div>
         </div>
       </section>
@@ -239,6 +260,7 @@ const AdminHome = () => {
               phone="010-****-****"
               status={res.status}
               calledAt={res.calledAt}
+              isNoShow={noShowIds.includes(res.id)}
               onCall={() => handleCall(res.id)}
               onEnter={() => handleEnter(res.id)}
               onClose={() => handleClose(res.id)}
