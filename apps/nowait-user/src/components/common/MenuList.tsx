@@ -27,7 +27,7 @@ const dummyData: MenuType[] = [
   },
 ];
 
-const MenuList = ({ mode } : { mode: string }) => {
+const MenuList = ({ mode }: { mode: string }) => {
   const navigate = useNavigate();
   const { storeId } = useParams();
   return (

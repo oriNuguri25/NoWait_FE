@@ -7,21 +7,21 @@ import Toast from "../../components/order/Toast";
 import useModal from "../../hooks/useModal";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ConfirmModal from "../../components/order/ConfirmModal";
+import { useToastStore } from "../../stores/toastStore";
 
 const RemittanceRequestPage = () => {
-  const [showToast, setShowToast] = useState(false);
-
+  // const [showToast, setShowToast] = useState(false);
+  const { showToast } = useToastStore();
   const navigate = useNavigate();
   const { storeId } = useParams();
   const modal = useModal();
   const price = useLocation().state;
   const account = "기업은행 611-000202-01-010";
-  const clipBoardDelay = 3000;
+  const clipBoardDelay = 2000;
 
   const handleCopyClipBoard = useThrottle(() => {
     navigator.clipboard.writeText(account);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), clipBoardDelay);
+    showToast("블라", 2000);
   }, clipBoardDelay);
 
   return (
@@ -50,9 +50,9 @@ const RemittanceRequestPage = () => {
           <p className="text-headline-24-bold">{price}원</p>
         </div>
       </div>
-      <div className="fixed left-1/2 bottom-[124px] -translate-x-1/2 z-50">
+      {/* <div className="fixed left-1/2 bottom-[124px] -translate-x-1/2 z-50">
         {showToast && <Toast message="계좌번호가 복사되었습니다" />}
-      </div>
+      </div> */}
       {modal.isOpen && (
         <ConfirmModal
           open={() => navigate(`/${storeId}/order/success`)}

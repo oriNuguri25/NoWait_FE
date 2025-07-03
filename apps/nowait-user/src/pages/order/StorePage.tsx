@@ -1,36 +1,45 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useNavigation,
+  useParams,
+} from "react-router-dom";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import TotalButton from "../../components/order/TotalButton";
 import { useCartStore } from "../../stores/cartStore";
 import MenuList from "../../components/common/MenuList";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import Toast from "../../components/order/Toast";
+import { getMyOrderList } from "../../lib/order";
 
 const StorePage = () => {
   const navigate = useNavigate();
   const { storeId } = useParams();
+  const tableId = localStorage.getItem("tableId");
   const location = useLocation();
   const added = (location.state as { added?: boolean } | null)?.added;
   const { cart } = useCartStore();
-  const SERVER_URI = import.meta.env.VITE_SERVER_URI;
   const [showToast, setShowToast] = useState(false);
-  const clipBoardDelay = 3000;
+  const addMenuDelay = 2000;
 
+  //메뉴 추가 시 toast 띄우기
   useEffect(() => {
     if (added) setShowToast(true);
+
     const timeout = setTimeout(() => {
       setShowToast(false);
-    }, clipBoardDelay);
+    }, addMenuDelay);
+
     navigate(location.pathname, { replace: true });
+
     return () => clearTimeout(timeout);
   }, [added]);
 
-  const getMyOrderList = async () => {
+  const getMyOrderListButton = async () => {
     try {
-      const res = await axios.get(`${SERVER_URI}/orders/items/7/1`);
-      console.log(res);
+      const res = await getMyOrderList(storeId, tableId!);
+      navigate(`/${storeId}/myOrderList`, { state: res });
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +54,7 @@ const StorePage = () => {
             <h2 className="text-text-16-medium">5번 테이블</h2>
           </div>
           <button
-            onClick={getMyOrderList}
+            onClick={getMyOrderListButton}
             className="text-14-medium bg-black-20 py-2 px-2.5 rounded-[8px] text-black-70 cursor-pointer"
           >
             주문내역

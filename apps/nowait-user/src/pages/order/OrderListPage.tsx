@@ -1,4 +1,4 @@
-import MenuItem from "../../components/order/MenuItem";
+import CartItem from "../../components/order/CartItem";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,18 +6,17 @@ import TotalButton from "../../components/order/TotalButton";
 import { useCartStore } from "../../stores/cartStore";
 import { AnimatePresence } from "framer-motion";
 import EmptyCart from "../../components/order/EmptyCart";
-import axios from "axios";
-import { getTableId } from "../../utils/cartStorage";
+import { getTableId, setSessionData } from "../../utils/cartStorage";
 import { SmallActionButton } from "../../components/SmallActionButton";
 import Add from "../../assets/icon/Add.svg?react";
+import { sumTotalPrice } from "../../utils/sumUtils";
+import { createOrder } from "../../lib/order";
 
 const OrderListPage = () => {
   const navigate = useNavigate();
   const { storeId } = useParams();
   const tableId = getTableId();
   const { cart } = useCartStore();
-
-  const SERVER_URI = import.meta.env.VITE_SERVER_URI;
 
   const orderHandleButton = async () => {
     try {
@@ -27,17 +26,15 @@ const OrderListPage = () => {
           menuId: item.menuId,
           quantity: item.quantity,
         })),
+        totalPrice: sumTotalPrice(cart),
       };
-      const url = `${SERVER_URI}/orders/create/${storeId}/${tableId}`;
-      const res = await axios.post(url, payload);
-      if (res.status === 201 && res.data.success) {
-        console.log(res);
-        localStorage.setItem("sessionId", res.data.response.sessionId);
-        localStorage.setItem("depositorName", res.data.response.depositorName);
+      const res = await createOrder(storeId!, tableId!, payload);
+      if (res?.success) {
+        //세션 아이디, 입금자명 로컬스토리지 저장
+        setSessionData(res.response.sessionId, res.response.depositorName);
       } else {
         console.log("error");
       }
-
       navigate(`/${storeId}/payer`);
     } catch (e) {
       console.log(e);
@@ -54,7 +51,7 @@ const OrderListPage = () => {
           <AnimatePresence mode="sync">
             {cart.map((item) => {
               return (
-                <MenuItem
+                <CartItem
                   key={item.menuId}
                   id={item.menuId}
                   name={item.name}
