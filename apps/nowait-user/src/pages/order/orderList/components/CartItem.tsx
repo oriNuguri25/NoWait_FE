@@ -1,6 +1,6 @@
-import QuantitySelector from "../common/QuantitySelector";
-import Close from "../../assets/icon/close.svg?react";
-import { useCartStore } from "../../stores/cartStore";
+import QuantitySelector from "../../../../components/common/QuantitySelector";
+import Close from "../../../../assets/icon/close.svg?react";
+import { useCartStore } from "../../../../stores/cartStore";
 import { motion } from "framer-motion";
 import { useState } from "react";
 

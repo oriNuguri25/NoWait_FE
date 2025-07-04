@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useToastStore } from "../../stores/toastStore";
+import { useToastStore } from "../../../stores/toastStore";
 import { motion } from "framer-motion";
 
 const Toast = () => {

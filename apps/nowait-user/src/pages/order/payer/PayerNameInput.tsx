@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Button } from "@repo/ui";
-import PageFooterButton from "../../components/order/PageFooterButton";
+import PageFooterButton from "../../../components/order/PageFooterButton";
 import { useNavigate, useParams } from "react-router-dom";
-import useModal from "../../hooks/useModal";
-import ConfirmModal from "../../components/order/ConfirmModal";
-import { useCartStore } from "../../stores/cartStore";
-import { sumTotalPrice } from "../../utils/sumUtils";
+import useModal from "../../../hooks/useModal";
+import ConfirmModal from "../../../components/order/ConfirmModal";
+import { useCartStore } from "../../../stores/cartStore";
+import { sumTotalPrice } from "../../../utils/sumUtils";
 
 const PayerNameInput = () => {
   const [payer, setPayer] = useState("");
@@ -15,8 +15,8 @@ const PayerNameInput = () => {
   const { cart } = useCartStore();
 
   return (
-    <div className="flex flex-col h-[100dvh]">
-      <div className="flex-1 flex flex-col justify-center items-center text-center px-5 overflow-hidden">
+    <div className="flex flex-col h-screen">
+      <section className="flex-1 flex flex-col justify-center items-center text-center px-5 overflow-hidden">
         <div className="mb-7.5">
           <h1 className="text-headline-24-bold mb-2.5">
             정확한 결제 확인을 위해
@@ -33,7 +33,7 @@ const PayerNameInput = () => {
           value={payer}
           onChange={(e) => setPayer(e.target.value)}
         />
-      </div>
+      </section>
       {modal.isOpen && (
         <ConfirmModal
           open={() =>

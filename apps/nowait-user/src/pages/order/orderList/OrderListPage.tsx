@@ -1,16 +1,16 @@
-import CartItem from "../../components/order/CartItem";
-import PageFooterButton from "../../components/order/PageFooterButton";
+import CartItem from "./components/CartItem";
+import PageFooterButton from "../../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import { useNavigate, useParams } from "react-router-dom";
-import TotalButton from "../../components/order/TotalButton";
-import { useCartStore } from "../../stores/cartStore";
+import TotalButton from "../../../components/order/TotalButton";
+import { useCartStore } from "../../../stores/cartStore";
 import { AnimatePresence } from "framer-motion";
-import EmptyCart from "../../components/order/EmptyCart";
-import { getTableId, setSessionData } from "../../utils/cartStorage";
-import { SmallActionButton } from "../../components/SmallActionButton";
-import Add from "../../assets/icon/Add.svg?react";
-import { sumTotalPrice } from "../../utils/sumUtils";
-import { createOrder } from "../../lib/order";
+import EmptyCart from "./components/EmptyCart";
+import { getTableId, setSessionData } from "../../../utils/cartStorage";
+import { SmallActionButton } from "../../../components/SmallActionButton";
+import Add from "../../../assets/icon/Add.svg?react";
+import { sumTotalPrice } from "../../../utils/sumUtils";
+import { createOrder } from "../../../lib/order";
 
 const OrderListPage = () => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const OrderListPage = () => {
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      <div className="flex-1 overflow-y-auto pt-7 px-5">
+      <section className="flex-1 overflow-y-auto pt-7 px-5">
         <h1 className="text-headline-24-bold mb-5">총 주문 {cart.length}건</h1>
         <ul className="flex justify-center flex-col">
           <AnimatePresence mode="sync">
@@ -72,7 +72,7 @@ const OrderListPage = () => {
             <Add className="inline-block w-4 h-4" fill="currentColor" />
           </SmallActionButton>
         </ul>
-      </div>
+      </section>
       <PageFooterButton>
         <Button textColor="white" onClick={orderHandleButton}>
           <TotalButton variant="orderPage" actionText="이체하기" />

@@ -1,11 +1,11 @@
-import PageFooterButton from "../../components/order/PageFooterButton";
+import PageFooterButton from "../../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
-import copy from "../../assets/icon/copy.svg";
-import useThrottle from "../../hooks/useThrottle";
-import useModal from "../../hooks/useModal";
+import copy from "../../../assets/icon/copy.svg";
+import useThrottle from "../../../hooks/useThrottle";
+import useModal from "../../../hooks/useModal";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import ConfirmModal from "../../components/order/ConfirmModal";
-import { useToastStore } from "../../stores/toastStore";
+import ConfirmModal from "../../../components/order/ConfirmModal";
+import { useToastStore } from "../../../stores/toastStore";
 
 const RemittanceRequestPage = () => {
   const { showToast } = useToastStore();
@@ -47,9 +47,6 @@ const RemittanceRequestPage = () => {
           <p className="text-headline-24-bold">{price}원</p>
         </div>
       </div>
-      {/* <div className="fixed left-1/2 bottom-[124px] -translate-x-1/2 z-50">
-        {showToast && <Toast message="계좌번호가 복사되었습니다" />}
-      </div> */}
       {modal.isOpen && (
         <ConfirmModal
           open={() => navigate(`/${storeId}/order/success`)}

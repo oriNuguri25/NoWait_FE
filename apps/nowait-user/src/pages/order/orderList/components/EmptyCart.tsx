@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Add from "../../assets/icon/Add.svg?react";
-import { SmallActionButton } from "../SmallActionButton";
+import Add from "../../../../assets/icon/Add.svg?react";
+import { SmallActionButton } from "../../../../components/SmallActionButton";
 
 const EmptyCart = () => {
   const navigate = useNavigate();

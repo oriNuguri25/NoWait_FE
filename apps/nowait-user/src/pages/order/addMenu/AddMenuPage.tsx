@@ -1,11 +1,11 @@
 import { useState } from "react";
-import QuantitySelector from "../../components/common/QuantitySelector";
+import QuantitySelector from "../../../components/common/QuantitySelector";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import PageFooterButton from "../../components/order/PageFooterButton";
+import PageFooterButton from "../../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
-import type { CartType } from "../../types/order/cart";
-import { useCartStore } from "../../stores/cartStore";
-import type { MenuType } from "../../types/order/menu";
+import type { CartType } from "../../../types/order/cart";
+import { useCartStore } from "../../../stores/cartStore";
+import type { MenuType } from "../../../types/order/menu";
 
 const AddMenuPage = () => {
   const location = useLocation();
