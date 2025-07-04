@@ -1,6 +1,6 @@
-import QuantitySelector from "../common/QuantitySelector";
-import Close from "../../assets/icon/close.svg?react";
-import { useCartStore } from "../../stores/cartStore";
+import QuantitySelector from "../../../../components/common/QuantitySelector";
+import Close from "../../../../assets/icon/close.svg?react";
+import { useCartStore } from "../../../../stores/cartStore";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -11,7 +11,7 @@ interface PropsType {
   quantity: number;
 }
 
-const MenuItem = ({ id, name, price, quantity }: PropsType) => {
+const CartItem = ({ id, name, price, quantity }: PropsType) => {
   const { removeFromCart, increaseQuantity, decreaseQuantity } = useCartStore();
   const [isRemoving, setIsRemoving] = useState(false);
   return (
@@ -53,4 +53,4 @@ const MenuItem = ({ id, name, price, quantity }: PropsType) => {
   );
 };
 
-export default MenuItem;
+export default CartItem;

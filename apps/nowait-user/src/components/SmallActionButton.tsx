@@ -1,0 +1,30 @@
+interface PropsType {
+  type?: "button" | "submit" | "reset";
+  ariaLabel: string;
+  children: React.ReactNode;
+  onClick: () => void;
+  icon?: React.ReactNode;
+  iconPosition?: "left" | "right";
+  className?: string;
+}
+export const SmallActionButton = ({
+  type = "button",
+  children,
+  onClick,
+  ariaLabel,
+
+  className,
+}: PropsType) => {
+  return (
+    <button
+      type={type}
+      aria-label={ariaLabel}
+      className={`${className} py-2 px-4 rounded-[12px] border border-[#ececec] text-black-70`}
+      onClick={onClick}
+    >
+      <p className="flex items-center justify-center gap-1 text-[14px] font-bold">
+        {children}
+      </p>
+    </button>
+  );
+};

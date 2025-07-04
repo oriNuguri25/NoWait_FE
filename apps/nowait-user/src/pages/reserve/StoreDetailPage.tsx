@@ -1,4 +1,4 @@
-import MenuList from "../../components/MenuList";
+import MenuList from "../../components/common/MenuList";
 import Arrow from "../../assets/icon/arrow-right.svg?react";
 import MapPin from "../../assets/icon/map-pin.svg?react";
 import Clock from "../../assets/icon/clock.svg?react";

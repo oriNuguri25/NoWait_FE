@@ -3,17 +3,17 @@ import HomePage from "../pages/home/HomePage";
 import ReserveSuccessPage from "../pages/reserve/ReserveSuccessPage";
 import MapPage from "../pages/reserve/MapPage";
 import StoreDetailPage from "../pages/reserve/StoreDetailPage";
-import RedirectToStorePage from "../pages/order/RedirectToStorePage";
-import StorePage from "../pages/order/StorePage";
-import AddMenuPage from "../pages/order/AddMenuPage";
-import OrderListPage from "../pages/order/OrderListPage";
-import OrderSuccessPage from "../pages/order/OrderSuccessPage";
-import RemittanceRequestPage from "../pages/order/RemittanceRequestPage";
+import RedirectToStorePage from "../pages/order/home/RedirectToStorePage";
+import StorePage from "../pages/order/home/StorePage";
+import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
+import OrderListPage from "../pages/order/orderList/OrderListPage";
+import OrderSuccessPage from "../pages/order/orderSuccess/OrderSuccessPage";
+import RemittanceRequestPage from "../pages/order/remittance/RemittanceRequestPage";
 import StoreReservePage from "../pages/reserve/StoreReservePage";
 import LoginPage from "../pages/login/LoginPage";
 import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
-import PayerNameInput from "../pages/order/PayerNameInput";
+import PayerNameInput from "../pages/order/payer/PayerNameInput";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
