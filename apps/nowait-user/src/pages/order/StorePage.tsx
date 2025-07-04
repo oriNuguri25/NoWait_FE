@@ -1,17 +1,12 @@
-import {
-  useLocation,
-  useNavigate,
-  useNavigation,
-  useParams,
-} from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import TotalButton from "../../components/order/TotalButton";
 import { useCartStore } from "../../stores/cartStore";
 import MenuList from "../../components/common/MenuList";
-import { useEffect, useState } from "react";
-import Toast from "../../components/order/Toast";
+import { useEffect } from "react";
 import { getMyOrderList } from "../../lib/order";
+import { useToastStore } from "../../stores/toastStore";
 
 const StorePage = () => {
   const navigate = useNavigate();
@@ -20,20 +15,12 @@ const StorePage = () => {
   const location = useLocation();
   const added = (location.state as { added?: boolean } | null)?.added;
   const { cart } = useCartStore();
-  const [showToast, setShowToast] = useState(false);
-  const addMenuDelay = 2000;
+  const { showToast } = useToastStore();
 
   //메뉴 추가 시 toast 띄우기
   useEffect(() => {
-    if (added) setShowToast(true);
-
-    const timeout = setTimeout(() => {
-      setShowToast(false);
-    }, addMenuDelay);
-
+    if (added) showToast("메뉴를 담았습니다");
     navigate(location.pathname, { replace: true });
-
-    return () => clearTimeout(timeout);
   }, [added]);
 
   const getMyOrderListButton = async () => {
@@ -61,9 +48,6 @@ const StorePage = () => {
           </button>
         </div>
         <MenuList mode="order" />
-      </div>
-      <div className="fixed left-1/2 bottom-[124px] -translate-x-1/2 z-50">
-        {showToast && <Toast message="메뉴를 담았습니다" />}
       </div>
       {cart && cart.length > 0 && (
         <PageFooterButton>

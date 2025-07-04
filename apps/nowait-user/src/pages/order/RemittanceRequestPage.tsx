@@ -1,16 +1,13 @@
-import { useState } from "react";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import copy from "../../assets/icon/copy.svg";
 import useThrottle from "../../hooks/useThrottle";
-import Toast from "../../components/order/Toast";
 import useModal from "../../hooks/useModal";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ConfirmModal from "../../components/order/ConfirmModal";
 import { useToastStore } from "../../stores/toastStore";
 
 const RemittanceRequestPage = () => {
-  // const [showToast, setShowToast] = useState(false);
   const { showToast } = useToastStore();
   const navigate = useNavigate();
   const { storeId } = useParams();
@@ -21,12 +18,12 @@ const RemittanceRequestPage = () => {
 
   const handleCopyClipBoard = useThrottle(() => {
     navigator.clipboard.writeText(account);
-    showToast("블라", 2000);
+    showToast("계좌번호가 복사되었습니다");
   }, clipBoardDelay);
 
   return (
-    <div>
-      <div className="min-h-screen px-5 flex flex-col justify-center items-center">
+    <div className="flex flex-col h-screen">
+      <div className="flex flex-1 flex-col justify-center items-center overflow-y-auto px-5">
         <div className="mb-6 text-center">
           <h1 className="text-headline-24-bold mb-2.5">
             주문을 위해 이체해 주세요

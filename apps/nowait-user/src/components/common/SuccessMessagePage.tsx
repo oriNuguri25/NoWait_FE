@@ -23,8 +23,8 @@ const SuccessMessagePage = ({
   const navigate = useNavigate();
   const { storeId } = useParams();
   return (
-    <div>
-      <div className="min-h-screen flex flex-col justify-center items-center text-center">
+    <div className="flex flex-col h-screen">
+      <div className="flex flex-1 flex-col justify-center items-center text-center overflow-y-auto px-5">
         <img
           className="mb-2.5 w-[210px] h-[210px] bg-black-25"
           src={imageSrc}
