@@ -17,7 +17,7 @@ const StorePage = () => {
   const SERVER_URI = import.meta.env.VITE_SERVER_URI;
   const [showToast, setShowToast] = useState(false);
   const clipBoardDelay = 3000;
-
+  console.log(location,"added -----------------------")
   useEffect(() => {
     if (added) setShowToast(true);
     const timeout = setTimeout(() => {

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { replace, useNavigate, useParams } from "react-router-dom";
 import type { MenuType } from "../../types/order/menu";
 
 const dummyData: MenuType[] = [
@@ -27,7 +27,7 @@ const dummyData: MenuType[] = [
   },
 ];
 
-const MenuList = ({ mode } : { mode: string }) => {
+const MenuList = ({ mode }: { mode: string }) => {
   const navigate = useNavigate();
   const { storeId } = useParams();
   return (
@@ -39,7 +39,9 @@ const MenuList = ({ mode } : { mode: string }) => {
             <li key={data.id} className="mb-5">
               <button
                 onClick={() =>
-                  navigate(`/${storeId}/menu/${data.id}`, { state: data })
+                  navigate(`/${storeId}/menu/${data.id}`, {
+                    state: data,
+                  })
                 }
                 className="w-full flex justify-between cursor-pointer text-left"
               >
