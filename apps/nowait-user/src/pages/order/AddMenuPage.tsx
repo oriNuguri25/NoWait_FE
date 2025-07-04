@@ -23,7 +23,7 @@ const AddMenuPage = () => {
       price: price * quantity,
     };
     addToCart(item);
-    navigate(`/${storeId}`, { state: { added: true } });
+    navigate(`/${storeId}`, { state: { added: true }, replace: true });
   };
   return (
     <div className="flex flex-col h-screen">

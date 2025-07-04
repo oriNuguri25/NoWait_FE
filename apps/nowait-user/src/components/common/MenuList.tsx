@@ -1,4 +1,4 @@
-import { replace, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { MenuType } from "../../types/order/menu";
 
 const dummyData: MenuType[] = [

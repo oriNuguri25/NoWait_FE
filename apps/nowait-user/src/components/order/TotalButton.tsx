@@ -17,7 +17,7 @@ const TotalButton = ({ variant = "default", actionText }: PropsType) => {
           "quantity"
         )}`}</span>
       )}
-      {`${sumTotalPrice(cart)}원 ${actionText}`}
+      {`${sumTotalPrice(cart).toLocaleString()}원 ${actionText}`}
     </>
   );
 };

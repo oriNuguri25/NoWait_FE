@@ -12,5 +12,5 @@ export const sumTotalPrice = (items: CartType[]) => {
     (acc, cur) => acc + cur.price,
     0
   );
-  return totalPrice.toLocaleString();
+  return totalPrice;
 };
