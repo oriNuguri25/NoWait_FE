@@ -2,8 +2,9 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Clock, Layers, BarChart2 } from "lucide-react";
 import { useWindowWidth } from "../hooks/useWindowWidth";
-import nwIcon from "../assets/nwLogo.svg";
-import nwTextIcon from "../assets/nw_text_logo.svg";
+import NwIcon from "../assets/nwLogo.svg?react";
+import NwTextIcon from "../assets/nw_text_logo.svg?react";
+import ArrowDown from "../assets/keyboard_arrow_down.svg?react";
 import profile from "../assets/profile.png";
 
 const AdminSidebar = () => {
@@ -32,11 +33,14 @@ const AdminSidebar = () => {
               className="flex justify-center"
               onClick={() => navigate("/admin")}
             >
-              <img src={nwIcon} />
+              <NwIcon className="w-9 h-9" />
             </div>
           ) : (
             <div className="flex">
-              <img src={nwTextIcon} onClick={() => navigate("/admin")} />
+              <NwTextIcon
+                className="w-17 h-9 cursor-pointer"
+                onClick={() => navigate("/admin")}
+              />
             </div>
           )}
         </div>
@@ -72,7 +76,10 @@ const AdminSidebar = () => {
           className="w-8 h-8 rounded-full object-cover"
         />
         {!isCompact && (
-          <span className="text-sm font-medium text-black">스페이시스 ▾</span>
+          <div className="flex flex-row">
+            <span className="text-sm font-medium text-black">스페이시스</span>
+            <ArrowDown />
+          </div>
         )}
       </div>
     </aside>
