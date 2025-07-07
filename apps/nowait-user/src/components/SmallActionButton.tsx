@@ -3,8 +3,6 @@ interface PropsType {
   ariaLabel: string;
   children: React.ReactNode;
   onClick: () => void;
-  icon?: React.ReactNode;
-  iconPosition?: "left" | "right";
   className?: string;
 }
 export const SmallActionButton = ({
@@ -12,7 +10,6 @@ export const SmallActionButton = ({
   children,
   onClick,
   ariaLabel,
-
   className,
 }: PropsType) => {
   return (
