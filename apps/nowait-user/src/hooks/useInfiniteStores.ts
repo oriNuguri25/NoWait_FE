@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "axios";
+import UserApi from "../utils/UserApi";
 
 // 실제 서버 API 응답 타입 (StoreCard에서 직접 사용)
 interface Store {
@@ -31,15 +31,10 @@ const fetchStores = async ({
   pageParam = 0,
 }): Promise<{ stores: Store[]; hasNext: boolean }> => {
   try {
-    const SERVER_URI = import.meta.env.VITE_SERVER_URI;
-    const currentToken = localStorage.getItem("accessToken");
-
-    const response = await axios.get<ServerResponse>(
-      `${SERVER_URI}/v1/stores/all-stores/infinite-scroll`,
+    // UserApi 사용으로 헤더 설정 자동화 (인터셉터에서 최신 토큰 처리)
+    const response = await UserApi.get<ServerResponse>(
+      "/v1/stores/all-stores/infinite-scroll",
       {
-        headers: {
-          Authorization: `Bearer ${currentToken}`,
-        },
         params: {
           page: pageParam,
           size: 5,
@@ -76,9 +71,10 @@ const fetchStores = async ({
     }
   } catch (error) {
     console.error("주점 데이터 로딩 실패:", error);
-    if (axios.isAxiosError(error)) {
-      console.error("응답 상태:", error.response?.status);
-      console.error("응답 데이터:", error.response?.data);
+    // UserApi는 axios 기반이므로 axios 에러 체크 유지
+    if (error && typeof error === "object" && "response" in error) {
+      console.error("응답 상태:", (error as any).response?.status);
+      console.error("응답 데이터:", (error as any).response?.data);
     }
     return { stores: [], hasNext: false };
   }
