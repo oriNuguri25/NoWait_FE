@@ -20,12 +20,14 @@ interface storeProps {
 type PropsType = stateProps | storeProps;
 
 const QuantitySelector = (props: PropsType) => {
+  
+  const isQuantityOne = props.quantity === 1;
 
   const increaseQuantityButton = () => {
     // 전체 주문 페이지에서 수량 컨트롤(로컬 스토리지에 바로 반영)
     if (props.mode === "store") {
       props.increaseQuantity(props.id, props.price);
-    // 메뉴 추가 페이지에서 수량 컨트롤(메뉴 추가 페이지에서 추가하기 클릭 전까지 로컬 스토리지에 반영x)
+      // 메뉴 추가 페이지에서 수량 컨트롤(메뉴 추가 페이지에서 추가하기 클릭 전까지 로컬 스토리지에 반영x)
     } else if (props.mode === "state") {
       props.setQuantity(props.quantity + 1);
     }
@@ -41,11 +43,13 @@ const QuantitySelector = (props: PropsType) => {
   return (
     <div className="flex items-center justify-end gap-0.5">
       <button
-        className="bg-[#F2F6F9] rounded-[7px] w-[28px] h-[28px] flex items-center justify-center"
-        disabled={props.quantity === 1}
+        className={`${
+          isQuantityOne ? "bg-[#F5F8FA]" : "bg-[#F2F6F9]"
+        } rounded-[7px] w-[28px] h-[28px] flex items-center justify-center`}
+        disabled={isQuantityOne}
         onClick={decreaseQuantityButton}
       >
-        <Minus fill={`${props.quantity === 1?"#ececec": "#97A7B2"}`}/>
+        <Minus fill={`${isQuantityOne ? "#DBE3E9" : "#97A7B2"}`} />
       </button>
       <p
         className={`w-[30px] text-center ${
@@ -61,7 +65,7 @@ const QuantitySelector = (props: PropsType) => {
         className="bg-[#F2F6F9] rounded-[7px] w-[28px] h-[28px]  flex items-center justify-center"
         onClick={increaseQuantityButton}
       >
-        <Plus/>
+        <Plus />
       </button>
     </div>
   );

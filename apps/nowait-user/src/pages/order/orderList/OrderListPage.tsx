@@ -65,11 +65,10 @@ const OrderListPage = () => {
             type="button"
             ariaLabel="메뉴 추가하기"
             onClick={() => navigate(`/${storeId}`)}
-            icon={<Add className="w-4 h-4" fill="currentColor" />}
             className="py-5 border-none"
           >
             메뉴 추가하기
-            <Add className="inline-block w-4 h-4" fill="currentColor" />
+            <Add className="w-4 h-4 mb-1" fill="currentColor" />
           </SmallActionButton>
         </ul>
       </section>

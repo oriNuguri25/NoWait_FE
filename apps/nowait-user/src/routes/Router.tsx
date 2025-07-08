@@ -14,6 +14,7 @@ import LoginPage from "../pages/login/LoginPage";
 import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
 import PayerNameInput from "../pages/order/payer/PayerNameInput";
+import PageTransitionWrapper from "../components/layout/PageTransitionWrapper";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -21,7 +22,11 @@ const withAuth = (Component: React.ComponentType) => (
     <Component />
   </AuthGuard>
 );
-
+const withTransition = (Component: React.ComponentType) => (
+  <PageTransitionWrapper>
+    <Component />
+  </PageTransitionWrapper>
+);
 const Router = () => {
   return (
     <Routes>
@@ -41,16 +46,22 @@ const Router = () => {
 
       {/* QR 코드 접속 페이지 - 인증 불필요 (일반적인 경로 나중에) */}
       <Route path="/:storeId/:tableId" element={<RedirectToStorePage />} />
-      <Route path="/:storeId" element={<StorePage />} />
-      <Route path="/:storeId/menu/:menuId" element={<AddMenuPage />} />
-      <Route path="/:storeId/order" element={<OrderListPage />} />
-      <Route path="/:storeId/payer" element={<PayerNameInput />} />
+      <Route path="/:storeId" element={withTransition(StorePage)} />
+      <Route
+        path="/:storeId/menu/:menuId"
+        element={withTransition(AddMenuPage)}
+      />
+      <Route path="/:storeId/order" element={withTransition(OrderListPage)} />
+      <Route path="/:storeId/payer" element={withTransition(PayerNameInput)} />
       <Route
         path="/:storeId/remittance/request"
-        element={<RemittanceRequestPage />}
+        element={withTransition(RemittanceRequestPage)}
       />
 
-      <Route path="/:storeId/order/success" element={<OrderSuccessPage />} />
+      <Route
+        path="/:storeId/order/success"
+        element={withTransition(OrderSuccessPage)}
+      />
 
       {/* 보호된 라우트 - 인증 필요 */}
       <Route

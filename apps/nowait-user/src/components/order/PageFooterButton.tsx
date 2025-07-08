@@ -8,7 +8,7 @@ const PageFooterButton = ({
   className?: string;
 }) => {
   return (
-    <footer className="bg-white sticky bottom-0 w-full">
+    <footer className="sticky bottom-0 w-full">
       <div className="flex justify-center py-8 px-5">{children}</div>
     </footer>
   );
