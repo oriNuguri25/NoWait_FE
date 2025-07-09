@@ -8,6 +8,7 @@ export interface Order {
   depositorName: string;
   totalPrice: number | null;
   status: "WAITING_FOR_PAYMENT" | "COOKING" | "COOKED";
+  menuNamesAndQuantities: Record<string, number>; // 메뉴 이름과 수량
   createdAt: string;
 }
 
@@ -20,7 +21,7 @@ interface OrderResponse {
 // 주문 목록을 가져오는 함수
 const fetchOrders = async (): Promise<Order[]> => {
   try {
-    const token = localStorage.getItem("adminToken");
+    const token = localStorage.getItem("accessToken");
     const res = await adminApi.get<OrderResponse>(`/admin/orders/1`, {
       headers: {
         Authorization: `Bearer ${token}`,
