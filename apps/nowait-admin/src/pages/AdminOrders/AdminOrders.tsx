@@ -78,7 +78,7 @@ const AdminOrders = () => {
       {activeTab === "전체" ? (
         <div className="flex flex-row mt-7.5 gap-2.5 h-full w-full">
           {/* 입금 대기 블럭 */}
-          <div className="flex flex-1 flex-col">
+          <div className="flex flex-1 flex-col min-w-0">
             <div className="flex flex-row ml-1.5 gap-1.5">
               <div className="text-title-20-bold text-[#363D4A]">입금 대기</div>
               <div className="text-title-20-bold text-primary">
@@ -118,7 +118,7 @@ const AdminOrders = () => {
           </div>
 
           {/* 조리 중 블럭 */}
-          <div className="flex flex-1 flex-col">
+          <div className="flex flex-1 flex-col min-w-0">
             <div className="flex flex-row ml-1.5 gap-1.5">
               <div className="text-title-20-bold text-[#363D4A]">조리 중</div>
               <div className="text-title-20-bold text-[#363D4A]">
