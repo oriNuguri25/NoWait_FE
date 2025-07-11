@@ -1,8 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import AdminApi from "../utils/AdminApi";
-export const useUpdateReservationStatus = () => {
-  const token = localStorage.getItem("adminToken");
 
+export const useUpdateReservationStatus = () => {
   return useMutation({
     mutationFn: async ({
       reservationId,
@@ -13,12 +12,7 @@ export const useUpdateReservationStatus = () => {
     }) => {
       const res = await AdminApi.patch(
         `/reservations/admin/updates/${reservationId}`,
-        { status },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { status }
       );
       return res.data;
     },
