@@ -53,7 +53,11 @@ const CookCard = ({ tableNumber, menuNamesAndQuantities }: CookCardProps) => {
   const isOneMenu = menuEntries.length === 1;
 
   return (
-    <div className="flex flex-row gap-2.5 items-start w-full">
+    <div
+      className={`flex flex-row gap-2.5 w-full ${
+        isOneMenu ? "items-center" : "items-start"
+      }`}
+    >
       <div
         className={`flex flex-[0.6] ${
           isOneMenu ? "items-center" : "items-start"
@@ -64,7 +68,11 @@ const CookCard = ({ tableNumber, menuNamesAndQuantities }: CookCardProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2.5 flex-[2.5]">
+      <div
+        className={`flex flex-col gap-2.5 flex-[2.5] ${
+          isOneMenu ? "justify-center" : ""
+        }`}
+      >
         {menuEntries.map(([menuName, quantity], index) => (
           <div key={index} className="flex flex-row gap-2.5">
             <div className="text-16-semibold text-left text-black-80 truncate overflow-hidden whitespace-nowrap flex-1 min-w-0 max-w-[170px] lg:max-w-[170px] md:max-w-[140px] sm:max-w-[100px] [@media(max-width:480px)]:max-w-[80px]">
@@ -77,7 +85,11 @@ const CookCard = ({ tableNumber, menuNamesAndQuantities }: CookCardProps) => {
         ))}
       </div>
 
-      <div className="flex flex-[1] justify-end">
+      <div
+        className={`flex flex-[1] justify-end ${
+          isOneMenu ? "items-center" : ""
+        }`}
+      >
         <div className="flex px-2.5 py-1.25 bg-black-20 rounded-lg text-14-semibold text-black-70 flex-shrink-0 whitespace-nowrap">
           조리 완료
         </div>
