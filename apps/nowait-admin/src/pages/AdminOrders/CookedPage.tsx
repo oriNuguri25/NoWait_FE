@@ -5,7 +5,7 @@ interface CookedPageProps {
     id: number;
     tableNumber: number;
     depositorName: string;
-    menus: Array<{ name: string; quantity: number }>;
+    menuNamesAndQuantities?: Record<string, number>;
     totalAmount: number;
     createdAt: string;
   }>;
@@ -56,7 +56,7 @@ const CookedPage = ({ cookedOrders, isLoading, error }: CookedPageProps) => {
                 key={order.id}
                 tableNumber={order.tableNumber}
                 depositorName={order.depositorName}
-                menus={order.menus}
+                menuNamesAndQuantities={order.menuNamesAndQuantities}
                 totalAmount={order.totalAmount}
                 createdAt={order.createdAt}
               />

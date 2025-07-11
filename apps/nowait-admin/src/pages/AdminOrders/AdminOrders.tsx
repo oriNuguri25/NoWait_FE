@@ -18,16 +18,6 @@ const AdminOrders = () => {
     return `${hours}:${minutes}`;
   };
 
-  // 시간 포맷팅 함수
-  const formatTime = (createdAt: string) => {
-    const date = new Date(createdAt);
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const period = hours >= 12 ? "오후" : "오전";
-    const displayHours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
-    return `${period} ${displayHours}:${minutes.toString().padStart(2, "0")}`;
-  };
-
   // 테스트를 위해 일부 주문을 다른 상태로 변경
   const testOrders = orders.map((order, index) => {
     if (index % 3 === 1) {
@@ -137,11 +127,14 @@ const AdminOrders = () => {
             </div>
 
             <div className="flex flex-row mt-3.5 border border-black-30 rounded-t-2xl px-5 py-2.5 gap-2.5 bg-[#E7ECF0]">
-              <div className="flex text-14-medium text-black-60">테이블</div>
-              <div className="flex text-14-medium text-black-60 mr-[15ch]">
-                메뉴
+              <div className="flex text-14-medium text-black-60 flex-[0.6]">
+                테이블
               </div>
-              <div className="flex text-14-medium text-black-60">수량</div>
+              <div className="flex text-14-medium text-black-60 flex-[2.5] gap-2.5">
+                <div className="flex-[8] text-left">메뉴</div>
+                <div className="flex-[2] text-center">수량</div>
+              </div>
+              <div className="flex text-14-medium text-black-60 flex-[1]"></div>
             </div>
             <div className="flex flex-col gap-7.5 rounded-b-2xl border border-t-0 border-black-30 h-full bg-white px-6 py-5.5">
               {isLoading ? (
@@ -153,7 +146,7 @@ const AdminOrders = () => {
                   <CookCard
                     key={cooking.id}
                     tableNumber={cooking.tableId}
-                    menus={[{ name: cooking.depositorName, quantity: 1 }]} // API에서 메뉴 정보가 없으므로 depositorName 사용
+                    menuNamesAndQuantities={cooking.menuNamesAndQuantities}
                   />
                 ))
               ) : (
@@ -170,18 +163,11 @@ const AdminOrders = () => {
         </div>
       ) : (
         <CookedPage
-          cookedOrders={cookedData.map((order, index) => ({
+          cookedOrders={cookedData.map((order) => ({
             id: order.id,
             tableNumber: order.tableId,
             depositorName: order.depositorName,
-            menus:
-              index % 2 === 0
-                ? [{ name: "김치찌개", quantity: 1 }]
-                : [
-                    { name: "김치찌개", quantity: 1 },
-                    { name: "된장찌개", quantity: 2 },
-                    { name: "불고기", quantity: 1 },
-                  ],
+            menuNamesAndQuantities: order.menuNamesAndQuantities,
             totalAmount: order.totalPrice || 0,
             createdAt: getFormattedTime(order.createdAt),
           }))}
