@@ -40,6 +40,7 @@ const AdminHome = () => {
   const { data, isLoading, isError } = useGetReservationList(storeId);
 
   const toggle = () => setIsOn((prev) => !prev);
+<<<<<<< Updated upstream
   //대기 중 카드 개수
   const waitingCount = reservations.filter(
     (res) => res.status === "WAITING"
@@ -70,19 +71,29 @@ const AdminHome = () => {
     CALLING: "호출 중",
     CONFIRMED: "입장 완료",
     CANCELLED: "대기 취소",
+=======
+  const statusMap: Record<string, WaitingStatus[]> = {
+    "대기 중": ["WAITING"],
+    "호출 중": ["CALLING"],
+    "입장 완료": ["CONFIRMED"],
+    "대기 취소": ["CANCELLED", "NO_SHOW"],
+>>>>>>> Stashed changes
   };
 
   const filteredReservations = useMemo(() => {
     const sorted = [...reservations].sort((a, b) => a.id - b.id);
     if (activeTab === "전체 보기") return reservations;
 
-    const targetStatus = Object.entries(statusMap).find(
-      ([, label]) => label === activeTab
-    )?.[0];
+    const targetStatuses = statusMap[activeTab];
+    if (!targetStatuses) return [];
 
+<<<<<<< Updated upstream
     if (!targetStatus) return [];
 
     return sorted.filter((res) => res.status === targetStatus);
+=======
+    return reservations.filter((res) => targetStatuses.includes(res.status));
+>>>>>>> Stashed changes
   }, [reservations, activeTab]);
 
   // 호출 버튼 클릭 이벤트
