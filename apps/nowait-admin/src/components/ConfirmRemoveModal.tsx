@@ -11,10 +11,7 @@ const ConfirmRemoveModal = ({
 }: ConfirmRemoveModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-      <div
-        className="bg-white rounded-[20px] p-6 w-[305px] h-[170px] 
-    md:w-[372px] text-center"
-      >
+      <div className="bg-white rounded-[20px] p-6 w-[305px] h-[170px] md:w-[372px] text-center">
         <h2 className="text-[17px] font-semibold text-black mb-2">
           대기열에서 제거할까요?
         </h2>
