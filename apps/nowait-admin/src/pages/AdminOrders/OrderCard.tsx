@@ -41,12 +41,15 @@ const PaymentCard = ({
   );
 };
 
+import { useWindowWidth } from "../../hooks/useWindowWidth";
+
 interface CookCardProps {
   tableNumber: number;
   menuNamesAndQuantities?: Record<string, number>;
 }
 
 const CookCard = ({ tableNumber, menuNamesAndQuantities }: CookCardProps) => {
+  const windowWidth = useWindowWidth();
   const menuEntries = menuNamesAndQuantities
     ? Object.entries(menuNamesAndQuantities)
     : [];
@@ -54,7 +57,7 @@ const CookCard = ({ tableNumber, menuNamesAndQuantities }: CookCardProps) => {
 
   return (
     <div
-      className={`flex flex-row gap-2.5 w-full ${
+      className={`flex flex-row w-full ${
         isOneMenu ? "items-center" : "items-start"
       }`}
     >
@@ -73,16 +76,42 @@ const CookCard = ({ tableNumber, menuNamesAndQuantities }: CookCardProps) => {
           isOneMenu ? "justify-center" : ""
         }`}
       >
-        {menuEntries.map(([menuName, quantity], index) => (
-          <div key={index} className="flex flex-row gap-2.5">
-            <div className="text-16-semibold text-left text-black-80 truncate overflow-hidden whitespace-nowrap flex-1 min-w-0 max-w-[170px] lg:max-w-[170px] md:max-w-[140px] sm:max-w-[100px] [@media(max-width:480px)]:max-w-[80px]">
-              {menuName}
+        {menuEntries.map(([menuName, quantity], index) => {
+          // 화면 크기에 따른 글자 수 제한
+          const getDisplayText = (text: string) => {
+            // xl: 전체 표시, lg: 12글자, md: 7글자, sm: 6글자, xs: 4글자
+            if (windowWidth >= 1280) {
+              return text; // 전체 화면에서는 모든 글자 표시
+            } else if (windowWidth >= 1024) {
+              return text.length > 12 ? `${text.slice(0, 12)}...` : text;
+            } else if (windowWidth >= 768) {
+              return text.length > 7 ? `${text.slice(0, 7)}...` : text;
+            } else if (windowWidth >= 640) {
+              return text.length > 6 ? `${text.slice(0, 6)}...` : text;
+            } else {
+              return text.length > 4 ? `${text.slice(0, 4)}...` : text;
+            }
+          };
+
+          const isLargeScreen = windowWidth >= 1280;
+
+          return (
+            <div key={index} className="flex flex-row gap-2.5">
+              <div
+                className={`text-16-semibold text-left text-black-80 flex-[8] min-w-0 ${
+                  isLargeScreen
+                    ? ""
+                    : "truncate overflow-hidden whitespace-nowrap"
+                }`}
+              >
+                {getDisplayText(menuName)}
+              </div>
+              <div className="text-16-medium text-black-80 text-center flex-[2] flex-shrink-0">
+                {quantity}
+              </div>
             </div>
-            <div className="text-16-medium text-black-80 text-center flex-[0.2] flex-shrink-0">
-              {quantity}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div
