@@ -1,6 +1,7 @@
 import React from "react";
 import Minus from "../../assets/icon/minus.svg?react";
 import Plus from "../../assets/icon/plus.svg?react";
+import NumberFlow, { continuous } from "@number-flow/react";
 
 interface stateProps {
   mode: "state";
@@ -20,8 +21,8 @@ interface storeProps {
 type PropsType = stateProps | storeProps;
 
 const QuantitySelector = (props: PropsType) => {
-  
-  const isQuantityOne = props.quantity === 1;
+  const isQuantityMin = props.quantity === 1;
+  const isQuantityMax = props.quantity === 99;
 
   const increaseQuantityButton = () => {
     // 전체 주문 페이지에서 수량 컨트롤(로컬 스토리지에 바로 반영)
@@ -44,12 +45,12 @@ const QuantitySelector = (props: PropsType) => {
     <div className="flex items-center justify-end gap-0.5">
       <button
         className={`${
-          isQuantityOne ? "bg-[#F5F8FA]" : "bg-[#F2F6F9]"
+          isQuantityMin ? "bg-[#F5F8FA]" : "bg-[#F2F6F9]"
         } rounded-[7px] w-[28px] h-[28px] flex items-center justify-center`}
-        disabled={isQuantityOne}
+        disabled={isQuantityMin}
         onClick={decreaseQuantityButton}
       >
-        <Minus fill={`${isQuantityOne ? "#DBE3E9" : "#97A7B2"}`} />
+        <Minus fill={`${isQuantityMin ? "#DBE3E9" : "#97A7B2"}`} />
       </button>
       <p
         className={`w-[30px] text-center ${
@@ -58,14 +59,17 @@ const QuantitySelector = (props: PropsType) => {
             : "text-16-semibold"
         } text-balck-80`}
       >
-        {props.quantity}
+        <NumberFlow value={props.quantity} plugins={[continuous]} />
       </p>
 
       <button
-        className="bg-[#F2F6F9] rounded-[7px] w-[28px] h-[28px]  flex items-center justify-center"
+        className={`${
+          isQuantityMax ? "bg-[#F5F8FA]" : "bg-[#F2F6F9]"
+        } rounded-[7px] w-[28px] h-[28px] flex items-center justify-center`}
+        disabled={isQuantityMax}
         onClick={increaseQuantityButton}
       >
-        <Plus />
+        <Plus fill={`${isQuantityMax ? "#DBE3E9" : "#97A7B2"}`} />
       </button>
     </div>
   );

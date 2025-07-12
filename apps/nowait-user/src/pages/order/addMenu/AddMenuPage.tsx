@@ -1,17 +1,17 @@
 import { useState } from "react";
 import QuantitySelector from "../../../components/common/QuantitySelector";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { replace, useLocation, useNavigate, useParams } from "react-router-dom";
 import PageFooterButton from "../../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import type { CartType } from "../../../types/order/cart";
 import { useCartStore } from "../../../stores/cartStore";
-import type { MenuType } from "../../../types/order/menu";
+import NumberFlow, { continuous } from "@number-flow/react";
 
 const AddMenuPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { storeId } = useParams();
-  const { id, image, name, description, price } = location.state as MenuType;
+  const { id, image, name, description, price } = location.state;
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCartStore();
 
@@ -23,6 +23,7 @@ const AddMenuPage = () => {
       price: price * quantity,
     };
     addToCart(item);
+
     navigate(`/${storeId}`, { state: { added: true }, replace: true });
   };
   return (
@@ -40,7 +41,7 @@ const AddMenuPage = () => {
       <div className="sticky left-0 bottom-[124px] bg-white">
         <div className="w-full flex justify-between items-center px-5">
           <h1 className="text-[24px] font-semibold">
-            {(price * quantity).toLocaleString()}원
+            <NumberFlow value={price * quantity} trend={0} suffix="원" />
           </h1>
           <QuantitySelector
             mode="state"

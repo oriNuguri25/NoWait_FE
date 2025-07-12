@@ -5,7 +5,6 @@ import MapPage from "../pages/reserve/MapPage";
 import StoreDetailPage from "../pages/reserve/StoreDetailPage";
 import RedirectToStorePage from "../pages/order/home/RedirectToStorePage";
 import StorePage from "../pages/order/home/StorePage";
-import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
 import OrderListPage from "../pages/order/orderList/OrderListPage";
 import OrderSuccessPage from "../pages/order/orderSuccess/OrderSuccessPage";
 import RemittanceRequestPage from "../pages/order/remittance/RemittanceRequestPage";
@@ -15,6 +14,7 @@ import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
 import PayerNameInput from "../pages/order/payer/PayerNameInput";
 import PageTransitionWrapper from "../components/layout/PageTransitionWrapper";
+import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -46,6 +46,7 @@ const Router = () => {
 
       {/* QR 코드 접속 페이지 - 인증 불필요 (일반적인 경로 나중에) */}
       <Route path="/:storeId/:tableId" element={<RedirectToStorePage />} />
+
       <Route path="/:storeId" element={withTransition(StorePage)} />
       <Route
         path="/:storeId/menu/:menuId"

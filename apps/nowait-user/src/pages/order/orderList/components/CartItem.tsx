@@ -3,6 +3,7 @@ import Close from "../../../../assets/icon/close.svg?react";
 import { useCartStore } from "../../../../stores/cartStore";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import NumberFlow from "@number-flow/react";
 
 interface PropsType {
   id: string;
@@ -29,7 +30,9 @@ const CartItem = ({ id, name, price, quantity }: PropsType) => {
             <h1 className="text-title-18-medium text-ellipsis line-clamp-2">
               {name}
             </h1>
-            <h2 className="text-title-18-bold">{price.toLocaleString()}원</h2>
+            <h2 className="text-title-18-bold">
+              <NumberFlow value={price} suffix="원" />
+            </h2>
           </div>
           <button
             onClick={() => {

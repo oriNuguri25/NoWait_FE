@@ -7,12 +7,14 @@ import MenuList from "../../../components/common/MenuList";
 import { useEffect } from "react";
 import { useToastStore } from "../../../stores/toastStore";
 import StoreHeader from "./components/StoreHeader";
+import SectionDivider from "../../../components/SectionDivider";
 
 const StorePage = () => {
   const navigate = useNavigate();
   const { storeId } = useParams();
   const location = useLocation();
   const added = (location.state as { added?: boolean } | null)?.added;
+
   const { cart } = useCartStore();
   const { showToast } = useToastStore();
 
@@ -26,6 +28,7 @@ const StorePage = () => {
     <div className="flex flex-col h-screen">
       <div className="flex-1 overflow-y-auto mt-7.5 px-5">
         <StoreHeader />
+        <SectionDivider />
         <MenuList mode="order" />
       </div>
       {cart && cart.length > 0 && (

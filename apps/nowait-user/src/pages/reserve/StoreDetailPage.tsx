@@ -5,6 +5,7 @@ import Clock from "../../assets/icon/clock.svg?react";
 import BookMark from "../../assets/icon/bookmark.svg?react";
 import PageFooterButton from "../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
+import SectionDivider from "../../components/SectionDivider";
 
 const TAG = [
   { id: 1, type: "default", tag: "태그 추가" },
@@ -82,11 +83,16 @@ const StoreDetailPage = () => {
             <Arrow className="shrink-0" fill="#AAAAAA" />
           </div>
         </section>
-        <div className="-mx-5 bg-black-25 h-[16px] mb-[30px]"></div>
+        <SectionDivider />
         <MenuList />
       </div>
       <PageFooterButton className="gap-2.5">
-        <Button className="border" backgroundColor="white" borderColor="#ececec" buttonType="icon">
+        <Button
+          className="border"
+          backgroundColor="white"
+          borderColor="#ececec"
+          buttonType="icon"
+        >
           <BookMark />
         </Button>
         <Button>대기하기</Button>

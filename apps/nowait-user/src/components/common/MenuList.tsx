@@ -22,10 +22,10 @@ const dummyData: MenuType[] = [
     name: "파인애플 샤베트",
     description:
       "시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.",
-    price: 9000,
+    price: 92341,
     image: "",
   },
-   {
+  {
     id: "4",
     name: "파인애플 샤베트2",
     description:
@@ -33,7 +33,7 @@ const dummyData: MenuType[] = [
     price: 9000,
     image: "",
   },
-   {
+  {
     id: "5",
     name: "파인애플 샤베트3",
     description:
@@ -43,7 +43,7 @@ const dummyData: MenuType[] = [
   },
 ];
 
-const MenuList = ({ mode }: { mode: string }) => {
+const MenuList = ({ mode }: { mode?: string }) => {
   const navigate = useNavigate();
   const { storeId } = useParams();
   return (
@@ -55,9 +55,7 @@ const MenuList = ({ mode }: { mode: string }) => {
             <li key={data.id} className="mb-5">
               <button
                 onClick={() =>
-                  navigate(`/${storeId}/menu/${data.id}`, {
-                    state: data,
-                  })
+                  navigate(`/${storeId}/menu/${data.id}`, { state: data })
                 }
                 className="w-full flex justify-between cursor-pointer text-left"
               >
