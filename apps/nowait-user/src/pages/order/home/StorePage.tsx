@@ -25,11 +25,13 @@ const StorePage = () => {
   }, [added]);
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex-1 overflow-y-auto mt-7.5 px-5">
-        <StoreHeader />
-        <SectionDivider />
-        <MenuList mode="order" />
+    <div>
+      <div className="flex flex-col flex-grow pt-7.5 px-5 pb-[124px] min-h-screen-dvh">
+        <div className="flex-grow">
+          <StoreHeader />
+          <SectionDivider />
+          <MenuList mode="order" />
+        </div>
       </div>
       {cart && cart.length > 0 && (
         <PageFooterButton>

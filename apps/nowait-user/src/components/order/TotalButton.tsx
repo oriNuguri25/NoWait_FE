@@ -12,7 +12,7 @@ const TotalButton = ({ variant = "default", actionText }: PropsType) => {
   const totalPrice = sumTotalPrice(cart);
 
   return (
-    <div className="flex items-center gap-1 text-[14px] font-semibold ml-1">
+    <div className="flex items-center gap-2 text-[17px] font-semibold ml-1">
       {variant !== "orderPage" && (
         <span className="text-[14px] font-extrabold rounded-[5px] px-1.5 bg-white text-black">
           {sumQuantity(cart, "quantity")}

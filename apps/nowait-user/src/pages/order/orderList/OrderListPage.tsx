@@ -44,9 +44,11 @@ const OrderListPage = () => {
   if (cart.length === 0) return <EmptyCart />;
 
   return (
-    <div className="flex flex-col min-h-[100dvh]">
-      <section className="flex-1 overflow-y-auto pt-7 px-5">
-        <h1 className="text-headline-24-bold mb-5">총 주문 {cart.length}건</h1>
+    <div>
+      <section className="flex flex-col flex-grow min-h-screen-dvh pt-7 px-5 pb-[124px]">
+        <h1 className="text-headline-24-bold mb-5">
+          주문 총 <span className="text-primary">{cart.length}건</span>
+        </h1>
         <ul className="flex justify-center flex-col">
           <AnimatePresence mode="sync">
             {cart.map((item) => {

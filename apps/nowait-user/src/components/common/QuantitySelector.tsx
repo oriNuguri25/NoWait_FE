@@ -61,7 +61,6 @@ const QuantitySelector = (props: PropsType) => {
       >
         <NumberFlow value={props.quantity} plugins={[continuous]} />
       </p>
-
       <button
         className={`${
           isQuantityMax ? "bg-[#F5F8FA]" : "bg-[#F2F6F9]"

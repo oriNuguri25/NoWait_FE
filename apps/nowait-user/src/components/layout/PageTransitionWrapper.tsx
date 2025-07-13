@@ -12,17 +12,19 @@ const PageTransitionWrapper = ({ children }: PropsType) => {
   const isBack = navigateType === "POP" || navigateType === "REPLACE";
 
   return (
-    <motion.div
-      key={location.pathname}
-      initial={isBack ? false : { x: 100, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{
-        ease: "easeOut",
-        duration: 0.2,
-      }}
-    >
-      {children}
-    </motion.div>
+    <div className="overflow-hidden">
+      <motion.main
+        key={location.pathname}
+        initial={isBack ? false : { x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{
+          ease: "easeOut",
+          duration: 0.2,
+        }}
+      >
+        {children}
+      </motion.main>
+    </div>
   );
 };
 
