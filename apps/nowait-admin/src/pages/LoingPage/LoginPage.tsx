@@ -56,17 +56,16 @@ const LoginPage = () => {
             onChange={(e) => setId(e.target.value)}
             required
             className="peer w-[330px] h-[60px] px-4 border-[3px] border-[var(--black-35)] rounded-[12px] text-16-medium font-[500px] 
-          focus:outline-none focus:ring-0 focus:border-[var(--primary)] focus:border-[3px] focus:placeholder-shown:none pt-3 
+          focus:outline-none focus:ring-0 focus:border-[var(--primary)] focus:border-[3px] focus:placeholder-shown:none py-auto
           "
           />
           <label
             htmlFor="username"
-            className="absolute left-4 top-4 text-black-40 text-[14px] transition-all duration-200
-              peer-placeholder-shown:top-4 peer-placeholder-shown:text-[16px]
-              peer-placeholder-shown:text-black-40
-              peer-focus:top-2 peer-focus:text-[14px] peer-focus:text-primary
-              peer-valid:top-2 peer-valid:text-black-40
-              "
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-black-40 text-[16px] transition-all duration-200
+            peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2
+            peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-[14px] peer-focus:text-primary
+            peer-valid:top-2 peer-valid:-translate-y-0 peer-valid:text-[14px]
+          "
           >
             {isIdFocused ? "아이디" : ""}
           </label>
@@ -80,16 +79,15 @@ const LoginPage = () => {
             required
             placeholder={isPwFocused ? "" : "비밀번호"}
             className="peer w-[330px] h-[60px] px-4 border-[3px] border-[var(--black-35)] rounded-[12px] text-16-medium font-[500px] 
-            focus:outline-none focus:ring-0 focus:border-[var(--primary)] focus:border-[3px] focus:placeholder-shown:none pt-3 "
+            focus:outline-none focus:ring-0 focus:border-[var(--primary)] focus:border-[3px] focus:placeholder-shown:none py-auto"
           />
           <label
             htmlFor="username"
-            className="absolute left-4 top-4 text-black-40 text-[14px] transition-all duration-200
-              peer-placeholder-shown:top-4 peer-placeholder-shown:text-[16px]
-              peer-placeholder-shown:text-black-40
-              peer-focus:top-2 peer-focus:text-[14px] peer-focus:text-primary
-              peer-valid:top-2 peer-valid:text-black-40
-              "
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-black-40 text-[16px] transition-all duration-200
+            peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2
+            peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-[14px] peer-focus:text-primary
+            peer-valid:top-2 peer-valid:-translate-y-0 peer-valid:text-[14px]
+          "
           >
             {isPwFocused ? "비밀번호" : ""}
           </label>
