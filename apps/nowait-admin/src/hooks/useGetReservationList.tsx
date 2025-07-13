@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import adminApi from "../utils/AdminApi";
+import AdminApi from "../utils/AdminApi";
 
 export interface Reservation {
   id: number;
@@ -26,7 +26,7 @@ interface ApiResponse {
 const fetchReservations = async (
   storeId: number
 ): Promise<ReservationResponse> => {
-  const res = await adminApi.get<ApiResponse>(`/reservations/admin/${storeId}`);
+  const res = await AdminApi.get<ApiResponse>(`/reservations/admin/${storeId}`);
   return res.data.response;
 };
 
