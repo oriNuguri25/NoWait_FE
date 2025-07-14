@@ -26,7 +26,7 @@ const SuccessMessagePage = ({
     <div className="flex flex-col h-screen">
       <div className="flex flex-1 flex-col justify-center items-center text-center overflow-y-auto px-5">
         <img
-          className="mb-2.5 w-[210px] h-[210px] bg-black-25"
+          className="mb-5"
           src={imageSrc}
           alt={imageAlt}
         />

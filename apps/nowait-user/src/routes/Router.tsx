@@ -15,6 +15,7 @@ import AuthGuard from "../components/AuthGuard";
 import PayerNameInput from "../pages/order/payer/PayerNameInput";
 import PageTransitionWrapper from "../components/layout/PageTransitionWrapper";
 import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
+import RemittanceWaitPage from "../pages/order/remittenceWait/RemittanceWaitPage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -52,17 +53,17 @@ const Router = () => {
         path="/:storeId/menu/:menuId"
         element={withTransition(AddMenuPage)}
       /> */}
-            <Route
-        path="/:storeId/menu/:menuId"
-        element={<AddMenuPage/>}
-      />
+      <Route path="/:storeId/menu/:menuId" element={<AddMenuPage />} />
       <Route path="/:storeId/order" element={withTransition(OrderListPage)} />
-      <Route path="/:storeId/payer" element={withTransition(PayerNameInput)} />
+      {/* <Route path="/:storeId/payer" element={withTransition(PayerNameInput)} /> */}
       <Route
         path="/:storeId/remittance"
         element={withTransition(RemittancePage)}
       />
-
+      <Route
+        path="/:storeId/remittanceWait"
+        element={withTransition(RemittanceWaitPage)}
+      />
       <Route
         path="/:storeId/order/success"
         element={withTransition(OrderSuccessPage)}

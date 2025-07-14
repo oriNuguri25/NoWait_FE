@@ -7,20 +7,14 @@ import tossPay from "../../../../assets/tossPay.png";
 import naverPay from "../../../../assets/naverPay.png";
 import RadioGroup from "./RadioGroup";
 import Radio from "./Radio";
-import ConfirmModal from "../../../../components/order/ConfirmModal";
-import useModal from "../../../../hooks/useModal";
-import { useNavigate, useParams } from "react-router-dom";
 
 const RemitOptions = ({ totalPrice }: { totalPrice: number }) => {
-  const navigate = useNavigate();
-  const { storeId } = useParams();
   const { showToast } = useToastStore();
-  const modal = useModal();
   const [remitDescriptionToggle, setRemitDescriptionToggle] = useState(false);
   const [remitValue, setRemitValue] = useState("kakao");
   const account = `IBK기업 611-000202-01-010 ${totalPrice}`;
   const clipBoardDelay = 2000;
-  console.log(remitValue);
+
   const handleCopyClipBoard = useThrottle(() => {
     navigator.clipboard.writeText(account);
     showToast("계좌번호가 복사되었습니다");

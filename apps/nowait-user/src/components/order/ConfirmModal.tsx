@@ -48,7 +48,7 @@ const ConfirmModal = ({
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="absolute left-1/2 bottom-8 -translate-x-1/2 w-[calc(100%-20px)] max-w-[430px] bg-white rounded-[20px] px-5 pt-9"
           >
-            <h1 className="text-headline-22-bold mb-2">{title}</h1>
+            <h1 className="whitespace-pre-line text-headline-22-bold mb-2">{title}</h1>
             <h2 className="whitespace-pre-line text-16-regular text-black-70 mb-12">
               {description}
             </h2>

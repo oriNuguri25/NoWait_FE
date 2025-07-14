@@ -78,7 +78,7 @@ const RemittancePage = () => {
       </PageFooterButton>
       {modal.isOpen && (
         <ConfirmModal
-          open={() => navigate(`/${storeId}/order/success`)}
+          open={() => navigate(`/${storeId}/remittanceWait`)}
           close={modal.close}
           title={`직접 이체하신 후, 이 화면으로\n다시 돌아와주세요`}
           description={`화면으로 다시 돌아와 주문 과정을 끝마치셔야\n주문이 접수 돼요.`}
