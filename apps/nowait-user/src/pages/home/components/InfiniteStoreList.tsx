@@ -77,7 +77,7 @@ const InfiniteStoreList = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="mt-9.25 flex flex-col">
+    <div className="flex flex-col">
       <div className="mb-0.25 text-start text-headline-22-bold text-black-90">
         모든 주점
       </div>

@@ -131,7 +131,7 @@ const MyWaitingDetail = ({
             입장 대기 중
           </div>
           <div className="text-22-bold text-black-90">
-            내 앞 대기{" "}
+            내 앞 대기
             <span className="text-primary ml-1">
               <AnimatedNumber
                 value={items[currentIndex]?.waitingCount || 0}

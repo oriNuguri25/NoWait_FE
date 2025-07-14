@@ -233,6 +233,13 @@ pre {
     font-weight: 700;
   }
 
+  .text-18-bold {
+    font-size: 18px;
+    line-height: 130%;
+    letter-spacing: 0%;
+    font-weight: 700;
+  }
+
   .text-17-semibold {
     font-size: 17px;
     line-height: 136%;
