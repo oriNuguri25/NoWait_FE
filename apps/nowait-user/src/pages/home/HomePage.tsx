@@ -145,7 +145,7 @@ const HomePage = () => {
                 축제 부스 한눈에 찾기
               </div>
               <div className="flex text-13-regular text-black-80 leading-[130%]">
-                맵에서 부스의 위치를 확인해 보세요!
+                지도로 부스의 위치를 확인해 보세요!
               </div>
             </div>
             <BannerMap className="w-25 h-25" />
