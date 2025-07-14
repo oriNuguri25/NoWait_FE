@@ -18,6 +18,7 @@ const AddMenuPage = () => {
   const addToCartButton = () => {
     const item: CartType = {
       menuId: id,
+      image,
       name,
       quantity,
       price: price * quantity,

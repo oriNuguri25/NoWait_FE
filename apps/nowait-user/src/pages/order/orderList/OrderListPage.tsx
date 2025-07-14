@@ -6,40 +6,36 @@ import TotalButton from "../../../components/order/TotalButton";
 import { useCartStore } from "../../../stores/cartStore";
 import { AnimatePresence } from "framer-motion";
 import EmptyCart from "./components/EmptyCart";
-import { getTableId, setSessionData } from "../../../utils/cartStorage";
 import { SmallActionButton } from "../../../components/SmallActionButton";
 import Add from "../../../assets/icon/Add.svg?react";
-import { sumTotalPrice } from "../../../utils/sumUtils";
-import { createOrder } from "../../../lib/order";
 
 const OrderListPage = () => {
   const navigate = useNavigate();
   const { storeId } = useParams();
-  const tableId = getTableId();
   const { cart } = useCartStore();
 
-  const orderHandleButton = async () => {
-    try {
-      const payload = {
-        depositorName: "홍길동",
-        items: cart.map((item) => ({
-          menuId: item.menuId,
-          quantity: item.quantity,
-        })),
-        totalPrice: sumTotalPrice(cart),
-      };
-      const res = await createOrder(storeId!, tableId!, payload);
-      if (res?.success) {
-        //세션 아이디, 입금자명 로컬스토리지 저장
-        setSessionData(res.response.sessionId, res.response.depositorName);
-      } else {
-        console.log("error");
-      }
-      navigate(`/${storeId}/payer`);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // const orderHandleButton = async () => {
+  //   try {
+  //     const payload = {
+  //       depositorName: "홍길동",
+  //       items: cart.map((item) => ({
+  //         menuId: item.menuId,
+  //         quantity: item.quantity,
+  //       })),
+  //       totalPrice: sumTotalPrice(cart),
+  //     };
+  //     const res = await createOrder(storeId!, tableId!, payload);
+  //     if (res?.success) {
+  //       //세션 아이디, 입금자명 로컬스토리지 저장
+  //       setSessionData(res.response.sessionId, res.response.depositorName);
+  //     } else {
+  //       console.log("error");
+  //     }
+  //     navigate(`/${storeId}/remittance`);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   if (cart.length === 0) return <EmptyCart />;
 
@@ -75,8 +71,11 @@ const OrderListPage = () => {
         </ul>
       </section>
       <PageFooterButton>
-        <Button textColor="white" onClick={orderHandleButton}>
-          <TotalButton variant="orderPage" actionText="이체하기" />
+        <Button
+          textColor="white"
+          onClick={() => navigate(`/${storeId}/remittance`)}
+        >
+          <TotalButton variant="orderPage" actionText="주문하기" />
         </Button>
       </PageFooterButton>
     </div>

@@ -274,7 +274,13 @@ pre {
     letter-spacing: 0%;
     font-weight: 500;
   }
-
+  .text-14-regular {
+    font-size: 14px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 400;
+  }
+  
   .text-14-semibold {
     font-size: 14px;
     line-height: 136%;

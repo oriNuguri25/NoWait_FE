@@ -7,7 +7,7 @@ import RedirectToStorePage from "../pages/order/home/RedirectToStorePage";
 import StorePage from "../pages/order/home/StorePage";
 import OrderListPage from "../pages/order/orderList/OrderListPage";
 import OrderSuccessPage from "../pages/order/orderSuccess/OrderSuccessPage";
-import RemittanceRequestPage from "../pages/order/remittance/RemittanceRequestPage";
+import RemittancePage from "../pages/order/remittance/RemittancePage";
 import StoreReservePage from "../pages/reserve/StoreReservePage";
 import LoginPage from "../pages/login/LoginPage";
 import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
@@ -48,15 +48,19 @@ const Router = () => {
       <Route path="/:storeId/:tableId" element={<RedirectToStorePage />} />
 
       <Route path="/:storeId" element={withTransition(StorePage)} />
-      <Route
+      {/* <Route
         path="/:storeId/menu/:menuId"
         element={withTransition(AddMenuPage)}
+      /> */}
+            <Route
+        path="/:storeId/menu/:menuId"
+        element={<AddMenuPage/>}
       />
       <Route path="/:storeId/order" element={withTransition(OrderListPage)} />
       <Route path="/:storeId/payer" element={withTransition(PayerNameInput)} />
       <Route
-        path="/:storeId/remittance/request"
-        element={withTransition(RemittanceRequestPage)}
+        path="/:storeId/remittance"
+        element={withTransition(RemittancePage)}
       />
 
       <Route
