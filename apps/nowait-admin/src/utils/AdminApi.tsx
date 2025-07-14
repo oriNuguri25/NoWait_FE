@@ -9,4 +9,18 @@ const AdminApi = axios.create({
   },
 });
 
+AdminApi.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("adminToken");
+    console.log(token, "토큰 알려줘");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 export default AdminApi;

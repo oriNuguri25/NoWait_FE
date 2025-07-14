@@ -21,7 +21,10 @@ const LoginPage = () => {
       { email: id, password: pw },
       {
         onSuccess: (res) => {
-          const token = res.data.response.accessToken;
+          const token = res.data.response.body.accessToken;
+
+          console.log(token, "내  토큰");
+
           localStorage.setItem("adminToken", token);
           navigate("/admin");
         },

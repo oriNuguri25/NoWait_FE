@@ -31,7 +31,7 @@ const AdminHome = () => {
   const { mutate: updateStatus } = useUpdateReservationStatus();
   const [showModal, setShowModal] = useState(false);
 
-  console.log(width);
+  console.log("토큰값", localStorage.getItem("adminToken"));
 
   const [activeTab, setActiveTab] = useState("전체 보기");
   const storeId = 1; //현재는 임시로 mockdata씀

@@ -1,23 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import UserApi from "../utils/UserApi";
 
 // 토큰 갱신 함수
 export const refreshToken = async (): Promise<string | null> => {
   try {
-    const SERVER_URI = import.meta.env.VITE_SERVER_URI;
     const currentToken = localStorage.getItem("accessToken");
 
     if (!currentToken) {
       return null;
     }
-    // 3번쨰 파라미터 설정을 하기 위해 2번째 파라미터에 빈 객체를 넣어 전달.
-    const response = await axios.post(
-      `${SERVER_URI}/api/refresh-token`,
+
+    // UserApi 사용으로 헤더 설정 자동화
+    const response = await UserApi.post(
+      "/api/refresh-token",
       {},
       {
-        headers: {
-          Authorization: `Bearer ${currentToken}`,
-        },
         withCredentials: true, // HttpOnly 쿠키 포함
       }
     );
