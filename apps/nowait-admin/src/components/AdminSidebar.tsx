@@ -1,11 +1,19 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Clock, Layers, BarChart2 } from "lucide-react";
 import { useWindowWidth } from "../hooks/useWindowWidth";
+import { useLocation } from "react-router-dom";
 import NwIcon from "../assets/nwLogo.svg?react";
 import NwTextIcon from "../assets/nw_text_logo.svg?react";
 import ArrowDown from "../assets/keyboard_arrow_down.svg?react";
 import profile from "../assets/profile.png";
+import waitIcon from "../assets/Waiting.svg"; // 대기 아이콘 등
+import orderIcon from "../assets/Order.svg";
+import statIcon from "../assets/Statistics.svg";
+import boothIcon from "../assets/Tent.svg";
+import waitIconActive from "../assets/waitIconActive.svg";
+import orderIconActive from "../assets/orderIconActive.svg";
+import statIconActive from "../assets/statIconActive.svg";
+import boothIconActive from "../assets/boothIconActive.svg";
 
 const AdminSidebar = () => {
   const width = useWindowWidth();
@@ -16,6 +24,8 @@ const AdminSidebar = () => {
   if (width < 768) return null;
 
   const isCompact = width < 1024;
+  const location = useLocation();
+  const pathname = location.pathname;
 
   return (
     <aside
@@ -49,20 +59,52 @@ const AdminSidebar = () => {
         <nav className="flex flex-col gap-2">
           <NavItem
             to="/admin"
-            icon={<Clock className="w-5 h-5" />}
+            icon={
+              <img
+                src={pathname === "/admin" ? waitIconActive : waitIcon}
+                alt="웨이팅"
+                className="w-5 h-5"
+              />
+            }
             label="웨이팅"
             compact={isCompact}
           />
           <NavItem
             to="/admin/orders"
-            icon={<Layers className="w-5 h-5" />}
+            icon={
+              <img
+                src={pathname === "/admin/orders" ? orderIconActive : orderIcon}
+                alt="주문"
+                className="w-5 h-5"
+              />
+            }
             label="주문"
             compact={isCompact}
           />
           <NavItem
             to="/admin/analytics"
-            icon={<BarChart2 className="w-5 h-5" />}
+            icon={
+              <img
+                src={
+                  pathname === "/admin/analytics" ? statIconActive : statIcon
+                }
+                alt="관리 및 통계"
+                className="w-5 h-5"
+              />
+            }
             label="관리 · 통계"
+            compact={isCompact}
+          />
+          <NavItem
+            to="/admin/booths"
+            icon={
+              <img
+                src={pathname === "/admin/booths" ? boothIconActive : boothIcon}
+                alt="부스 관리"
+                className="w-5 h-5"
+              />
+            }
+            label="부스"
             compact={isCompact}
           />
         </nav>
