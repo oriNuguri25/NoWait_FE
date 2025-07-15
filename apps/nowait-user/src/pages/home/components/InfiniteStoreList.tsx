@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import StoreCard from "./StoreCard";
+import MainCard from "./MainCard";
 import { useInfiniteStores } from "../../../hooks/useInfiniteStores";
 
 const InfiniteStoreList = () => {
@@ -77,7 +77,7 @@ const InfiniteStoreList = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="mt-9.25 flex flex-col">
+    <div className="flex flex-col">
       <div className="mb-0.25 text-start text-headline-22-bold text-black-90">
         모든 주점
       </div>
@@ -136,7 +136,8 @@ const InfiniteStoreList = () => {
                     transform: `translateY(${virtualRow.start}px)`,
                   }}
                 >
-                  <StoreCard
+                  <MainCard
+                    type="store"
                     storeId={store.storeId}
                     name={store.name}
                     departmentId={store.departmentId}
