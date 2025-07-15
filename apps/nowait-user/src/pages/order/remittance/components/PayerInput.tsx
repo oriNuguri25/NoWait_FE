@@ -4,9 +4,10 @@ interface PropsType {
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
   payerError: boolean;
+  payerFocus: React.ForwardedRef<HTMLInputElement>;
 }
 
-const PayerInput = ({ value, setValue, payerError }: PropsType) => {
+const PayerInput = ({ value, setValue, payerError, payerFocus }: PropsType) => {
   return (
     <section>
       <div className="py-7.5">
@@ -17,12 +18,17 @@ const PayerInput = ({ value, setValue, payerError }: PropsType) => {
           </h2>
         </div>
         <input
-          className="w-full text-15-medium bg-black-10 rounded-[12px] placeholder-black-55 py-3.5 px-4 outline-none text-black-80"
+          className="w-full text-16-medium bg-black-10 rounded-[12px] placeholder-black-55 py-3.5 px-4 outline-none text-black-80"
           placeholder="입금자명 입력"
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          ref={payerFocus}
         />
-        {payerError && <p className="pt-2.5 pl-2.5 text-14-regular text-primary">입금자명을 입력해주세요</p>}
+        {payerError && (
+          <p className="pt-2.5 pl-2.5 text-14-regular text-primary">
+            입금자명을 입력해주세요
+          </p>
+        )}
       </div>
     </section>
   );

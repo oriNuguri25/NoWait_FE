@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import TotalButton from "../../../components/order/TotalButton";
 import { useCartStore } from "../../../stores/cartStore";
 import SectionDivider from "../../../components/SectionDivider";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { sumTotalPrice } from "../../../utils/sumUtils";
 import { getTableId, setSessionData } from "../../../utils/cartStorage";
 import { createOrder } from "../../../lib/order";
@@ -23,10 +23,12 @@ const RemittancePage = () => {
   const [payer, setPayer] = useState("");
   const [payerError, setPayerError] = useState(false);
   const totalPrice = sumTotalPrice(cart);
+  const payerFocus = useRef<HTMLInputElement>(null)
   console.log(payerError);
   const orderHandleButton = async () => {
     if (payer.trim() === "") {
       setPayerError(true);
+      payerFocus?.current?.focus()
       return;
     }
     setPayerError(false);
@@ -58,7 +60,7 @@ const RemittancePage = () => {
       <div className="px-5">
         <OrderSummary cart={cart} />
         <SectionDivider />
-        <PayerInput value={payer} setValue={setPayer} payerError={payerError} />
+        <PayerInput value={payer} setValue={setPayer} payerError={payerError} payerFocus={payerFocus}/>
         <SectionDivider />
         <RemitOptions totalPrice={totalPrice} />
         <SectionDivider />

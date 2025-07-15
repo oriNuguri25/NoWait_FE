@@ -2,7 +2,7 @@ import React from "react";
 
 interface PropsType {
   children: React.ReactNode;
-  image?: string;
+  logo?: React.ReactNode;
   value: string;
   name: string;
   defaultChecked?: boolean | undefined;
@@ -11,7 +11,7 @@ interface PropsType {
 
 const Radio = ({
   children,
-  image,
+  logo,
   value,
   name,
   defaultChecked,
@@ -21,12 +21,10 @@ const Radio = ({
     <label className="flex justify-between items-center">
       <h1
         className={`flex items-center ${
-          image ? "gap-2" : ""
+          logo ? "gap-2" : ""
         } text-15-semibold text-black-80`}
       >
-        <span>
-          <img src={image} />
-        </span>
+        {logo}
         {children}
       </h1>
       {/* 커스텀 라디오 버튼 */}

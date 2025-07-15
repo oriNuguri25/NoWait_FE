@@ -18,7 +18,7 @@ const TotalButton = ({ variant = "default", actionText }: PropsType) => {
           {sumQuantity(cart, "quantity")}
         </span>
       )}
-      <NumberFlow value={totalPrice} suffix={`원 ${actionText}`} />
+      <NumberFlow value={totalPrice} suffix={`원 ${actionText}`} trend={1} />
     </div>
   );
 };

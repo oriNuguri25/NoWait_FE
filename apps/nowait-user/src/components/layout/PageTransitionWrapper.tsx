@@ -1,30 +1,32 @@
 import { motion } from "framer-motion";
 import { useLocation, useNavigationType } from "react-router-dom";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import "./transition.css";
+import { useEffect, useRef, useState } from "react";
 
 interface PropsType {
   children: React.ReactNode;
 }
 
 const PageTransitionWrapper = ({ children }: PropsType) => {
-  const location = useLocation();
+  const pathname = location.pathname;
   const navigateType = useNavigationType();
+  const nodeRef = useRef(null);
+  const [displayChildren, setDisplayChildren] = useState(children);
+  const [transitionStage, setTransitionStage] = useState("fadeIn");
+  useEffect(() => {
+    setTransitionStage("fadeOut");
 
-  const isBack = navigateType === "POP" || navigateType === "REPLACE";
+    const timeout = setTimeout(() => {
+      setDisplayChildren(children);
+      setTransitionStage("fadeIn");
+    }, 300); // duration of your CSS transition
+
+    return () => clearTimeout(timeout);
+  }, [location.pathname]); // 🔁 페이지 바뀔 때만
 
   return (
-    <div className="overflow-hidden">
-      <motion.main
-        key={location.pathname}
-        initial={isBack ? false : { x: 100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{
-          ease: "easeOut",
-          duration: 0.2,
-        }}
-      >
-        {children}
-      </motion.main>
-    </div>
+    <div className={`page-wrapper ${transitionStage}`}>{displayChildren}</div>
   );
 };
 

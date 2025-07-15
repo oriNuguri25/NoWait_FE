@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useToastStore } from "../../../../stores/toastStore";
 import useThrottle from "../../../../hooks/useThrottle";
 import Help from "../../../../assets/icon/help.svg?react";
-import kakaoPay from "../../../../assets/kakaoPay.png";
-import tossPay from "../../../../assets/tossPay.png";
-import naverPay from "../../../../assets/naverPay.png";
+import KakaoPay from "../../../../assets/kakaoPay.svg?react";
+import TossPay from "../../../../assets/tossPay.svg?react";
+import NaverPay from "../../../../assets/naverPay.svg?react";
 import RadioGroup from "./RadioGroup";
 import Radio from "./Radio";
 
@@ -46,7 +46,7 @@ const RemitOptions = ({ totalPrice }: { totalPrice: number }) => {
         <div className="flex flex-col gap-3 rounded-2xl bg-[#F9F9F9] px-5 py-5">
           <RadioGroup label="간편 송금">
             <Radio
-              image={kakaoPay}
+              logo={<KakaoPay />}
               name="remit"
               value="kakao"
               defaultChecked
@@ -55,7 +55,7 @@ const RemitOptions = ({ totalPrice }: { totalPrice: number }) => {
               카카오페이
             </Radio>
             <Radio
-              image={tossPay}
+              logo={<TossPay />}
               name="remit"
               value="toss"
               onChange={(e) => setRemitValue(e.target.value)}
@@ -63,7 +63,7 @@ const RemitOptions = ({ totalPrice }: { totalPrice: number }) => {
               토스
             </Radio>
             <Radio
-              image={naverPay}
+              logo={<NaverPay />}
               name="remit"
               value="naver"
               onChange={(e) => setRemitValue(e.target.value)}
