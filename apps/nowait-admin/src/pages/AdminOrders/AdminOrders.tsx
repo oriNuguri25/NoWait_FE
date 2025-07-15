@@ -1,11 +1,15 @@
-import { useState } from "react";
-import { PaymentCard, CookCard } from "./OrderCard";
+import { useState, useRef } from "react";
+import { PaymentCard, PaymentDetail, CookCard } from "./OrderCard";
 import RefreshIcon from "../../assets/refresh.svg?react";
 import CookedPage from "./CookedPage";
 import { useGetOrderList } from "../../hooks/useGetOrderList";
+import type { Order } from "../../types/order";
 
 const AdminOrders = () => {
   const [activeTab, setActiveTab] = useState<"전체" | "조리 완료">("전체");
+  const [selectedPayment, setSelectedPayment] = useState<Order | null>(null);
+  const [savedScrollPosition, setSavedScrollPosition] = useState<number>(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // API에서 주문 데이터 가져오기
   const { data: orders = [], isLoading, error, refetch } = useGetOrderList();
@@ -18,31 +22,47 @@ const AdminOrders = () => {
     return `${hours}:${minutes}`;
   };
 
-  // 테스트를 위해 일부 주문을 다른 상태로 변경
-  const testOrders = orders.map((order, index) => {
-    if (index % 3 === 1) {
-      return { ...order, status: "COOKING" as const };
-    } else if (index % 3 === 2) {
-      return { ...order, status: "COOKED" as const };
-    }
-    return order;
-  });
-
   // 상태별 데이터 필터링
-  const paymentWaitingData = testOrders.filter(
+  const paymentWaitingData = orders.filter(
     (order) => order.status === "WAITING_FOR_PAYMENT"
   );
-  const cookingData = testOrders.filter((order) => order.status === "COOKING");
-  const cookedData = testOrders.filter((order) => order.status === "COOKED");
+  const cookingData = orders.filter((order) => order.status === "COOKING");
+  const cookedData = orders.filter((order) => order.status === "COOKED");
 
   // 새로고침 핸들러
   const handleRefresh = () => {
     refetch();
   };
 
+  // PaymentCard 클릭 핸들러
+  const handlePaymentCardClick = (payment: Order) => {
+    if (scrollContainerRef.current) {
+      // 현재 스크롤 위치 저장
+      setSavedScrollPosition(scrollContainerRef.current.scrollTop);
+      // 스크롤을 맨 위로 올리기
+      scrollContainerRef.current.scrollTop = 0;
+    }
+    setSelectedPayment(payment);
+  };
+
+  // PaymentDetail 닫기 핸들러
+  const handleClosePaymentDetail = () => {
+    setSelectedPayment(null);
+    // 약간의 딜레이 후 스크롤 위치 복원
+    setTimeout(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = savedScrollPosition;
+      }
+    }, 0);
+  };
+
   return (
-    <div className="flex flex-col w-full">
-      <div className="flex flex-row justify-between items-center">
+    <div
+      className="flex flex-col w-full overflow-hidden"
+      style={{ height: "calc(100vh - 2.5rem)" }}
+    >
+      {/* 헤더 영역 - 고정 높이 */}
+      <div className="flex flex-row justify-between items-center flex-shrink-0 mb-6">
         <div className="flex items-start gap-2">
           {/* 최상단 버튼 */}
           <div
@@ -53,7 +73,7 @@ const AdminOrders = () => {
             }`}
             onClick={() => setActiveTab("전체")}
           >
-            진행 중
+            진행 중 {paymentWaitingData.length + cookingData.length}
           </div>
           <div
             className={`rounded-full px-4 py-2 cursor-pointer ${
@@ -63,7 +83,7 @@ const AdminOrders = () => {
             }`}
             onClick={() => setActiveTab("조리 완료")}
           >
-            완료된 주문 {cookedData.length}
+            완료 주문 {cookedData.length}
           </div>
         </div>
 
@@ -76,23 +96,28 @@ const AdminOrders = () => {
       </div>
 
       {activeTab === "전체" ? (
-        <div className="flex flex-row mt-7.5 gap-2.5 h-full w-full">
+        <div className="flex flex-row gap-2.5 flex-1 min-h-0 overflow-hidden">
           {/* 입금 대기 블럭 */}
-          <div className="flex flex-1 flex-col min-w-0">
-            <div className="flex flex-row ml-1.5 gap-1.5">
+          <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
+            <div className="flex flex-row ml-1.5 gap-1.5 flex-shrink-0 mb-3">
               <div className="text-title-20-bold text-[#363D4A]">입금 대기</div>
               <div className="text-title-20-bold text-primary">
                 {paymentWaitingData.length}
               </div>
             </div>
 
-            <div className="flex flex-row mt-3.5 border border-black-30 rounded-t-2xl px-5 py-2.5 gap-2.5 bg-[#E7ECF0]">
+            <div className="flex flex-row border border-black-30 rounded-t-2xl px-5 py-2.5 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
               <div className="flex text-14-medium text-black-60">테이블</div>
               <div className="flex text-14-medium text-black-60">입금 내역</div>
             </div>
-            <div className="flex flex-col gap-7.5 rounded-b-2xl border border-t-0 border-black-30 h-full bg-white px-6 py-5.5">
+            <div
+              ref={scrollContainerRef}
+              className={`flex flex-col gap-7.5 rounded-b-2xl border border-t-0 border-black-30 flex-1 bg-white px-5.5 py-4 min-h-0 relative ${
+                selectedPayment ? "overflow-hidden" : "overflow-y-auto"
+              }`}
+            >
               {isLoading ? (
-                <div className="flex flex-col items-center justify-center h-full py-20 text-center">
+                <div className="flex flex-col items-center justify-center h-full text-center">
                   <div className="text-16-medium text-black-60">로딩 중...</div>
                 </div>
               ) : paymentWaitingData.length > 0 ? (
@@ -103,10 +128,11 @@ const AdminOrders = () => {
                     timeText={getFormattedTime(payment.createdAt)}
                     depositorName={payment.depositorName}
                     totalAmount={payment.totalPrice || 0}
+                    onClick={() => handlePaymentCardClick(payment)}
                   />
                 ))
               ) : (
-                <div className="flex flex-col items-center justify-center h-full py-20 text-center">
+                <div className="flex flex-col items-center justify-center h-full text-center">
                   <div className="text-16-medium text-black-60">
                     {error
                       ? "데이터를 불러오지 못했습니다."
@@ -114,31 +140,45 @@ const AdminOrders = () => {
                   </div>
                 </div>
               )}
+
+              {/* PaymentDetail 오버레이 */}
+              {selectedPayment && (
+                <PaymentDetail
+                  tableNumber={selectedPayment.tableId}
+                  timeText={getFormattedTime(selectedPayment.createdAt)}
+                  depositorName={selectedPayment.depositorName}
+                  totalAmount={selectedPayment.totalPrice || 0}
+                  menuNamesAndQuantities={
+                    selectedPayment.menuNamesAndQuantities
+                  }
+                  onClose={handleClosePaymentDetail}
+                />
+              )}
             </div>
           </div>
 
           {/* 조리 중 블럭 */}
-          <div className="flex flex-1 flex-col min-w-0">
-            <div className="flex flex-row ml-1.5 gap-1.5">
+          <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
+            <div className="flex flex-row ml-1.5 gap-1.5 flex-shrink-0 mb-3">
               <div className="text-title-20-bold text-[#363D4A]">조리 중</div>
-              <div className="text-title-20-bold text-[#363D4A]">
+              <div className="text-title-20-bold text-primary">
                 {cookingData.length}
               </div>
             </div>
 
-            <div className="flex flex-row mt-3.5 border border-black-30 rounded-t-2xl px-5 py-2.5 gap-2.5 bg-[#E7ECF0]">
+            <div className="flex flex-row border border-black-30 rounded-t-2xl px-5 py-2.5 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
               <div className="flex text-14-medium text-black-60 flex-[0.6]">
                 테이블
               </div>
-              <div className="flex text-14-medium text-black-60 flex-[2.5] gap-2.5">
-                <div className="flex-[8] text-left">메뉴</div>
+              <div className="flex text-14-medium text-black-60 flex-[3] gap-1.5">
+                <div className="flex-[6] text-left">메뉴</div>
                 <div className="flex-[2] text-center">수량</div>
               </div>
               <div className="flex text-14-medium text-black-60 flex-[1]"></div>
             </div>
-            <div className="flex flex-col gap-7.5 rounded-b-2xl border border-t-0 border-black-30 h-full bg-white px-6 py-5.5">
+            <div className="flex flex-col gap-7.5 rounded-b-2xl border border-t-0 border-black-30 flex-1 bg-white px-5.5 py-4 overflow-y-auto min-h-0">
               {isLoading ? (
-                <div className="flex flex-col items-center justify-center h-full py-20 text-center">
+                <div className="flex flex-col items-center justify-center h-full text-center">
                   <div className="text-16-medium text-black-60">로딩 중...</div>
                 </div>
               ) : cookingData.length > 0 ? (
@@ -150,7 +190,7 @@ const AdminOrders = () => {
                   />
                 ))
               ) : (
-                <div className="flex flex-col items-center justify-center h-full py-20 text-center">
+                <div className="flex flex-col items-center justify-center h-full text-center">
                   <div className="text-16-medium text-black-60">
                     {error
                       ? "데이터를 불러오지 못했습니다."
@@ -163,14 +203,7 @@ const AdminOrders = () => {
         </div>
       ) : (
         <CookedPage
-          cookedOrders={cookedData.map((order) => ({
-            id: order.id,
-            tableNumber: order.tableId,
-            depositorName: order.depositorName,
-            menuNamesAndQuantities: order.menuNamesAndQuantities,
-            totalAmount: order.totalPrice || 0,
-            createdAt: getFormattedTime(order.createdAt),
-          }))}
+          cookedOrders={cookedData}
           isLoading={isLoading}
           error={error}
         />

@@ -1,16 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import adminApi from "../utils/AdminApi";
-
-// 주문 데이터 인터페이스
-export interface Order {
-  id: number;
-  tableId: number;
-  depositorName: string;
-  totalPrice: number | null;
-  status: "WAITING_FOR_PAYMENT" | "COOKING" | "COOKED";
-  menuNamesAndQuantities: Record<string, number>; // 메뉴 이름과 수량
-  createdAt: string;
-}
+import type { Order } from "../types/order";
 
 interface OrderResponse {
   success: boolean;
