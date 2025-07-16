@@ -24,15 +24,15 @@ const withAuth = (Component: React.ComponentType) => (
     <Component />
   </AuthGuard>
 );
-// const withTransition = (Component: React.ComponentType) => (
-//   <PageTransitionWrapper>
-//     <Component />
-//   </PageTransitionWrapper>
-// );
+const withTransition = (Component: React.ComponentType) => (
+  <PageTransitionWrapper>
+    <Component />
+  </PageTransitionWrapper>
+);
 const Router = () => {
   const location = useLocation();
   return (
-    <PageTransitionWrapper>
+    // <PageTransitionWrapper>
       <Routes location={location}  key={location.pathname}>
         {/* 공개 라우트 - 인증 불필요 */}
         <Route path="/login/success" element={<KakaoRedirectHandler />} />
@@ -57,7 +57,7 @@ const Router = () => {
         <Route
           path="/:storeId/menu/:menuId"
           element={withTransition(AddMenuPage)}
-        />
+        /> */}
         <Route path="/:storeId/order" element={withTransition(OrderListPage)} />
         <Route
           path="/:storeId/remittance"
@@ -70,7 +70,7 @@ const Router = () => {
         <Route
           path="/:storeId/order/success"
           element={withTransition(OrderSuccessPage)}
-        /> */}
+        />
 
         {/* 보호된 라우트 - 인증 필요 */}
         <Route
@@ -94,7 +94,7 @@ const Router = () => {
           }
         />
       </Routes>
-    </PageTransitionWrapper>
+    // </PageTransitionWrapper>
   );
 };
 

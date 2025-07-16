@@ -7,6 +7,8 @@ import TossPay from "../../../../assets/tossPay.svg?react";
 import NaverPay from "../../../../assets/naverPay.svg?react";
 import RadioGroup from "./RadioGroup";
 import Radio from "./Radio";
+import { AnimatePresence, motion } from "framer-motion";
+import SlideToggle from "./SlideToggle";
 
 const RemitOptions = ({ totalPrice }: { totalPrice: number }) => {
   const { showToast } = useToastStore();
@@ -23,8 +25,8 @@ const RemitOptions = ({ totalPrice }: { totalPrice: number }) => {
   return (
     <section>
       <div className="py-7.5">
-        <div className="mb-5">
-          <h1 className="text-title-18-semibold mb-4">
+        <div className="pb-5">
+          <h1 className="text-title-18-semibold">
             <button
               className="flex items-center gap-1"
               onClick={() => setRemitDescriptionToggle(!remitDescriptionToggle)}
@@ -35,13 +37,13 @@ const RemitOptions = ({ totalPrice }: { totalPrice: number }) => {
               </span>
             </button>
           </h1>
-          {remitDescriptionToggle && (
-            <h2 className="text-14-regular text-black-70">
+          <SlideToggle toggle={remitDescriptionToggle}>
+            <p className="text-14-regular text-black-70 pt-4">
               축제 부스는 한정된 시간과 인력으로 운영 돼요.
               <br />
               효율적인 운영과 정산을 위해 현재는 계좌 이체만 가능해요.
-            </h2>
-          )}
+            </p>
+          </SlideToggle>
         </div>
         <div className="flex flex-col gap-3 rounded-2xl bg-[#F9F9F9] px-5 py-5">
           <RadioGroup label="간편 송금">
@@ -80,36 +82,34 @@ const RemitOptions = ({ totalPrice }: { totalPrice: number }) => {
           >
             계좌로 직접 이체하기
           </Radio>
-          {remitValue === "direct" && (
-            <>
-              <p className="text-14-medium text-black-60 pt-2 pb-5">
-                아래의 계좌로 직접 이체해주셔야 돼요
-              </p>
-              <div className="-mx-5 border border-[#F1F1F1]"></div>
-              <div className="flex justify-between items-center pt-5">
-                <div className="flex items-center gap-2">
-                  <img
-                    className="w-[38px] h-[38px] rounded-full"
-                    src="/beef.png"
-                  ></img>
-                  <div>
-                    <h1 className="text-14-semibold text-black-80">
-                      노웨잇대학생회
-                    </h1>
-                    <h2 className="text-[12px] font-regular text-black-60">
-                      {account}
-                    </h2>
-                  </div>
+          <SlideToggle toggle={remitValue === "direct"}>
+            <p className="text-14-medium text-black-60 pt-2 pb-5">
+              아래의 계좌로 직접 이체해주셔야 돼요
+            </p>
+            <div className="-mx-5 border border-[#F1F1F1]"></div>
+            <div className="flex justify-between items-center pt-5">
+              <div className="flex items-center gap-2">
+                <img
+                  className="w-[38px] h-[38px] rounded-full"
+                  src="/beef.png"
+                ></img>
+                <div>
+                  <h1 className="text-14-semibold text-black-80">
+                    노웨잇대학생회
+                  </h1>
+                  <h2 className="text-[12px] font-regular text-black-60">
+                    {account}
+                  </h2>
                 </div>
-                <button
-                  className="text-12-semibold bg-white px-3 py-1.5 rounded-[50px]"
-                  onClick={handleCopyClipBoard}
-                >
-                  복사
-                </button>
               </div>
-            </>
-          )}
+              <button
+                className="text-12-semibold bg-white px-3 py-1.5 rounded-[50px]"
+                onClick={handleCopyClipBoard}
+              >
+                복사
+              </button>
+            </div>
+          </SlideToggle>
         </div>
       </div>
     </section>

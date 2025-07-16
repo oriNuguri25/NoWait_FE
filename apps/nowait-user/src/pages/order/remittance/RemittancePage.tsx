@@ -24,7 +24,7 @@ const RemittancePage = () => {
   const [payerError, setPayerError] = useState(false);
   const totalPrice = sumTotalPrice(cart);
   const payerFocus = useRef<HTMLInputElement>(null)
-  console.log(payerError);
+
   const orderHandleButton = async () => {
     if (payer.trim() === "") {
       setPayerError(true);

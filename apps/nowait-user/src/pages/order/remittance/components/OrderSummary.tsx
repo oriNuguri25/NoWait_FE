@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { CartType } from "../../../../types/order/cart";
 import ArrowDown from "../../../../assets/icon/arrow_down.svg?react";
+import SlideToggle from "./SlideToggle";
 
 interface PropsType {
   cart: CartType[];
@@ -27,12 +28,12 @@ const OrderSummary = ({ cart }: PropsType) => {
           </p>
         </button>
       </div>
-      {orderSummaryOpenToggle && (
+      <SlideToggle toggle={orderSummaryOpenToggle}>
         <ul>
           {cart.map((item: CartType) => {
             return (
               <li
-                className="flex justify-between items-center mb-5"
+                className="flex justify-between items-center pb-5"
                 key={item.menuId}
               >
                 <div className="max-w-[224px]">
@@ -58,7 +59,7 @@ const OrderSummary = ({ cart }: PropsType) => {
             );
           })}
         </ul>
-      )}
+      </SlideToggle>
     </section>
   );
 };
