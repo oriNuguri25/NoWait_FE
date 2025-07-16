@@ -62,7 +62,7 @@ const RemittancePage = () => {
         <SectionDivider />
         <PayerInput value={payer} setValue={setPayer} payerError={payerError} payerFocus={payerFocus}/>
         <SectionDivider />
-        <RemitOptions totalPrice={totalPrice} />
+        <RemitOptions/>
         <SectionDivider />
         <section>
           <div className="flex justify-between items-center pt-6 pb-5.5">

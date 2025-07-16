@@ -7,19 +7,30 @@ import TossPay from "../../../../assets/tossPay.svg?react";
 import NaverPay from "../../../../assets/naverPay.svg?react";
 import RadioGroup from "./RadioGroup";
 import Radio from "./Radio";
-import { AnimatePresence, motion } from "framer-motion";
 import SlideToggle from "./SlideToggle";
 
-const RemitOptions = ({ totalPrice }: { totalPrice: number }) => {
+const RemitOptions = () => {
   const { showToast } = useToastStore();
   const [remitDescriptionToggle, setRemitDescriptionToggle] = useState(false);
   const [remitValue, setRemitValue] = useState("kakao");
-  const account = `IBK기업 611-000202-01-010 ${totalPrice}`;
+  const account = `카카오뱅크 3333-04-2095277`;
   const clipBoardDelay = 2000;
 
-  const handleCopyClipBoard = useThrottle(() => {
-    navigator.clipboard.writeText(account);
-    showToast("계좌번호가 복사되었습니다");
+  const handleCopyClipBoard = useThrottle(async () => {
+    try {
+      //http 사용 시 또는 핸드폰으로 사용 시 복사가 안될 수도 있음.
+      await navigator.clipboard.writeText(account);
+      showToast("계좌번호가 복사되었습니다");
+    } catch (error) {
+      //이를 방지하기 위해 실패 시 고전 방식의 복사 방법 추가
+      const $textarea = document.createElement("textarea");
+      document.body.appendChild($textarea);
+      $textarea.value = account;
+      $textarea.select();
+      const success = document.execCommand("copy");
+      document.body.removeChild($textarea);
+      if (success) showToast("계좌번호가 복사되었습니다");
+    }
   }, clipBoardDelay);
 
   return (

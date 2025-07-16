@@ -7,24 +7,26 @@ interface PropsType {
 const SlideToggle = ({ children, toggle }: PropsType) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
-  console.log(contentHeight);
+
+  // 컨텐츠의 높이 구하기
   useEffect(() => {
     if (toggle && contentRef.current) {
       setContentHeight(contentRef?.current?.scrollHeight);
     }
   }, [toggle]);
+
   return (
     <AnimatePresence>
       {toggle && (
         <motion.div
-            ref={contentRef}
-            className="overflow-hidden"
+          ref={contentRef}
+          className="overflow-hidden"
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: contentHeight }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.3 }}
         >
-            {children}
+          {children}
         </motion.div>
       )}
     </AnimatePresence>
