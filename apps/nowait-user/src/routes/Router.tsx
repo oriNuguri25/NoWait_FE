@@ -15,6 +15,7 @@ import AuthGuard from "../components/AuthGuard";
 import PageTransitionWrapper from "../components/layout/PageTransitionWrapper";
 import WaitingPartySizeForm from "../pages/waiting/waitingPartysize/WaitingPartySizeForm";
 import StoreMenuDetailPage from "../pages/waiting/menuDetail/StoreMenuDetailPage";
+import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -72,12 +73,15 @@ const Router = () => {
               <Route path="/store/:id" element={<StoreDetailPage />} />
               <Route
                 path="/store/:id/menu/:menuId"
-                element={<StoreMenuDetailPage/>}
+                element={<StoreMenuDetailPage />}
               />
-              {/* <Route path="/store/:id/reserve" element={<StoreReservePage />} /> */}
               <Route
                 path="/store/:id/partysize"
                 element={<WaitingPartySizeForm />}
+              />
+              <Route
+                path="/store/:id/waitingsummary"
+                element={<WaitingSummaryPage />}
               />
               <Route
                 path="/store/:id/waiting/success"

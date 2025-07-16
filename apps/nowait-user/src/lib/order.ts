@@ -1,5 +1,4 @@
 import axios from "axios";
-import type { CartType } from "../types/order/cart";
 
 const SERVER_URI = import.meta.env.VITE_SERVER_URI;
 
@@ -22,6 +21,7 @@ interface ServerResponse {
   };
 }
 
+//음식 주문하기
 export const createOrder = async (
   storeId: string,
   tableId: string,
@@ -38,6 +38,7 @@ export const createOrder = async (
   }
 };
 
+//주문내역 가져오기
 export const getMyOrderList = async (
   storeId: string | undefined,
   tableId: string
