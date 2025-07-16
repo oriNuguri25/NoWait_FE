@@ -6,13 +6,18 @@ import { useCartStore } from "../../../stores/cartStore";
 import { useEffect } from "react";
 import { useToastStore } from "../../../stores/toastStore";
 import StoreHeader from "./components/StoreHeader";
+<<<<<<< HEAD
 import MenuList from "../../../components/common/MenuList";
+=======
+import SectionDivider from "../../../components/SectionDivider";
+>>>>>>> develop
 
 const StorePage = () => {
   const navigate = useNavigate();
   const { storeId } = useParams();
   const location = useLocation();
   const added = (location.state as { added?: boolean } | null)?.added;
+
   const { cart } = useCartStore();
   const { showToast } = useToastStore();
 
@@ -23,10 +28,13 @@ const StorePage = () => {
   }, [added]);
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex-1 overflow-y-auto mt-7.5 px-5">
-        <StoreHeader />
-        <MenuList mode="order" />
+    <div>
+      <div className="flex flex-col flex-grow pb-[124px] min-h-screen-dvh pt-7.5 px-5">
+        <div className="flex-grow">
+          <StoreHeader />
+          <SectionDivider />
+          <MenuList mode="order" />
+        </div>
       </div>
       {cart && cart.length > 0 && (
         <PageFooterButton>

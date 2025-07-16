@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Router from "./routes/Router";
 import { BrowserRouter } from "react-router-dom";
 import Toast from "./components/common/toast/Toast";
-import { AnimatePresence } from "framer-motion";
+import { Suspense } from "react";
 
 function App() {
   const queryClient = new QueryClient();
@@ -10,9 +10,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        {/* <AnimatePresence mode="wait"> */}
+        <Suspense fallback={<div>로당중</div>}>
           <Router />
-        {/* </AnimatePresence> */}
+        </Suspense>
         <Toast />
       </BrowserRouter>
     </QueryClientProvider>

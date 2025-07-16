@@ -1,11 +1,10 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "../pages/home/HomePage";
 import WaitingSuccessPage from "../pages/waiting/waitingSuccess/WaitingSuccessPage";
 import MapPage from "../pages/waiting/MapPage";
 import StoreDetailPage from "../pages/waiting/storeDetail/StoreDetailPage";
 import RedirectToStorePage from "../pages/order/home/RedirectToStorePage";
 import StorePage from "../pages/order/home/StorePage";
-import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
 import OrderListPage from "../pages/order/orderList/OrderListPage";
 import OrderSuccessPage from "../pages/order/orderSuccess/OrderSuccessPage";
 import RemittanceRequestPage from "../pages/order/remittance/RemittanceRequestPage";
@@ -29,11 +28,13 @@ const withTransition = (Component: React.ComponentType) => (
   </PageTransitionWrapper>
 );
 const Router = () => {
+  const location = useLocation();
   return (
-    <Routes>
-      {/* 공개 라우트 - 인증 불필요 */}
-      <Route path="/login/success" element={<KakaoRedirectHandler />} />
-      <Route path="/login" element={<LoginPage />} />
+    // <PageTransitionWrapper>
+      <Routes location={location}  key={location.pathname}>
+        {/* 공개 라우트 - 인증 불필요 */}
+        <Route path="/login/success" element={<KakaoRedirectHandler />} />
+        <Route path="/login" element={<LoginPage />} />
 
       {/* 보호된 라우트 - 인증 필요 (구체적인 경로 먼저) */}
       <Route
