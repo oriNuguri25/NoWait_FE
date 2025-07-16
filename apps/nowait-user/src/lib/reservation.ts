@@ -11,6 +11,9 @@ export const createReservation = async (
   storeId: string,
   payload: ReservationType
 ) => {
-  const res = await axios.post(`/reservations/create/${storeId}`, payload);
+  const res = await axios.post(
+    `${SERVER_URI}/reservations/create/${storeId}`,
+    payload
+  );
   return res.data;
 };
