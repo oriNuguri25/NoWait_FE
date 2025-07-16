@@ -6,11 +6,9 @@ import { useCartStore } from "../../../stores/cartStore";
 import { useEffect } from "react";
 import { useToastStore } from "../../../stores/toastStore";
 import StoreHeader from "./components/StoreHeader";
-<<<<<<< HEAD
 import MenuList from "../../../components/common/MenuList";
-=======
 import SectionDivider from "../../../components/SectionDivider";
->>>>>>> develop
+
 
 const StorePage = () => {
   const navigate = useNavigate();

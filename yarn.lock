@@ -4395,6 +4395,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"number-flow@npm:0.5.8":
+  version: 0.5.8
+  resolution: "number-flow@npm:0.5.8"
+  dependencies:
+    esm-env: "npm:^1.1.4"
+  checksum: 10c0/e114ddca72a82c2d9650307600e0583212af422d074e7650e40e30f650e3671563323c198c08ff18a66c8f8be323361ea28839a1671b4f94ee5539e1941d6bdc
+  languageName: node
+  linkType: hard
+
 "oauth-sign@npm:~0.9.0":
   version: 0.9.0
   resolution: "oauth-sign@npm:0.9.0"
@@ -4632,6 +4641,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prop-types@npm:15.7.2":
+  version: 15.7.2
+  resolution: "prop-types@npm:15.7.2"
+  dependencies:
+    loose-envify: "npm:^1.4.0"
+    object-assign: "npm:^4.1.1"
+    react-is: "npm:^16.8.1"
+  checksum: 10c0/4eb527daec962acd789c621ce3234a6f077ce202049291642d8efd13b19805adf07227672c570531cdb56a357640ea27e336527682b7ed4be0c5b392a01662ab
+  languageName: node
+  linkType: hard
+
+"prop-types@npm:^15.6.2":
+  version: 15.8.1
+  resolution: "prop-types@npm:15.8.1"
+  dependencies:
+    loose-envify: "npm:^1.4.0"
+    object-assign: "npm:^4.1.1"
+    react-is: "npm:^16.13.1"
+  checksum: 10c0/59ece7ca2fb9838031d73a48d4becb9a7cc1ed10e610517c7d8f19a1e02fa47f7c27d557d8a5702bec3cfeccddc853579832b43f449e54635803f277b1c78077
+  languageName: node
+  linkType: hard
+
 "proxy-from-env@npm:^1.1.0":
   version: 1.1.0
   resolution: "proxy-from-env@npm:1.1.0"
@@ -4715,13 +4746,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.8.1":
-  version: 16.13.1
-  resolution: "react-is@npm:16.13.1"
-  checksum: 10c0/33977da7a5f1a287936a0c85639fec6ca74f4f15ef1e59a6bc20338fc73dc69555381e211f7a3529b8150a1f71e4225525b41b60b52965bda53ce7d47377ada1
-  languageName: node
-  linkType: hard
-
 "react-flip-numbers@npm:^3.0.9":
   version: 3.0.9
   resolution: "react-flip-numbers@npm:3.0.9"
@@ -4735,7 +4759,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.13.1":
+"react-is@npm:^16.13.1, react-is@npm:^16.8.1":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: 10c0/33977da7a5f1a287936a0c85639fec6ca74f4f15ef1e59a6bc20338fc73dc69555381e211f7a3529b8150a1f71e4225525b41b60b52965bda53ce7d47377ada1

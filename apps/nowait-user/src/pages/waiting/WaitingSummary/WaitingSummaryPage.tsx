@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import PageFooterButton from "../../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import { createReservation } from "../../../lib/reservation";
+import PageFooterButton from "../../../components/order/PageFooterButton";
 
 const WaitingSummaryPage = () => {
   const navigate = useNavigate();

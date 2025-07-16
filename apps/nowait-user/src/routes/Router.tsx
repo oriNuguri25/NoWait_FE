@@ -7,7 +7,6 @@ import RedirectToStorePage from "../pages/order/home/RedirectToStorePage";
 import StorePage from "../pages/order/home/StorePage";
 import OrderListPage from "../pages/order/orderList/OrderListPage";
 import OrderSuccessPage from "../pages/order/orderSuccess/OrderSuccessPage";
-import RemittanceRequestPage from "../pages/order/remittance/RemittanceRequestPage";
 import LoginPage from "../pages/login/LoginPage";
 import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
@@ -15,6 +14,8 @@ import PageTransitionWrapper from "../components/layout/PageTransitionWrapper";
 import WaitingPartySizeForm from "../pages/waiting/waitingPartysize/WaitingPartySizeForm";
 import StoreMenuDetailPage from "../pages/waiting/menuDetail/StoreMenuDetailPage";
 import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
+import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
+import RemittancePage from "../pages/order/remittance/RemittancePage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -55,8 +56,8 @@ const Router = () => {
       />
       <Route path="/:storeId/order" element={withTransition(OrderListPage)} />
       <Route
-        path="/:storeId/remittance/request"
-        element={withTransition(RemittanceRequestPage)}
+        path="/:storeId/remittance"
+        element={withTransition(RemittancePage)}
       />
 
       <Route

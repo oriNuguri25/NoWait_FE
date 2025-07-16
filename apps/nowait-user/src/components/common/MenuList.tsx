@@ -25,7 +25,7 @@ const dummyData: MenuType[] = [
     price: 9200,
     image: "/beef.png",
   },
-  {
+
   {
     id: "4",
     name: "파인애플 샤베트",
@@ -33,7 +33,7 @@ const dummyData: MenuType[] = [
     price: 9000,
     image: "",
   },
-  {
+
   {
     id: "5",
     name: "해물파전",
