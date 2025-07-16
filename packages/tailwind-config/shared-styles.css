@@ -219,6 +219,27 @@ pre {
   }
 
   /* [MO] Text */
+  .text-30-semibold {
+    font-size: 30px;
+    line-height: auto;
+    letter-spacing: 0%;
+    font-weight: 600;
+  }
+
+  .text-22-bold {
+    font-size: 22px;
+    line-height: 130%;
+    letter-spacing: 0%;
+    font-weight: 700;
+  }
+
+  .text-18-bold {
+    font-size: 18px;
+    line-height: 130%;
+    letter-spacing: 0%;
+    font-weight: 700;
+  }
+
   .text-17-semibold {
     font-size: 17px;
     line-height: 136%;
@@ -231,6 +252,13 @@ pre {
     line-height: 136%;
     letter-spacing: 0;
     font-weight: 600;
+  }
+
+  .text-16-bold {
+    font-size: 16px;
+    line-height: 144%;
+    letter-spacing: -0.01em;
+    font-weight: 700;
   }
 
   .text-16-regular {
@@ -328,6 +356,13 @@ pre {
     line-height: 144%;
     letter-spacing: 0%;
     font-weight: 500;
+  }
+
+  .text-12-regular {
+    font-size: 12px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 400;
   }
 
   /* Work Sans 폰트 유틸리티 */
@@ -610,6 +645,14 @@ pre {
   }
   .bg-navy-5 {
     background-color: var(--navy-5);
+  }
+
+  .bg-cool-black {
+    background-color: var(--cool-black);
+  }
+
+  .border-black-35 {
+    border-color: var(--black-35);
   }
 
   .border-black-30 {
