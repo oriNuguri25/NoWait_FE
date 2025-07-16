@@ -16,8 +16,13 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@toast-ui/react-editor": "^3.2.3",
     "clsx": "^2.1.1",
     "framer-motion": "^12.20.1",
+    "prosemirror-model": "^1.25.2",
+    "prosemirror-state": "^1.4.3",
+    "prosemirror-transform": "^1.10.4",
+    "react-quill": "^2.0.0",
     "react-toastify": "^11.0.5",
     "zustand": "^5.0.6"
   }

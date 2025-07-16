@@ -96,7 +96,7 @@ const AdminSidebar = () => {
             compact={isCompact}
           />
           <NavItem
-            to="/admin/booths"
+            to="/admin/booth"
             icon={
               <img
                 src={pathname === "/admin/booths" ? boothIconActive : boothIcon}
