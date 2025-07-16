@@ -9,7 +9,7 @@ const PageFooterButton = ({
 }) => {
   return (
     <footer className="sticky bottom-0 w-full">
-      <div className="flex justify-center py-8 px-5">{children}</div>
+      <div className={`flex justify-center py-8 px-5 ${className}`}>{children}</div>
     </footer>
   );
 };

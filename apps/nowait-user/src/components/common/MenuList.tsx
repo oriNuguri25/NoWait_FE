@@ -1,5 +1,5 @@
-import { useNavigate, useParams } from "react-router-dom";
 import type { MenuType } from "../../types/order/menu";
+import MenuItem from "./MenuItem";
 
 const dummyData: MenuType[] = [
   {
@@ -25,7 +25,7 @@ const dummyData: MenuType[] = [
     price: 9000,
     image: "",
   },
-   {
+  {
     id: "4",
     name: "파인애플 샤베트2",
     description:
@@ -33,7 +33,7 @@ const dummyData: MenuType[] = [
     price: 9000,
     image: "",
   },
-   {
+  {
     id: "5",
     name: "파인애플 샤베트3",
     description:
@@ -44,45 +44,12 @@ const dummyData: MenuType[] = [
 ];
 
 const MenuList = ({ mode }: { mode: string }) => {
-  const navigate = useNavigate();
-  const { storeId } = useParams();
   return (
     <div>
       <h1 className="text-title-20-semibold mb-3">메뉴</h1>
       <ul>
-        {dummyData.map((data) => {
-          return (
-            <li key={data.id} className="mb-5">
-              <button
-                onClick={() =>
-                  navigate(`/${storeId}/menu/${data.id}`, {
-                    state: data,
-                  })
-                }
-                className="w-full flex justify-between cursor-pointer text-left"
-              >
-                <div className="max-w-[224px]">
-                  <h2
-                    className={`${
-                      mode === "order"
-                        ? "text-title-18-semibold"
-                        : "text-title-16-bold"
-                    } text-black-90 mb-1 text-ellipsis line-clamp-2`}
-                  >
-                    {data.name}
-                  </h2>
-                  <h2 className="text-black-70">
-                    {data.price.toLocaleString()}원
-                  </h2>
-                </div>
-                <img
-                  className="w-[90px] h-[90px] bg-black-25 rounded-[12px]"
-                  src={`${data.image}` || ""}
-                  alt="음식 메뉴 이미지"
-                />
-              </button>
-            </li>
-          );
+        {dummyData.map((data: MenuType) => {
+          return <MenuItem key={data.id} data={data} mode={mode} />;
         })}
       </ul>
     </div>

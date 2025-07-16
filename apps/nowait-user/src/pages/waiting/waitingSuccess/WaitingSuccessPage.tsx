@@ -1,8 +1,7 @@
-import React from "react";
-import SuccessMessagePage from "../../components/common/SuccessMessagePage";
+import SuccessMessagePage from "../../../components/common/SuccessMessagePage";
 import { useNavigate } from "react-router-dom";
 
-const ReserveSuccessPage = () => {
+const WaitingSuccessPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -17,4 +16,4 @@ const ReserveSuccessPage = () => {
   );
 };
 
-export default ReserveSuccessPage;
+export default WaitingSuccessPage;

@@ -1,20 +1,20 @@
 import { Route, Routes } from "react-router-dom";
 import HomePage from "../pages/home/HomePage";
-import ReserveSuccessPage from "../pages/reserve/ReserveSuccessPage";
-import MapPage from "../pages/reserve/MapPage";
-import StoreDetailPage from "../pages/reserve/StoreDetailPage";
+import WaitingSuccessPage from "../pages/waiting/waitingSuccess/WaitingSuccessPage";
+import MapPage from "../pages/waiting/MapPage";
+import StoreDetailPage from "../pages/waiting/storeDetail/StoreDetailPage";
 import RedirectToStorePage from "../pages/order/home/RedirectToStorePage";
 import StorePage from "../pages/order/home/StorePage";
 import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
 import OrderListPage from "../pages/order/orderList/OrderListPage";
 import OrderSuccessPage from "../pages/order/orderSuccess/OrderSuccessPage";
 import RemittanceRequestPage from "../pages/order/remittance/RemittanceRequestPage";
-import StoreReservePage from "../pages/reserve/StoreReservePage";
 import LoginPage from "../pages/login/LoginPage";
 import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
-import PayerNameInput from "../pages/order/payer/PayerNameInput";
 import PageTransitionWrapper from "../components/layout/PageTransitionWrapper";
+import WaitingPartySizeForm from "../pages/waiting/waitingPartysize/WaitingPartySizeForm";
+import StoreMenuDetailPage from "../pages/waiting/menuDetail/StoreMenuDetailPage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -37,9 +37,9 @@ const Router = () => {
       {/* 보호된 라우트 - 인증 필요 (구체적인 경로 먼저) */}
       <Route
         path="/store/:id/reserve/success"
-        element={withAuth(ReserveSuccessPage)}
+        element={withAuth(WaitingSuccessPage)}
       />
-      <Route path="/store/:id/reserve" element={withAuth(StoreReservePage)} />
+      {/* <Route path="/store/:id/reserve" element={withAuth(StoreReservePage)} /> */}
       <Route path="/store/:id" element={withAuth(StoreDetailPage)} />
       <Route path="/map" element={withAuth(MapPage)} />
       <Route path="/" element={withAuth(HomePage)} />
@@ -52,7 +52,6 @@ const Router = () => {
         element={withTransition(AddMenuPage)}
       />
       <Route path="/:storeId/order" element={withTransition(OrderListPage)} />
-      <Route path="/:storeId/payer" element={withTransition(PayerNameInput)} />
       <Route
         path="/:storeId/remittance/request"
         element={withTransition(RemittanceRequestPage)}
@@ -71,10 +70,18 @@ const Router = () => {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/store/:id" element={<StoreDetailPage />} />
-              <Route path="/store/:id/reserve" element={<StoreReservePage />} />
               <Route
-                path="/store/:id/reserve/success"
-                element={<ReserveSuccessPage />}
+                path="/store/:id/menu/:menuId"
+                element={<StoreMenuDetailPage/>}
+              />
+              {/* <Route path="/store/:id/reserve" element={<StoreReservePage />} /> */}
+              <Route
+                path="/store/:id/partysize"
+                element={<WaitingPartySizeForm />}
+              />
+              <Route
+                path="/store/:id/waiting/success"
+                element={<WaitingSuccessPage />}
               />
               <Route path="/map" element={<MapPage />} />
             </Routes>
