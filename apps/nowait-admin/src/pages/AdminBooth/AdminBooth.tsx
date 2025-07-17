@@ -18,7 +18,7 @@ const BoothForm = () => {
 
   return (
     <div
-      className={`w-full bg-white overflow-auto ${
+      className={`w-full bg-white overflow-auto border-l border-l-[#ECECEC] ${
         isTablet ? "px-[90px] py-[20px]" : "px-[90px] py-[20px]"
       }`}
     >
@@ -54,7 +54,7 @@ const BoothForm = () => {
             alt="썸네일"
             className="w-25 h-25 rounded-full bg-gray-100 object-cover"
           />
-          <button className="absolute bottom-0 right-0 bg-white rounded-full p-1 border">
+          <button className="absolute bottom-0 right-0 bg-white rounded-full p-1 border border-[#ECECEC]">
             <img src={editIcon} className="w-4 h-4" alt="편집" />
           </button>
         </div>
@@ -65,7 +65,7 @@ const BoothForm = () => {
           <span className="text-sm text-gray-500 mb-[14px] flex">
             컴퓨터공학과
           </span>
-          <div className="flex h-full">
+          <div className="flex h-full relative">
             <input
               type="text"
               value={boothName}
@@ -74,9 +74,9 @@ const BoothForm = () => {
               placeholder="부스명을 입력해주세요"
               className="w-full h-full border border-[#DDDDDD] rounded-xl px-4 py-2 text-sm"
             />
-            {/* <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">
+            <span className="absolute right-[20px] top-1/2 -translate-y-1/2 text-xs text-gray-400">
               {boothName.length} / 20
-            </span> */}
+            </span>
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@ const BoothForm = () => {
       {/* 배너 이미지 */}
       <div className="flex flex-col mb-[50px]">
         <label className="block font-semibold">배너 이미지</label>
-        <p className="text-sm text-gray-400 mb-[14px]">
+        <p className="text-14-regular text-black-60 mb-[14px]">
           첫번째 이미지는 우리 부스를 대표하는 이미지로 설정돼요
         </p>
         <div className="flex gap-[10px]">
@@ -111,7 +111,7 @@ const BoothForm = () => {
             .map((_, i) => (
               <label
                 key={i}
-                className="w-[150px] h-25 bg-gray-100 border border-[#DDDDDD] rounded-xl flex items-center justify-center cursor-pointer"
+                className="w-[150px] h-25 bg-black-5 border border-[#DDDDDD] rounded-xl flex items-center justify-center cursor-pointer"
               >
                 <input
                   type="file"
@@ -145,11 +145,11 @@ const BoothForm = () => {
       <NoticeEditor />
 
       {/* 버튼 */}
-      <div className="flex justify-end">
-        <button className="rounded-lg border text-sm text-gray-700">
+      <div className="flex w-full gap-[10px] mt-[50px]">
+        <button className="w-full h-[51px] py-4 rounded-lg bg-[#F6F6F6] text-black-70 text-14-regular">
           미리보기
         </button>
-        <button className="rounded-lg bg-black text-white text-sm">
+        <button className="w-full h-[51px] py-4 rounded-lg bg-[#111114] text-white text-14-regular">
           저장하기
         </button>
       </div>

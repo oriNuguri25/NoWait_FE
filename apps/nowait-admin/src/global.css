@@ -65,3 +65,7 @@ body,
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+.ProseMirror:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}

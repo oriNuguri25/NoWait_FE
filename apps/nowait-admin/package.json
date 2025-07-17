@@ -13,6 +13,11 @@
   "dependencies": {
     "@repo/ui": "workspace:*",
     "@tanstack/react-query": "^5.81.2",
+    "@tiptap/core": "^3.0.7",
+    "@tiptap/extension-underline": "^3.0.7",
+    "@tiptap/pm": "^3.0.7",
+    "@tiptap/react": "^3.0.7",
+    "@tiptap/starter-kit": "^3.0.7",
     "@toast-ui/editor": "^3.2.2",
     "@toast-ui/react-editor": "^3.2.3",
     "axios": "^1.10.0",

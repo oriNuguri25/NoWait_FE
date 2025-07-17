@@ -16,6 +16,9 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@tiptap/extension-underline": "^3.0.7",
+    "@tiptap/react": "^3.0.7",
+    "@tiptap/starter-kit": "^3.0.7",
     "@toast-ui/react-editor": "^3.2.3",
     "clsx": "^2.1.1",
     "framer-motion": "^12.20.1",
