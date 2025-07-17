@@ -1,11 +1,11 @@
 import Arrow from "../../../assets/icon/arrow-right.svg?react";
 import SubStract from "../../../assets/icon/subtract.svg?react";
 import Clock from "../../../assets/icon/clock.svg?react";
-import BookMark from "../../../assets/icon/bookmark.svg?react";
 import PageFooterButton from "../../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import { useNavigate, useParams } from "react-router-dom";
 import MenuList from "../../../components/common/MenuList";
+import IsBookmark from "./components/IsBookmark";
 
 const TAG = [
   { id: 1, type: "default", tag: "태그 추가" },
@@ -16,7 +16,7 @@ const TAG = [
 const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id);
+
   return (
     <div>
       <div className="px-5">
@@ -87,17 +87,10 @@ const StoreDetailPage = () => {
           </div>
         </section>
         <div className="-mx-5 bg-black-25 h-[16px] mb-[30px]"></div>
-        <MenuList mode="store"/>
+        <MenuList mode="store" />
       </div>
       <PageFooterButton className="gap-2">
-        <Button
-          className="border"
-          backgroundColor="white"
-          borderColor="#ececec"
-          buttonType="icon"
-        >
-          <BookMark />
-        </Button>
+        <IsBookmark />
         <Button onClick={() => navigate(`/store/${id}/partysize`)}>
           대기하기
         </Button>

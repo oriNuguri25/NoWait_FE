@@ -7,7 +7,7 @@ import SectionDivider from "../../../components/SectionDivider";
 import { useRef, useState } from "react";
 import { sumTotalPrice } from "../../../utils/sumUtils";
 import { getTableId, setSessionData } from "../../../utils/cartStorage";
-import { createOrder } from "../../../lib/order";
+import { createOrder } from "../../../api/order";
 import PayerInput from "./components/PayerInput";
 import OrderSummary from "./components/OrderSummary";
 import RemitOptions from "./components/RemitOptions";

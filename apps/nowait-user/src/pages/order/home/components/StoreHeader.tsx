@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { getMyOrderList } from "../../../../lib/order";
+import { getMyOrderList } from "../../../../api/order";
 
 const StoreHeader = () => {
   const navigate = useNavigate();

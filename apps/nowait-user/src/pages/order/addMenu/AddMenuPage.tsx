@@ -42,7 +42,8 @@ const AddMenuPage = () => {
       <div className="sticky left-0 bottom-[124px] bg-white">
         <div className="w-full flex justify-between items-center px-5">
           <h1 className="text-[24px] font-semibold">
-            {(price * quantity).toLocaleString()}원
+            <NumberFlow value={(price * quantity)} suffix="원"/>
+            {/* {(price * quantity).toLocaleString()}원 */}
           </h1>
           <QuantitySelector
             mode="state"
