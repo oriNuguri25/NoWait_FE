@@ -30,8 +30,12 @@ const AdminSidebar = () => {
   return (
     <aside
       className={`
-        h-screen flex flex-col justify-between bg-white px-4 py-6 fixed
-        ${isCompact ? "w-[60px] items-center" : "w-[210px]"}
+        h-screen flex flex-col justify-between bg-white fixed
+        ${
+          isCompact
+            ? "w-[60px] items-center px-[10px] py-5"
+            : "w-[210px] px-4 py-6"
+        }
       `}
     >
       {/* 상단: 로고 & 메뉴 */}
@@ -115,7 +119,7 @@ const AdminSidebar = () => {
         <img
           src={profile}
           alt="프로필"
-          className="w-8 h-8 rounded-full object-cover"
+          className="w-9 h-9 rounded-full object-cover"
         />
         {!isCompact && (
           <div className="flex flex-row">
@@ -143,9 +147,11 @@ const NavItem = ({ to, icon, label, compact }: NavItemProps) => {
       to={to}
       end
       className={({ isActive }) =>
-        `flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold justify-center ${
+        `flex items-center rounded-lg text-sm font-semibold ${
           isActive ? "bg-gray-100 text-black" : "text-gray-400"
-        } ${compact ? "justify-center" : "justify-start"}`
+        } ${
+          compact ? "justify-center w-10 h-10" : "justify-start px-4 py-2 gap-2"
+        }`
       }
     >
       {icon}

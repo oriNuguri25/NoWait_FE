@@ -18,7 +18,7 @@ const BoothForm = () => {
 
   return (
     <div
-      className={`w-full bg-white overflow-auto border-l border-l-[#ECECEC] ${
+      className={`w-full bg-white overflow-y-auto border-l border-l-[#ECECEC] ${
         isTablet ? "px-[90px] py-[20px]" : "px-[90px] py-[20px]"
       }`}
     >
