@@ -103,7 +103,7 @@ const AdminSidebar = () => {
             to="/admin/booth"
             icon={
               <img
-                src={pathname === "/admin/booths" ? boothIconActive : boothIcon}
+                src={pathname === "/admin/booth" ? boothIconActive : boothIcon}
                 alt="부스 관리"
                 className="w-5 h-5"
               />

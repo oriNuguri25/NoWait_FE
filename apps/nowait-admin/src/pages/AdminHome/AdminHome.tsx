@@ -8,9 +8,9 @@ import on from "../../assets/on.svg";
 import off from "../../assets/off.svg";
 import onIcon from "../../assets/toggleOn.svg"; // 켜짐 상태 이미지
 import offIcon from "../../assets/toggleOFF.svg";
-import { useWindowWidth } from "../../hooks/useWindowWidth";
 import { useUpdateReservationStatus } from "../../hooks/useUpdateReservationStatus";
 import ConfirmRemoveModal from "../../components/ConfirmRemoveModal";
+import ToggleSwitch from "./components/ToggleSwitch";
 type WaitingStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 
 interface Reservation {
@@ -32,7 +32,7 @@ const AdminHome = () => {
 
   const [activeTab, setActiveTab] = useState("전체 보기");
   const storeId = 1; //현재는 임시로 mockdata씀
-  const [isOn, setIsOn] = useState(false);
+  const [isOn, setIsOn] = useState(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const { data, isLoading, isError } = useGetReservationList(storeId);
 
@@ -184,17 +184,26 @@ const AdminHome = () => {
           <div className="flex justify-between mb-[40px]">
             <div className="flex items-center">
               <h1 className="text-title-20-bold">대기 접수</h1>&nbsp;
-              <span>
-                <img src={isOn ? on : off} />
+              <span className="flex items-center">
+                <img
+                  src={on}
+                  alt="대기현환 on"
+                  className={`
+      absolute transition-all duration-300 ease-in
+      ${isOn ? "opacity-100 scale-100" : "opacity-0"}
+    `}
+                />
+                <img
+                  src={off}
+                  alt="대기현환 off"
+                  className={`
+      absolute transition-all duration-300 ease-in
+      ${!isOn ? "opacity-100 scale-100" : "opacity-0"}
+    `}
+                />
               </span>
             </div>
-            <button onClick={toggle}>
-              <img
-                src={isOn ? onIcon : offIcon}
-                alt={isOn ? "On" : "Off"}
-                className="w-10 h-10"
-              />
-            </button>
+            <ToggleSwitch isOn={isOn} toggle={toggle} />
           </div>
         </div>
       </section>
