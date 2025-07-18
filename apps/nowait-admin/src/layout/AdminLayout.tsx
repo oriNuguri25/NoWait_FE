@@ -9,13 +9,8 @@ const AdminLayout = () => {
   const isCompact = width < 1024;
   const isMobile = width <= 431;
 
-  const getSidebarWidth = () => {
-    if (isMobile || width <= 768) return 0;
-    return isCompact ? 60 : 210;
-  };
-
   return (
-    <div className="flex w-screen">
+    <div className={`${isMobile ? "flex flex-col" : "flex"} w-screen`}>
       {isMobile ? <MobileMenuBar /> : <AdminSidebar />}
       <main
         className={`
