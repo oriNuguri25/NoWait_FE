@@ -1,5 +1,5 @@
-import { useNavigate, useParams } from "react-router-dom";
 import type { MenuType } from "../../types/order/menu";
+import MenuItem from "./MenuItem";
 
 const dummyData: MenuType[] = [
   {
@@ -19,70 +19,37 @@ const dummyData: MenuType[] = [
   },
   {
     id: "3",
-    name: "파인애플 샤베트",
+    name: "갈비구이",
     description:
-      "시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.",
-    price: 9000,
-    image: "",
+      "갈비를 달콤하고 고소한 비법 간장 양념에 재워 촉촉하게 구운 꿀조합 술 안주",
+    price: 9200,
+    image: "/beef.png",
   },
-   {
+
+  {
     id: "4",
-    name: "파인애플 샤베트2",
-    description:
-      "시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.",
+    name: "파인애플 샤베트",
+    description: "시원한 파인애플 샤베트 입니다.",
     price: 9000,
     image: "",
   },
-   {
+
+  {
     id: "5",
-    name: "파인애플 샤베트3",
-    description:
-      "시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.시원한 파인애플 샤베트 입니다.",
-    price: 9000,
+    name: "해물파전",
+    description: "해물 별로 안들어간 해물파전 입니다.",
+    price: 15000,
     image: "",
   },
 ];
 
 const MenuList = ({ mode }: { mode: string }) => {
-  const navigate = useNavigate();
-  const { storeId } = useParams();
   return (
-    <div>
+    <div className="mt-7.5">
       <h1 className="text-title-20-semibold mb-3">메뉴</h1>
       <ul>
-        {dummyData.map((data) => {
-          return (
-            <li key={data.id} className="mb-5">
-              <button
-                onClick={() =>
-                  navigate(`/${storeId}/menu/${data.id}`, {
-                    state: data,
-                  })
-                }
-                className="w-full flex justify-between cursor-pointer text-left"
-              >
-                <div className="max-w-[224px]">
-                  <h2
-                    className={`${
-                      mode === "order"
-                        ? "text-title-18-semibold"
-                        : "text-title-16-bold"
-                    } text-black-90 mb-1 text-ellipsis line-clamp-2`}
-                  >
-                    {data.name}
-                  </h2>
-                  <h2 className="text-black-70">
-                    {data.price.toLocaleString()}원
-                  </h2>
-                </div>
-                <img
-                  className="w-[90px] h-[90px] bg-black-25 rounded-[12px]"
-                  src={`${data.image}` || ""}
-                  alt="음식 메뉴 이미지"
-                />
-              </button>
-            </li>
-          );
+        {dummyData.map((data: MenuType) => {
+          return <MenuItem key={data.id} data={data} mode={mode} />;
         })}
       </ul>
     </div>
