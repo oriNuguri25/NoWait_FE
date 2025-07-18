@@ -118,3 +118,9 @@ body,
 .toggle-btn .slider.round {
   border-radius: 34px;
 }
+
+/* 라운드 버튼 넘칠때 그라데이션 효과 */
+.mask-fade-right {
+  mask-image: linear-gradient(to right, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+}

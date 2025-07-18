@@ -150,7 +150,9 @@ const NavItem = ({ to, icon, label, compact }: NavItemProps) => {
         `flex items-center rounded-lg text-sm font-semibold ${
           isActive ? "bg-gray-100 text-black" : "text-gray-400"
         } ${
-          compact ? "justify-center w-10 h-10" : "justify-start px-4 py-2 gap-2"
+          compact
+            ? "justify-center w-10 h-10"
+            : "justify-start px-4 py-2 gap-[8px]"
         }`
       }
     >
