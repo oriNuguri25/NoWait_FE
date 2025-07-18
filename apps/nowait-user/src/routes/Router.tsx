@@ -17,6 +17,7 @@ import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
 import RemittanceWaitPage from "../pages/order/remittenceWait/RemittanceWaitPage";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import "../components/layout/transition.css";
+import OrderDetailsPage from "../pages/order/orderDetails/OrderDetailsPage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -71,7 +72,10 @@ const Router = () => {
           path="/:storeId/order/success"
           element={withTransition(OrderSuccessPage)}
         />
-
+        <Route
+          path="/:storeId/orderDetails"
+          element={withTransition(OrderDetailsPage)}
+        />
         {/* 보호된 라우트 - 인증 필요 */}
         <Route
           path="/*"

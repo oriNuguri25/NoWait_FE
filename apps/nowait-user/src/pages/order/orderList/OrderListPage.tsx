@@ -60,6 +60,7 @@ const OrderListPage = () => {
             })}
           </AnimatePresence>
           <SmallActionButton
+            mode="default"
             type="button"
             ariaLabel="메뉴 추가하기"
             onClick={() => navigate(`/${storeId}`)}
