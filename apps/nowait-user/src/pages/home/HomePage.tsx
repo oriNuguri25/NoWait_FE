@@ -77,7 +77,7 @@ const HomePage = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col px-5">
+      <div className="flex flex-col px-5 gap-10">
         {/* 바로 입장 가능한 주점 */}
         <div className="flex flex-col">
           <div className="flex flex-row gap-1.5 items-center mb-3.5">
