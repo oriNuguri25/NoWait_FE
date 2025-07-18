@@ -3,11 +3,12 @@ import PageFooterButton from "../../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import TotalButton from "../../../components/order/TotalButton";
 import { useCartStore } from "../../../stores/cartStore";
-import MenuList from "../../../components/common/MenuList";
 import { useEffect } from "react";
 import { useToastStore } from "../../../stores/toastStore";
 import StoreHeader from "./components/StoreHeader";
+import MenuList from "../../../components/common/MenuList";
 import SectionDivider from "../../../components/SectionDivider";
+
 
 const StorePage = () => {
   const navigate = useNavigate();

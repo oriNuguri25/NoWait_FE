@@ -1,11 +1,11 @@
-import MenuList from "../../components/common/MenuList";
-import Arrow from "../../assets/icon/arrow-right.svg?react";
-import MapPin from "../../assets/icon/map-pin.svg?react";
-import Clock from "../../assets/icon/clock.svg?react";
-import BookMark from "../../assets/icon/bookmark.svg?react";
-import PageFooterButton from "../../components/order/PageFooterButton";
+import Arrow from "../../../assets/icon/arrow-right.svg?react";
+import SubStract from "../../../assets/icon/subtract.svg?react";
+import Clock from "../../../assets/icon/clock.svg?react";
+import PageFooterButton from "../../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
-import SectionDivider from "../../components/SectionDivider";
+import { useNavigate, useParams } from "react-router-dom";
+import MenuList from "../../../components/common/MenuList";
+import IsBookmark from "./components/IsBookmark";
 
 const TAG = [
   { id: 1, type: "default", tag: "태그 추가" },
@@ -14,6 +14,9 @@ const TAG = [
 ];
 
 const StoreDetailPage = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   return (
     <div>
       <div className="px-5">
@@ -52,19 +55,19 @@ const StoreDetailPage = () => {
         <section className="pt-5 pb-[28px]">
           <div className="mb-6">
             <p className="flex items-center mb-1.5 text-16-regular text-black-80">
-              <span className="mr-1.5">
-                <MapPin fill="#D9D9D9" />
+              <span className="w-[18px] flex justify-center  mr-1.5">
+                <SubStract />
               </span>
               가천대학교 무한광장
             </p>
             <p className="flex items-center text-16-regular text-black-80">
-              <span className="mr-1.5">
-                <Clock fill="#D9D9D9" />
+              <span className="w-[18px] flex justify-center mr-1.5">
+                <Clock />
               </span>
               18:00 - 24:00
             </p>
           </div>
-          <h2 className="mb-10 text-14-regular text-black-80">
+          <h2 className="mb-10 text-16-regular text-black-80">
             안녕하세요! 컴공과가 버그 없이 준비한 이스터에그가 가득 부스
             스페이시스입니다 🚀 남다른 디버깅 실력으로 굽는 츄러스, 데이터 손실
             없는 아이스티, 그리고 메모리 오류 없는 넉넉한 양까지 완벽
@@ -83,19 +86,14 @@ const StoreDetailPage = () => {
             <Arrow className="shrink-0" fill="#AAAAAA" />
           </div>
         </section>
-        <SectionDivider />
-        <MenuList />
+        <div className="-mx-5 bg-black-25 h-[16px] mb-[30px]"></div>
+        <MenuList mode="store" />
       </div>
-      <PageFooterButton className="gap-2.5">
-        <Button
-          className="border"
-          backgroundColor="white"
-          borderColor="#ececec"
-          buttonType="icon"
-        >
-          <BookMark />
+      <PageFooterButton className="gap-2">
+        <IsBookmark />
+        <Button onClick={() => navigate(`/store/${id}/partysize`)}>
+          대기하기
         </Button>
-        <Button>대기하기</Button>
       </PageFooterButton>
     </div>
   );
