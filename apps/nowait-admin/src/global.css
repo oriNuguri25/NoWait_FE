@@ -65,3 +65,62 @@ body,
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+/* 에디터 관련(글 입력시 아웃라인 제거) */
+.ProseMirror:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* toggle버튼 */
+.toggle-btn .switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+}
+
+.toggle-btn .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-btn .slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #d3d8df;
+  transition: all 0.4s ease;
+  border-radius: 34px;
+}
+
+.toggle-btn .slider::before {
+  position: absolute;
+  content: "";
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  top: 3px;
+  background-color: white;
+  transition: all 0.4s ease;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 4px 0px;
+}
+
+.toggle-btn input:checked + .slider {
+  background-color: #000000;
+}
+
+.toggle-btn input:checked + .slider::before {
+  transform: translateX(16px);
+}
+
+.toggle-btn .slider.round {
+  border-radius: 34px;
+}
+
+/* 라운드 버튼 넘칠때 그라데이션 효과 */
+.mask-fade-right {
+  mask-image: linear-gradient(to right, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+}

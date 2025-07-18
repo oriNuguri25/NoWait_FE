@@ -28,27 +28,22 @@ const AddMenuPage = () => {
     navigate(`/${storeId}`, { state: { added: true }, replace: true });
   };
   return (
-    <div>
-      <div className="flex flex-col min-h-screen-dvh px-5">
-        <h1 className="-mx-5">
-          <img
-            className="w-full min-h-[250px] object-cover"
-            src={image}
-            alt="음식 메뉴 이미지"
-          />
+    <div className="flex flex-col h-screen">
+      <div className="flex-1 overflow-y-auto px-5">
+        <h1 className="-mx-5 h-[375px] bg-black-25">
+          <img className="w-full" src={image} alt="음식 메뉴 이미지" />
         </h1>
-        <div className="pt-7.5">
-          <h1 className="text-headline-22-bold mb-2 break-keep">{name}</h1>
-          <h2 className="text-16-regular text-black-70 break-keep">
-            {description}
-          </h2>
+        <div className="py-8">
+          <h1 className="text-headline-22-bold mb-2">{name}</h1>
+          <h2>{description}</h2>
         </div>
       </div>
-      <PageFooterButton>
-        {/* 메뉴 가격 및 수량 컨트롤 */}
-        <div className="w-full flex justify-between items-center mb-8">
-          <h1 className="text-[24px] font-bold">
-            <NumberFlow value={price * quantity} trend={0} suffix="원" />
+      {/* 메뉴 가격 및 수량 컨트롤 */}
+      <div className="sticky left-0 bottom-[124px] bg-white">
+        <div className="w-full flex justify-between items-center px-5">
+          <h1 className="text-[24px] font-semibold">
+            <NumberFlow value={(price * quantity)} suffix="원"/>
+            {/* {(price * quantity).toLocaleString()}원 */}
           </h1>
           <QuantitySelector
             mode="state"
@@ -56,6 +51,8 @@ const AddMenuPage = () => {
             setQuantity={setQuantity}
           />
         </div>
+      </div>
+      <PageFooterButton>
         <Button textColor="white" onClick={addToCartButton}>
           추가하기
         </Button>

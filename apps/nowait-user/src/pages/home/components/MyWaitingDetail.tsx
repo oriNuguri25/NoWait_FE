@@ -34,7 +34,7 @@ const MyWaitingDetail = ({
 
     const handleScroll = () => {
       const scrollLeft = container.scrollLeft;
-      const cardWidth = 288 + 6; // w-72 (288px) + gap-1.5 (6px)
+      const cardWidth = 288 + 24; // w-72 (288px) + gap-6 (24px)
       const newIndex = Math.round(scrollLeft / cardWidth);
       const boundedIndex = Math.max(0, Math.min(newIndex, items.length - 1));
 
@@ -147,18 +147,45 @@ const MyWaitingDetail = ({
         {/* 카드 영역 */}
         <div className="w-full flex-1 flex flex-col mb-7.5">
           {/* 가로 스크롤 카드 컨테이너 */}
-          <div className="flex-1 flex">
+          <div className="flex-1 flex overflow-visible">
             <div
               ref={scrollContainerRef}
-              className="flex gap-1.5 overflow-x-auto scrollbar-hide w-full snap-x snap-mandatory"
+              className="flex gap-6 overflow-x-auto overflow-y-visible scrollbar-hide w-full snap-x snap-mandatory"
               style={{
                 paddingLeft: "calc(50vw - 144px)",
                 paddingRight: "calc(50vw - 144px)",
+                paddingTop: "20px",
+                paddingBottom: "40px",
               }}
             >
-              {items.map((item, index) => (
-                <MainCard key={item.id} type="waiting" item={item} />
-              ))}
+              {items.map((item, index) => {
+                // 현재 활성 카드 기준으로 회전 각도, 이동 거리, 높이 위치 계산
+                let rotation = 0;
+                let translateX = 0;
+                let translateY = 0;
+                if (index < currentIndex) {
+                  rotation = -3; // 왼쪽 카드들은 -3도 회전 (반시계 방향)
+                  translateX = -8; // 왼쪽으로 8px 이동
+                  translateY = 8; // 아래로 8px 이동
+                } else if (index > currentIndex) {
+                  rotation = 3; // 오른쪽 카드들은 3도 회전 (시계 방향)
+                  translateX = 8; // 오른쪽으로 8px 이동
+                  translateY = 8; // 아래로 8px 이동
+                }
+
+                return (
+                  <div
+                    key={item.id}
+                    className="transition-transform duration-300 ease-out"
+                    style={{
+                      transform: `translateX(${translateX}px) translateY(${translateY}px) rotate(${rotation}deg)`,
+                      transformOrigin: "center center",
+                    }}
+                  >
+                    <MainCard type="waiting" item={item} />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

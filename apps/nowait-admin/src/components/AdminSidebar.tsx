@@ -1,11 +1,19 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Clock, Layers, BarChart2 } from "lucide-react";
 import { useWindowWidth } from "../hooks/useWindowWidth";
+import { useLocation } from "react-router-dom";
 import NwIcon from "../assets/nwLogo.svg?react";
 import NwTextIcon from "../assets/nw_text_logo.svg?react";
 import ArrowDown from "../assets/keyboard_arrow_down.svg?react";
 import profile from "../assets/profile.png";
+import waitIcon from "../assets/Waiting.svg"; // 대기 아이콘 등
+import orderIcon from "../assets/Order.svg";
+import statIcon from "../assets/Statistics.svg";
+import boothIcon from "../assets/Tent.svg";
+import waitIconActive from "../assets/waitIconActive.svg";
+import orderIconActive from "../assets/orderIconActive.svg";
+import statIconActive from "../assets/statIconActive.svg";
+import boothIconActive from "../assets/boothIconActive.svg";
 
 const AdminSidebar = () => {
   const width = useWindowWidth();
@@ -16,12 +24,18 @@ const AdminSidebar = () => {
   if (width < 768) return null;
 
   const isCompact = width < 1024;
+  const location = useLocation();
+  const pathname = location.pathname;
 
   return (
     <aside
       className={`
-        h-screen flex flex-col justify-between bg-white px-4 py-6 fixed
-        ${isCompact ? "w-[60px] items-center" : "w-[210px]"}
+        h-screen flex flex-col justify-between bg-white fixed
+        ${
+          isCompact
+            ? "w-[60px] items-center px-[10px] py-5"
+            : "w-[210px] px-4 py-6"
+        }
       `}
     >
       {/* 상단: 로고 & 메뉴 */}
@@ -49,20 +63,52 @@ const AdminSidebar = () => {
         <nav className="flex flex-col gap-2">
           <NavItem
             to="/admin"
-            icon={<Clock className="w-5 h-5" />}
+            icon={
+              <img
+                src={pathname === "/admin" ? waitIconActive : waitIcon}
+                alt="웨이팅"
+                className="w-5 h-5"
+              />
+            }
             label="웨이팅"
             compact={isCompact}
           />
           <NavItem
             to="/admin/orders"
-            icon={<Layers className="w-5 h-5" />}
+            icon={
+              <img
+                src={pathname === "/admin/orders" ? orderIconActive : orderIcon}
+                alt="주문"
+                className="w-5 h-5"
+              />
+            }
             label="주문"
             compact={isCompact}
           />
           <NavItem
             to="/admin/analytics"
-            icon={<BarChart2 className="w-5 h-5" />}
+            icon={
+              <img
+                src={
+                  pathname === "/admin/analytics" ? statIconActive : statIcon
+                }
+                alt="관리 및 통계"
+                className="w-5 h-5"
+              />
+            }
             label="관리 · 통계"
+            compact={isCompact}
+          />
+          <NavItem
+            to="/admin/booth"
+            icon={
+              <img
+                src={pathname === "/admin/booth" ? boothIconActive : boothIcon}
+                alt="부스 관리"
+                className="w-5 h-5"
+              />
+            }
+            label="부스"
             compact={isCompact}
           />
         </nav>
@@ -73,7 +119,7 @@ const AdminSidebar = () => {
         <img
           src={profile}
           alt="프로필"
-          className="w-8 h-8 rounded-full object-cover"
+          className="w-9 h-9 rounded-full object-cover"
         />
         {!isCompact && (
           <div className="flex flex-row">
@@ -101,9 +147,13 @@ const NavItem = ({ to, icon, label, compact }: NavItemProps) => {
       to={to}
       end
       className={({ isActive }) =>
-        `flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold justify-center ${
+        `flex items-center rounded-lg text-sm font-semibold ${
           isActive ? "bg-gray-100 text-black" : "text-gray-400"
-        } ${compact ? "justify-center" : "justify-start"}`
+        } ${
+          compact
+            ? "justify-center w-10 h-10"
+            : "justify-start px-4 py-2 gap-[8px]"
+        }`
       }
     >
       {icon}

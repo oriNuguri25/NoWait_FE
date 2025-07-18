@@ -14,29 +14,6 @@ const OrderListPage = () => {
   const { storeId } = useParams();
   const { cart } = useCartStore();
 
-  // const orderHandleButton = async () => {
-  //   try {
-  //     const payload = {
-  //       depositorName: "홍길동",
-  //       items: cart.map((item) => ({
-  //         menuId: item.menuId,
-  //         quantity: item.quantity,
-  //       })),
-  //       totalPrice: sumTotalPrice(cart),
-  //     };
-  //     const res = await createOrder(storeId!, tableId!, payload);
-  //     if (res?.success) {
-  //       //세션 아이디, 입금자명 로컬스토리지 저장
-  //       setSessionData(res.response.sessionId, res.response.depositorName);
-  //     } else {
-  //       console.log("error");
-  //     }
-  //     navigate(`/${storeId}/remittance`);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
   if (cart.length === 0) return <EmptyCart />;
 
   return (

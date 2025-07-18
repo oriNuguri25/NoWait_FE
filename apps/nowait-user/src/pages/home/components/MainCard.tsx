@@ -1,9 +1,11 @@
 import { useColor } from "color-thief-react";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { getDepartmentName } from "../../../constants/departments";
 import { NotOpenIcon, WaitingIcon, WaitingCardIcon } from "./HomeIcon";
 import type { WaitingItem } from "../../../types/WaitingItem";
 import block from "../../../assets/block.png";
+import Refresh from "../../../assets/icon/refresh.svg?react";
 
 // WaitingCard Props
 interface WaitingCardProps {
@@ -40,11 +42,21 @@ interface HomeCardProps {
   departmentId?: number;
 }
 
+// MyWaitingCard Props
+interface MyWaitingCardProps {
+  type: "myWaitingCard";
+  storeName: string;
+  waitingTeams: number;
+  images?: string[]; // 원형 인디케이터에 표시할 이미지들
+  onClick?: () => void;
+}
+
 type MainCardProps =
   | WaitingCardProps
   | StoreCardProps
   | HomeWaitingCardProps
-  | HomeCardProps;
+  | HomeCardProps
+  | MyWaitingCardProps;
 
 // 대기 카드 컴포넌트
 const WaitingCard = ({ item }: { item: WaitingItem }) => {
@@ -172,7 +184,7 @@ const StoreCardComponent = ({
   }
 
   const departmentName = getDepartmentName(departmentId);
-  const mainImage = images.length > 0 ? images[0] : undefined;
+  const mainImage = images && images.length > 0 ? images[0] : undefined;
   const status = isActive ? "open" : "closed";
 
   // 스토어 클릭 핸들러
@@ -277,6 +289,168 @@ const HomeCardComponent = ({
   );
 };
 
+// 내 대기 카드 컴포넌트
+const MyWaitingCardComponent = ({
+  storeName,
+  waitingTeams,
+  images = [],
+  onClick,
+}: Omit<MyWaitingCardProps, "type">) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [startX, setStartX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const totalSlides = 3; // 총 슬라이드 개수
+
+  // 슬라이드별 초기 시간 (초 단위) - 모두 10분으로 통일
+  const initialTimes = [600, 600, 600]; // 모두 10분
+  const [timeLeft, setTimeLeft] = useState(initialTimes[0]); // 현재 남은 시간 (초)
+
+  // 시간을 MM:SS 형식으로 포맷팅
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  // 슬라이드가 변경될 때 타이머 리셋
+  useEffect(() => {
+    setTimeLeft(initialTimes[currentSlide]);
+  }, [currentSlide]);
+
+  // 타이머 로직
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
+  // 터치 시작
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setStartX(e.touches[0].clientX);
+    setIsDragging(true);
+  };
+
+  // 터치 끝
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!isDragging) return;
+
+    const endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+    const threshold = 50; // 슬라이드 감지 임계값
+
+    if (Math.abs(diff) > threshold) {
+      if (diff > 0) {
+        // 왼쪽으로 스와이프 (다음 슬라이드) - 순환 로직
+        setCurrentSlide((prev) => (prev + 1) % totalSlides);
+      } else if (diff < 0) {
+        // 오른쪽으로 스와이프 (이전 슬라이드) - 순환 로직
+        setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+      }
+    }
+
+    setIsDragging(false);
+  };
+
+  return (
+    <div>
+      <div
+        className="flex flex-col mt-4.5 mb-2.5 pb-9 w-full bg-[#D8E6FF] rounded-2xl items-center justify-center cursor-pointer relative overflow-hidden"
+        onClick={onClick}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* 슬라이드 인디케이터 */}
+        <div className="absolute flex flex-row gap-1 top-5 right-5">
+          {[0, 1, 2].map((index) => (
+            <div
+              key={index}
+              className={`flex w-1.5 h-1.5 rounded-md transition-colors duration-300 ${
+                currentSlide === index ? "bg-[#101010]" : "bg-[#000000]/10"
+              }`}
+            ></div>
+          ))}
+        </div>
+
+        <div className="flex mt-6.5 text-14-semibold text-[#1A3149] leading-[130%] tracking-[0em]">
+          {storeName}
+        </div>
+
+        <div className="flex flex-row mt-1">
+          <div className="flex mr-1 text-title-20-bold leading-[130%] tracking-[0em] text-[#1A3149]">
+            내 앞에 대기
+          </div>
+          <div className="flex text-title-20-bold leading-[130%] tracking-[0em] text-primary mr-1.5">
+            {waitingTeams}팀
+          </div>
+          <div className="flex items-center">
+            <Refresh className="icon-s" />
+          </div>
+        </div>
+
+        <div className="flex flex-row mt-8">
+          <div className="flex flex-row">
+            {[0, 1, 2].map((index) => {
+              const isActive = currentSlide === index;
+              const isNext = currentSlide === index - 1;
+              const isPrev = currentSlide === index + 1;
+
+              // z-index 결정 (활성화된 것이 가장 앞에)
+              let zIndex = 10;
+              if (isActive) zIndex = 30;
+              else if (isNext || isPrev) zIndex = 20;
+
+              // 투명도 결정
+              let opacity = isActive ? 100 : 30;
+
+              // 배경색 결정 (이미지가 없을 때만 사용)
+              const bgColors = ["bg-amber-50", "bg-gray-200", "bg-blue-100"];
+
+              // 이미지가 있는지 확인
+              const hasImage = images && images[index];
+
+              return (
+                <div
+                  key={index}
+                  className={`flex w-17.5 h-17.5 rounded-full border-[3.5px] border-white transition-all duration-300 ${
+                    index > 0 ? "-ml-8" : ""
+                  } ${hasImage ? "bg-cover bg-center" : bgColors[index]}`}
+                  style={{
+                    zIndex: zIndex,
+                    opacity: opacity / 100,
+                    backgroundImage: hasImage
+                      ? `url(${images[index]})`
+                      : undefined,
+                  }}
+                ></div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-row justify-between items-center bg-white-100 rounded-2xl px-4 py-4 h-15">
+        <div className="flex text-14-medium text-[#787878] leading-[130%]">
+          10분 안에 입장해주세요!
+        </div>
+
+        <div className="flex text-14-bold text-[#1A3149]">
+          {formatTime(timeLeft)}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // 메인 카드 컴포넌트
 const MainCard = (props: MainCardProps) => {
   if (props.type === "waiting") {
@@ -308,6 +482,15 @@ const MainCard = (props: MainCardProps) => {
         waitingCount={props.waitingCount}
         storeName={props.storeName}
         departmentId={props.departmentId}
+      />
+    );
+  } else if (props.type === "myWaitingCard") {
+    return (
+      <MyWaitingCardComponent
+        storeName={props.storeName}
+        waitingTeams={props.waitingTeams}
+        images={props.images}
+        onClick={props.onClick}
       />
     );
   }

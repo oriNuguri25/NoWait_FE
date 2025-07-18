@@ -247,6 +247,13 @@ pre {
     font-weight: 600;
   }
 
+  .text-16-bold {
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0;
+    font-weight: 700;
+  }
+
   .text-16-semibold {
     font-size: 16px;
     line-height: 136%;
@@ -321,6 +328,13 @@ pre {
     line-height: 136%;
     letter-spacing: -0.02em;
     font-weight: 600;
+  }
+
+  .text-14-bold {
+    font-size: 14px;
+    line-height: 130%;
+    letter-spacing: 0em;
+    font-weight: 700;
   }
 
   .text-13-bold {
