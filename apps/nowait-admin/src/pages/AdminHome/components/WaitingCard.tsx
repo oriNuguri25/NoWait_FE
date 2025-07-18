@@ -1,6 +1,7 @@
 import CloseButton from "../../../components/closeButton";
 import callIcon from "../../../assets/Call.svg";
 import openDoorIcon from "../../../assets/door_open.svg";
+import alarmIcon from "../../../assets/alarm.svg";
 import { useEffect, useState } from "react";
 
 const totalDurationSec = 600;
@@ -90,7 +91,7 @@ export function WaitingCard({
       <div className="flex justify-between text-left rounded-lg overflow-hidden mb-4">
         {/* 입장인원 */}
         <div className="flex flex-col py-2 w-[20%]">
-          <div className="text-14-medium text-black-60 mb-1">입장인원</div>
+          <div className="text-14-medium text-black-60 mb-1">입장</div>
           <div className="text-title-17-bold text-black-80">
             {peopleCount}명
           </div>
@@ -132,16 +133,24 @@ export function WaitingCard({
 
         {status === "CALLING" &&
           (isNoShow === true ? (
-            <div
-              className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2"
-              onClick={onClose}
-            >
-              미입장
-            </div>
+            <>
+              <button
+                onClick={onClose}
+                className="w-[60%] bg-black-30 text-black-80 rounded-[8px] flex justify-center items-center py-2"
+              >
+                미입장
+              </button>
+              <button
+                onClick={onEnter}
+                className="w-[35%] bg-[#E8F3FF] text-[#2C7CF6] py-2 rounded-[8px] flex justify-center items-center gap-1"
+              >
+                <img src={openDoorIcon} /> 입장
+              </button>
+            </>
           ) : (
             <>
-              <div className="w-[60%] bg-black-15 text-black-60 py-2 rounded-[8px] flex justify-center items-center gap-1">
-                ⏱ {elapsed}
+              <div className="w-[60%] bg-black-15 text-black-60 text-15-semibold py-2 rounded-[8px] flex justify-center items-center gap-1">
+                <img src={alarmIcon} /> {elapsed}
               </div>
               <button
                 onClick={onEnter}

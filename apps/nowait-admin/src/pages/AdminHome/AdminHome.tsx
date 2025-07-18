@@ -1,16 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import CardBox from "./components/CardBox";
 import RoundTabButton from "./components/RoundTabButton";
 import refreshIcon from "../../assets/refresh.svg";
 import { WaitingCard } from "./components/WaitingCard";
 import { useGetReservationList } from "../../hooks/useGetReservationList";
 import on from "../../assets/on.svg";
 import off from "../../assets/off.svg";
-import onIcon from "../../assets/toggleOn.svg"; // 켜짐 상태 이미지
-import offIcon from "../../assets/toggleOFF.svg";
-import { useWindowWidth } from "../../hooks/useWindowWidth";
 import { useUpdateReservationStatus } from "../../hooks/useUpdateReservationStatus";
 import ConfirmRemoveModal from "../../components/ConfirmRemoveModal";
+import ToggleSwitch from "./components/ToggleSwitch";
 type WaitingStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 
 interface Reservation {
@@ -30,9 +27,9 @@ const AdminHome = () => {
   const { mutate: updateStatus } = useUpdateReservationStatus();
   const [showModal, setShowModal] = useState(false);
 
-  const [activeTab, setActiveTab] = useState("전체 보기");
+  const [activeTab, setActiveTab] = useState("전체");
   const storeId = 1; //현재는 임시로 mockdata씀
-  const [isOn, setIsOn] = useState(false);
+  const [isOn, setIsOn] = useState(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const { data, isLoading, isError } = useGetReservationList(storeId);
 
@@ -55,7 +52,7 @@ const AdminHome = () => {
   ).length;
 
   const tabLabels = [
-    { label: "전체 보기" },
+    { label: "전체" },
     { label: "대기 중", count: waitingCount },
     { label: "호출 중", count: callingCount },
     { label: "입장 완료", count: confirmedCount },
@@ -71,7 +68,7 @@ const AdminHome = () => {
 
   const filteredReservations = useMemo(() => {
     const sorted = [...reservations].sort((a, b) => a.id - b.id);
-    if (activeTab === "전체 보기") return reservations;
+    if (activeTab === "전체") return reservations;
 
     const targetStatus = Object.entries(statusMap).find(
       ([, label]) => label === activeTab
@@ -181,20 +178,29 @@ const AdminHome = () => {
         className="flex w-full [@media(min-width:375px)_and_(max-width:431px)]:justify-center m-0"
       >
         <div className="flex flex-col w-full">
-          <div className="flex justify-between mb-[40px]">
+          <div className="flex justify-between mb-[30px]">
             <div className="flex items-center">
               <h1 className="text-title-20-bold">대기 접수</h1>&nbsp;
-              <span>
-                <img src={isOn ? on : off} />
+              <span className="flex items-center">
+                <img
+                  src={on}
+                  alt="대기현환 on"
+                  className={`
+      absolute transition-all duration-300 ease-in
+      ${isOn ? "opacity-100 scale-100" : "opacity-0"}
+    `}
+                />
+                <img
+                  src={off}
+                  alt="대기현황 off"
+                  className={`
+      absolute transition-all duration-300 ease-in
+      ${!isOn ? "opacity-100 scale-100" : "opacity-0"}
+    `}
+                />
               </span>
             </div>
-            <button onClick={toggle}>
-              <img
-                src={isOn ? onIcon : offIcon}
-                alt={isOn ? "On" : "Off"}
-                className="w-10 h-10"
-              />
-            </button>
+            <ToggleSwitch isOn={isOn} toggle={toggle} />
           </div>
         </div>
       </section>
@@ -202,14 +208,14 @@ const AdminHome = () => {
       <section id="대기자 목록" className="flex flex-col w-full">
         {/* <h1 className="title-20-bold mb-5">대기자 목록</h1> */}
         <div className="flex justify-between items-center">
-          <div className="flex flex-wrap gap-2 overflow-x-auto scrollbar-hide [@media(max-width:431px)]:flex-nowrap">
+          <div className="flex flex-wrap gap-2 overflow-x-auto scrollbar-hide [@media(max-width:431px)]:flex-nowrap [@media(max-width:431px)]:mask-fade-right">
             {tabLabels.map(({ label, count }) => (
               <RoundTabButton
                 key={label}
                 label={label}
                 active={activeTab === label}
                 onClick={() => setActiveTab(label)}
-                count={label === "전체 보기" ? undefined : count}
+                count={label === "전체" ? undefined : count}
               />
             ))}
           </div>

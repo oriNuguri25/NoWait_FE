@@ -9,7 +9,7 @@ const MobileMenuBar = () => {
   return (
     <div className="flex items-center justify-between bg-white w-full h-[56px] px-[20px] py-[12px]">
       {/* 좌측: 로고 + 텍스트 */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 w-[90px] h-[28px]">
         <div>
           <img src={nwIcon} alt="nwlogo" />
         </div>
