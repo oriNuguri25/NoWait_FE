@@ -75,14 +75,6 @@ const HomePage = () => {
             waitingTeams={5}
             onClick={handleWaitingCardClick}
           />
-
-          <div className="flex flex-row justify-between items-center bg-white-100 rounded-2xl px-4 py-4 h-15">
-            <div className="flex text-14-medium text-[#787878] leading-[130%]">
-              10분 안에 입력해주세요!
-            </div>
-
-            <div className="flex text-14-bold text-[#1A3149]">10:00</div>
-          </div>
         </div>
       </div>
       <div className="flex flex-col px-5">
