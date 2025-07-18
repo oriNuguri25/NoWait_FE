@@ -4,6 +4,7 @@ import { getDepartmentName } from "../../../constants/departments";
 import { NotOpenIcon, WaitingIcon, WaitingCardIcon } from "./HomeIcon";
 import type { WaitingItem } from "../../../types/WaitingItem";
 import block from "../../../assets/block.png";
+import Refresh from "../../../assets/icon/refresh.svg?react";
 
 // WaitingCard Props
 interface WaitingCardProps {
@@ -40,11 +41,20 @@ interface HomeCardProps {
   departmentId?: number;
 }
 
+// MyWaitingCard Props
+interface MyWaitingCardProps {
+  type: "myWaitingCard";
+  storeName: string;
+  waitingTeams: number;
+  onClick?: () => void;
+}
+
 type MainCardProps =
   | WaitingCardProps
   | StoreCardProps
   | HomeWaitingCardProps
-  | HomeCardProps;
+  | HomeCardProps
+  | MyWaitingCardProps;
 
 // 대기 카드 컴포넌트
 const WaitingCard = ({ item }: { item: WaitingItem }) => {
@@ -277,6 +287,43 @@ const HomeCardComponent = ({
   );
 };
 
+// 내 대기 카드 컴포넌트
+const MyWaitingCardComponent = ({
+  storeName,
+  waitingTeams,
+  onClick,
+}: Omit<MyWaitingCardProps, "type">) => {
+  return (
+    <div
+      className="flex flex-col mt-4.5 mb-2.5 pb-9 w-full bg-[#D8E6FF] rounded-2xl items-center justify-center cursor-pointer"
+      onClick={onClick}
+    >
+      <div className="flex mt-6.5 text-14-semibold text-[#1A3149] leading-[130%] tracking-[0em]">
+        {storeName}
+      </div>
+      <div className="flex flex-row mt-1">
+        <div className="flex mr-1 text-title-20-bold leading-[130%] tracking-[0em] text-[#1A3149]">
+          내 앞에 대기
+        </div>
+        <div className="flex text-title-20-bold leading-[130%] tracking-[0em] text-primary mr-1.5">
+          {waitingTeams}팀
+        </div>
+        <div className="flex items-center">
+          <Refresh className="icon-s" />
+        </div>
+      </div>
+
+      <div className="flex flex-row mt-8">
+        <div className="flex flex-row">
+          <div className="flex w-17.5 h-17.5 rounded-full bg-amber-50 border-[3.5px] border-white z-30"></div>
+          <div className="flex w-17.5 h-17.5 rounded-full bg-gray-200 border-[3.5px] border-white z-20 -ml-8 opacity-30"></div>
+          <div className="flex w-17.5 h-17.5 rounded-full bg-blue-100 border-[3.5px] border-white z-10 -ml-8 opacity-30"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // 메인 카드 컴포넌트
 const MainCard = (props: MainCardProps) => {
   if (props.type === "waiting") {
@@ -308,6 +355,14 @@ const MainCard = (props: MainCardProps) => {
         waitingCount={props.waitingCount}
         storeName={props.storeName}
         departmentId={props.departmentId}
+      />
+    );
+  } else if (props.type === "myWaitingCard") {
+    return (
+      <MyWaitingCardComponent
+        storeName={props.storeName}
+        waitingTeams={props.waitingTeams}
+        onClick={props.onClick}
       />
     );
   }

@@ -323,6 +323,13 @@ pre {
     font-weight: 600;
   }
 
+  .text-14-bold {
+    font-size: 14px;
+    line-height: 130%;
+    letter-spacing: 0em;
+    font-weight: 700;
+  }
+
   .text-13-bold {
     font-size: 13px;
     line-height: 136%;
