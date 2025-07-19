@@ -90,15 +90,15 @@ export function WaitingCard({
       {/* 정보 영역 */}
       <div className="flex justify-between text-left rounded-lg overflow-hidden mb-4">
         {/* 입장인원 */}
-        <div className="flex flex-col py-2 w-[20%]">
-          <div className="text-14-medium text-black-60 mb-1">입장</div>
+        <div className="flex flex-col py-2 w-[15%]">
+          <div className="text-14-medium text-black-60 mb-1">인원</div>
           <div className="text-title-17-bold text-black-80">
             {peopleCount}명
           </div>
         </div>
         <div className="w-px bg-black-10 mr-[5%]" />
         {/* 이름 */}
-        <div className="flex flex-col py-2 w-[20%]">
+        <div className="flex flex-col py-2 w-[25%]">
           <div className="text-14-medium text-black-60 mb-1">이름</div>
           <div className="text-title-17-bold text-black-80">
             {truncateName(name)}
