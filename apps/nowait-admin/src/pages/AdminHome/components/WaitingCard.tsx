@@ -150,7 +150,7 @@ export function WaitingCard({
           ) : (
             <>
               <div className="w-[60%] bg-black-15 text-black-60 text-15-semibold py-2 rounded-[8px] flex justify-center items-center gap-1">
-                <img src={alarmIcon} /> {elapsed}
+                <img src={alarmIcon} /> <span>{elapsed}</span>
               </div>
               <button
                 onClick={onEnter}
