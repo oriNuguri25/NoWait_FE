@@ -1,4 +1,5 @@
 import { useUpdateOrderStatus } from "../../hooks/useUpdateOrderStatus";
+import { getTableBackgroundColor } from "../../utils/tableColors";
 
 // Payment Check Modal
 interface PaymentCheckModalProps {
@@ -54,7 +55,10 @@ const PaymentCheckModal = ({
       </div>
 
       <div className="flex flex-row mt-7.5 bg-black-15 rounded-[14px] px-3.5 py-3.5 w-70 gap-2.5">
-        <div className="flex rounded-full bg-navy-50 w-9 h-9 items-center justify-center text-title-18-semibold text-white-100">
+        <div
+          className="flex rounded-full w-9 h-9 items-center justify-center text-title-18-semibold text-white-100"
+          style={{ backgroundColor: getTableBackgroundColor(tableNumber) }}
+        >
           {tableNumber}
         </div>
         <div className="flex flex-col">
