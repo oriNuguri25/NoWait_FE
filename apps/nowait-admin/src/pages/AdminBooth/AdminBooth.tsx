@@ -5,6 +5,221 @@ import placeholderIcon from "../../assets/image_placeholder.svg";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
 import OperatingTimeSelector from "./components/OperatingTimeSelector";
 import NoticeEditor from "./components/NoticeEditor";
+import editOrderIcon from "../../assets/edit_order_icon.svg";
+import ToggleSwitch from "../AdminHome/components/ToggleSwitch";
+
+const BoothSection = ({
+  boothName,
+  setBoothName,
+  isFocused,
+  setIsFocused,
+  boothIntro,
+  setBoothIntro,
+  isTextareaFocused,
+  setIsTextareaFocused,
+  bannerImages,
+  setBannerImages,
+}: {
+  boothName: string;
+  setBoothName: (val: string) => void;
+  isFocused: boolean;
+  setIsFocused: (val: boolean) => void;
+  boothIntro: string;
+  setBoothIntro: (val: string) => void;
+  isTextareaFocused: boolean;
+  setIsTextareaFocused: (val: boolean) => void;
+  bannerImages: File[];
+  setBannerImages: (val: File[]) => void;
+}) => (
+  <>
+    <div className="flex items-center py-[50px]">
+      <div className="relative self-start">
+        <div className="h-25 w-25 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
+          <img src={booth_thumbnail} alt="썸네일" className="object-cover" />
+        </div>
+        <button className="absolute bottom-0 right-0 bg-white rounded-full p-1 border border-[#ECECEC]">
+          <img src={editIcon} className="w-4 h-4" alt="편집" />
+        </button>
+      </div>
+      <div className="flex flex-col w-[494px] ml-[50px] h-[115px]">
+        <span className="text-title-18-bold text-gray-500 mb-[6px] flex">
+          부스명
+        </span>
+        <span className="text-sm text-gray-500 mb-[14px] flex">
+          컴퓨터공학과
+        </span>
+        <div className="flex h-full relative">
+          <input
+            type="text"
+            value={boothName}
+            maxLength={20}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            onChange={(e) => setBoothName(e.target.value)}
+            placeholder="부스명을 입력해주세요"
+            className="w-full h-full bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-sm bg-black-5 "
+          />
+          <span className="absolute right-[20px] top-1/2 -translate-y-1/2 text-xs text-gray-400">
+            <span className={isFocused ? "text-black" : "text-gray-400"}>
+              {boothName.length}
+            </span>{" "}
+            / 20
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {/* 부스 소개 */}
+    <div className="flex flex-col mb-[50px] relative">
+      <label className="block font-semibold">부스 소개</label>
+      <p className="mt-[6px] mb-[14px] text-14-regular text-black-60">
+        부스를 자유롭게 소개해주세요
+      </p>
+      <textarea
+        maxLength={250}
+        className="w-full h-32 border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white rounded-lg text-sm px-[20px] pt-[16px] pr-[147px] pb-[33px]"
+        onFocus={() => setIsTextareaFocused(true)}
+        onBlur={() => setIsTextareaFocused(false)}
+        placeholder={isTextareaFocused ? "" : "부스 소개를 입력해주세요"}
+        value={boothIntro}
+        onChange={(e) => setBoothIntro(e.target.value)}
+      />
+      <div className="absolute bottom-[12px] right-[20px] text-right text-xs text-gray-400">
+        {boothIntro.length} / 250
+      </div>
+    </div>
+
+    {/* 배너 이미지 */}
+    <div className="flex flex-col mb-[50px]">
+      <label className="block font-semibold">배너 이미지</label>
+      <p className="text-14-regular text-black-60 mb-[14px]">
+        첫번째 이미지는 우리 부스를 대표하는 이미지로 설정돼요
+      </p>
+      <div className="flex gap-[10px]">
+        {Array(3)
+          .fill(null)
+          .map((_, i) => (
+            <label
+              key={i}
+              className="w-[150px] h-25 bg-black-5 border border-[#DDDDDD] rounded-xl flex items-center justify-center cursor-pointer"
+            >
+              <input
+                type="file"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const newImages = [...bannerImages];
+                    newImages[i] = file;
+                    setBannerImages(newImages);
+                  }
+                }}
+              />
+              {bannerImages[i] ? (
+                <img
+                  src={URL.createObjectURL(bannerImages[i])}
+                  alt={`배너 ${i + 1}`}
+                  className="object-cover w-full h-full rounded-lg"
+                />
+              ) : (
+                <img src={placeholderIcon} className="" alt="업로드" />
+              )}
+            </label>
+          ))}
+      </div>
+    </div>
+
+    <OperatingTimeSelector />
+
+    {/* 공지사항 */}
+    <NoticeEditor />
+
+    {/* 버튼 */}
+    <div className="flex w-full gap-[10px] mt-[50px]">
+      <button className="w-full h-[51px] py-4 rounded-lg bg-[#F6F6F6] text-black-70 text-14-regular">
+        미리보기
+      </button>
+      <button className="w-full h-[51px] py-4 rounded-lg bg-[#111114] text-white text-14-regular">
+        저장하기
+      </button>
+    </div>
+  </>
+);
+
+const dummyMenus = [
+  { name: "갈비구이", price: "10,000원", soldOut: false },
+  { name: "메뉴명", price: "가격", soldOut: false },
+  { name: "메뉴명", price: "가격", soldOut: false },
+  { name: "메뉴명", price: "가격", soldOut: false },
+  { name: "메뉴명", price: "가격", soldOut: false },
+  { name: "메뉴명", price: "가격", soldOut: false },
+  { name: "메뉴명", price: "가격", soldOut: false },
+  { name: "메뉴명", price: "가격", soldOut: false },
+  { name: "메뉴명", price: "가격", soldOut: false },
+];
+
+const MenuSection = () => {
+  const [editMode, setEditMode] = useState(false);
+  const [menus, setMenus] = useState(dummyMenus);
+
+  const toggleSoldOut = (index: number) => {
+    const updatedMenus = [...menus];
+    updatedMenus[index].soldOut = !updatedMenus[index].soldOut;
+    setMenus(updatedMenus);
+  };
+  return (
+    <div className="mt-[40px] mb-[20px]">
+      <div className="flex justify-between items-center mb-[20px]">
+        <h2 className="text-title-18-bold">메뉴</h2>
+        <div className="flex gap-[10px]">
+          <button
+            className="text-sm px-4 py-2 bg-black-5 text-black-80 rounded-[8px]"
+            onClick={() => setEditMode((prev) => !prev)}
+          >
+            {editMode ? "편집 완료" : "순서 편집"}
+          </button>
+          <button className="text-sm px-4 py-2 bg-black-5 text-black-80 rounded-[8px]">
+            메뉴 추가 +
+          </button>
+        </div>
+      </div>
+
+      <div className="flex justify-between mb-[10px]">
+        <p className="text-sm text-black-40 mb-2">{menus.length}개의 메뉴</p>
+        <p className="text-sm text-black-40 mb-2">품절 표시</p>
+      </div>
+      <div className="border-t border-[#EEEEEE]">
+        {menus.map((menu, idx) => (
+          <div key={idx} className="flex justify-between items-center py-4">
+            <div className="flex items-center gap-4">
+              <div className="w-[48px] h-[48px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
+                <img
+                  src={placeholderIcon}
+                  className="w-6 h-6"
+                  alt="placeholder"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold">{menu.name}</span>
+                <span className="text-sm text-black-60">{menu.price}</span>
+              </div>
+            </div>
+            <div className="text-sm text-black-60">
+              {editMode ? (
+                <img src={editOrderIcon} alt="순서 변경" className="w-5 h-5" />
+              ) : (
+                <ToggleSwitch
+                  isOn={menu.soldOut}
+                  toggle={() => toggleSoldOut(idx)}
+                />
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const BoothForm = () => {
   const width = useWindowWidth();
@@ -45,119 +260,22 @@ const BoothForm = () => {
           부스 관리
         </button>
       </div>
-
-      {/* 부스명 */}
-      <div className="flex items-center py-[50px]">
-        <div className="relative self-start">
-          <div className="h-25 w-25 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
-            <img src={booth_thumbnail} alt="썸네일" className="object-cover" />
-          </div>
-          <button className="absolute bottom-0 right-0 bg-white rounded-full p-1 border border-[#ECECEC]">
-            <img src={editIcon} className="w-4 h-4" alt="편집" />
-          </button>
-        </div>
-        <div className="flex flex-col w-[494px] ml-[50px] h-[115px]">
-          <span className="text-title-18-bold text-gray-500 mb-[6px] flex">
-            부스명
-          </span>
-          <span className="text-sm text-gray-500 mb-[14px] flex">
-            컴퓨터공학과
-          </span>
-          <div className="flex h-full relative">
-            <input
-              type="text"
-              value={boothName}
-              maxLength={20}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-              onChange={(e) => setBoothName(e.target.value)}
-              placeholder="부스명을 입력해주세요"
-              className="w-full h-full bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-sm bg-black-5 "
-            />
-            <span className="absolute right-[20px] top-1/2 -translate-y-1/2 text-xs text-gray-400">
-              <span className={isFocused ? "text-black" : "text-gray-400"}>
-                {boothName.length}
-              </span>{" "}
-              / 20
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* 부스 소개 */}
-      <div className="flex flex-col mb-[50px] relative">
-        <label className="block font-semibold">부스 소개</label>
-        <p className="mt-[6px] mb-[14px] text-14-regular text-black-60">
-          부스를 자유롭게 소개해주세요
-        </p>
-        <textarea
-          maxLength={250}
-          className="w-full h-32 border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white rounded-lg text-sm px-[20px] pt-[16px] pr-[147px] pb-[33px]"
-          onFocus={() => setIsTextareaFocused(true)}
-          onBlur={() => setIsTextareaFocused(false)}
-          placeholder={isTextareaFocused ? "" : "부스 소개를 입력해주세요"}
-          value={boothIntro}
-          onChange={(e) => setBoothIntro(e.target.value)}
+      {activeTab === "booth" ? (
+        <BoothSection
+          boothName={boothName}
+          setBoothName={setBoothName}
+          isFocused={isFocused}
+          setIsFocused={setIsFocused}
+          boothIntro={boothIntro}
+          setBoothIntro={setBoothIntro}
+          isTextareaFocused={isTextareaFocused}
+          setIsTextareaFocused={setIsTextareaFocused}
+          bannerImages={bannerImages}
+          setBannerImages={setBannerImages}
         />
-        <div className="absolute bottom-[12px] right-[20px] text-right text-xs text-gray-400">
-          {boothIntro.length} / 250
-        </div>
-      </div>
-
-      {/* 배너 이미지 */}
-      <div className="flex flex-col mb-[50px]">
-        <label className="block font-semibold">배너 이미지</label>
-        <p className="text-14-regular text-black-60 mb-[14px]">
-          첫번째 이미지는 우리 부스를 대표하는 이미지로 설정돼요
-        </p>
-        <div className="flex gap-[10px]">
-          {Array(3)
-            .fill(null)
-            .map((_, i) => (
-              <label
-                key={i}
-                className="w-[150px] h-25 bg-black-5 border border-[#DDDDDD] rounded-xl flex items-center justify-center cursor-pointer"
-              >
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      const newImages = [...bannerImages];
-                      newImages[i] = file;
-                      setBannerImages(newImages);
-                    }
-                  }}
-                />
-                {bannerImages[i] ? (
-                  <img
-                    src={URL.createObjectURL(bannerImages[i])}
-                    alt={`배너 ${i + 1}`}
-                    className="object-cover w-full h-full rounded-lg"
-                  />
-                ) : (
-                  <img src={placeholderIcon} className="" alt="업로드" />
-                )}
-              </label>
-            ))}
-        </div>
-      </div>
-
-      <OperatingTimeSelector />
-
-      {/* 공지사항 */}
-      <NoticeEditor />
-
-      {/* 버튼 */}
-      <div className="flex w-full gap-[10px] mt-[50px]">
-        <button className="w-full h-[51px] py-4 rounded-lg bg-[#F6F6F6] text-black-70 text-14-regular">
-          미리보기
-        </button>
-        <button className="w-full h-[51px] py-4 rounded-lg bg-[#111114] text-white text-14-regular">
-          저장하기
-        </button>
-      </div>
+      ) : (
+        <MenuSection />
+      )}
     </div>
   );
 };
