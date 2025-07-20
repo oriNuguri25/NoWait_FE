@@ -1,44 +1,66 @@
-import { useState } from "react";
 import EmptyOrderDetails from "./components/EmptyOrderDetails";
+import { useQuery } from "@tanstack/react-query";
+import { getOrderDetails } from "../../../api/order";
+import { useParams } from "react-router-dom";
 
-const dummyData = [
-  { id: 1, menu: "참치마요주먹밥 세트", quantity: 1 },
-  { id: 2, menu: "해물파전", quantity: 2 },
-  { id: 3, menu: "숙주보끔", quantity: 3 },
-];
+interface OrderDetailsType {
+  orderId: string;
+  menuName: string;
+  price: number;
+  quantity: number;
+}
 
 const OrderDetailsPage = () => {
-    const [a,setA] = useState(false)
-    if (a) return <EmptyOrderDetails/>
+  const { storeId } = useParams();
+  const tableId = localStorage.getItem("tableId");
+
+  const { data } = useQuery({
+    queryKey: ["orderDetails", storeId, tableId],
+    queryFn: () => getOrderDetails(storeId, tableId!),
+    select: (data) => data.response[0],
+  });
+  console.log(data)
+  //주문내역 status에 따른 값, 컬러 객체
+  const statusMap = {
+    WAITING_FOR_PAYMENT: { label: "입금 대기 중", color: "text-black-90" },
+    COOKING: { label: "조리 중", color: "text-black-90" },
+    COOKED: { label: "조리 완료", color: "text-black-60" },
+  };
+  type OrderStatus = keyof typeof statusMap;
+  const statusData = statusMap[data?.status as OrderStatus];
+
+  //주문내역 없을 시
+  if (!data || data?.items?.length < 1) return <EmptyOrderDetails />;
+
   return (
     <div>
       <div className="bg-black-15 min-h-screen py-[30px] px-5">
-        <button onClick={()=>setA(!a)}>스위치</button>
         <h1 className="text-headline-24-bold mb-[23px] text-black-90">
-          주문내역 <span className="text-primary">1건</span>
+          주문내역 <span className="text-primary">{data.items.length}건</span>
         </h1>
         <ul>
           <li className="p-[22px] bg-white rounded-[22px] mb-4">
             <div className="mb-7.5">
-              <h1 className="text-title-20-bold text-black-90 mb-2">
-                입금 확인 중
+              <h1 className={`text-title-20-bold mb-2${statusData.color} `}>
+                {statusData.label}
+                {/* {statusData.label} */}
               </h1>
               <p className="text-14-regular text-black-60">
                 2025년 7월 1일 19:49
               </p>
             </div>
             <ul className="border-b-1 border-[#ececec] pb-5 mb-5">
-              {dummyData.map((data) => {
+              {data?.items?.map((item: OrderDetailsType) => {
                 return (
                   <li
-                    key={data.id}
+                    key={item.orderId}
                     className="flex justify-between items-center mb-2.5 last:mb-0"
                   >
                     <h1 className="text-16-regular text-black-90">
-                      {data.menu}
+                      {item?.menuName}
                     </h1>
                     <span className="text-16-regular text-black-60">
-                      {data.quantity}
+                      {item?.quantity}
                     </span>
                   </li>
                 );

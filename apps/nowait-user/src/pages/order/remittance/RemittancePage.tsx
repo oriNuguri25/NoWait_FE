@@ -23,12 +23,12 @@ const RemittancePage = () => {
   const [payer, setPayer] = useState("");
   const [payerError, setPayerError] = useState(false);
   const totalPrice = sumTotalPrice(cart);
-  const payerFocus = useRef<HTMLInputElement>(null)
+  const payerFocus = useRef<HTMLInputElement>(null);
 
   const orderHandleButton = async () => {
     if (payer.trim() === "") {
       setPayerError(true);
-      payerFocus?.current?.focus()
+      payerFocus?.current?.focus();
       return;
     }
     setPayerError(false);
@@ -41,15 +41,15 @@ const RemittancePage = () => {
         })),
         totalPrice,
       };
-      console.log(payload);
       const res = await createOrder(storeId!, tableId!, payload);
       if (res?.success) {
         //세션 아이디, 입금자명 로컬스토리지 저장
+        console.log("주문 생성 데이터", res);
         setSessionData(res.response.sessionId, res.response.depositorName);
       } else {
         console.log("error");
       }
-      modal.open()
+      modal.open();
     } catch (e) {
       console.log(e);
     }
@@ -60,9 +60,14 @@ const RemittancePage = () => {
       <div className="px-5">
         <OrderSummary cart={cart} />
         <SectionDivider />
-        <PayerInput value={payer} setValue={setPayer} payerError={payerError} payerFocus={payerFocus}/>
+        <PayerInput
+          value={payer}
+          setValue={setPayer}
+          payerError={payerError}
+          payerFocus={payerFocus}
+        />
         <SectionDivider />
-        <RemitOptions/>
+        <RemitOptions />
         <SectionDivider />
         <section>
           <div className="flex justify-between items-center pt-6 pb-5.5">

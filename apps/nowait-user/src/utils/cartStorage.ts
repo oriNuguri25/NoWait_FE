@@ -7,6 +7,10 @@ export const getTableId = (): string => {
   return tableId || "";
 };
 
+export const getSessionId = (): string => {
+  const sessionId = localStorage.getItem("sessionId");
+  return sessionId || "";
+};
 
 //주문 시 세션 아이디, 입금자명 로컬스토리지에 저장
 export const setSessionData = (sessionId: string, depositorName: string) => {
