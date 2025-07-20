@@ -5,15 +5,9 @@ interface CookedPageProps {
   cookedOrders: Order[];
   isLoading?: boolean;
   error?: unknown;
-  onRefresh?: () => void;
 }
 
-const CookedPage = ({
-  cookedOrders,
-  isLoading,
-  error,
-  onRefresh,
-}: CookedPageProps) => {
+const CookedPage = ({ cookedOrders, isLoading, error }: CookedPageProps) => {
   // 시간 포맷팅 함수 (17:30 형식)
   const getFormattedTime = (createdAt: string) => {
     const date = new Date(createdAt);
@@ -64,13 +58,11 @@ const CookedPage = ({
               cookedOrders.map((order) => (
                 <CookedCard
                   key={order.id}
-                  orderId={order.id}
                   tableNumber={order.tableId}
                   depositorName={order.depositorName}
                   menuNamesAndQuantities={order.menuNamesAndQuantities}
                   totalAmount={order.totalPrice || 0}
                   createdAt={getFormattedTime(order.createdAt)}
-                  onSuccess={onRefresh}
                 />
               ))
             ) : (
