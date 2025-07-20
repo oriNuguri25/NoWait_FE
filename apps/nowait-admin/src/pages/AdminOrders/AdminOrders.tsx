@@ -128,11 +128,13 @@ const AdminOrders = () => {
                 paymentWaitingData.map((payment) => (
                   <PaymentCard
                     key={payment.id}
+                    orderId={payment.id}
                     tableNumber={payment.tableId}
                     timeText={getFormattedTime(payment.createdAt)}
                     depositorName={payment.depositorName}
                     totalAmount={payment.totalPrice || 0}
                     onClick={() => handlePaymentCardClick(payment)}
+                    onSuccess={refetch}
                   />
                 ))
               ) : (
@@ -148,6 +150,7 @@ const AdminOrders = () => {
               {/* PaymentDetail 오버레이 */}
               {selectedPayment && (
                 <PaymentDetail
+                  orderId={selectedPayment.id}
                   tableNumber={selectedPayment.tableId}
                   timeText={getFormattedTime(selectedPayment.createdAt)}
                   depositorName={selectedPayment.depositorName}
@@ -156,6 +159,7 @@ const AdminOrders = () => {
                     selectedPayment.menuNamesAndQuantities
                   }
                   onClose={handleClosePaymentDetail}
+                  onSuccess={refetch}
                 />
               )}
             </div>
@@ -211,6 +215,7 @@ const AdminOrders = () => {
           cookedOrders={cookedData}
           isLoading={isLoading}
           error={error}
+          onRefresh={refetch}
         />
       )}
     </div>
