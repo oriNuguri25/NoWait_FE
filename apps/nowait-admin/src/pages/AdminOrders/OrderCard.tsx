@@ -4,19 +4,23 @@ import { PaymentCheckModal, CookedModal } from "./OrderPageModal";
 import type { MenuNamesAndQuantities } from "../../types/order";
 
 interface PaymentCardProps {
+  orderId: number;
   tableNumber: number;
   timeText: string;
   depositorName: string;
   totalAmount: number;
   onClick?: () => void;
+  onSuccess?: () => void;
 }
 
 const PaymentCard = ({
+  orderId,
   tableNumber,
   timeText,
   depositorName,
   totalAmount,
   onClick,
+  onSuccess,
 }: PaymentCardProps) => {
   const [showPaymentCheckModal, setShowPaymentCheckModal] = useState(false);
 
@@ -71,11 +75,13 @@ const PaymentCard = ({
           onClick={handleClosePaymentCheckModal}
         >
           <PaymentCheckModal
+            orderId={orderId}
             tableNumber={tableNumber}
             depositorName={depositorName}
             totalAmount={totalAmount}
             timeText={timeText}
             onClose={handleClosePaymentCheckModal}
+            onSuccess={onSuccess}
           />
         </div>
       )}
@@ -84,21 +90,25 @@ const PaymentCard = ({
 };
 
 interface PaymentDetailProps {
+  orderId: number;
   tableNumber: number;
   timeText: string;
   depositorName: string;
   totalAmount: number;
   menuNamesAndQuantities?: MenuNamesAndQuantities;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
 const PaymentDetail = ({
+  orderId,
   tableNumber,
   timeText,
   depositorName,
   totalAmount,
   menuNamesAndQuantities,
   onClose,
+  onSuccess,
 }: PaymentDetailProps) => {
   const [showPaymentCheckModal, setShowPaymentCheckModal] = useState(false);
 
@@ -196,11 +206,13 @@ const PaymentDetail = ({
           onClick={handleClosePaymentCheckModal}
         >
           <PaymentCheckModal
+            orderId={orderId}
             tableNumber={tableNumber}
             depositorName={depositorName}
             totalAmount={totalAmount}
             timeText={timeText}
             onClose={handleClosePaymentCheckModal}
+            onSuccess={onSuccess}
           />
         </div>
       )}
@@ -232,7 +244,11 @@ const CookCard = ({ tableNumber, menuNamesAndQuantities }: CookCardProps) => {
         <div className="flex flex-col gap-3.5 text-16-semibold text-black-80">
           {menuEntries.map(([menuName, quantity], index) => (
             <div key={index} className="flex flex-row gap-2.5 justify-between">
-              <div className="flex w-40 truncate">{menuName}</div>
+              <div className="flex w-40 truncate">
+                {menuName.length > 10
+                  ? menuName.substring(0, 10) + "..."
+                  : menuName}
+              </div>
               <div className="flex">{quantity}</div>
             </div>
           ))}
@@ -250,19 +266,23 @@ const CookCard = ({ tableNumber, menuNamesAndQuantities }: CookCardProps) => {
 };
 
 interface CookedCardProps {
+  orderId: number;
   tableNumber: number;
   depositorName: string;
   menuNamesAndQuantities?: MenuNamesAndQuantities;
   totalAmount: number;
   createdAt: string;
+  onSuccess?: () => void;
 }
 
 const CookedCard = ({
+  orderId,
   tableNumber,
   depositorName,
   menuNamesAndQuantities,
   totalAmount,
   createdAt,
+  onSuccess,
 }: CookedCardProps) => {
   const [showCookedModal, setShowCookedModal] = useState(false);
 
@@ -320,11 +340,13 @@ const CookedCard = ({
           onClick={handleCloseCookedModal}
         >
           <CookedModal
+            orderId={orderId}
             tableNumber={tableNumber}
             depositorName={depositorName}
             totalAmount={totalAmount}
             timeText={createdAt}
             onClose={handleCloseCookedModal}
+            onSuccess={onSuccess}
           />
         </div>
       )}
