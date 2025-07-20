@@ -12,8 +12,8 @@ const BoothForm = () => {
   const [activeTab, setActiveTab] = useState<"booth" | "menu">("booth");
   const [boothName, setBoothName] = useState("");
   const [boothIntro, setBoothIntro] = useState("");
-  const [noticeTitle, setNoticeTitle] = useState("");
-  const [noticeContent, setNoticeContent] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  const [isTextareaFocused, setIsTextareaFocused] = useState(false);
   const [bannerImages, setBannerImages] = useState<File[]>([]);
 
   return (
@@ -26,34 +26,32 @@ const BoothForm = () => {
       <div className="flex">
         <button
           className={`px-4 py-2 mr-2 rounded-full text-sm font-semibold ${
-            activeTab === "booth"
-              ? "bg-black text-white"
-              : "bg-gray-100 text-gray-500"
-          }`}
-          onClick={() => setActiveTab("booth")}
-        >
-          부스 관리
-        </button>
-        <button
-          className={`px-4 py-2 rounded-full text-sm font-semibold ${
             activeTab === "menu"
               ? "bg-black text-white"
-              : "bg-gray-100 text-gray-500"
+              : "bg-white text-black-60 border border-black-35"
           }`}
           onClick={() => setActiveTab("menu")}
         >
           메뉴 관리
+        </button>
+        <button
+          className={`px-4 py-2 rounded-full text-sm font-semibold ${
+            activeTab === "booth"
+              ? "bg-black text-white"
+              : "bg-white text-black-60 border border-black-35"
+          }`}
+          onClick={() => setActiveTab("booth")}
+        >
+          부스 관리
         </button>
       </div>
 
       {/* 부스명 */}
       <div className="flex items-center py-[50px]">
         <div className="relative self-start">
-          <img
-            src={booth_thumbnail}
-            alt="썸네일"
-            className="w-25 h-25 rounded-full bg-gray-100 object-cover"
-          />
+          <div className="h-25 w-25 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
+            <img src={booth_thumbnail} alt="썸네일" className="object-cover" />
+          </div>
           <button className="absolute bottom-0 right-0 bg-white rounded-full p-1 border border-[#ECECEC]">
             <img src={editIcon} className="w-4 h-4" alt="편집" />
           </button>
@@ -70,12 +68,17 @@ const BoothForm = () => {
               type="text"
               value={boothName}
               maxLength={20}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               onChange={(e) => setBoothName(e.target.value)}
               placeholder="부스명을 입력해주세요"
-              className="w-full h-full border border-[#DDDDDD] rounded-xl px-4 py-2 text-sm"
+              className="w-full h-full bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-sm bg-black-5 "
             />
             <span className="absolute right-[20px] top-1/2 -translate-y-1/2 text-xs text-gray-400">
-              {boothName.length} / 20
+              <span className={isFocused ? "text-black" : "text-gray-400"}>
+                {boothName.length}
+              </span>{" "}
+              / 20
             </span>
           </div>
         </div>
@@ -89,8 +92,10 @@ const BoothForm = () => {
         </p>
         <textarea
           maxLength={250}
-          className="w-full h-32 border border-[#DDDDDD] rounded-lg text-sm px-[20px] pt-[16px] pr-[147px] pb-[33px]"
-          placeholder="부스 소개를 입력해주세요"
+          className="w-full h-32 border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white rounded-lg text-sm px-[20px] pt-[16px] pr-[147px] pb-[33px]"
+          onFocus={() => setIsTextareaFocused(true)}
+          onBlur={() => setIsTextareaFocused(false)}
+          placeholder={isTextareaFocused ? "" : "부스 소개를 입력해주세요"}
           value={boothIntro}
           onChange={(e) => setBoothIntro(e.target.value)}
         />

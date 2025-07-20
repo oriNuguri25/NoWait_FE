@@ -6,7 +6,6 @@ import statIcon from "../assets/Statistics.svg";
 import statIconActive from "../assets/statIconActive.svg";
 import boothIcon from "../assets/Tent.svg";
 import boothIconActive from "../assets/boothIconActive.svg";
-import profileImg from "../assets/profile.png"; // 사용자 이미지
 import cancelIcon from "../assets/Cancel.svg";
 import { useLocation, useNavigate } from "react-router";
 
