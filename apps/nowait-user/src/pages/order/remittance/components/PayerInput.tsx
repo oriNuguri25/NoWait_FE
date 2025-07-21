@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 interface PropsType {
   value: string;
@@ -8,6 +8,14 @@ interface PropsType {
 }
 
 const PayerInput = ({ value, setValue, payerError, payerFocus }: PropsType) => {
+  const depositorName = localStorage.getItem("depositorName");
+  //재주문 시 입금자명 input에 이전 입금자명 설정
+  useEffect(() => {
+    if (depositorName !== null) {
+      setValue(depositorName);
+    }
+  }, []);
+
   return (
     <section>
       <div className="py-7.5">

@@ -43,7 +43,6 @@ const OrderDetailsPage = () => {
             <div className="mb-7.5">
               <h1 className={`text-title-20-bold mb-2${statusData.color} `}>
                 {statusData.label}
-                {/* {statusData.label} */}
               </h1>
               <p className="text-14-regular text-black-60">
                 2025년 7월 1일 19:49
