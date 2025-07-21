@@ -7,6 +7,7 @@ import OperatingTimeSelector from "./components/OperatingTimeSelector";
 import NoticeEditor from "./components/NoticeEditor";
 import editOrderIcon from "../../assets/edit_order_icon.svg";
 import ToggleSwitch from "../AdminHome/components/ToggleSwitch";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const BoothSection = ({
   boothName,
@@ -167,6 +168,16 @@ const MenuSection = () => {
     updatedMenus[index].soldOut = !updatedMenus[index].soldOut;
     setMenus(updatedMenus);
   };
+
+  const handleDragEnd = (result: any) => {
+    if (!result.destination) return;
+
+    const reordered = Array.from(menus);
+    const [removed] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, removed);
+    setMenus(reordered);
+  };
+
   return (
     <div className="mt-[40px] mb-[20px]">
       <div className="flex justify-between items-center mb-[20px]">
@@ -186,36 +197,76 @@ const MenuSection = () => {
 
       <div className="flex justify-between mb-[10px]">
         <p className="text-sm text-black-40 mb-2">{menus.length}개의 메뉴</p>
-        <p className="text-sm text-black-40 mb-2">품절 표시</p>
+        {!editMode && <p className="text-sm text-black-40 mb-2">품절 표시</p>}
       </div>
+
       <div className="border-t border-[#EEEEEE]">
-        {menus.map((menu, idx) => (
-          <div key={idx} className="flex justify-between items-center py-4">
-            <div className="flex items-center gap-4">
-              <div className="w-[48px] h-[48px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
-                <img
-                  src={placeholderIcon}
-                  className="w-6 h-6"
-                  alt="placeholder"
-                />
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable
+            droppableId="menu-list"
+            isDropDisabled={!editMode}
+            direction="vertical"
+            // isCombineEnabled={false}
+            // ignoreContainerClipping={false}
+          >
+            {(provided) => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                {menus.map((menu, idx) => (
+                  <Draggable
+                    key={`menu-${idx}`}
+                    draggableId={`menu-${idx}`}
+                    index={idx}
+                    isDragDisabled={!editMode}
+                  >
+                    {(provided) => (
+                      <div
+                        className="flex justify-between items-center py-4"
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...(editMode ? provided.dragHandleProps : {})}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="w-[48px] h-[48px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
+                            <img
+                              src={placeholderIcon}
+                              className="w-6 h-6"
+                              alt="placeholder"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-sm font-semibold">
+                              {menu.name}
+                            </span>
+                            <span className="text-sm text-black-60">
+                              {menu.price}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="text-sm text-black-60">
+                          {editMode ? (
+                            <img
+                              src={editOrderIcon}
+                              alt="순서 변경"
+                              className="w-5 h-5"
+                              {...provided.dragHandleProps}
+                            />
+                          ) : (
+                            <ToggleSwitch
+                              isOn={menu.soldOut}
+                              toggle={() => toggleSoldOut(idx)}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
               </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-semibold">{menu.name}</span>
-                <span className="text-sm text-black-60">{menu.price}</span>
-              </div>
-            </div>
-            <div className="text-sm text-black-60">
-              {editMode ? (
-                <img src={editOrderIcon} alt="순서 변경" className="w-5 h-5" />
-              ) : (
-                <ToggleSwitch
-                  isOn={menu.soldOut}
-                  toggle={() => toggleSoldOut(idx)}
-                />
-              )}
-            </div>
-          </div>
-        ))}
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     </div>
   );
