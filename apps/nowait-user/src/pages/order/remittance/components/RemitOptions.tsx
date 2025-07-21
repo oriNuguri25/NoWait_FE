@@ -9,10 +9,14 @@ import RadioGroup from "./RadioGroup";
 import Radio from "./Radio";
 import SlideToggle from "./SlideToggle";
 
-const RemitOptions = () => {
+interface PropsType {
+  remitValue: string;
+  setRemitValue: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const RemitOptions = ({ remitValue, setRemitValue }: PropsType) => {
   const { showToast } = useToastStore();
   const [remitDescriptionToggle, setRemitDescriptionToggle] = useState(false);
-  const [remitValue, setRemitValue] = useState("kakao");
   const account = `카카오뱅크 3333-04-2095277`;
   const clipBoardDelay = 2000;
 

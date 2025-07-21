@@ -12,7 +12,6 @@ import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
 import PageTransitionWrapper from "../components/layout/PageTransitionWrapper";
 import WaitingPartySizeForm from "../pages/waiting/waitingPartysize/WaitingPartySizeForm";
-import StoreMenuDetailPage from "../pages/waiting/menuDetail/StoreMenuDetailPage";
 import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
 import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
 import RemittanceWaitPage from "../pages/order/remittenceWait/RemittanceWaitPage";
@@ -82,10 +81,6 @@ const Router = () => {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/store/:id" element={<StoreDetailPage />} />
-              <Route
-                path="/store/:id/menu/:menuId"
-                element={<StoreMenuDetailPage />}
-              />
               <Route
                 path="/store/:id/partysize"
                 element={<WaitingPartySizeForm />}

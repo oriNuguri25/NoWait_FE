@@ -31,7 +31,7 @@ const StoreDetailPage = () => {
     <div>
       <div className="px-5">
         <h1 className="-mx-5 h-[246px] bg-amber-400">
-          <img className="w-full" src="" alt="음식 메뉴 이미지" />
+          <img className="w-full" src="" alt="학과 주점 대표 이미지" />
         </h1>
         <section className="border-b-1 border-[#f4f4f4]">
           <div className="flex justify-between items-center py-[21px]">

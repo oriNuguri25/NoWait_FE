@@ -30,7 +30,7 @@ const AddMenuPage = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-1 overflow-y-auto px-5">
-        <h1 className="-mx-5 h-[375px] bg-black-25">
+        <h1 className="-mx-5">
           <img className="w-full" src={image} alt="음식 메뉴 이미지" />
         </h1>
         <div className="py-8">

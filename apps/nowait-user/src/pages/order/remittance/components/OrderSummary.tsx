@@ -51,8 +51,8 @@ const OrderSummary = ({ cart }: PropsType) => {
                   </div>
                 </div>
                 <img
-                  className="w-[76px] h-[76px] rounded-[12px] bg-black object-cover"
-                  src={item.image}
+                  className="w-[76px] h-[76px] rounded-[12px] object-cover"
+                  src={`${item.image}` || "/default-menu.png"}
                   alt="음식 메뉴 이미지"
                 />
               </li>
