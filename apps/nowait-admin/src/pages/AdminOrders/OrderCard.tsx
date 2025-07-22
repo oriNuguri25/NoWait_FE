@@ -2,6 +2,7 @@ import ArrowRight from "../../assets/arrow_back.svg?react";
 import { useState } from "react";
 import { PaymentCheckModal, CookedModal } from "./OrderPageModal";
 import type { MenuNamesAndQuantities } from "../../types/order";
+import { getTableBackgroundColor } from "../../utils/tableColors";
 
 interface PaymentCardProps {
   orderId: number;
@@ -40,7 +41,10 @@ const PaymentCard = ({
         onClick={onClick}
       >
         <div className="flex flex-row items-center">
-          <div className="flex rounded-full bg-navy-50 w-9 h-9 items-center justify-center text-title-18-semibold text-white-100">
+          <div
+            className="flex rounded-full w-9 h-9 items-center justify-center text-title-18-semibold text-white-100"
+            style={{ backgroundColor: getTableBackgroundColor(tableNumber) }}
+          >
             {tableNumber}
           </div>
 
@@ -135,7 +139,10 @@ const PaymentDetail = ({
           </div>
 
           <div className="flex flex-row mt-6 gap-2.5">
-            <div className="flex rounded-full bg-navy-50 w-9 h-9 items-center justify-center text-title-18-semibold text-white-100">
+            <div
+              className="flex rounded-full w-9 h-9 items-center justify-center text-title-18-semibold text-white-100"
+              style={{ backgroundColor: getTableBackgroundColor(tableNumber) }}
+            >
               {tableNumber}
             </div>
             <div className="flex text-title-18-semibold text-black-90 items-center">
@@ -238,7 +245,10 @@ const CookCard = ({ tableNumber, menuNamesAndQuantities }: CookCardProps) => {
       }`}
     >
       <div className="flex flex-row gap-2.5">
-        <div className="flex bg-[#6C707A] w-9 h-9 items-center justify-center rounded-full text-title-18-semibold text-white-100">
+        <div
+          className="flex w-9 h-9 items-center justify-center rounded-full text-title-18-semibold text-white-100"
+          style={{ backgroundColor: getTableBackgroundColor(tableNumber) }}
+        >
           {tableNumber}
         </div>
         <div className="flex flex-col gap-3.5 text-16-semibold text-black-80">
