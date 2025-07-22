@@ -6,6 +6,7 @@ import { Button } from "@repo/ui";
 import { useNavigate, useParams } from "react-router-dom";
 import MenuList from "../../../components/common/MenuList";
 import IsBookmark from "./components/IsBookmark";
+import { getBookmark } from "../../../api/reservation";
 
 const TAG = [
   { id: 1, type: "default", tag: "태그 추가" },
@@ -17,11 +18,20 @@ const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const a = async () => {
+    try {
+      const res = await getBookmark();
+      console.log(res);
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
   return (
     <div>
       <div className="px-5">
         <h1 className="-mx-5 h-[246px] bg-amber-400">
-          <img className="w-full" src="" alt="음식 메뉴 이미지" />
+          <img className="w-full" src="" alt="학과 주점 대표 이미지" />
         </h1>
         <section className="border-b-1 border-[#f4f4f4]">
           <div className="flex justify-between items-center py-[21px]">
@@ -54,6 +64,7 @@ const StoreDetailPage = () => {
         </section>
         <section className="pt-5 pb-[28px]">
           <div className="mb-6">
+            <button onClick={a}>북마크조회</button>
             <p className="flex items-center mb-1.5 text-16-regular text-black-80">
               <span className="w-[18px] flex justify-center  mr-1.5">
                 <SubStract />

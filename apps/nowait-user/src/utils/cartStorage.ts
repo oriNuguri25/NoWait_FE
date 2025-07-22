@@ -2,19 +2,6 @@ import type { CartType } from "../types/order/cart";
 
 const CART_KEY = "cart";
 
-export const getTableId = (): string => {
-  const tableId = localStorage.getItem("tableId");
-  return tableId || "";
-};
-
-
-//주문 시 세션 아이디, 입금자명 로컬스토리지에 저장
-export const setSessionData = (sessionId: string, depositorName: string) => {
-  localStorage.setItem("sessionId", sessionId);
-  localStorage.setItem("depositorName", depositorName);
-};
-
-
 export const getcart = (): CartType[] => {
   const cartString = localStorage.getItem(CART_KEY);
   try {

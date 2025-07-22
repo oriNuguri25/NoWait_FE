@@ -14,7 +14,6 @@ interface BookmarkType {
 
 const IsBookmark = () => {
   const { id } = useParams();
-
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation();
   const { data: isBookmark } = useQuery({
     queryKey: ["bookmark", id],
