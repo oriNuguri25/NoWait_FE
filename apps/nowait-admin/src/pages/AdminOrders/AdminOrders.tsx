@@ -106,9 +106,13 @@ const AdminOrders = () => {
               </div>
             </div>
 
-            <div className="flex flex-row border border-black-30 rounded-t-2xl px-5 py-2.5 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
-              <div className="flex text-14-medium text-black-60">테이블</div>
-              <div className="flex text-14-medium text-black-60">입금 내역</div>
+            <div className="flex flex-row border border-black-30 rounded-t-2xl pl-5 py-2.5 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
+              <div className="flex text-14-medium leading-[136%] text-navy-35">
+                테이블
+              </div>
+              <div className="flex text-14-medium leading-[136%] text-navy-35">
+                입금 내역
+              </div>
             </div>
             <div
               ref={scrollContainerRef}
@@ -124,11 +128,13 @@ const AdminOrders = () => {
                 paymentWaitingData.map((payment) => (
                   <PaymentCard
                     key={payment.id}
+                    orderId={payment.id}
                     tableNumber={payment.tableId}
                     timeText={getFormattedTime(payment.createdAt)}
                     depositorName={payment.depositorName}
                     totalAmount={payment.totalPrice || 0}
                     onClick={() => handlePaymentCardClick(payment)}
+                    onSuccess={refetch}
                   />
                 ))
               ) : (
@@ -144,6 +150,7 @@ const AdminOrders = () => {
               {/* PaymentDetail 오버레이 */}
               {selectedPayment && (
                 <PaymentDetail
+                  orderId={selectedPayment.id}
                   tableNumber={selectedPayment.tableId}
                   timeText={getFormattedTime(selectedPayment.createdAt)}
                   depositorName={selectedPayment.depositorName}
@@ -152,6 +159,7 @@ const AdminOrders = () => {
                     selectedPayment.menuNamesAndQuantities
                   }
                   onClose={handleClosePaymentDetail}
+                  onSuccess={refetch}
                 />
               )}
             </div>
@@ -166,15 +174,16 @@ const AdminOrders = () => {
               </div>
             </div>
 
-            <div className="flex flex-row border border-black-30 rounded-t-2xl px-5 py-2.5 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
-              <div className="flex text-14-medium text-black-60 flex-[0.6]">
+            <div className="flex flex-row border border-black-30 rounded-t-2xl bg-[#E7ECF0] gap-2.5 py-2.5 pl-5">
+              <div className="flex text-14-medium leading-[136%] text-navy-35">
                 테이블
               </div>
-              <div className="flex text-14-medium text-black-60 flex-[3] gap-1.5">
-                <div className="flex-[6] text-left">메뉴</div>
-                <div className="flex-[2] text-center">수량</div>
+              <div className="flex w-38.5 text-start text-14-medium leading-[136%] text-navy-35">
+                메뉴
               </div>
-              <div className="flex text-14-medium text-black-60 flex-[1]"></div>
+              <div className="flex text-14-medium leading-[136%] text-navy-35">
+                수량
+              </div>
             </div>
             <div className="flex flex-col gap-7.5 rounded-b-2xl border border-t-0 border-black-30 flex-1 bg-white px-5.5 py-4 overflow-y-auto min-h-0">
               {isLoading ? (
@@ -206,6 +215,7 @@ const AdminOrders = () => {
           cookedOrders={cookedData}
           isLoading={isLoading}
           error={error}
+          onRefresh={refetch}
         />
       )}
     </div>

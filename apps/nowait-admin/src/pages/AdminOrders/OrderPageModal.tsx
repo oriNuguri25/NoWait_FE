@@ -1,19 +1,42 @@
+import { useUpdateOrderStatus } from "../../hooks/useUpdateOrderStatus";
+import { getTableBackgroundColor } from "../../utils/tableColors";
+
 // Payment Check Modal
 interface PaymentCheckModalProps {
+  orderId: number;
   tableNumber: number;
   depositorName: string;
   totalAmount: number;
   timeText: string;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
 const PaymentCheckModal = ({
+  orderId,
   tableNumber,
   depositorName,
   totalAmount,
   timeText,
   onClose,
+  onSuccess,
 }: PaymentCheckModalProps) => {
+  const updateOrderStatus = useUpdateOrderStatus();
+
+  const handleConfirm = async () => {
+    try {
+      await updateOrderStatus.mutateAsync({
+        orderId,
+        status: "COOKING",
+      });
+      onSuccess?.();
+      onClose();
+    } catch (error) {
+      console.error("주문 상태 업데이트 실패:", error);
+      // 에러 처리 (예: 토스트 메시지 표시)
+    }
+  };
+
   return (
     <div
       className="flex flex-col justify-center items-center bg-white rounded-[20px] max-w-sm w-full px-5.5 pt-7.5 pb-5.5"
@@ -32,7 +55,10 @@ const PaymentCheckModal = ({
       </div>
 
       <div className="flex flex-row mt-7.5 bg-black-15 rounded-[14px] px-3.5 py-3.5 w-70 gap-2.5">
-        <div className="flex rounded-full bg-navy-50 w-9 h-9 items-center justify-center text-title-18-semibold text-white-100">
+        <div
+          className="flex rounded-full w-9 h-9 items-center justify-center text-title-18-semibold text-white-100"
+          style={{ backgroundColor: getTableBackgroundColor(tableNumber) }}
+        >
           {tableNumber}
         </div>
         <div className="flex flex-col">
@@ -59,10 +85,12 @@ const PaymentCheckModal = ({
           취소
         </div>
         <div
-          className="flex flex-1 bg-cool-black rounded-[10px] px-3 py-2.5 items-center justify-center text-16-semibold text-white cursor-pointer"
-          onClick={onClose}
+          className={`flex flex-1 bg-cool-black rounded-[10px] px-3 py-2.5 items-center justify-center text-16-semibold text-white cursor-pointer ${
+            updateOrderStatus.isPending ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          onClick={updateOrderStatus.isPending ? undefined : handleConfirm}
         >
-          확인
+          {updateOrderStatus.isPending ? "처리중..." : "확인"}
         </div>
       </div>
     </div>
@@ -71,14 +99,31 @@ const PaymentCheckModal = ({
 
 // Cooked Modal
 interface CookedModalProps {
+  orderId: number;
   tableNumber: number;
   depositorName: string;
   totalAmount: number;
   timeText: string;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
-const CookedModal = ({ onClose }: CookedModalProps) => {
+const CookedModal = ({ orderId, onClose, onSuccess }: CookedModalProps) => {
+  const updateOrderStatus = useUpdateOrderStatus();
+
+  const handleConfirm = async () => {
+    try {
+      await updateOrderStatus.mutateAsync({
+        orderId,
+        status: "COOKING",
+      });
+      onSuccess?.();
+      onClose();
+    } catch (error) {
+      console.error("주문 상태 업데이트 실패:", error);
+      // 에러 처리 (예: 토스트 메시지 표시)
+    }
+  };
   return (
     <div
       className="flex flex-col justify-center items-center bg-white rounded-[20px] max-w-sm w-full px-5.5 pt-7.5 pb-5.5"
@@ -101,10 +146,12 @@ const CookedModal = ({ onClose }: CookedModalProps) => {
           취소
         </div>
         <div
-          className="flex flex-1 bg-cool-black rounded-[10px] px-3 py-2.5 items-center justify-center text-16-semibold text-white cursor-pointer"
-          onClick={onClose}
+          className={`flex flex-1 bg-cool-black rounded-[10px] px-3 py-2.5 items-center justify-center text-16-semibold text-white cursor-pointer ${
+            updateOrderStatus.isPending ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          onClick={updateOrderStatus.isPending ? undefined : handleConfirm}
         >
-          확인
+          {updateOrderStatus.isPending ? "처리중..." : "확인"}
         </div>
       </div>
     </div>

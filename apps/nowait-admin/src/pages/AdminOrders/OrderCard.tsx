@@ -2,21 +2,26 @@ import ArrowRight from "../../assets/arrow_back.svg?react";
 import { useState } from "react";
 import { PaymentCheckModal, CookedModal } from "./OrderPageModal";
 import type { MenuNamesAndQuantities } from "../../types/order";
+import { getTableBackgroundColor } from "../../utils/tableColors";
 
 interface PaymentCardProps {
+  orderId: number;
   tableNumber: number;
   timeText: string;
   depositorName: string;
   totalAmount: number;
   onClick?: () => void;
+  onSuccess?: () => void;
 }
 
 const PaymentCard = ({
+  orderId,
   tableNumber,
   timeText,
   depositorName,
   totalAmount,
   onClick,
+  onSuccess,
 }: PaymentCardProps) => {
   const [showPaymentCheckModal, setShowPaymentCheckModal] = useState(false);
 
@@ -36,7 +41,10 @@ const PaymentCard = ({
         onClick={onClick}
       >
         <div className="flex flex-row items-center">
-          <div className="flex rounded-full bg-navy-50 w-9 h-9 items-center justify-center text-title-18-semibold text-white-100">
+          <div
+            className="flex rounded-full w-9 h-9 items-center justify-center text-title-18-semibold text-white-100"
+            style={{ backgroundColor: getTableBackgroundColor(tableNumber) }}
+          >
             {tableNumber}
           </div>
 
@@ -71,11 +79,13 @@ const PaymentCard = ({
           onClick={handleClosePaymentCheckModal}
         >
           <PaymentCheckModal
+            orderId={orderId}
             tableNumber={tableNumber}
             depositorName={depositorName}
             totalAmount={totalAmount}
             timeText={timeText}
             onClose={handleClosePaymentCheckModal}
+            onSuccess={onSuccess}
           />
         </div>
       )}
@@ -84,21 +94,25 @@ const PaymentCard = ({
 };
 
 interface PaymentDetailProps {
+  orderId: number;
   tableNumber: number;
   timeText: string;
   depositorName: string;
   totalAmount: number;
   menuNamesAndQuantities?: MenuNamesAndQuantities;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
 const PaymentDetail = ({
+  orderId,
   tableNumber,
   timeText,
   depositorName,
   totalAmount,
   menuNamesAndQuantities,
   onClose,
+  onSuccess,
 }: PaymentDetailProps) => {
   const [showPaymentCheckModal, setShowPaymentCheckModal] = useState(false);
 
@@ -125,7 +139,10 @@ const PaymentDetail = ({
           </div>
 
           <div className="flex flex-row mt-6 gap-2.5">
-            <div className="flex rounded-full bg-navy-50 w-9 h-9 items-center justify-center text-title-18-semibold text-white-100">
+            <div
+              className="flex rounded-full w-9 h-9 items-center justify-center text-title-18-semibold text-white-100"
+              style={{ backgroundColor: getTableBackgroundColor(tableNumber) }}
+            >
               {tableNumber}
             </div>
             <div className="flex text-title-18-semibold text-black-90 items-center">
@@ -196,11 +213,13 @@ const PaymentDetail = ({
           onClick={handleClosePaymentCheckModal}
         >
           <PaymentCheckModal
+            orderId={orderId}
             tableNumber={tableNumber}
             depositorName={depositorName}
             totalAmount={totalAmount}
             timeText={timeText}
             onClose={handleClosePaymentCheckModal}
+            onSuccess={onSuccess}
           />
         </div>
       )}
@@ -208,15 +227,12 @@ const PaymentDetail = ({
   );
 };
 
-import { useWindowWidth } from "../../hooks/useWindowWidth";
-
 interface CookCardProps {
   tableNumber: number;
   menuNamesAndQuantities?: MenuNamesAndQuantities;
 }
 
 const CookCard = ({ tableNumber, menuNamesAndQuantities }: CookCardProps) => {
-  const windowWidth = useWindowWidth();
   const menuEntries = menuNamesAndQuantities
     ? Object.entries(menuNamesAndQuantities)
     : [];
@@ -224,90 +240,59 @@ const CookCard = ({ tableNumber, menuNamesAndQuantities }: CookCardProps) => {
 
   return (
     <div
-      className={`flex flex-row w-full ${
-        isOneMenu ? "items-center" : "items-start"
+      className={`flex flex-row justify-between ${
+        isOneMenu ? "items-center" : ""
       }`}
     >
-      <div
-        className={`flex flex-[0.6] ${
-          isOneMenu ? "items-center" : "items-start"
-        }`}
-      >
-        <div className="flex rounded-full bg-navy-50 w-9 h-9 items-center justify-center text-title-18-semibold text-white-100">
+      <div className="flex flex-row gap-2.5">
+        <div
+          className="flex w-9 h-9 items-center justify-center rounded-full text-title-18-semibold text-white-100"
+          style={{ backgroundColor: getTableBackgroundColor(tableNumber) }}
+        >
           {tableNumber}
         </div>
-      </div>
-
-      <div
-        className={`flex flex-col gap-2.5 flex-[2.5] ${
-          isOneMenu ? "justify-center" : ""
-        }`}
-      >
-        {menuEntries.map(([menuName, quantity], index) => {
-          // 화면 크기에 따른 글자 수 제한
-          const getDisplayText = (text: string) => {
-            // xl: 전체 표시, lg: 12글자, md: 7글자, sm: 6글자, xs: 4글자
-            if (windowWidth >= 1280) {
-              return text; // 전체 화면에서는 모든 글자 표시
-            } else if (windowWidth >= 1024) {
-              return text.length > 12 ? `${text.slice(0, 12)}...` : text;
-            } else if (windowWidth >= 768) {
-              return text.length > 7 ? `${text.slice(0, 7)}...` : text;
-            } else if (windowWidth >= 640) {
-              return text.length > 6 ? `${text.slice(0, 6)}...` : text;
-            } else {
-              return text.length > 4 ? `${text.slice(0, 4)}...` : text;
-            }
-          };
-
-          const isLargeScreen = windowWidth >= 1280;
-
-          return (
-            <div key={index} className="flex flex-row gap-2.5">
-              <div
-                className={`text-16-semibold text-left text-black-80 flex-[8] min-w-0 ${
-                  isLargeScreen
-                    ? ""
-                    : "truncate overflow-hidden whitespace-nowrap"
-                }`}
-              >
-                {getDisplayText(menuName)}
+        <div className="flex flex-col gap-3.5 text-16-semibold text-black-80">
+          {menuEntries.map(([menuName, quantity], index) => (
+            <div key={index} className="flex flex-row gap-2.5 justify-between">
+              <div className="flex w-40 truncate">
+                {menuName.length > 10
+                  ? menuName.substring(0, 10) + "..."
+                  : menuName}
               </div>
-              <div className="text-16-medium text-black-80 text-center flex-[2] flex-shrink-0">
-                {quantity}
-              </div>
+              <div className="flex">{quantity}</div>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
-
       <div
-        className={`flex flex-[1] justify-end ${
-          isOneMenu ? "items-center" : ""
+        className={`flex rounded-lg bg-black-20 px-2.5 py-1.25 items-center justify-center text-14-semibold text-black-70 ${
+          isOneMenu ? "" : "self-start"
         }`}
       >
-        <div className="flex px-2.5 py-1.25 bg-black-20 rounded-lg text-14-semibold text-black-70 flex-shrink-0 whitespace-nowrap">
-          조리 완료
-        </div>
+        조리 완료
       </div>
     </div>
   );
 };
 
 interface CookedCardProps {
+  orderId: number;
   tableNumber: number;
   depositorName: string;
   menuNamesAndQuantities?: MenuNamesAndQuantities;
   totalAmount: number;
   createdAt: string;
+  onSuccess?: () => void;
 }
 
 const CookedCard = ({
+  orderId,
   tableNumber,
   depositorName,
   menuNamesAndQuantities,
   totalAmount,
   createdAt,
+  onSuccess,
 }: CookedCardProps) => {
   const [showCookedModal, setShowCookedModal] = useState(false);
 
@@ -365,11 +350,13 @@ const CookedCard = ({
           onClick={handleCloseCookedModal}
         >
           <CookedModal
+            orderId={orderId}
             tableNumber={tableNumber}
             depositorName={depositorName}
             totalAmount={totalAmount}
             timeText={createdAt}
             onClose={handleCloseCookedModal}
+            onSuccess={onSuccess}
           />
         </div>
       )}
