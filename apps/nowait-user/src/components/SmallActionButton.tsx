@@ -1,4 +1,5 @@
 interface PropsType {
+  mode? : "default" | "orderDetails"
   type?: "button" | "submit" | "reset";
   ariaLabel: string;
   children: React.ReactNode;
@@ -6,6 +7,7 @@ interface PropsType {
   className?: string;
 }
 export const SmallActionButton = ({
+  mode = "default",
   type = "button",
   children,
   onClick,
@@ -16,7 +18,7 @@ export const SmallActionButton = ({
     <button
       type={type}
       aria-label={ariaLabel}
-      className={`${className} py-2 px-4 rounded-[12px] border border-[#ececec] text-black-70`}
+      className={`${className} py-2 px-4 rounded-[12px] border-2 bg-white ${mode==="default" ? "border-[#ececec] text-black-70" : "border-[#dddddd] text-black-80"}`}
       onClick={onClick}
     >
       <p className="flex items-center justify-center gap-1 text-[14px] font-bold">

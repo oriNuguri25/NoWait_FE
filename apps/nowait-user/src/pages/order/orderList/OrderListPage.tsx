@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import EmptyCart from "./components/EmptyCart";
 import { SmallActionButton } from "../../../components/SmallActionButton";
 import Add from "../../../assets/icon/Add.svg?react";
+import Header from "../../../components/order/Header";
 
 const OrderListPage = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const OrderListPage = () => {
 
   return (
     <div>
+      <Header title="장바구니"/>
       <section className="flex flex-col flex-grow min-h-screen-dvh pt-7 px-5 pb-[124px]">
         <h1 className="text-headline-24-bold mb-5">
           주문 총 <span className="text-primary">{cart.length}건</span>
@@ -37,6 +39,7 @@ const OrderListPage = () => {
             })}
           </AnimatePresence>
           <SmallActionButton
+            mode="default"
             type="button"
             ariaLabel="메뉴 추가하기"
             onClick={() => navigate(`/${storeId}`)}

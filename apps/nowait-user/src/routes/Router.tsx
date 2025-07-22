@@ -12,9 +12,10 @@ import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
 import PageTransitionWrapper from "../components/layout/PageTransitionWrapper";
 import WaitingPartySizeForm from "../pages/waiting/waitingPartysize/WaitingPartySizeForm";
-import StoreMenuDetailPage from "../pages/waiting/menuDetail/StoreMenuDetailPage";
 import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
 import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
+import RemittanceWaitPage from "../pages/order/remittenceWait/RemittanceWaitPage";
+import OrderDetailsPage from "../pages/order/orderDetails/OrderDetailsPage";
 import RemittancePage from "../pages/order/remittance/RemittancePage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
@@ -32,10 +33,10 @@ const Router = () => {
   const location = useLocation();
   return (
     // <PageTransitionWrapper>
-      <Routes location={location}  key={location.pathname}>
-        {/* 공개 라우트 - 인증 불필요 */}
-        <Route path="/login/success" element={<KakaoRedirectHandler />} />
-        <Route path="/login" element={<LoginPage />} />
+    <Routes location={location} key={location.pathname}>
+      {/* 공개 라우트 - 인증 불필요 */}
+      <Route path="/login/success" element={<KakaoRedirectHandler />} />
+      <Route path="/login" element={<LoginPage />} />
 
       {/* 보호된 라우트 - 인증 필요 (구체적인 경로 먼저) */}
       <Route
@@ -59,12 +60,19 @@ const Router = () => {
         path="/:storeId/remittance"
         element={withTransition(RemittancePage)}
       />
-
+      <Route
+        path="/:storeId/remittanceWait"
+        element={withTransition(RemittanceWaitPage)}
+      />
       <Route
         path="/:storeId/order/success"
         element={withTransition(OrderSuccessPage)}
       />
 
+      <Route
+        path="/:storeId/orderDetails"
+        element={withTransition(OrderDetailsPage)}
+      />
       {/* 보호된 라우트 - 인증 필요 */}
       <Route
         path="/*"
@@ -73,10 +81,6 @@ const Router = () => {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/store/:id" element={<StoreDetailPage />} />
-              <Route
-                path="/store/:id/menu/:menuId"
-                element={<StoreMenuDetailPage />}
-              />
               <Route
                 path="/store/:id/partysize"
                 element={<WaitingPartySizeForm />}
