@@ -246,7 +246,7 @@ const AdminHome = () => {
               )}
               peopleCount={res.peopleCount}
               name={res.name}
-              phone="010-****-****"
+              phone="010-1234-1234"
               status={res.status}
               calledAt={res.calledAt}
               isNoShow={noShowIds.includes(res.id)}
