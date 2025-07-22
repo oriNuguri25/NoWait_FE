@@ -6,7 +6,6 @@ import statIcon from "../assets/Statistics.svg";
 import statIconActive from "../assets/statIconActive.svg";
 import boothIcon from "../assets/Tent.svg";
 import boothIconActive from "../assets/boothIconActive.svg";
-import profileImg from "../assets/profile.png"; // 사용자 이미지
 import cancelIcon from "../assets/Cancel.svg";
 import { useLocation, useNavigate } from "react-router";
 
@@ -36,7 +35,9 @@ const MobileAdminNav = ({ onClose }: { onClose: () => void }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   return (
-    <div className="w-[250px] h-full bg-white flex flex-col px-4 py-6 shadow-lg fixed top-0 right-0 z-50">
+    <div
+      className={`w-[250px] h-full bg-white flex flex-col px-4 py-6 fixed top-0 right-0 z-50 `}
+    >
       {/* 상단 - 닫기 버튼 */}
       <div className="flex justify-end mb-4">
         <button onClick={onClose}>
@@ -70,8 +71,8 @@ const MobileAdminNav = ({ onClose }: { onClose: () => void }) => {
         </ul>
 
         {/* 하단 - 로그아웃 */}
-        <div className="flex justify-end items-center gap-2 px-3 mt-8">
-          <button className="text-red-500 font-medium text-sm">
+        <div className="flex justify-start items-center gap-2 px-3 mt-8">
+          <button className="text-primary font-medium text-title-18-semibold">
             계정 로그아웃
           </button>
         </div>

@@ -70,7 +70,7 @@ const AdminSidebar = () => {
                 className="w-5 h-5"
               />
             }
-            label="웨이팅"
+            label="대기"
             compact={isCompact}
           />
           <NavItem
@@ -96,7 +96,7 @@ const AdminSidebar = () => {
                 className="w-5 h-5"
               />
             }
-            label="관리 · 통계"
+            label="통계"
             compact={isCompact}
           />
           <NavItem
@@ -108,7 +108,7 @@ const AdminSidebar = () => {
                 className="w-5 h-5"
               />
             }
-            label="부스"
+            label="부스 관리"
             compact={isCompact}
           />
         </nav>

@@ -22,7 +22,16 @@ const MobileMenuBar = () => {
       <button className="cursor-pointer" onClick={() => setShowNav(true)}>
         <img src={menuIcon} />
       </button>
-      {showNav && <MobileAdminNav onClose={() => setShowNav(false)} />}
+      {/* 사이드 메뉴: 항상 렌더링되지만 translate-x로 제어 */}
+      <div
+        className={`fixed top-0 right-0 z-50 h-full w-[260px] bg-white shadow-xl transition-transform duration-300 ${
+          showNav ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <MobileAdminNav onClose={() => setShowNav(false)} />
+      </div>
+      {/* dim 영역 */}
+      {showNav && <div className="fixed inset-0 bg-black/30 z-40" />}
     </div>
   );
 };
