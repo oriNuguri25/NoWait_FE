@@ -365,7 +365,10 @@ const MyWaitingCardComponent = ({
   return (
     <div>
       <div
-        className="flex flex-col mt-4.5 mb-2.5 pb-9 w-full bg-[#D8E6FF] rounded-2xl items-center justify-center cursor-pointer relative overflow-hidden"
+        className="flex flex-col mt-4.5 mb-2.5 pb-9 w-full rounded-2xl items-center justify-center cursor-pointer relative overflow-hidden"
+        style={{
+          background: "linear-gradient(190deg, #FFDFD5 0%, #F7F7F7 100%)",
+        }}
         onClick={onClick}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -382,64 +385,86 @@ const MyWaitingCardComponent = ({
           ))}
         </div>
 
-        <div className="flex mt-6.5 text-14-semibold text-[#1A3149] leading-[130%] tracking-[0em]">
+        <div className="flex mt-6.5 text-14-semibold text-[#4D2E2E] leading-[130%] tracking-[0em]">
           {storeName}
         </div>
 
-        <div className="flex flex-row mt-1">
-          <div className="flex mr-1 text-title-20-bold leading-[130%] tracking-[0em] text-[#1A3149]">
+        <div className="flex flex-row mt-1 items-center">
+          <div className="flex mr-1 text-title-20-bold leading-[130%] tracking-[0em] text-[#512727]">
             내 앞에 대기
           </div>
           <div className="flex text-title-20-bold leading-[130%] tracking-[0em] text-primary mr-1.5">
             {waitingTeams}팀
           </div>
-          <div className="flex items-center">
+          <div className="flex justify-center items-center icon-m rounded-full bg-[#FFFFFF]/50">
             <Refresh className="icon-s" />
           </div>
         </div>
 
         <div className="flex flex-row mt-8">
           <div className="flex flex-row">
-            {[0, 1, 2].map((index) => {
-              const isActive = currentSlide === index;
-              const isNext = currentSlide === index - 1;
-              const isPrev = currentSlide === index + 1;
+            {[0, 1, 2].map((positionIndex) => {
+              // 위치별 스타일 (고정)
+              const isActivePosition = positionIndex === 0; // 첫 번째 위치가 항상 활성
+              const isSecondPosition = positionIndex === 1;
+              const isThirdPosition = positionIndex === 2;
 
-              // z-index 결정 (활성화된 것이 가장 앞에)
+              // z-index 결정 (첫 번째 > 두 번째 > 세 번째)
               let zIndex = 10;
-              if (isActive) zIndex = 30;
-              else if (isNext || isPrev) zIndex = 20;
+              if (isActivePosition) zIndex = 30;
+              else if (isSecondPosition) zIndex = 20;
+              else if (isThirdPosition) zIndex = 15;
 
-              // 투명도 결정
-              let opacity = isActive ? 100 : 30;
+              // 투명도 결정 (첫 번째 위치만 밝게, 두 번째와 세 번째는 같게)
+              let opacity = isActivePosition ? 100 : 30;
+
+              // 이미지 인덱스 계산 (순환)
+              const imageIndex = (positionIndex + currentSlide) % 3;
 
               // 배경색 결정 (이미지가 없을 때만 사용)
               const bgColors = ["bg-amber-50", "bg-gray-200", "bg-blue-100"];
 
               // 이미지가 있는지 확인
-              const hasImage = images && images[index];
+              const hasImage = images && images[imageIndex];
 
               return (
                 <div
-                  key={index}
-                  className={`flex w-17.5 h-17.5 rounded-full border-[3.5px] border-white transition-all duration-300 ${
-                    index > 0 ? "-ml-8" : ""
-                  } ${hasImage ? "bg-cover bg-center" : bgColors[index]}`}
-                  style={{
-                    zIndex: zIndex,
-                    opacity: opacity / 100,
-                    backgroundImage: hasImage
-                      ? `url(${images[index]})`
-                      : undefined,
-                  }}
-                ></div>
+                  key={positionIndex}
+                  className={`relative w-17.5 h-17.5 bg-white rounded-full transition-all duration-500 ease-in-out ${
+                    positionIndex > 0 ? "-ml-8" : ""
+                  }`}
+                  style={{ zIndex: zIndex }}
+                >
+                  {/* 안쪽 원 (이미지/배경색) */}
+                  <div className="relative w-full h-full p-[3.5px]">
+                    <div
+                      className={`relative w-full h-full rounded-full transition-all duration-500 ease-in-out ${
+                        hasImage ? "bg-cover bg-center" : bgColors[imageIndex]
+                      }`}
+                      style={{
+                        backgroundImage: hasImage
+                          ? `url(${images[imageIndex]})`
+                          : undefined,
+                        transform: `scale(${isActivePosition ? 1 : 0.95})`,
+                      }}
+                    >
+                      {/* 투명도 오버레이 원 */}
+                      <div
+                        className="absolute inset-0 w-full h-full rounded-full bg-white transition-opacity duration-600 ease-out"
+                        style={{
+                          opacity: (100 - opacity) / 100, // 역투명도 (밝을수록 오버레이가 투명해짐)
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
               );
             })}
           </div>
         </div>
       </div>
-      <div className="flex flex-row justify-between items-center bg-white-100 rounded-2xl px-4 py-4 h-15">
-        <div className="flex text-14-medium text-[#787878] leading-[130%]">
+      <div className="flex flex-row justify-between items-center bg-[#F8F7F7] rounded-2xl px-4 py-4 h-15">
+        <div className="flex text-14-medium text-[#474D57] leading-[130%]">
           10분 안에 입장해주세요!
         </div>
 

@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 import HomeHeader from "./HomeHeader";
 import ArrowDown from "../../assets/icon/arrow_down.svg?react";
 import MainCard from "./components/MainCard";
@@ -9,28 +9,9 @@ import BannerMap from "../../assets/icon/banner_img.svg?react";
 import { mockWaitingItems } from "../../data/mockData";
 
 const HomePage = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortOption, setSortOption] = useState("대기 적은 순");
   const [isWaitingDetailOpen, setIsWaitingDetailOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollRef.current) {
-        const scrollLeft = scrollRef.current.scrollLeft;
-        const cardWidth = scrollRef.current.clientWidth;
-        const newIndex = Math.round(scrollLeft / cardWidth);
-        setActiveIndex(newIndex);
-      }
-    };
-
-    const scrollElement = scrollRef.current;
-    if (scrollElement) {
-      scrollElement.addEventListener("scroll", handleScroll);
-      return () => scrollElement.removeEventListener("scroll", handleScroll);
-    }
-  }, []);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -60,13 +41,12 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col gap-10">
-      <div className="flex flex-col bg-[#EEF1F9] px-5 pb-8">
+      <div className="flex flex-col px-5 pb-8">
         <HomeHeader />
         {/* 내 대기 순서 */}
         <div className="flex flex-col">
           <div className="flex flex-row mt-4.5 gap-1.5 text-title-20-bold text-black-100">
             <div className="flex">나의 대기카드</div>
-            <div className="flex">2</div>
           </div>
 
           <MainCard
@@ -108,7 +88,7 @@ const HomePage = () => {
 
         {/* 축제 부스 찾기 안내 */}
         <div className="flex flex-row rounded-2xl bg-black-15 gap-3.75 justify-between pl-5 items-center">
-          <div className="flex flex-col py-5">
+          <div className="flex flex-col py-5 gap-1.5">
             <div className="flex text-18-bold text-black-90">
               축제 부스 한눈에 찾기
             </div>
