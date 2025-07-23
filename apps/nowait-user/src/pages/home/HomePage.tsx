@@ -1,5 +1,5 @@
 import { useState } from "react";
-import HomeHeader from "./HomeHeader";
+import HomeHeader from "../../components/Header";
 import ArrowDown from "../../assets/icon/arrow_down.svg?react";
 import MainCard from "./components/MainCard";
 import InfiniteStoreList from "./components/InfiniteStoreList";

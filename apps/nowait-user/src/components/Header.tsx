@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import Logo from "../../assets/logo.svg?react";
-import Menu from "../../assets/icon/menu.svg?react";
-import Search from "../../assets/icon/search_black.svg?react";
-import Cancel from "../../assets/icon/cancel.svg?react";
-import Portal from "../../components/common/modal/Portal";
+import { useNavigate } from "react-router-dom";
+import Logo from "../assets/logo.svg?react";
+import Menu from "../assets/icon/menu.svg?react";
+import Search from "../assets/icon/search_black.svg?react";
+import Cancel from "../assets/icon/cancel.svg?react";
+import Portal from "./common/modal/Portal";
 
 const HomeHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -15,6 +17,16 @@ const HomeHeader = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  const handleBookmarkClick = () => {
+    closeMenu();
+    navigate("/bookmark");
+  };
+
+  const handleHomeClick = () => {
+    closeMenu();
+    navigate("/");
   };
 
   return (
@@ -68,7 +80,7 @@ const HomeHeader = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -20, opacity: 0 }}
                         transition={{ duration: 0.4, delay: 0.15 }}
-                        onClick={closeMenu}
+                        onClick={handleHomeClick}
                         className="block w-full text-left text-title-20-semibold leading-[136%] tracking-[-0.01em] text-black-100"
                       >
                         홈
@@ -88,10 +100,10 @@ const HomeHeader = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -20, opacity: 0 }}
                         transition={{ duration: 0.4, delay: 0.45 }}
-                        onClick={closeMenu}
+                        onClick={handleBookmarkClick}
                         className="block w-full text-left text-title-20-semibold leading-[136%] tracking-[-0.01em] text-black-100"
                       >
-                        마이페이지
+                        북마크
                       </motion.button>
                     </nav>
                   </div>
