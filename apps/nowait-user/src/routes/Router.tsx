@@ -17,6 +17,7 @@ import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
 import RemittanceWaitPage from "../pages/order/remittenceWait/RemittanceWaitPage";
 import OrderDetailsPage from "../pages/order/orderDetails/OrderDetailsPage";
 import RemittancePage from "../pages/order/remittance/RemittancePage";
+import BookmarkPage from "../pages/bookmark/BookmarkPage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -46,6 +47,15 @@ const Router = () => {
       {/* <Route path="/store/:id/reserve" element={withAuth(StoreReservePage)} /> */}
       <Route path="/store/:id" element={withAuth(StoreDetailPage)} />
       <Route path="/map" element={withAuth(MapPage)} />
+      <Route path="/bookmark" element={withAuth(BookmarkPage)} />
+      <Route
+        path="/store/:id/partysize"
+        element={withAuth(WaitingPartySizeForm)}
+      />
+      <Route
+        path="/store/:id/waitingsummary"
+        element={withAuth(WaitingSummaryPage)}
+      />
       <Route path="/" element={withAuth(HomePage)} />
 
       {/* QR 코드 접속 페이지 - 인증 불필요 (일반적인 경로 나중에) */}
@@ -72,31 +82,6 @@ const Router = () => {
       <Route
         path="/:storeId/orderDetails"
         element={withTransition(OrderDetailsPage)}
-      />
-      {/* 보호된 라우트 - 인증 필요 */}
-      <Route
-        path="/*"
-        element={
-          <AuthGuard>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/store/:id" element={<StoreDetailPage />} />
-              <Route
-                path="/store/:id/partysize"
-                element={<WaitingPartySizeForm />}
-              />
-              <Route
-                path="/store/:id/waitingsummary"
-                element={<WaitingSummaryPage />}
-              />
-              <Route
-                path="/store/:id/waiting/success"
-                element={<WaitingSuccessPage />}
-              />
-              <Route path="/map" element={<MapPage />} />
-            </Routes>
-          </AuthGuard>
-        }
       />
     </Routes>
   );
