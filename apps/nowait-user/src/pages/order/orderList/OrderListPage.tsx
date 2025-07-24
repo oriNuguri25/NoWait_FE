@@ -32,6 +32,7 @@ const OrderListPage = () => {
                   key={item.menuId}
                   id={item.menuId}
                   name={item.name}
+                  originPrice={item.originPrice}
                   price={item.price}
                   quantity={item.quantity}
                 />

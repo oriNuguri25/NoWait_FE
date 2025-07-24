@@ -12,7 +12,7 @@ import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
 import PageTransitionWrapper from "../components/layout/PageTransitionWrapper";
 import WaitingPartySizeForm from "../pages/waiting/waitingPartysize/WaitingPartySizeForm";
-import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
+import WaitingSummaryPage from "../pages/waiting/waitingSummary/WaitingSummaryPage";
 import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
 import RemittanceWaitPage from "../pages/order/remittenceWait/RemittanceWaitPage";
 import OrderDetailsPage from "../pages/order/orderDetails/OrderDetailsPage";

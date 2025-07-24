@@ -6,6 +6,7 @@ import { Button } from "@repo/ui";
 import type { CartType } from "../../../types/order/cart";
 import { useCartStore } from "../../../stores/cartStore";
 import NumberFlow from "@number-flow/react";
+import defaultMenuImageLg from "../../../assets/default-menu-image-lg.png";
 
 const AddMenuPage = () => {
   const location = useLocation();
@@ -21,6 +22,7 @@ const AddMenuPage = () => {
       image,
       name,
       quantity,
+      originPrice: price,
       price: price * quantity,
     };
     addToCart(item);
@@ -31,7 +33,11 @@ const AddMenuPage = () => {
     <div className="flex flex-col h-screen">
       <div className="flex-1 overflow-y-auto px-5">
         <h1 className="-mx-5">
-          <img className="w-full" src={image} alt="음식 메뉴 이미지" />
+          <img
+            className="w-full"
+            src={image || defaultMenuImageLg}
+            alt="음식 메뉴 이미지"
+          />
         </h1>
         <div className="py-8">
           <h1 className="text-headline-22-bold mb-2">{name}</h1>
@@ -42,8 +48,7 @@ const AddMenuPage = () => {
       <div className="sticky left-0 bottom-[124px] bg-white">
         <div className="w-full flex justify-between items-center px-5">
           <h1 className="text-[24px] font-semibold">
-            <NumberFlow value={(price * quantity)} suffix="원"/>
-            {/* {(price * quantity).toLocaleString()}원 */}
+            <NumberFlow value={price * quantity} suffix="원" />
           </h1>
           <QuantitySelector
             mode="state"

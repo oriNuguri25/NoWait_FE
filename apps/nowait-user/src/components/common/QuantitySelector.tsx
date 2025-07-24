@@ -1,7 +1,7 @@
 import React from "react";
 import Minus from "../../assets/icon/minus.svg?react";
 import Plus from "../../assets/icon/plus.svg?react";
-import NumberFlow, { continuous } from "@number-flow/react";
+import NumberFlow from "@number-flow/react";
 
 interface stateProps {
   mode: "state";
@@ -59,7 +59,7 @@ const QuantitySelector = (props: PropsType) => {
             : "text-16-semibold"
         } text-balck-80`}
       >
-        <NumberFlow value={props.quantity} plugins={[continuous]} />
+        <NumberFlow value={props.quantity}/>
       </p>
       <button
         className={`${
