@@ -7,6 +7,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import MenuList from "../../../components/common/MenuList";
 import IsBookmark from "./components/IsBookmark";
 import { getBookmark } from "../../../api/reservation";
+import axios from "axios";
+import UserApi from "../../../utils/UserApi";
 
 const TAG = [
   { id: 1, type: "default", tag: "태그 추가" },
@@ -17,15 +19,6 @@ const TAG = [
 const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-
-  const a = async () => {
-    try {
-      const res = await getBookmark();
-      console.log(res);
-    } catch (error) {
-      console.log(error)
-    }
-  };
 
   return (
     <div>
@@ -64,7 +57,6 @@ const StoreDetailPage = () => {
         </section>
         <section className="pt-5 pb-[28px]">
           <div className="mb-6">
-            <button onClick={a}>북마크조회</button>
             <p className="flex items-center mb-1.5 text-16-regular text-black-80">
               <span className="w-[18px] flex justify-center  mr-1.5">
                 <SubStract />

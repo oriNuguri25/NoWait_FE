@@ -1,4 +1,3 @@
-import axios from "axios";
 import UserApi from "../utils/UserApi";
 
 const SERVER_URI = import.meta.env.VITE_SERVER_URI;
@@ -12,7 +11,7 @@ export const createReservation = async (
   storeId: string,
   payload: ReservationType
 ) => {
-  const res = await UserApi.post(`/reservations/create/${storeId}`, payload);
+  const res = await UserApi.post(`/reservations/create/redis/${storeId}`, payload);
   return res.data;
 };
 

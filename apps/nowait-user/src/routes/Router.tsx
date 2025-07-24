@@ -53,8 +53,12 @@ const Router = () => {
         element={withAuth(WaitingPartySizeForm)}
       />
       <Route
-        path="/store/:id/waitingsummary"
+        path="/store/:id/waiting/summary"
         element={withAuth(WaitingSummaryPage)}
+      />
+            <Route
+        path="/store/:id/waiting/success"
+        element={withAuth(WaitingSuccessPage)}
       />
       <Route path="/" element={withAuth(HomePage)} />
 

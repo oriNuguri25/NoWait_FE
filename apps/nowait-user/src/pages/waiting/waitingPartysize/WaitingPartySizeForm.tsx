@@ -29,7 +29,7 @@ const WaitingPartySizeForm = () => {
       <PageFooterButton>
         <Button
           onClick={() =>
-            navigate(`/store/${id}/waitingsummary`, { state: partySize })
+            navigate(`/store/${id}/waiting/summary`, { state: partySize })
           }
         >
           다음
