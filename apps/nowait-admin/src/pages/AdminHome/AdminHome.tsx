@@ -2,12 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import RoundTabButton from "./components/RoundTabButton";
 import refreshIcon from "../../assets/refresh.svg";
 import { WaitingCard } from "./components/WaitingCard";
-import { useGetReservationList } from "../../hooks/useGetReservationList";
+import { useGetReservationList } from "../../hooks/Reservation/useGetReservationList";
 import on from "../../assets/on.svg";
 import off from "../../assets/off.svg";
-import { useUpdateReservationStatus } from "../../hooks/useUpdateReservationStatus";
+import { useUpdateReservationStatus } from "../../hooks/Reservation/useUpdateReservationStatus";
 import ConfirmRemoveModal from "../../components/ConfirmRemoveModal";
 import ToggleSwitch from "./components/ToggleSwitch";
+import { useGetCompletedList } from "../../hooks/Reservation/useGetCompletedList";
 type WaitingStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 
 interface Reservation {
@@ -31,7 +32,10 @@ const AdminHome = () => {
   const storeId = 1; //현재는 임시로 mockdata씀
   const [isOn, setIsOn] = useState(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const { data, isLoading, isError } = useGetReservationList(storeId);
+  const { data: waitingList } = useGetReservationList(storeId); //calling, wating
+  const { data: completedList } = useGetCompletedList(storeId); //canceled, conformed
+
+  console.log(waitingList);
 
   const toggle = () => setIsOn((prev) => !prev);
   //대기 중 카드 개수
@@ -142,33 +146,33 @@ const AdminHome = () => {
     });
   };
   useEffect(() => {
-    if (!data?.reservationList) return;
+    if (!Array.isArray(waitingList) || !Array.isArray(completedList)) return;
 
     const now = Date.now();
 
-    setReservations(
-      data.reservationList.map((res, idx) => {
-        const requested = new Date(res.requestedAt);
-        return {
-          id: res.id,
-          requestedAt: res.requestedAt, //서버 데이터 문자열 그대로 사용("2025-06-24T12:33:26")
-          time: requested.toLocaleTimeString("ko-KR", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          }),
-          waitMinutes: Math.floor((now - requested.getTime()) / 60000),
-          peopleCount: res.partySize,
-          name: res.userName,
-          phone: "010-****-****",
-          status: res.status,
-          calledAt:
-            res.status === "CALLING" ? requested.toISOString() : undefined,
-        };
-      })
-    );
-  }, [data]);
+    const normalize = (res: any): Reservation => {
+      const requested = new Date(res.createdAt ?? "");
+      const called = new Date(res.calledAt ?? "");
+      return {
+        id: Number(res.id),
+        requestedAt: res.createdAt,
+        time: requested.toLocaleTimeString("ko-KR", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        }),
+        waitMinutes: Math.floor((now - requested.getTime()) / 60000),
+        peopleCount: res.partySize,
+        name: res.userName,
+        phone: "010-****-****",
+        status: res.status,
+        calledAt: res.status === "CALLING" ? called.toISOString() : undefined,
+      };
+    };
 
+    const merged = [...waitingList, ...completedList].map(normalize);
+    setReservations(merged);
+  }, [waitingList, completedList]);
   return (
     <div
       className={`w-full md:w-[752px] max-w-[804px] flex flex-col items-center mx-auto space-y-6`}
