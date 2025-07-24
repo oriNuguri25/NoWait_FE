@@ -8,12 +8,18 @@ const HeaderStatus = () => {
       <div className="flex flex-col gap-[10px]">
         {/* 오늘 매출 */}
         <SalesCard
-          title="오늘 매출"
-          date="2025.07.18 금"
-          amount={800000}
-          diffAmount={12000}
-          percent={13.6}
+          today={{
+            date: "2025.07.18 금",
+            amount: 920000,
+            diffAmount: 120000,
+            percent: 13.6,
+          }}
+          previous={{
+            date: "2025.07.17 목",
+            amount: 800000,
+          }}
         />
+
         {/* 누적 매출 */}
         <TotalSalesCard
           title="누적매출"
