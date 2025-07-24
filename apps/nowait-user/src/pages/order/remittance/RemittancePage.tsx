@@ -11,7 +11,7 @@ import OrderSummary from "./components/OrderSummary";
 import RemitOptions from "./components/RemitOptions";
 import ConfirmModal from "../../../components/order/ConfirmModal";
 import useModal from "../../../hooks/useModal";
-import Header from "../../../components/order/Header";
+import BackHeader from "../../../components/BackHeader";
 
 const RemittancePage = () => {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const RemittancePage = () => {
 
   return (
     <div className="flex flex-col flex-grow pb-[124px] min-h-screen-dvh">
-      <Header title="주문하기" />
+      <BackHeader title="주문하기" />
       <section className="px-5">
         <OrderSummary cart={cart} />
         <SectionDivider />

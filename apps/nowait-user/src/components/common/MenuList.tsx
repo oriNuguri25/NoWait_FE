@@ -1,5 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
 import type { MenuType } from "../../types/order/menu";
 import MenuItem from "./MenuItem";
+import { useParams } from "react-router-dom";
+import { getStoreMenus } from "../../api/menu";
 
 const dummyData: MenuType[] = [
   {
@@ -44,6 +47,14 @@ const dummyData: MenuType[] = [
 ];
 
 const MenuList = ({ mode }: { mode: string }) => {
+  const { id: storeId } = useParams();
+  console.log(storeId, "스토어아이디");
+  const { data } = useQuery({
+    queryKey: ["storeMenus", storeId],
+    queryFn: () => getStoreMenus(storeId),
+    select:(data)=>data.response
+  });
+  console.log(data);
   return (
     <div className="mt-7.5">
       <h1 className="text-title-20-semibold mb-3">메뉴</h1>

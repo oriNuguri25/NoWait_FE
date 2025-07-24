@@ -5,10 +5,11 @@ import PageFooterButton from "../../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import { useNavigate, useParams } from "react-router-dom";
 import MenuList from "../../../components/common/MenuList";
-import IsBookmark from "./components/IsBookmark";
-import { getBookmark } from "../../../api/reservation";
-import axios from "axios";
-import UserApi from "../../../utils/UserApi";
+import { useBookmarkMutation } from "../../../hooks/mutate/useBookmark";
+import BookmarkIcon from "./components/BookmarkIcon";
+import { useBookmarkState } from "../../../hooks/useBookmarkState";
+import { useQuery } from "@tanstack/react-query";
+import { getStore } from "../../../api/reservation";
 
 const TAG = [
   { id: 1, type: "default", tag: "태그 추가" },
@@ -18,7 +19,26 @@ const TAG = [
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id: storeId } = useParams();
+  const { isBookmarked, bookmarkData } = useBookmarkState();
+  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation();
+  const { data:store } = useQuery({
+    queryKey: ["store"],
+    queryFn: () => getStore(storeId),
+    select: (data) => data.response,
+  });
+  console.log(store);
+  const handleBookmarkButton = async () => {
+    try {
+      if (!isBookmarked) {
+        await createBookmarkMutate.mutate(storeId);
+      } else {
+        await deleteBookmarkMutate.mutate(bookmarkData.bookmarkId);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -29,12 +49,12 @@ const StoreDetailPage = () => {
         <section className="border-b-1 border-[#f4f4f4]">
           <div className="flex justify-between items-center py-[21px]">
             <div className="flex flex-col justify-between gap-[3px]">
-              <p className="text-14-regular text-black-70">컴퓨터공학과</p>
-              <h1 className="text-headline-22-bold">스페이시스</h1>
+              <p className="text-14-regular text-black-70">{store?.departmentName}</p>
+              <h1 className="text-headline-22-bold">{store?.name}</h1>
             </div>
             <img
               className="w-[52px] h-[52px] rounded-[100%] bg-black-60"
-              src=""
+              src={store?.profileImage}
               alt="학과 대표 이미지"
             />
           </div>
@@ -93,8 +113,16 @@ const StoreDetailPage = () => {
         <MenuList mode="store" />
       </div>
       <PageFooterButton className="gap-2">
-        <IsBookmark />
-        <Button onClick={() => navigate(`/store/${id}/partysize`)}>
+        <Button
+          className="border"
+          backgroundColor="white"
+          borderColor="#ececec"
+          buttonType="icon"
+          onClick={handleBookmarkButton}
+        >
+          <BookmarkIcon />
+        </Button>
+        <Button onClick={() => navigate(`/store/${storeId}/partysize`)}>
           대기하기
         </Button>
       </PageFooterButton>
