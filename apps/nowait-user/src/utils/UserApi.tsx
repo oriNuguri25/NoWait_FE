@@ -63,6 +63,7 @@ const refreshToken = async (): Promise<string | null> => {
     }
 
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("recentSearches");
     return null;
   }
 };
@@ -89,14 +90,36 @@ UserApi.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // 토큰 만료 에러 체크 (401 상태 코드 또는 "access token expired" 메시지)
-    if (
-      error.response?.status === 401 ||
-      (error.response?.data &&
-        (error.response.data.includes?.("access token expired") ||
-          error.response.data.message?.includes?.("access token expired") ||
-          error.response.data === "access token expired"))
-    ) {
+    // 토큰 갱신 조건: access token 만료이지만 refresh token은 정상일 때만
+    const isAccessTokenExpired =
+      error.response?.data &&
+      (error.response.data.includes?.("expired access token") ||
+        error.response.data.message?.includes?.("expired access token") ||
+        error.response.data === "expired access token");
+
+    // refresh token 문제가 있는 경우 토큰 갱신하지 않음
+    const isRefreshTokenInvalid =
+      error.response?.data &&
+      (error.response.data.includes?.("expired refresh token") ||
+        error.response.data.message?.includes?.("expired refresh token") ||
+        error.response.data.includes?.("invalid refresh token") ||
+        error.response.data.message?.includes?.("invalid refresh token") ||
+        error.response.data.includes?.("Invalid or expired refresh token") ||
+        error.response.data.message?.includes?.(
+          "Invalid or expired refresh token"
+        ));
+
+    // refresh token에 문제가 있으면 바로 로그인 페이지로 이동
+    if (isRefreshTokenInvalid) {
+      console.log("Refresh token 문제 감지 - 재로그인 필요");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("recentSearches");
+      window.location.href = "/login";
+      return Promise.reject(error);
+    }
+
+    // access token만 만료된 경우에만 토큰 갱신 시도
+    if (isAccessTokenExpired) {
       // 이미 재시도한 요청이면 더 이상 재시도하지 않음
       if (originalRequest._retry) {
         console.log("토큰 갱신 재시도 실패, 로그인 페이지로 이동");
@@ -123,6 +146,7 @@ UserApi.interceptors.response.use(
       } catch (refreshError) {
         console.log("토큰 갱신 중 오류 발생:", refreshError);
         localStorage.removeItem("accessToken");
+        localStorage.removeItem("recentSearches");
         window.location.href = "/login";
         return Promise.reject(error);
       }
