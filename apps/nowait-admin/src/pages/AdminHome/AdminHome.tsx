@@ -9,6 +9,7 @@ import { useUpdateReservationStatus } from "../../hooks/Reservation/useUpdateRes
 import ConfirmRemoveModal from "../../components/ConfirmRemoveModal";
 import ToggleSwitch from "./components/ToggleSwitch";
 import { useGetCompletedList } from "../../hooks/Reservation/useGetCompletedList";
+import { useQueryClient } from "@tanstack/react-query";
 type WaitingStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 
 interface Reservation {
@@ -36,6 +37,9 @@ const AdminHome = () => {
   const { data: completedList } = useGetCompletedList(storeId); //canceled, conformed
 
   console.log(waitingList);
+  console.log(completedList);
+
+  const queryClient = useQueryClient();
 
   const toggle = () => setIsOn((prev) => !prev);
   //대기 중 카드 개수
@@ -85,11 +89,17 @@ const AdminHome = () => {
 
   // 호출 버튼 클릭 이벤트
   const handleCall = (id: number) => {
-    // 상태 변화 api 호출 --> 성공시 --> reservation status 변경(호출 시간 calledAt추가해야 됨)
     updateStatus(
-      { reservationId: id, status: "CALLING" },
+      { storeId, reservationId: String(id), status: "CALLING" },
       {
         onSuccess: () => {
+          // 캐시 무효화
+          queryClient.invalidateQueries({
+            queryKey: ["getCompletedList", storeId],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["getReservationList", storeId],
+          });
           setReservations((prev) =>
             prev.map((res) =>
               res.id === id
@@ -111,9 +121,16 @@ const AdminHome = () => {
 
   const handleEnter = (id: number) => {
     updateStatus(
-      { reservationId: id, status: "CONFIRMED" },
+      { storeId, reservationId: String(id), status: "CONFIRMED" },
       {
         onSuccess: () => {
+          // 캐시 무효화
+          queryClient.invalidateQueries({
+            queryKey: ["getCompletedList", storeId],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["getReservationList", storeId],
+          });
           setReservations((prev) =>
             prev.map((res) =>
               res.id === id ? { ...res, status: "CONFIRMED" } : res
@@ -126,9 +143,16 @@ const AdminHome = () => {
 
   const handleClose = (id: number) => {
     updateStatus(
-      { reservationId: id, status: "CANCELLED" },
+      { storeId, reservationId: String(id), status: "CANCELLED" },
       {
         onSuccess: () => {
+          // 캐시 무효화
+          queryClient.invalidateQueries({
+            queryKey: ["getCompletedList", storeId],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["getReservationList", storeId],
+          });
           setReservations((prev) =>
             prev.map((res) =>
               res.id === id ? { ...res, status: "CANCELLED" } : res
