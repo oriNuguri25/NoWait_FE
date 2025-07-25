@@ -1,9 +1,10 @@
 import React from "react";
 import SalesCard from "./SalesCard";
+import TotalSalesCard from "./TotalSalesCard";
 
 const HeaderStatus = () => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-[10px] h-[352px]">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-[10px] max-h-[352px]">
       <div className="flex flex-col gap-[10px]">
         {/* 오늘 매출 */}
         <SalesCard
@@ -14,25 +15,26 @@ const HeaderStatus = () => {
           percent={13.6}
         />
         {/* 누적 매출 */}
-        <SalesCard
-          title="누적 매출"
-          date="2025.07.18 금"
-          amount={6400000}
-          diffAmount={40000}
-          percent={0.63}
+        <TotalSalesCard
+          title="누적매출"
+          date="2025. 07.18 - 07.19"
+          amount={1800000}
+          percent={-0.6}
         />
       </div>
       {/* 인기 메뉴 TOP 5 */}
-      <div className="flex flex-col justify-between bg-white rounded-xl p-6 shadow h-full">
-        <div className="flex flex-col mb-2">
+      <div className="flex flex-col bg-white rounded-xl p-6 shadow max-h-[352px]">
+        <div className="flex flex-col mb-[25px]">
           <p className="text-title-18-bold text-navy-80">인기 메뉴 TOP 5</p>
           <span className="text-13-regular text-black-60">2025.07.18 금</span>
         </div>
-        <ul className="space-y-2">
+        <ul>
           {[1, 2, 3, 4, 5].map((rank) => (
-            <li key={rank} className="flex justify-between">
-              <span>{rank}위 참치마요주먹밥</span>
-              <span className="font-medium">100개</span>
+            <li key={rank} className="flex justify-between h-[52px]">
+              <span className="flex text-16-bold gap-[10px]">
+                {rank} <p className="text-16-semibold">참치마요주먹밥</p>
+              </span>
+              <span className="text-16-medium">100개</span>
             </li>
           ))}
         </ul>
