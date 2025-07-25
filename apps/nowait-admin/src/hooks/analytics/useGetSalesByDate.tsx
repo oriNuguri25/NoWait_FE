@@ -1,0 +1,23 @@
+import { useQuery } from "@tanstack/react-query";
+import AdminApi from "../../utils/AdminApi";
+
+interface SalesResponse {
+  success: boolean;
+  response: number | string; // "해당일 매출 데이터가 없습니다." 또는 숫자형 매출값
+}
+
+const fetchSalesByDate = async (date: string): Promise<number | string> => {
+  const res = await AdminApi.get<SalesResponse>(`/admin/statistics/sales`, {
+    params: { date },
+  });
+  return res.data.response;
+};
+
+export const useGetSalesByDate = (date: string) => {
+  return useQuery({
+    queryKey: ["sales-by-date", date],
+    queryFn: () => fetchSalesByDate(date),
+    enabled: !!date, // 날짜 있을 때만 실행
+    staleTime: 1000 * 60, // 1분 캐싱
+  });
+};
