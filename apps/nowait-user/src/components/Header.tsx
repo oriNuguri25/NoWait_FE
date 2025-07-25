@@ -6,6 +6,7 @@ import Menu from "../assets/icon/menu.svg?react";
 import Search from "../assets/icon/search.svg?react";
 import Cancel from "../assets/icon/cancel.svg?react";
 import Portal from "./common/modal/Portal";
+import SearchModal from "./common/modal/SearchModal";
 
 const HomeHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -124,90 +125,7 @@ const HomeHeader = () => {
       </Portal>
 
       {/* 전체 화면 검색 모달 */}
-      <Portal>
-        <AnimatePresence>
-          {isSearchOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 bg-white px-5"
-            >
-              <div className="max-w-[430px] min-w-[360px] w-full h-full bg-white mx-auto">
-                {/* 검색 헤더 */}
-                <motion.div
-                  initial={{ y: -20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -20, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex items-center gap-4 pt-4 mb-10"
-                >
-                  <div className="flex-1 relative">
-                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 icon-s text-black-60" />
-                    <input
-                      type="text"
-                      placeholder="주점명, 메뉴, 학과 검색"
-                      className="w-full h-12 pl-12 pr-4 bg-black-15 rounded-2xl text-16-regular text-black-60 placeholder:text-16-regular placeholder:text-black-50 focus:outline-none focus:border-primary"
-                      autoFocus
-                    />
-                  </div>
-                  <button
-                    onClick={closeSearch}
-                    className="text-16-medium text-black-70"
-                  >
-                    닫기
-                  </button>
-                </motion.div>
-
-                {/* 검색 내용 영역 */}
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: 20, opacity: 0 }}
-                  transition={{ duration: 0.3, delay: 0.1 }}
-                  className="flex-1"
-                >
-                  <div className="flex flex-col gap-4">
-                    <div className="flex text-16-bold leading-[144%] tracking-[-0.01em] text-black-90">
-                      최근 검색
-                    </div>
-                    <div className="flex flex-row justify-between">
-                      <div className="flex text-16-regular text-black-90">
-                        스페이시스
-                      </div>
-                      <div className="flex">
-                        <button className="flex">
-                          <Cancel className="icon-xs text-black-60" />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="flex flex-row justify-between">
-                      <div className="flex text-16-regular text-black-90">
-                        스페이시스
-                      </div>
-                      <div className="flex">
-                        <button className="flex">
-                          <Cancel className="icon-xs text-black-60" />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="flex flex-row justify-between">
-                      <div className="flex text-16-regular text-black-90">
-                        스페이시스
-                      </div>
-                      <div className="flex">
-                        <button className="flex">
-                          <Cancel className="icon-xs text-black-60" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </Portal>
+      <SearchModal isOpen={isSearchOpen} onClose={closeSearch} />
     </>
   );
 };
