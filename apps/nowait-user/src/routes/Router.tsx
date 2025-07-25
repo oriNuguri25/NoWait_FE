@@ -12,12 +12,12 @@ import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
 import PageTransitionWrapper from "../components/layout/PageTransitionWrapper";
 import WaitingPartySizeForm from "../pages/waiting/waitingPartysize/WaitingPartySizeForm";
-import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
+import WaitingSummaryPage from "../pages/waiting/waitingSummary/WaitingSummaryPage";
 import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
 import RemittanceWaitPage from "../pages/order/remittenceWait/RemittanceWaitPage";
 import OrderDetailsPage from "../pages/order/orderDetails/OrderDetailsPage";
 import RemittancePage from "../pages/order/remittance/RemittancePage";
-import BookmarkPage from "../pages/bookmark/BookmarkPage";
+import BookmarkPage from "../pages/waiting/bookmark/BookmarkPage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -53,8 +53,12 @@ const Router = () => {
         element={withAuth(WaitingPartySizeForm)}
       />
       <Route
-        path="/store/:id/waitingsummary"
+        path="/store/:id/waiting/summary"
         element={withAuth(WaitingSummaryPage)}
+      />
+            <Route
+        path="/store/:id/waiting/success"
+        element={withAuth(WaitingSuccessPage)}
       />
       <Route path="/" element={withAuth(HomePage)} />
 

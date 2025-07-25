@@ -1,4 +1,3 @@
-import axios from "axios";
 import UserApi from "../utils/UserApi";
 
 const SERVER_URI = import.meta.env.VITE_SERVER_URI;
@@ -7,12 +6,21 @@ interface ReservationType {
   partySize: number;
 }
 
+// 주점 정보 가져오기
+export const getStore = async (storeId: string | undefined) => {
+  const res = await UserApi.get(`/v1/stores/${storeId}`);
+  return res.data;
+};
+
 // 주점 예약하기
 export const createReservation = async (
   storeId: string,
   payload: ReservationType
 ) => {
-  const res = await UserApi.post(`/reservations/create/${storeId}`, payload);
+  const res = await UserApi.post(
+    `/reservations/create/redis/${storeId}`,
+    payload
+  );
   return res.data;
 };
 
