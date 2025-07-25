@@ -261,7 +261,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                         </div>
                       ))
                     ) : (
-                      <div className="flex text-14-regular text-black-50 py-4">
+                      <div className="flex justify-center text-16-regular text-black-60 mt-6">
                         최근 검색어가 없습니다
                       </div>
                     )}
