@@ -11,9 +11,7 @@ const MenuItem = ({ data, mode }: PropsType) => {
   const { id, storeId } = useParams();
 
   const handleMenuClick = () => {
-    if (mode === "store") {
-      navigate(`/store/${id}/menu/${data.menuId}`, { state: data });
-    } else {
+    if (mode === "order") {
       navigate(`/${storeId}/menu/${data.menuId}`, { state: data });
     }
   };
@@ -22,7 +20,7 @@ const MenuItem = ({ data, mode }: PropsType) => {
     <li className="mb-5">
       <button
         onClick={handleMenuClick}
-        className="w-full flex justify-between cursor-pointer text-left"
+        className={`w-full flex justify-between ${mode==="order" && "cursor-pointer"} text-left`}
       >
         <div className="max-w-[224px]">
           <h2 className="text-title-16-bold text-black-90 mb-1 text-ellipsis line-clamp-2">
