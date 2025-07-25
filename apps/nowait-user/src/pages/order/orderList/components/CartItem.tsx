@@ -3,16 +3,16 @@ import Close from "../../../../assets/icon/close.svg?react";
 import { useCartStore } from "../../../../stores/cartStore";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import NumberFlow from "@number-flow/react";
 
 interface PropsType {
   id: string;
   name: string;
+  originPrice: number;
   price: number;
   quantity: number;
 }
 
-const CartItem = ({ id, name, price, quantity }: PropsType) => {
+const CartItem = ({ id, name, originPrice, price, quantity }: PropsType) => {
   const { removeFromCart, increaseQuantity, decreaseQuantity } = useCartStore();
   const [isRemoving, setIsRemoving] = useState(false);
   return (
@@ -31,7 +31,7 @@ const CartItem = ({ id, name, price, quantity }: PropsType) => {
               {name}
             </h1>
             <h2 className="text-title-18-bold">
-              <NumberFlow value={price} suffix="원" />
+              {originPrice.toLocaleString()}원
             </h2>
           </div>
           <button

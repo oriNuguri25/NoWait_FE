@@ -1,7 +1,5 @@
 import UserApi from "../utils/UserApi";
 
-const SERVER_URI = import.meta.env.VITE_SERVER_URI;
-
 interface ReservationType {
   partySize: number;
 }

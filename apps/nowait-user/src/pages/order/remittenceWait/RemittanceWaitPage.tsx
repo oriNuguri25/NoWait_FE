@@ -4,6 +4,9 @@ import { Button } from "@repo/ui";
 import { useCartStore } from "../../../stores/cartStore";
 import { sumTotalPrice } from "../../../utils/sumUtils";
 import { createOrder } from "../../../api/order";
+import { useState } from "react";
+import remittanceWait from "../../../assets/remittanceWait.png";
+import CenteredContentLayout from "../../../components/layout/CenteredContentLayout";
 
 const RemittanceWaitPage = () => {
   const navigate = useNavigate();
@@ -13,9 +16,11 @@ const RemittanceWaitPage = () => {
   const tableId = localStorage.getItem("tableId");
   const { cart, clearCart } = useCartStore();
   const totalPrice = sumTotalPrice(cart);
+  const [isLoading, setIsLoading] = useState(false);
 
   const orderButton = async () => {
     try {
+      setIsLoading(true);
       const payload = {
         depositorName: payer,
         items: cart.map((item) => ({
@@ -33,32 +38,25 @@ const RemittanceWaitPage = () => {
       clearCart();
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(true);
     }
     navigate(`/${storeId}/order/success`);
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex flex-1 flex-col justify-center items-center text-center overflow-y-auto px-5">
-        <img
-          className="mb-2.5 w-[210px] h-[210px] bg-black-25"
-          src=""
-          alt="이체 대기중인 이미지"
-        />
-        <h1 className="text-headline-24-bold mb-2">이체가 진행되고 있어요</h1>
-        <h2 className="whitespace-pre-line text-16-regular text-black-70 mb-3.5">
-          아직 주문이 완료되지 않았어요
-          <br />
-          이체를 완료하셨다면 버튼을 눌러주세요
-        </h2>
-      </div>
-
-      <PageFooterButton>
-        <Button textColor="white" onClick={orderButton}>
-          이체했어요
-        </Button>
-      </PageFooterButton>
-    </div>
+    <CenteredContentLayout
+      onClick={orderButton}
+      buttonText={isLoading ? "이체중..." : "이체했어요"}
+    >
+      <img src={remittanceWait} alt="이체 대기중인 이미지" />
+      <h1 className="text-headline-24-bold mb-2">이체가 진행되고 있어요</h1>
+      <h2 className="whitespace-pre-line text-16-regular text-black-70 mb-3.5">
+        아직 주문이 완료되지 않았어요
+        <br />
+        이체를 완료하셨다면 버튼을 눌러주세요
+      </h2>
+    </CenteredContentLayout>
   );
 };
 
