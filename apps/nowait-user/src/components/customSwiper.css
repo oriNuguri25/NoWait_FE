@@ -1,0 +1,30 @@
+.swiper-wrap {
+  margin: 0px -20px;
+  height: 256px;
+}
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+.swiper-slide {
+  width: 100%;
+  height: 100%;
+}
+.swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.swiper-pagination-bullet-active {
+  width: 6px;
+  height: 6px;
+  margin: 0px 2px !important;
+
+  background-color: white;
+}
+.swiper-pagination-bullet {
+  width: 6px;
+  height: 6px;
+  margin: 0px 2px !important;
+  background-color: rgb(255, 255, 255);
+}

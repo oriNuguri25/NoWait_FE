@@ -10,24 +10,43 @@ import BookmarkIcon from "./components/BookmarkIcon";
 import { useBookmarkState } from "../../../hooks/useBookmarkState";
 import { useQuery } from "@tanstack/react-query";
 import { getStore } from "../../../api/reservation";
+import CommonSwiper from "../../../components/CommonSwiper";
 
-const TAG = [
-  { id: 1, type: "default", tag: "태그 추가" },
-  { id: 2, type: "default", tag: "컴공 과" },
-  { id: 3, type: "waiting", tag: "웨이팅 15팀" },
+const BANNERIMAGES = [
+  {
+    id: 7,
+    storeId: 16,
+    imageUrl:
+      "https://gtablestoreimage.s3.ap-northeast-2.amazonaws.com/store/16/b057ca2d-eaa5-417e-8c4c-b9581d02764b-%E1%84%8E%E1%85%AE%E1%86%A8%E1%84%8C%E1%85%A6.jpeg",
+    imageType: "BANNER",
+  },
+  {
+    id: 8,
+    storeId: 16,
+    imageUrl:
+      "https://gtablestoreimage.s3.ap-northeast-2.amazonaws.com/store/16/752a043c-8881-415d-aaae-65cd303c6777-errorcat.png",
+    imageType: "BANNER",
+  },
 ];
+
+interface BannerImageType {
+  id: number;
+  storeId: number;
+  imageUrl: string;
+  imageType: string;
+}
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id: storeId } = useParams();
   const { isBookmarked, bookmarkData } = useBookmarkState();
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation();
-  const { data:store } = useQuery({
-    queryKey: ["store"],
+  const { data: store } = useQuery({
+    queryKey: ["store", storeId],
     queryFn: () => getStore(storeId),
     select: (data) => data.response,
   });
-  console.log(store);
+  console.log(store, "스토어");
   const handleBookmarkButton = async () => {
     try {
       if (!isBookmarked) {
@@ -42,38 +61,27 @@ const StoreDetailPage = () => {
 
   return (
     <div>
-      <div className="px-5">
-        <h1 className="-mx-5 h-[246px] bg-amber-400">
-          <img className="w-full" src="" alt="학과 주점 대표 이미지" />
-        </h1>
+      <div className="px-5 w-full min-h-screen-dvh mb-[124px]">
+        <CommonSwiper slideImages={store?.bannerImages}></CommonSwiper>
         <section className="border-b-1 border-[#f4f4f4]">
           <div className="flex justify-between items-center py-[21px]">
             <div className="flex flex-col justify-between gap-[3px]">
-              <p className="text-14-regular text-black-70">{store?.departmentName}</p>
+              <p className="text-14-regular text-black-70">
+                {store?.departmentName}
+              </p>
               <h1 className="text-headline-22-bold">{store?.name}</h1>
             </div>
             <img
               className="w-[52px] h-[52px] rounded-[100%] bg-black-60"
-              src={store?.profileImage}
+              src={store?.profileImage.imageUrl}
               alt="학과 대표 이미지"
             />
           </div>
-          <ul className="pb-5 flex gap-1.5">
-            {TAG.map((item) => {
-              return (
-                <li
-                  key={item.id}
-                  className={`text-[12px] font-bold rounded-[4px] px-2 py-[7px] ${
-                    item.type === "default"
-                      ? "bg-[#f1f1f1] text-[#959595]"
-                      : "bg-[#ffeedf] text-[#ff5e07]"
-                  }`}
-                >
-                  {item.tag}
-                </li>
-              );
-            })}
-          </ul>
+          <div className="pb-5">
+            <p className="inline-block text-[12px] font-bold rounded-[6px] px-2 py-[7px] bg-[#ffeedf] text-[#ff5e07]">
+              대기 {store?.waitingCount}팀
+            </p>
+          </div>
         </section>
         <section className="pt-5 pb-[28px]">
           <div className="mb-6">
@@ -81,7 +89,7 @@ const StoreDetailPage = () => {
               <span className="w-[18px] flex justify-center  mr-1.5">
                 <SubStract />
               </span>
-              가천대학교 무한광장
+              {store?.location}
             </p>
             <p className="flex items-center text-16-regular text-black-80">
               <span className="w-[18px] flex justify-center mr-1.5">
@@ -91,10 +99,7 @@ const StoreDetailPage = () => {
             </p>
           </div>
           <h2 className="mb-10 text-16-regular text-black-80">
-            안녕하세요! 컴공과가 버그 없이 준비한 이스터에그가 가득 부스
-            스페이시스입니다 🚀 남다른 디버깅 실력으로 굽는 츄러스, 데이터 손실
-            없는 아이스티, 그리고 메모리 오류 없는 넉넉한 양까지 완벽
-            구현했습니다.
+            {store?.description}
           </h2>
           <div className="flex justify-between items-center py-3.5 px-4 bg-black-15 rounded-[10px]">
             <div className="flex gap-1.5 min-w-0">
@@ -110,7 +115,7 @@ const StoreDetailPage = () => {
           </div>
         </section>
         <div className="-mx-5 bg-black-25 h-[16px] mb-[30px]"></div>
-        <MenuList mode="store" />
+        <MenuList storeId={storeId} mode="store" />
       </div>
       <PageFooterButton className="gap-2">
         <Button

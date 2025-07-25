@@ -12,14 +12,14 @@ const MenuItem = ({ data, mode }: PropsType) => {
 
   const handleMenuClick = () => {
     if (mode === "store") {
-      navigate(`/store/${id}/menu/${data.id}`, { state: data });
+      navigate(`/store/${id}/menu/${data.menuId}`, { state: data });
     } else {
-      navigate(`/${storeId}/menu/${data.id}`, { state: data });
+      navigate(`/${storeId}/menu/${data.menuId}`, { state: data });
     }
   };
 
   return (
-    <li key={data.id} className="mb-5">
+    <li className="mb-5">
       <button
         onClick={handleMenuClick}
         className="w-full flex justify-between cursor-pointer text-left"
