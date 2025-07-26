@@ -11,30 +11,7 @@ import { useBookmarkState } from "../../../hooks/useBookmarkState";
 import { useQuery } from "@tanstack/react-query";
 import { getStore } from "../../../api/reservation";
 import CommonSwiper from "../../../components/CommonSwiper";
-
-const BANNERIMAGES = [
-  {
-    id: 7,
-    storeId: 16,
-    imageUrl:
-      "https://gtablestoreimage.s3.ap-northeast-2.amazonaws.com/store/16/b057ca2d-eaa5-417e-8c4c-b9581d02764b-%E1%84%8E%E1%85%AE%E1%86%A8%E1%84%8C%E1%85%A6.jpeg",
-    imageType: "BANNER",
-  },
-  {
-    id: 8,
-    storeId: 16,
-    imageUrl:
-      "https://gtablestoreimage.s3.ap-northeast-2.amazonaws.com/store/16/752a043c-8881-415d-aaae-65cd303c6777-errorcat.png",
-    imageType: "BANNER",
-  },
-];
-
-interface BannerImageType {
-  id: number;
-  storeId: number;
-  imageUrl: string;
-  imageType: string;
-}
+import SectionDivider from "../../../components/SectionDivider";
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
@@ -46,7 +23,7 @@ const StoreDetailPage = () => {
     queryFn: () => getStore(storeId),
     select: (data) => data.response,
   });
-  console.log(store, "스토어");
+
   const handleBookmarkButton = async () => {
     try {
       if (!isBookmarked) {
@@ -62,7 +39,9 @@ const StoreDetailPage = () => {
   return (
     <div>
       <div className="px-5 w-full min-h-screen-dvh mb-[124px]">
-        <CommonSwiper slideImages={store?.bannerImages}></CommonSwiper>
+        {/* 주점 배너 이미지 */}
+        <CommonSwiper slideImages={store?.bannerImages || []}></CommonSwiper>
+        {/* 학과 정보 섹션 */}
         <section className="border-b-1 border-[#f4f4f4]">
           <div className="flex justify-between items-center py-[21px]">
             <div className="flex flex-col justify-between gap-[3px]">
@@ -77,12 +56,16 @@ const StoreDetailPage = () => {
               alt="학과 대표 이미지"
             />
           </div>
-          <div className="pb-5">
-            <p className="inline-block text-[12px] font-bold rounded-[6px] px-2 py-[7px] bg-[#ffeedf] text-[#ff5e07]">
-              대기 {store?.waitingCount}팀
-            </p>
-          </div>
+          {/* 주점 대기팀 인원 수 */}
+          {store?.waitingCount !== 0 && (
+            <div className="pb-5">
+              <p className="inline-block text-[12px] font-bold rounded-[6px] px-2 py-[7px] bg-[#ffeedf] text-[#ff5e07]">
+                대기 {store?.waitingCount}팀
+              </p>
+            </div>
+          )}
         </section>
+        {/* 주점 정보(위치,운영 시간, 공지사항) */}
         <section className="pt-5 pb-[28px]">
           <div className="mb-6">
             <p className="flex items-center mb-1.5 text-16-regular text-black-80">
@@ -101,20 +84,25 @@ const StoreDetailPage = () => {
           <h2 className="mb-10 text-16-regular text-black-80">
             {store?.description}
           </h2>
-          <div className="flex justify-between items-center py-3.5 px-4 bg-black-15 rounded-[10px]">
+          <button
+            onClick={() =>
+              navigate(`/store/${storeId}/notice`, { state: store?.notice })
+            }
+            className="flex justify-between items-center py-3.5 px-4 bg-black-15 rounded-[10px]"
+          >
             <div className="flex gap-1.5 min-w-0">
               <p className="text-[14px] font-bold text-black-50 shrink-0">
                 공지
               </p>
               <h1 className="text-14-medium text-black-70 overflow-hidden text-ellipsis line-clamp-1">
-                입장 시 신분증 검사 필수 입장 시 신분증
-                검사dddddddasdasdasdddddddddddddddddddddddddaaaaaaaaaaaa
+                입장 시 신분증 검사 필수
               </h1>
             </div>
             <Arrow className="shrink-0" fill="#AAAAAA" />
-          </div>
+          </button>
         </section>
-        <div className="-mx-5 bg-black-25 h-[16px] mb-[30px]"></div>
+        <SectionDivider />
+        {/* 주점 메뉴 리스트 */}
         <MenuList storeId={storeId} mode="store" />
       </div>
       <PageFooterButton className="gap-2">
@@ -127,9 +115,20 @@ const StoreDetailPage = () => {
         >
           <BookmarkIcon />
         </Button>
-        <Button onClick={() => navigate(`/store/${storeId}/partysize`)}>
-          대기하기
-        </Button>
+        {store?.isActive ? (
+          <Button
+            disabled={true}
+          >
+            지금은 대기할 수 없어요
+          </Button>
+        ) : (
+          <Button
+            disabled={store?.isWaiting}
+            onClick={() => navigate(`/store/${storeId}/partysize`)}
+          >
+            {store?.isWaiting ? "대기하기" : "대기 중이에요"}
+          </Button>
+        )}
       </PageFooterButton>
     </div>
   );

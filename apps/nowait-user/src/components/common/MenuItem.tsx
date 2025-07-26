@@ -9,7 +9,7 @@ interface PropsType {
 
 const MenuItem = ({ data, mode }: PropsType) => {
   const navigate = useNavigate();
-  const { id, storeId } = useParams();
+  const { storeId } = useParams();
 
   const handleMenuClick = () => {
     if (mode === "order") {
@@ -18,7 +18,7 @@ const MenuItem = ({ data, mode }: PropsType) => {
   };
 
   return (
-    <li className="mb-5">
+    <li className="mb-5 last:mb-0">
       <button
         onClick={handleMenuClick}
         className={`w-full flex justify-between ${mode==="order" && "cursor-pointer"} text-left`}
