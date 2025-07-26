@@ -17,7 +17,6 @@ const RedirectToStorePage = () => {
       const isDifferentTable = prevTableId && prevTableId !== tableId;
       //이전 storeId 또는 tableId가 변경 되었고, 장바구니에 메뉴가 담겨있을 시 장바구니 비우기
       if ((isDifferentStore || isDifferentTable) && cart.length > 0) {
-        localStorage.removeItem("depositorName")
         clearCart();
       }
       //테이블 아이디 로컬스토리지 저장

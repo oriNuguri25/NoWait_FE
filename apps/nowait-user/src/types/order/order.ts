@@ -21,7 +21,7 @@ export interface CreateOrderServerResponse {
 
 //주문 내역 타입
 export interface OrderDetailsType {
-  orderId: string;
+  menuId: string;
   menuName: string;
   price: number;
   quantity: number;
@@ -34,8 +34,10 @@ export type OrderStatus = "WAITING_FOR_PAYMENT" | "COOKING" | "COOKED";
 export interface OrderDetailsServerResponse {
   success: boolean;
   response: {
-    items: OrderDetailsType[];
+    orderId: number;
     status: OrderStatus;
+    createdAt: string;
+    items: OrderDetailsType[];
+    totalPrice: number;
   }[];
-  status: OrderStatus;
 }

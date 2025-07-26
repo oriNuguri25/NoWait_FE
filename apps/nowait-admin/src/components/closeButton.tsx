@@ -5,7 +5,10 @@ interface CloseButtonProps {
 
 const CloseButton = ({ onClick }: CloseButtonProps) => {
   return (
-    <button onClick={onClick}>
+    <button
+      onClick={onClick}
+      className="flex items-center justify-center h-6 w-6"
+    >
       <img
         src={closeIcon}
         width="11px"

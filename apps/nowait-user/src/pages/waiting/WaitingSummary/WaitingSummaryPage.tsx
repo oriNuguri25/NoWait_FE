@@ -2,15 +2,19 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@repo/ui";
 import { createReservation } from "../../../api/reservation";
 import PageFooterButton from "../../../components/order/PageFooterButton";
+import useThrottle from "../../../hooks/useThrottle";
+import { useState } from "react";
 
 const WaitingSummaryPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
   const partySize = location.state as number;
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmitReservation = async () => {
+  const handleSubmitReservation = useThrottle(async () => {
     try {
+      setIsLoading(true);
       const payload = {
         partySize,
       };
@@ -19,8 +23,10 @@ const WaitingSummaryPage = () => {
       navigate(`/store/${id}/waiting/success`);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(true);
     }
-  };
+  }, 3000);
   return (
     <div>
       <div className="px-5 pt-[40px]">
@@ -43,7 +49,7 @@ const WaitingSummaryPage = () => {
         </div>
       </div>
       <PageFooterButton>
-        <Button onClick={handleSubmitReservation}>등록하기</Button>
+        <Button onClick={handleSubmitReservation}>{isLoading ?"등록중....": "등록하기"}</Button>
       </PageFooterButton>
     </div>
   );

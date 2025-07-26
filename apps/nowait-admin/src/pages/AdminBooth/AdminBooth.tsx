@@ -8,6 +8,7 @@ import NoticeEditor from "./components/NoticeEditor";
 import editOrderIcon from "../../assets/edit_order_icon.svg";
 import ToggleSwitch from "../AdminHome/components/ToggleSwitch";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import MenuModal from "./components/menuModal";
 
 const BoothSection = ({
   boothName,
@@ -162,6 +163,24 @@ const dummyMenus = [
 const MenuSection = () => {
   const [editMode, setEditMode] = useState(false);
   const [menus, setMenus] = useState(dummyMenus);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState<any>(null);
+
+  const openEditModal = (menu: any) => {
+    setSelectedMenu(menu);
+    setIsEditModalOpen(true);
+  };
+
+  const handleAddMenu = (newMenu: any) => {
+    setMenus((prev) => [...prev, newMenu]);
+  };
+
+  const handleEditMenu = (updated: any) => {
+    setMenus((prev) =>
+      prev.map((menu) => (menu.name === selectedMenu.name ? updated : menu))
+    );
+  };
 
   const toggleSoldOut = (index: number) => {
     const updatedMenus = [...menus];
@@ -189,7 +208,10 @@ const MenuSection = () => {
           >
             {editMode ? "편집 완료" : "순서 편집"}
           </button>
-          <button className="text-sm px-4 py-2 bg-black-5 text-black-80 rounded-[8px]">
+          <button
+            className="text-sm px-4 py-2 bg-black-5 text-black-80 rounded-[8px]"
+            onClick={() => setIsAddModalOpen(true)}
+          >
             메뉴 추가 +
           </button>
         </div>
@@ -226,7 +248,10 @@ const MenuSection = () => {
                         {...(editMode ? provided.dragHandleProps : {})}
                       >
                         <div className="flex items-center gap-4">
-                          <div className="w-[48px] h-[48px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
+                          <div
+                            className="w-[48px] h-[48px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden"
+                            onClick={() => !editMode && openEditModal(menu)}
+                          >
                             <img
                               src={placeholderIcon}
                               className="w-6 h-6"
@@ -268,6 +293,21 @@ const MenuSection = () => {
           </Droppable>
         </DragDropContext>
       </div>
+      {isAddModalOpen && (
+        <MenuModal
+          isEdit={false}
+          onClose={() => setIsAddModalOpen(false)}
+          onSubmit={handleAddMenu}
+        />
+      )}
+      {isEditModalOpen && selectedMenu && (
+        <MenuModal
+          isEdit={true}
+          initialData={selectedMenu}
+          onClose={() => setIsEditModalOpen(false)}
+          onSubmit={handleEditMenu}
+        />
+      )}
     </div>
   );
 };

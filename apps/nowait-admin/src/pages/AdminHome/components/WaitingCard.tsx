@@ -80,9 +80,10 @@ export function WaitingCard({
         <p className="text-title-20-bold text-black-80">
           #{number < 10 ? `0${number}` : number}번
         </p>
-        <div className="flex items-center gap-2 text-13-medium text-black-50">
+        <div className="flex items-center text-13-medium text-black-50">
           <span>{time}</span>
-          <span>· {waitMinutes}분 대기 중</span>
+          <span className="px-[2px]">·</span>
+          <span>{waitMinutes}분 대기 중</span>
           {<CloseButton onClick={onDelete} />}
         </div>
       </div>

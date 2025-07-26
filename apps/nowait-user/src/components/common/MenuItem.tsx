@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import type { MenuType } from "../../types/order/menu";
+import defaultMenuImageSm from "../../assets/default-menu-image-sm.png"
 
 interface PropsType {
   data: MenuType;
@@ -30,7 +31,7 @@ const MenuItem = ({ data, mode }: PropsType) => {
         </div>
         <img
           className="w-[80px] h-[80px] bg-black-25 rounded-[12px] object-cover"
-          src={`${data.image}` || "/default-menu.png"}
+          src={`${data.image}` || defaultMenuImageSm}
           alt="음식 메뉴 이미지"
         />
       </button>

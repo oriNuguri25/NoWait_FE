@@ -55,6 +55,7 @@ const boothData: BoothRanking[] = [
 ];
 
 const AdminAnalytics = () => {
+  // const { data, isLoading, isError } = useGetTopSales();
   return (
     <div className="w-full">
       <HeaderStatus />
