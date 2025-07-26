@@ -44,10 +44,10 @@ const BoothSalesRankingCard: React.FC<BoothSalesRankingCardProps> = ({
               }`}
             >
               <div className="flex items-center w-1/2">
-                <span className="text-[14px] font-semibold text-gray-600 w-[30px] h-[23px]">
+                <span className="text-14-semibold text-gray-600 w-[30px] h-[23px]">
                   {item.rank}
                 </span>
-                <div className="w-6 h-6 rounded-full bg-[#5A6ACF] mr-[10px]" />
+                <div className="w-9 h-9 rounded-full bg-[#5A6ACF] mr-[10px]" />
                 <div className="flex items-center text-sm gap-2">
                   <span className="text-16-semibold text-black">
                     {item.name}
@@ -60,13 +60,13 @@ const BoothSalesRankingCard: React.FC<BoothSalesRankingCardProps> = ({
 
               <div className="flex items-center justify-between w-1/2 gap-3">
                 <div></div>
-                <span className="flex text-[14px] font-medium text-black">
+                <span className="flex text-16-medium text-black">
                   {item.salesCount}건
                 </span>
 
                 {/* 랭크 변화 표시 */}
                 <div
-                  className={`text-[12px] font-semibold flex items-center justify-center rounded-full w-[30px] h-[20px] ${
+                  className={`text-14-semibold w-[40px] h-[29px] py-[5px] flex items-center justify-center rounded-[8px] ${
                     isUp
                       ? "bg-[#FFF1F0] text-[#FF5A1F]"
                       : isDown
