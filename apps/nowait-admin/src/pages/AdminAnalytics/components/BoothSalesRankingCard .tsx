@@ -20,7 +20,7 @@ const BoothSalesRankingCard: React.FC<BoothSalesRankingCardProps> = ({
   data,
 }) => {
   return (
-    <div className="bg-white max-h-[364px] rounded-[12px] p-6 shadow-sm w-full h-full mt-[10px]">
+    <div className="bg-white max-h-[364px] rounded-[12px] p-6 shadow-sm w-[754px] max-h-[50%] mt-[10px]">
       <div className="flex justify-between mb-4">
         <div className="flex flex-col">
           <h2 className="text-title-18-bold text-navy-80">부스별 판매순위</h2>
@@ -43,21 +43,24 @@ const BoothSalesRankingCard: React.FC<BoothSalesRankingCardProps> = ({
                   : ""
               }`}
             >
-              <div className="flex items-center w-[710px]">
+              <div className="flex items-center w-1/2">
                 <span className="text-[14px] font-semibold text-gray-600 w-[30px] h-[23px]">
                   {item.rank}
                 </span>
                 <div className="w-6 h-6 rounded-full bg-[#5A6ACF] mr-[10px]" />
-                <div className="flex flex-col text-sm">
-                  <span className="font-medium text-black">{item.name}</span>
+                <div className="flex items-center text-sm gap-2">
+                  <span className="text-16-semibold text-black">
+                    {item.name}
+                  </span>
                   <span className="text-[12px] text-gray-400">
                     {item.department}
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                <span className="text-[14px] font-medium text-black">
+              <div className="flex items-center justify-between w-1/2 gap-3">
+                <div></div>
+                <span className="flex text-[14px] font-medium text-black">
                   {item.salesCount}건
                 </span>
 

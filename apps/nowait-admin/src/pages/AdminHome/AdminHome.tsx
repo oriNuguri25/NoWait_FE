@@ -30,7 +30,7 @@ const AdminHome = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [activeTab, setActiveTab] = useState("전체");
-  const storeId = 2; //현재는 임시로 mockdata씀
+  const storeId = 1; //현재는 임시로 mockdata씀
   const [isOn, setIsOn] = useState(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const { data: waitingList } = useGetReservationList(storeId); //calling, wating

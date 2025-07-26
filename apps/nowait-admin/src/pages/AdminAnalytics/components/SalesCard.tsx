@@ -35,19 +35,24 @@ const SalesCard: React.FC<SalesCardProps> = ({ today, previous }) => {
         </span>
         {/* 이전,다음 이동 버튼 */}
         <span className="flex">
+          {/* 이전 버튼: 오늘 매출일 때만 활성화 */}
           <img
-            src={isHoverBack ? activeBackIcon : backIcon}
-            className="h-5 w-5 cursor-pointer"
-            onMouseEnter={() => setIsHoverBack(true)}
-            onMouseLeave={() => setIsHoverBack(false)}
-            onClick={() => setShowToday(false)}
+            src={
+              showToday ? activeBackIcon : backIcon // 비활성 이미지로 고정
+            }
+            className={`h-5 w-5 cursor-pointer`}
+            onMouseEnter={() => showToday && setIsHoverBack(true)}
+            onMouseLeave={() => showToday && setIsHoverBack(false)}
+            onClick={() => showToday && setShowToday(false)}
           />
+
+          {/* 다음 버튼: 이전 매출일 때만 활성화 */}
           <img
-            src={isHoverForward ? activeForwardIcon : forwardIcon}
-            className="h-5 w-5 cursor-pointer"
-            onMouseEnter={() => setIsHoverForward(true)}
-            onMouseLeave={() => setIsHoverForward(false)}
-            onClick={() => setShowToday(true)}
+            src={!showToday ? activeForwardIcon : forwardIcon}
+            className={`h-5 w-5 cursor-pointer `}
+            onMouseEnter={() => !showToday && setIsHoverForward(true)}
+            onMouseLeave={() => !showToday && setIsHoverForward(false)}
+            onClick={() => !showToday && setShowToday(true)}
           />
         </span>
       </div>
@@ -66,10 +71,12 @@ const SalesCard: React.FC<SalesCardProps> = ({ today, previous }) => {
             </>
           )}
         </div>
-        <p className="text-13-regular text-black-80">
-          어제보다 {today.diffAmount.toLocaleString()}원{" "}
-          {today.diffAmount >= 0 ? "더 벌었어요!" : "덜 벌었어요!"}
-        </p>
+        {showToday && (
+          <p className="text-13-regular text-black-80">
+            어제보다 {today.diffAmount.toLocaleString()}원{" "}
+            {today.diffAmount >= 0 ? "더 벌었어요!" : "덜 벌었어요!"}
+          </p>
+        )}
       </div>
     </div>
   );
