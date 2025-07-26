@@ -13,6 +13,7 @@ type WaitingStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 
 interface Reservation {
   id: number;
+  userId: number;
   time: string;
   requestedAt: string;
   waitMinutes: number;
@@ -29,14 +30,14 @@ const AdminHome = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [activeTab, setActiveTab] = useState("전체");
-  const storeId = 1; //현재는 임시로 mockdata씀
+  const storeId = 2; //현재는 임시로 mockdata씀
   const [isOn, setIsOn] = useState(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const { data: waitingList } = useGetReservationList(storeId); //calling, wating
   const { data: completedList } = useGetCompletedList(storeId); //canceled, conformed
 
   console.log(waitingList);
-
+  console.log(completedList);
   const toggle = () => setIsOn((prev) => !prev);
   //대기 중 카드 개수
   const waitingCount = reservations.filter(
@@ -84,15 +85,14 @@ const AdminHome = () => {
   }, [reservations, activeTab]);
 
   // 호출 버튼 클릭 이벤트
-  const handleCall = (id: number) => {
-    // 상태 변화 api 호출 --> 성공시 --> reservation status 변경(호출 시간 calledAt추가해야 됨)
+  const handleCall = (userId: number) => {
     updateStatus(
-      { reservationId: id, status: "CALLING" },
+      { storeId, userId, status: "CALLING" },
       {
         onSuccess: () => {
           setReservations((prev) =>
             prev.map((res) =>
-              res.id === id
+              res.id === userId
                 ? {
                     ...res,
                     status: "CALLING",
@@ -109,14 +109,14 @@ const AdminHome = () => {
     );
   };
 
-  const handleEnter = (id: number) => {
+  const handleEnter = (userId: number) => {
     updateStatus(
-      { reservationId: id, status: "CONFIRMED" },
+      { storeId, userId, status: "CONFIRMED" },
       {
         onSuccess: () => {
           setReservations((prev) =>
             prev.map((res) =>
-              res.id === id ? { ...res, status: "CONFIRMED" } : res
+              res.id === userId ? { ...res, status: "CONFIRMED" } : res
             )
           );
         },
@@ -124,14 +124,14 @@ const AdminHome = () => {
     );
   };
 
-  const handleClose = (id: number) => {
+  const handleClose = (userId: number) => {
     updateStatus(
-      { reservationId: id, status: "CANCELLED" },
+      { storeId, userId, status: "CANCELLED" },
       {
         onSuccess: () => {
           setReservations((prev) =>
             prev.map((res) =>
-              res.id === id ? { ...res, status: "CANCELLED" } : res
+              res.id === userId ? { ...res, status: "CANCELLED" } : res
             )
           );
         },
@@ -152,9 +152,11 @@ const AdminHome = () => {
 
     const normalize = (res: any): Reservation => {
       const requested = new Date(res.createdAt ?? "");
-      const called = new Date(res.calledAt ?? "");
+      const calledAtValid = res.calledAt && !isNaN(Date.parse(res.calledAt));
+      const called = calledAtValid ? new Date(res.calledAt) : undefined;
       return {
         id: Number(res.id),
+        userId: Number(res.userId),
         requestedAt: res.createdAt,
         time: requested.toLocaleTimeString("ko-KR", {
           hour: "2-digit",
@@ -166,7 +168,8 @@ const AdminHome = () => {
         name: res.userName,
         phone: "010-****-****",
         status: res.status,
-        calledAt: res.status === "CALLING" ? called.toISOString() : undefined,
+        calledAt:
+          res.status === "CALLING" && called ? called.toISOString() : undefined,
       };
     };
 
@@ -253,10 +256,10 @@ const AdminHome = () => {
               phone="010-1234-1234"
               status={res.status}
               calledAt={res.calledAt}
-              isNoShow={noShowIds.includes(res.id)}
-              onCall={() => handleCall(res.id)}
-              onEnter={() => handleEnter(res.id)}
-              onClose={() => handleClose(res.id)}
+              isNoShow={noShowIds.includes(res.userId)}
+              onCall={() => handleCall(res.userId)}
+              onEnter={() => handleEnter(res.userId)}
+              onClose={() => handleClose(res.userId)}
               onDelete={() => setShowModal(true)}
               onNoShow={() => handleNoShow(res.id)}
             />
