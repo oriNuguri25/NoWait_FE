@@ -10,7 +10,7 @@ const MenuList = ({ storeId, mode }: { storeId:string | undefined, mode: string 
     queryFn: () => getStoreMenus(storeId),
     select:(data)=>data.response.menuReadDto
   });
-
+  console.log(data)
   return (
     <div className="py-[30px]">
       <h1 className="text-title-20-semibold mb-3">메뉴</h1>
