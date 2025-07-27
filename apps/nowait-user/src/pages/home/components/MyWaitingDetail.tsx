@@ -125,13 +125,17 @@ const MyWaitingDetail = ({
               <span className="text-primary flex items-baseline">
                 <span
                   key={animationKey}
-                  className={`text-22-bold ${
+                  className={`text-22-bold transform-style-preserve-3d ${
                     animationDirection === "up"
                       ? "animate-number-slide-up"
                       : animationDirection === "down"
                       ? "animate-number-slide-down"
                       : ""
                   }`}
+                  style={{
+                    transformStyle: "preserve-3d",
+                    perspective: "1000px",
+                  }}
                 >
                   {items[currentIndex]?.waitingCount || 0}
                 </span>
