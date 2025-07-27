@@ -110,7 +110,7 @@ const StoreDetailPage = () => {
           </div>
         </section>
         <div className="-mx-5 bg-black-25 h-[16px] mb-[30px]"></div>
-        <MenuList mode="store" />
+        <MenuList storeId={storeId} mode="store" />
       </div>
       <PageFooterButton className="gap-2">
         <Button

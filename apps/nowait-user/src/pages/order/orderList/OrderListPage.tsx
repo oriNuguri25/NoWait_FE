@@ -14,7 +14,7 @@ const OrderListPage = () => {
   const navigate = useNavigate();
   const { storeId } = useParams();
   const { cart } = useCartStore();
-
+  console.log(cart,"카트")
   if (cart.length === 0) return <EmptyCart />;
 
   return (
