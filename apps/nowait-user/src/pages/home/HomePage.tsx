@@ -6,7 +6,6 @@ import InfiniteStoreList from "./components/InfiniteStoreList";
 import WaitingListModal from "./components/WaitingListModal";
 import MyWaitingDetail from "./components/MyWaitingDetail";
 import BannerMap from "../../assets/icon/banner_img.svg?react";
-import { mockWaitingItems } from "../../data/mockData";
 import { useWaitingStores } from "../../hooks/useWaitingStores";
 import { useMyWaitingList } from "../../hooks/useMyWaitingList";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +21,30 @@ const HomePage = () => {
   const { waitingStores, isLoading, error } = useWaitingStores(order);
 
   // 내 대기 목록 가져오기
-  const { myWaitingList } = useMyWaitingList();
+  const { myWaitingList, refetch: refetchMyWaitingList } = useMyWaitingList();
+
+  // myWaitingList를 WaitingItem 형태로 변환
+  const waitingItems = myWaitingList.map((store) => ({
+    id: store.storeId.toString(),
+    number: store.rank,
+    storeName: store.storeName,
+    waitingCount: store.teamsAhead,
+    departmentName: store.departmentName,
+    category: store.departmentName, // category는 departmentName과 동일하게 설정
+    people: store.partySize,
+    date: (() => {
+      const date = new Date(store.registeredAt);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      return `${year}.${month}.${day} ${hours}:${minutes}`;
+    })(),
+    location: store.location,
+    imageUrl: store.bannerImageUrl || store.profileImageUrl, // bannerImage가 있다면 사용, 없으면 profileImage 사용
+    departmentId: store.storeId, // departmentId는 storeId로 설정
+  }));
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -65,6 +87,7 @@ const HomePage = () => {
               type="myWaitingCard"
               waitingStores={myWaitingList}
               onClick={handleWaitingCardClick}
+              onRefresh={refetchMyWaitingList}
             />
           </div>
         )}
@@ -129,7 +152,7 @@ const HomePage = () => {
       {isWaitingDetailOpen && (
         <MyWaitingDetail
           onClose={handleWaitingDetailClose}
-          waitingItems={mockWaitingItems}
+          waitingItems={waitingItems}
         />
       )}
     </div>

@@ -62,6 +62,7 @@ interface MyWaitingCardProps {
   type: "myWaitingCard";
   waitingStores: WaitingStoreData[]; // 여러 주점 데이터 배열
   onClick?: () => void;
+  onRefresh?: () => void;
 }
 
 type MainCardProps =
@@ -307,24 +308,14 @@ const HomeCardComponent = ({
 const MyWaitingCardComponent = ({
   waitingStores,
   onClick,
+  onRefresh,
 }: Omit<MyWaitingCardProps, "type">) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [startX, setStartX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(600); // 현재 남은 시간 (초)
+  const [timeLeft, setTimeLeft] = useState(0); // 현재 남은 시간 (초, CALLING 상태일 때만 설정)
 
-  const totalSlides = waitingStores?.length || 0; // 실제 데이터 개수에 맞춘 슬라이드 개수
-
-  // 데이터가 없을 때 처리
-  if (!waitingStores || waitingStores.length === 0) {
-    return (
-      <div className="flex flex-col mt-4.5 mb-2.5 pb-9 w-full rounded-2xl items-center justify-center bg-gray-100 h-32">
-        <div className="text-14-medium text-gray-500">
-          대기 중인 주점이 없습니다
-        </div>
-      </div>
-    );
-  }
+  const totalSlides = waitingStores?.length || 0;
 
   // 슬라이드별 초기 시간 (초 단위) - 모두 10분으로 통일
   const initialTimes = Array(totalSlides).fill(600); // 데이터 개수에 맞춰 동적 생성
@@ -341,14 +332,19 @@ const MyWaitingCardComponent = ({
   // 현재 슬라이드의 데이터 가져오기
   const currentStore = waitingStores[currentSlide];
 
-  // 슬라이드가 변경될 때 타이머 리셋
+  // 슬라이드가 변경될 때 타이머 리셋 (CALLING 상태일 때만)
   useEffect(() => {
-    setTimeLeft(initialTimes[currentSlide] || 600);
-  }, [currentSlide, initialTimes]);
+    if (currentStore?.status === "CALLING") {
+      setTimeLeft(initialTimes[currentSlide] || 600);
+    }
+  }, [currentSlide, initialTimes, currentStore?.status]);
 
-  // 타이머 로직
+  // 타이머 로직 (CALLING 상태일 때만 작동)
   useEffect(() => {
-    if (timeLeft <= 0) return;
+    // CALLING 상태가 아니면 타이머 비활성화
+    if (currentStore?.status !== "CALLING" || timeLeft <= 0) {
+      return;
+    }
 
     const timer = setInterval(() => {
       setTimeLeft((prev: number) => {
@@ -360,7 +356,7 @@ const MyWaitingCardComponent = ({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft]);
+  }, [timeLeft, currentStore?.status]);
 
   // 터치 시작
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -423,7 +419,13 @@ const MyWaitingCardComponent = ({
           <div className="flex text-title-20-bold leading-[130%] tracking-[0em] text-primary mr-1.5">
             {currentStore?.teamsAhead || 0}팀
           </div>
-          <div className="flex justify-center items-center icon-m rounded-full bg-[#FFFFFF]/50">
+          <div
+            className="flex justify-center items-center icon-m rounded-full bg-[#FFFFFF]/50 cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation(); // 카드 클릭 이벤트와 충돌 방지
+              onRefresh?.();
+            }}
+          >
             <Refresh className="icon-s" />
           </div>
         </div>
@@ -549,6 +551,7 @@ const MainCard = (props: MainCardProps) => {
       <MyWaitingCardComponent
         waitingStores={props.waitingStores}
         onClick={props.onClick}
+        onRefresh={props.onRefresh}
       />
     );
   }

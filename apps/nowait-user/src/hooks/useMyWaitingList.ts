@@ -13,6 +13,7 @@ interface MyWaitingStore {
   registeredAt: string;
   location: string;
   profileImageUrl: string;
+  bannerImageUrl?: string;
 }
 
 // 서버 응답 구조
@@ -52,6 +53,7 @@ export const useMyWaitingList = () => {
     data: myWaitingList = [],
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["myWaitingList"],
     queryFn: fetchMyWaitingList,
@@ -63,6 +65,7 @@ export const useMyWaitingList = () => {
     myWaitingList,
     isLoading,
     error,
+    refetch,
   };
 };
 

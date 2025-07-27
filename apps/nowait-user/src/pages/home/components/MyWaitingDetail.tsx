@@ -2,7 +2,6 @@ import ArrowBack from "../../../assets/icon/arrow_back.svg?react";
 import MapPin from "../../../assets/icon/map-pin.svg?react";
 import { useState, useRef, useEffect } from "react";
 import type { WaitingItem } from "../../../types/WaitingItem";
-import { mockWaitingItems } from "../../../data/mockData";
 import MainCard from "./MainCard";
 
 interface MyWaitingDetailProps {
@@ -14,8 +13,7 @@ const MyWaitingDetail = ({
   onClose,
   waitingItems = [],
 }: MyWaitingDetailProps) => {
-  // 기본 더미 데이터 (API 데이터가 없을 경우)
-  const items = waitingItems.length > 0 ? waitingItems : mockWaitingItems;
+  const items = waitingItems;
 
   // 현재 활성 카드 인덱스 상태
   const [currentIndex, setCurrentIndex] = useState(0);
