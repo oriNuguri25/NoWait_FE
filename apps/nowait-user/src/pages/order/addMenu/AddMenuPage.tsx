@@ -12,13 +12,14 @@ const AddMenuPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { storeId } = useParams();
-  const { id, image, name, description, price } = location.state;
+  const { menuId, image, name, description, price } = location.state;
+  console.log(menuId, "메뉴아이디");
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCartStore();
 
   const addToCartButton = () => {
     const item: CartType = {
-      menuId: id,
+      menuId,
       image,
       name,
       quantity,

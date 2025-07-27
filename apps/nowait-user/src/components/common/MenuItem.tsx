@@ -27,12 +27,12 @@ const MenuItem = ({ data, mode }: PropsType) => {
         } text-left`}
       >
         <div className="max-w-[224px]">
-          <div className="flex justify-center items-center gap-1.5 mb-1">
-            <h2 className="text-title-16-bold text-black-90 text-ellipsis line-clamp-2">
+          <div className="mb-1">
+            <h2 className="inline mr-1.5 text-title-16-bold text-black-90 text-ellipsis line-clamp-2">
               {data.name}
             </h2>
             {data.isSoldOut && (
-              <span className="text-[12px] font-bold text-primary bg-[#FFE9DF] rounded-[6px] px-2 py-1">
+              <span className="text-[12px] font-bold text-primary bg-[#FFE9DF] rounded-[6px] px-2 py-1.5">
                 품절
               </span>
             )}
