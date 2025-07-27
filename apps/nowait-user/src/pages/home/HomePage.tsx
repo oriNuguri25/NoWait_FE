@@ -8,8 +8,11 @@ import MyWaitingDetail from "./components/MyWaitingDetail";
 import BannerMap from "../../assets/icon/banner_img.svg?react";
 import { mockWaitingItems } from "../../data/mockData";
 import { useWaitingStores } from "../../hooks/useWaitingStores";
+import { useMyWaitingList } from "../../hooks/useMyWaitingList";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortOption, setSortOption] = useState("대기 적은 순");
   const [isWaitingDetailOpen, setIsWaitingDetailOpen] = useState(false);
@@ -17,6 +20,9 @@ const HomePage = () => {
   // 정렬 옵션에 따른 order 설정
   const order = sortOption === "대기 적은 순" ? "asc" : "desc";
   const { waitingStores, isLoading, error } = useWaitingStores(order);
+
+  // 내 대기 목록 가져오기
+  const { myWaitingList } = useMyWaitingList();
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -49,18 +55,19 @@ const HomePage = () => {
       <div className="flex flex-col px-5 pb-8">
         <HomeHeader />
         {/* 내 대기 순서 */}
-        <div className="flex flex-col">
-          <div className="flex flex-row mt-4.5 gap-1.5 text-title-20-bold text-black-100">
-            <div className="flex">나의 대기카드</div>
-          </div>
+        {myWaitingList.length > 0 && (
+          <div className="flex flex-col">
+            <div className="flex flex-row mt-4.5 gap-1.5 text-title-20-bold text-black-100">
+              <div className="flex">나의 대기카드</div>
+            </div>
 
-          <MainCard
-            type="myWaitingCard"
-            storeName="스페이시스"
-            waitingTeams={5}
-            onClick={handleWaitingCardClick}
-          />
-        </div>
+            <MainCard
+              type="myWaitingCard"
+              waitingStores={myWaitingList}
+              onClick={handleWaitingCardClick}
+            />
+          </div>
+        )}
       </div>
       <div className="flex flex-col px-5 gap-10">
         {/* 바로 입장 가능한 주점 */}
@@ -86,6 +93,7 @@ const HomePage = () => {
                     storeName={store.storeName}
                     departmentName={store.departmentName}
                     waitingCount={store.waitingCount}
+                    onClick={() => navigate(`/store/${store.storeId}`)}
                   />
                 </div>
               ))}

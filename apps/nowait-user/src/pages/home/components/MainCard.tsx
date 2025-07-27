@@ -40,14 +40,27 @@ interface HomeCardProps {
   waitingCount?: number;
   storeName: string;
   departmentName: string;
+  onClick?: () => void;
+}
+
+// 대기 중인 주점 데이터 타입
+interface WaitingStoreData {
+  storeId: number;
+  storeName: string;
+  departmentName: string;
+  rank: number;
+  teamsAhead: number;
+  partySize: number;
+  status: string;
+  registeredAt: string;
+  location: string;
+  profileImageUrl: string;
 }
 
 // MyWaitingCard Props
 interface MyWaitingCardProps {
   type: "myWaitingCard";
-  storeName: string;
-  waitingTeams: number;
-  images?: string[]; // 원형 인디케이터에 표시할 이미지들
+  waitingStores: WaitingStoreData[]; // 여러 주점 데이터 배열
   onClick?: () => void;
 }
 
@@ -261,15 +274,17 @@ const HomeCardComponent = ({
   waitingCount,
   storeName,
   departmentName,
+  onClick,
 }: Omit<HomeCardProps, "type">) => {
   return (
     <div
-      className={`relative flex flex-col justify-end w-65 h-42.5 pl-5 pb-5 rounded-2xl bg-cover bg-center bg-no-repeat ${
+      className={`relative flex flex-col justify-end w-65 h-42.5 pl-5 pb-5 rounded-2xl bg-cover bg-center bg-no-repeat cursor-pointer ${
         imageUrl ? "bg-white-100" : "bg-black-60"
       }`}
       style={{
         backgroundImage: imageUrl ? `url(${imageUrl})` : undefined,
       }}
+      onClick={onClick}
     >
       {/* 그라데이션 오버레이 */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 rounded-2xl z-10" />
@@ -290,19 +305,29 @@ const HomeCardComponent = ({
 
 // 내 대기 카드 컴포넌트
 const MyWaitingCardComponent = ({
-  storeName,
-  waitingTeams,
-  images = [],
+  waitingStores,
   onClick,
 }: Omit<MyWaitingCardProps, "type">) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [startX, setStartX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const totalSlides = 3; // 총 슬라이드 개수
+  const [timeLeft, setTimeLeft] = useState(600); // 현재 남은 시간 (초)
+
+  const totalSlides = waitingStores?.length || 0; // 실제 데이터 개수에 맞춘 슬라이드 개수
+
+  // 데이터가 없을 때 처리
+  if (!waitingStores || waitingStores.length === 0) {
+    return (
+      <div className="flex flex-col mt-4.5 mb-2.5 pb-9 w-full rounded-2xl items-center justify-center bg-gray-100 h-32">
+        <div className="text-14-medium text-gray-500">
+          대기 중인 주점이 없습니다
+        </div>
+      </div>
+    );
+  }
 
   // 슬라이드별 초기 시간 (초 단위) - 모두 10분으로 통일
-  const initialTimes = [600, 600, 600]; // 모두 10분
-  const [timeLeft, setTimeLeft] = useState(initialTimes[0]); // 현재 남은 시간 (초)
+  const initialTimes = Array(totalSlides).fill(600); // 데이터 개수에 맞춰 동적 생성
 
   // 시간을 MM:SS 형식으로 포맷팅
   const formatTime = (seconds: number) => {
@@ -313,17 +338,20 @@ const MyWaitingCardComponent = ({
       .padStart(2, "0")}`;
   };
 
+  // 현재 슬라이드의 데이터 가져오기
+  const currentStore = waitingStores[currentSlide];
+
   // 슬라이드가 변경될 때 타이머 리셋
   useEffect(() => {
-    setTimeLeft(initialTimes[currentSlide]);
-  }, [currentSlide]);
+    setTimeLeft(initialTimes[currentSlide] || 600);
+  }, [currentSlide, initialTimes]);
 
   // 타이머 로직
   useEffect(() => {
     if (timeLeft <= 0) return;
 
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
+      setTimeLeft((prev: number) => {
         if (prev <= 1) {
           return 0;
         }
@@ -374,7 +402,7 @@ const MyWaitingCardComponent = ({
       >
         {/* 슬라이드 인디케이터 */}
         <div className="absolute flex flex-row gap-1 top-5 right-5">
-          {[0, 1, 2].map((index) => (
+          {Array.from({ length: totalSlides }, (_, index) => (
             <div
               key={index}
               className={`flex w-1.5 h-1.5 rounded-md transition-colors duration-300 ${
@@ -385,7 +413,7 @@ const MyWaitingCardComponent = ({
         </div>
 
         <div className="flex mt-6.5 text-14-semibold text-[#4D2E2E] leading-[130%] tracking-[0em]">
-          {storeName}
+          {currentStore?.storeName || ""}
         </div>
 
         <div className="flex flex-row mt-1 items-center">
@@ -393,7 +421,7 @@ const MyWaitingCardComponent = ({
             내 앞에 대기
           </div>
           <div className="flex text-title-20-bold leading-[130%] tracking-[0em] text-primary mr-1.5">
-            {waitingTeams}팀
+            {currentStore?.teamsAhead || 0}팀
           </div>
           <div className="flex justify-center items-center icon-m rounded-full bg-[#FFFFFF]/50">
             <Refresh className="icon-s" />
@@ -402,7 +430,7 @@ const MyWaitingCardComponent = ({
 
         <div className="flex flex-row mt-8">
           <div className="flex flex-row">
-            {[0, 1, 2].map((positionIndex) => {
+            {Array.from({ length: totalSlides }, (_, positionIndex) => {
               // 위치별 스타일 (고정)
               const isActivePosition = positionIndex === 0; // 첫 번째 위치가 항상 활성
               const isSecondPosition = positionIndex === 1;
@@ -418,13 +446,16 @@ const MyWaitingCardComponent = ({
               let opacity = isActivePosition ? 100 : 30;
 
               // 이미지 인덱스 계산 (순환)
-              const imageIndex = (positionIndex + currentSlide) % 3;
+              const imageIndex = (positionIndex + currentSlide) % totalSlides;
 
               // 배경색 결정 (이미지가 없을 때만 사용)
               const bgColors = ["bg-amber-50", "bg-gray-200", "bg-blue-100"];
 
               // 이미지가 있는지 확인
-              const hasImage = images && images[imageIndex];
+              const currentStoreAtIndex = waitingStores[imageIndex];
+              const hasImage =
+                currentStoreAtIndex?.profileImageUrl &&
+                currentStoreAtIndex.profileImageUrl !== "sampleProfileImg";
 
               return (
                 <div
@@ -438,11 +469,13 @@ const MyWaitingCardComponent = ({
                   <div className="relative w-full h-full p-[3.5px]">
                     <div
                       className={`relative w-full h-full rounded-full transition-all duration-500 ease-in-out ${
-                        hasImage ? "bg-cover bg-center" : bgColors[imageIndex]
+                        hasImage
+                          ? "bg-cover bg-center"
+                          : bgColors[imageIndex % bgColors.length]
                       }`}
                       style={{
                         backgroundImage: hasImage
-                          ? `url(${images[imageIndex]})`
+                          ? `url(${currentStoreAtIndex.profileImageUrl})`
                           : undefined,
                         transform: `scale(${isActivePosition ? 1 : 0.95})`,
                       }}
@@ -462,15 +495,17 @@ const MyWaitingCardComponent = ({
           </div>
         </div>
       </div>
-      <div className="flex flex-row justify-between items-center bg-[#F8F7F7] rounded-2xl px-4 py-4 h-15">
-        <div className="flex text-14-medium text-[#474D57] leading-[130%]">
-          10분 안에 입장해주세요!
-        </div>
+      {currentStore?.status === "CALLING" && (
+        <div className="flex flex-row justify-between items-center bg-[#F8F7F7] rounded-2xl px-4 py-4 h-15">
+          <div className="flex text-14-medium text-[#474D57] leading-[130%]">
+            10분 안에 입장해주세요!
+          </div>
 
-        <div className="flex text-14-bold text-[#1A3149]">
-          {formatTime(timeLeft)}
+          <div className="flex text-14-bold text-[#1A3149]">
+            {formatTime(timeLeft)}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -506,14 +541,13 @@ const MainCard = (props: MainCardProps) => {
         waitingCount={props.waitingCount}
         storeName={props.storeName}
         departmentName={props.departmentName}
+        onClick={props.onClick}
       />
     );
   } else if (props.type === "myWaitingCard") {
     return (
       <MyWaitingCardComponent
-        storeName={props.storeName}
-        waitingTeams={props.waitingTeams}
-        images={props.images}
+        waitingStores={props.waitingStores}
         onClick={props.onClick}
       />
     );
