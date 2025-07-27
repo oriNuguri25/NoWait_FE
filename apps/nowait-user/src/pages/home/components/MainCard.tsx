@@ -36,10 +36,10 @@ interface HomeWaitingCardProps {
 // HomeCard Props
 interface HomeCardProps {
   type: "homeCard";
-  imageUrl?: string;
+  imageUrl: string;
   waitingCount?: number;
   storeName: string;
-  departmentId?: number;
+  departmentName: string;
 }
 
 // MyWaitingCard Props
@@ -260,9 +260,8 @@ const HomeCardComponent = ({
   imageUrl,
   waitingCount,
   storeName,
-  departmentId,
+  departmentName,
 }: Omit<HomeCardProps, "type">) => {
-  const departmentName = getDepartmentName(departmentId || 1);
   return (
     <div
       className={`relative flex flex-col justify-end w-65 h-42.5 pl-5 pb-5 rounded-2xl bg-cover bg-center bg-no-repeat ${
@@ -506,7 +505,7 @@ const MainCard = (props: MainCardProps) => {
         imageUrl={props.imageUrl}
         waitingCount={props.waitingCount}
         storeName={props.storeName}
-        departmentId={props.departmentId}
+        departmentName={props.departmentName}
       />
     );
   } else if (props.type === "myWaitingCard") {

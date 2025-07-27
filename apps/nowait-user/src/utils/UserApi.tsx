@@ -93,9 +93,9 @@ UserApi.interceptors.response.use(
     // 토큰 갱신 조건: access token 만료이지만 refresh token은 정상일 때만
     const isAccessTokenExpired =
       error.response?.data &&
-      (error.response.data.includes?.("expired access token") ||
-        error.response.data.message?.includes?.("expired access token") ||
-        error.response.data === "expired access token");
+      (error.response.data.includes?.("access token expired") ||
+        error.response.data.message?.includes?.("access token expired") ||
+        error.response.data === "access token expired");
 
     // refresh token 문제가 있는 경우 토큰 갱신하지 않음
     const isRefreshTokenInvalid =

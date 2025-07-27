@@ -7,11 +7,16 @@ import WaitingListModal from "./components/WaitingListModal";
 import MyWaitingDetail from "./components/MyWaitingDetail";
 import BannerMap from "../../assets/icon/banner_img.svg?react";
 import { mockWaitingItems } from "../../data/mockData";
+import { useWaitingStores } from "../../hooks/useWaitingStores";
 
 const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortOption, setSortOption] = useState("대기 적은 순");
   const [isWaitingDetailOpen, setIsWaitingDetailOpen] = useState(false);
+
+  // 정렬 옵션에 따른 order 설정
+  const order = sortOption === "대기 적은 순" ? "asc" : "desc";
+  const { waitingStores, isLoading, error } = useWaitingStores(order);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -59,32 +64,34 @@ const HomePage = () => {
       </div>
       <div className="flex flex-col px-5 gap-10">
         {/* 바로 입장 가능한 주점 */}
-        <div className="flex flex-col">
-          <div className="flex flex-row gap-1.5 items-center mb-3.5">
-            <div className="flex text-start text-headline-22-bold text-black-90">
-              {getSectionTitle()}
-            </div>
-            <div
-              onClick={handleModalOpen}
-              className="flex w-6 h-6 bg-black-15 rounded-full items-center justify-center cursor-pointer"
-            >
-              <ArrowDown className="text-black-60 icon-s" />
-            </div>
-          </div>
-          <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
-            {mockWaitingItems.map((store) => (
-              <div key={store.id} className="flex-shrink-0">
-                <MainCard
-                  type="homeCard"
-                  imageUrl={store.imageUrl}
-                  storeName={store.storeName}
-                  departmentId={store.departmentId}
-                  waitingCount={store.waitingCount}
-                />
+        {!isLoading && !error && waitingStores.length > 0 && (
+          <div className="flex flex-col">
+            <div className="flex flex-row gap-1.5 items-center mb-3.5">
+              <div className="flex text-start text-headline-22-bold text-black-90">
+                {getSectionTitle()}
               </div>
-            ))}
+              <div
+                onClick={handleModalOpen}
+                className="flex w-6 h-6 bg-black-15 rounded-full items-center justify-center cursor-pointer"
+              >
+                <ArrowDown className="text-black-60 icon-s" />
+              </div>
+            </div>
+            <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
+              {waitingStores.map((store) => (
+                <div key={store.storeId} className="flex-shrink-0">
+                  <MainCard
+                    type="homeCard"
+                    imageUrl={store.bannerImageUrl || ""}
+                    storeName={store.storeName}
+                    departmentName={store.departmentName}
+                    waitingCount={store.waitingCount}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* 축제 부스 찾기 안내 */}
         <div className="flex flex-row rounded-2xl bg-black-15 gap-3.75 justify-between pl-5 items-center">
