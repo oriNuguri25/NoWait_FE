@@ -15,7 +15,8 @@ export const useUpdateReservationStatus = () => {
       status,
     }: UpdateReservationParams) => {
       const res = await AdminApi.patch(
-        `/reservations/admin/update/${storeId}/${userId}/${status}`
+        `/reservations/admin/update/${storeId}/${userId}`,
+        { status }
       );
       return res.data;
     },

@@ -55,23 +55,36 @@ export function WaitingCard({
   }, [status]);
 
   useEffect(() => {
-    if (status === "CALLING" && calledAt) {
-      const start = new Date(calledAt).getTime();
-
-      const updateElapsed = () => {
-        const now = Date.now();
-        const diffSec = Math.floor((now - start) / 1000);
-        const remainingSec = Math.max(totalDurationSec - diffSec, 0); // 음수 방지
-
-        const min = String(Math.floor(remainingSec / 60)).padStart(2, "0");
-        const sec = String(remainingSec % 60).padStart(2, "0");
-        setElapsed(`${min}:${sec}`);
-      };
-
-      updateElapsed(); // 최초 계산
-      const interval = setInterval(updateElapsed, 1000);
-      return () => clearInterval(interval);
+    if (status !== "CALLING" || !calledAt) {
+      setElapsed("10:00");
+      return;
     }
+
+    const startTime = new Date(calledAt).getTime();
+
+    const updateElapsed = () => {
+      const now = Date.now();
+      const diffSec = Math.floor((now - startTime) / 1000);
+      const remainingSec = Math.max(totalDurationSec - diffSec, 0);
+
+      const min = String(Math.floor(remainingSec / 60)).padStart(2, "0");
+      const sec = String(remainingSec % 60).padStart(2, "0");
+      setElapsed(`${min}:${sec}`);
+    };
+
+    updateElapsed(); // 초기 값 설정
+
+    const interval = setInterval(updateElapsed, 1000);
+
+    // 테스트용 10초 후 미입장 처리
+    const timeout = setTimeout(() => {
+      onNoShow();
+    }, 10000); // 10초
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
   }, [status, calledAt]);
   return (
     <div className="[@media(max-width:431px)]:w-[335px] [@media(min-width:768px)_and_(max-width:821px)]:w-[329px] relative lg:w-[372px] h-[200px] bg-white rounded-[16px] px-6 py-[18px]">

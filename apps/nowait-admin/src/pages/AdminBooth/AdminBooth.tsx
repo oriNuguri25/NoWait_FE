@@ -9,6 +9,8 @@ import editOrderIcon from "../../assets/edit_order_icon.svg";
 import ToggleSwitch from "../AdminHome/components/ToggleSwitch";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import MenuModal from "./components/menuModal";
+import { useCreateMenu } from "../../hooks/booth/useCreateMenu";
+import { useUploadMenuImage } from "../../hooks/booth/useUploadMenuImage";
 
 const BoothSection = ({
   boothName,
@@ -166,6 +168,8 @@ const MenuSection = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
+  const { mutate: createMenu } = useCreateMenu();
+  const { mutate: uploadMenuImage } = useUploadMenuImage();
 
   const openEditModal = (menu: any) => {
     setSelectedMenu(menu);
@@ -173,7 +177,42 @@ const MenuSection = () => {
   };
 
   const handleAddMenu = (newMenu: any) => {
-    setMenus((prev) => [...prev, newMenu]);
+    const payload = {
+      storeId: 1, // 추후 props 등으로 받아야 함
+      name: newMenu.name,
+      description: newMenu.description,
+      price: parseInt(newMenu.price.replace(/[^0-9]/g, ""), 10),
+    };
+
+    createMenu(payload, {
+      onSuccess: (res) => {
+        const createdMenuId = res.menuId; // 백엔드가 반환한 menuId 사용
+
+        // 이미지가 있을 경우 업로드
+        if (newMenu.image) {
+          uploadMenuImage(
+            { menuId: createdMenuId, image: newMenu.image },
+            {
+              onSuccess: () => {
+                alert("메뉴 및 이미지가 성공적으로 추가되었습니다.");
+                setMenus((prev) => [...prev, newMenu]);
+              },
+              onError: () => {
+                alert("메뉴는 추가되었지만 이미지 업로드에 실패했습니다.");
+              },
+            }
+          );
+        } else {
+          alert("메뉴가 성공적으로 추가되었습니다.");
+          setMenus((prev) => [...prev, newMenu]);
+        }
+
+        setIsAddModalOpen(false);
+      },
+      onError: () => {
+        alert("메뉴 추가에 실패했습니다.");
+      },
+    });
   };
 
   const handleEditMenu = (updated: any) => {
