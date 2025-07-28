@@ -72,20 +72,27 @@ const MenuBar = ({ editor }: { editor: any }) => {
     </div>
   );
 };
-const NoticeEditor = () => {
+const NoticeEditor = ({
+  notice,
+  setNotice,
+}: {
+  notice: string;
+  setNotice: (val: string) => void;
+}) => {
   const [title, setTitle] = useState("");
 
   const editor = useEditor({
     extensions: [StarterKit, Underline],
-    content: `내용을 입력해주세요`,
+    content: notice || "내용을 입력해주세요",
   });
 
-  const handleSave = () => {
-    const html = editor?.getHTML();
-    console.log("제목:", title);
-    console.log("내용:", html);
-    // API 전송 가능
-  };
+  // 부모로 내용 동기화
+  useEffect(() => {
+    if (!editor) return;
+    editor.on("update", () => {
+      setNotice(editor.getHTML());
+    });
+  }, [editor, setNotice]);
 
   const [hasCleared, setHasCleared] = useState(false);
   // 텍스터 에디터 focusing시 clear
