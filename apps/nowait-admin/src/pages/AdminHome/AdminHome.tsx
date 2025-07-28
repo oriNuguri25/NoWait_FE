@@ -154,8 +154,10 @@ const AdminHome = () => {
       const requested = new Date(res.createdAt ?? "");
       const calledAtValid = res.calledAt && !isNaN(Date.parse(res.calledAt));
       const called = calledAtValid ? new Date(res.calledAt) : undefined;
+      // reservationNumber 끝의 4자리 추출
+      const idFromNumber = parseInt(res.reservationNumber.slice(-4), 10);
       return {
-        id: Number(res.id),
+        id: Number(idFromNumber),
         userId: Number(res.userId),
         requestedAt: res.createdAt,
         time: requested.toLocaleTimeString("ko-KR", {
