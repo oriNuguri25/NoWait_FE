@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import AdminApi from "../../utils/AdminApi";
+import AdminApi from "../../../utils/AdminApi";
 
 interface MenuDetailParams {
   storeId: number;

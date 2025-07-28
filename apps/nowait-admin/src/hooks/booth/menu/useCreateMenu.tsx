@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import AdminApi from "../../utils/AdminApi";
+import AdminApi from "../../../utils/AdminApi";
 
 interface CreateMenuParams {
   storeId: number;
