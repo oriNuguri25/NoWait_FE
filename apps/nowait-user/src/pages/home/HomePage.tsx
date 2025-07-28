@@ -125,7 +125,10 @@ const HomePage = () => {
         )}
 
         {/* 축제 부스 찾기 안내 */}
-        <div className="flex flex-row rounded-2xl bg-black-15 gap-3.75 justify-between pl-5 items-center">
+        <div
+          onClick={() => navigate("/map")}
+          className="flex flex-row rounded-2xl bg-black-15 gap-3.75 justify-between pl-5 items-center"
+        >
           <div className="flex flex-col py-5 gap-1.5">
             <div className="flex text-18-bold text-black-90">
               축제 부스 한눈에 찾기
