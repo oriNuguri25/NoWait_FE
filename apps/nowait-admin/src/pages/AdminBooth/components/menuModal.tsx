@@ -4,6 +4,7 @@ import closeIcon from "../../../assets/close.svg";
 interface MenuModalProps {
   isEdit: boolean;
   initialData?: {
+    id?: number;
     name: string;
     adminName: string;
     price: string;
@@ -33,10 +34,17 @@ const MenuModal = ({
   const [image, setImage] = useState<File | null>(initialData?.image || null);
 
   const handleSubmit = () => {
-    onSubmit({ name, adminName, price, description, isRepresentative, image });
+    onSubmit({
+      id: initialData?.id, // 👈 이거 꼭 포함
+      name,
+      adminName,
+      price,
+      description,
+      isRepresentative,
+      image,
+    });
     onClose();
   };
-
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
       <div className="bg-white w-[500px] h-[754px] rounded-[20px] p-[30px] relative">

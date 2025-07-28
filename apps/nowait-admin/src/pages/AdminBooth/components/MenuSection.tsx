@@ -7,6 +7,7 @@ import MenuModal from "../components/menuModal";
 import { useCreateMenu } from "../../../hooks/booth/menu/useCreateMenu";
 import { useUploadMenuImage } from "../../../hooks/booth/useUploadMenuImage";
 import { useGetAllMenus } from "../../../hooks/booth/menu/useGetAllMenus";
+import { useUpdateMenu } from "../../../hooks/booth/useUpdateMenu";
 
 interface Menu {
   id: number;
@@ -23,9 +24,14 @@ const MenuSection = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
   const { data: fetchedMenus = [], isLoading } = useGetAllMenus(1);
+
+  // 메뉴 생성 훅
   const { mutate: createMenu } = useCreateMenu();
   const { mutate: uploadMenuImage } = useUploadMenuImage();
   const [menus, setMenus] = useState<Menu[]>([]);
+
+  // 메뉴 수정 훅
+  const { mutate: updateMenu } = useUpdateMenu();
 
   const openEditModal = (menu: any) => {
     setSelectedMenu(menu);
@@ -97,10 +103,32 @@ const MenuSection = () => {
     });
   };
 
-  const handleEditMenu = (updated: any) => {
-    setMenus((prev) =>
-      prev.map((menu) => (menu.name === selectedMenu.name ? updated : menu))
-    );
+  const handleEditMenu = (updated: {
+    id: number;
+    name: string;
+    description: string;
+    price: string;
+  }) => {
+    const payload = {
+      menuId: updated.id,
+      name: updated.name,
+      description: updated.description,
+      price: parseInt(String(updated.price).replace(/[^0-9]/g, ""), 10),
+    };
+
+    updateMenu(payload, {
+      onSuccess: () => {
+        setMenus((prev) =>
+          prev.map((menu) =>
+            menu.id === updated.id ? { ...menu, ...payload } : menu
+          )
+        );
+        alert("메뉴가 성공적으로 수정되었습니다.");
+      },
+      onError: () => {
+        alert("메뉴 수정에 실패했습니다.");
+      },
+    });
   };
 
   const toggleSoldOut = (index: number) => {
