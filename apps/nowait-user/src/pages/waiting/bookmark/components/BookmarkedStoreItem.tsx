@@ -45,7 +45,7 @@ const BookmarkedStoreItem = ({
           {wait}
         </p>
       </div>
-      <div className="flex justify-between py-3">
+      <div className="flex items-start justify-between py-3">
         <div className="flex items-center gap-2.5">
           <img
             className="w-[40px] h-[40px] object-cover rounded-full bg-black-40"
