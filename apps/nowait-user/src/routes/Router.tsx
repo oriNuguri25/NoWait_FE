@@ -1,7 +1,7 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "../pages/home/HomePage";
 import WaitingSuccessPage from "../pages/waiting/waitingSuccess/WaitingSuccessPage";
-import MapPage from "../pages/waiting/MapPage";
+import MapPage from "../pages/waiting/boothMap/MapPage";
 import StoreDetailPage from "../pages/waiting/storeDetail/StoreDetailPage";
 import RedirectToStorePage from "../pages/order/home/RedirectToStorePage";
 import StorePage from "../pages/order/home/StorePage";
@@ -47,7 +47,7 @@ const Router = () => {
       />
       {/* <Route path="/store/:id/reserve" element={withAuth(StoreReservePage)} /> */}
       <Route path="/store/:id" element={withAuth(StoreDetailPage)} />
-      <Route path="/map" element={withAuth(MapPage)} />
+      <Route path="/map" element={<MapPage/>} />
       <Route path="/bookmark" element={withAuth(BookmarkPage)} />
       <Route path="/store/:id/notice" element={withAuth(StoreNoticePage)} />
       <Route
