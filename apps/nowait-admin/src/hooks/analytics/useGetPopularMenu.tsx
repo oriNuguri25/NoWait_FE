@@ -6,6 +6,7 @@ interface PopularMenuItem {
   menuName: string;
   totalSalesCount: number;
   boothName: string;
+  soldCount: number;
 }
 
 interface PopularMenuResponse {
