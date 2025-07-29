@@ -45,23 +45,9 @@ export function WaitingCard({
   const [elapsed, setElapsed] = useState("10:00");
 
   useEffect(() => {
-    if (status === "CALLING") {
-      const timer = setTimeout(() => {
-        onNoShow();
-      }, 10 * 1 * 1000); // 테스트용 10초
-
-      return () => clearTimeout(timer);
-    }
-  }, [status]);
-
-  useEffect(() => {
-    if (status !== "CALLING" || !calledAt) {
-      setElapsed("10:00");
-      return;
-    }
+    if (status !== "CALLING" || !calledAt) return;
 
     const startTime = new Date(calledAt).getTime();
-
     const updateElapsed = () => {
       const now = Date.now();
       const diffSec = Math.floor((now - startTime) / 1000);
@@ -70,22 +56,20 @@ export function WaitingCard({
       const min = String(Math.floor(remainingSec / 60)).padStart(2, "0");
       const sec = String(remainingSec % 60).padStart(2, "0");
       setElapsed(`${min}:${sec}`);
+
+      // 시간이 다 되면 자동 미입장 처리
+      if (remainingSec === 0) {
+        onNoShow();
+      }
     };
 
-    updateElapsed(); // 초기 값 설정
-
+    updateElapsed(); // 최초 실행
     const interval = setInterval(updateElapsed, 1000);
 
-    // 테스트용 10초 후 미입장 처리
-    const timeout = setTimeout(() => {
-      onNoShow();
-    }, 10000); // 10초
+    return () => clearInterval(interval);
+  }, [status, calledAt, onNoShow]);
 
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
-  }, [status, calledAt]);
+
   return (
     <div className="[@media(max-width:431px)]:w-[335px] [@media(min-width:768px)_and_(max-width:821px)]:w-[329px] relative lg:w-[372px] h-[200px] bg-white rounded-[16px] px-6 py-[18px]">
       {/* 헤더 */}
