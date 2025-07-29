@@ -54,7 +54,7 @@ const PaymentCheckModal = ({
         </div>
       </div>
 
-      <div className="flex flex-row mt-7.5 bg-black-15 rounded-[14px] px-3.5 py-3.5 w-70 gap-2.5">
+      <div className="flex flex-row mt-7.5 bg-black-15 rounded-[14px] px-3.5 py-3.5 w-70 gap-2.5 max-[450px]:w-60">
         <div
           className="flex rounded-full w-9 h-9 items-center justify-center text-title-18-semibold text-white-100"
           style={{ backgroundColor: getTableBackgroundColor(tableNumber) }}
