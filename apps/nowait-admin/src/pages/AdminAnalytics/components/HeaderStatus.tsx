@@ -1,38 +1,69 @@
-import React from "react";
 import SalesCard from "./SalesCard";
+import TotalSalesCard from "./TotalSalesCard";
 
-const HeaderStatus = () => {
+interface HeaderStatusProps {
+  sales?: {
+    storeId: number;
+    date: string;
+    todaySalesSum: number;
+    yesterdaySalesSum: number;
+    cumulativeSalesBeforeYesterday: number;
+    ObjectallZero: boolean;
+  };
+  popularMenu?: {
+    menuId: number;
+    menuName: string;
+    soldCount: number;
+  }[];
+}
+
+const HeaderStatus: React.FC<HeaderStatusProps> = ({ sales, popularMenu }) => {
+  const todayAmount = sales?.todaySalesSum ?? 0;
+  const yesterdayAmount = sales?.yesterdaySalesSum ?? 0;
+  const diffAmount = todayAmount - yesterdayAmount;
+  const percent = yesterdayAmount
+    ? parseFloat(((diffAmount / yesterdayAmount) * 100).toFixed(1))
+    : 0;
+
+  const todayDate = sales?.date ?? "오늘";
+  const yesterdayDate = "어제";
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-[10px] h-[352px]">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-[10px] w-[754px] h-[50%]">
       <div className="flex flex-col gap-[10px]">
-        {/* 오늘 매출 */}
         <SalesCard
-          title="오늘 매출"
-          date="2025.07.18 금"
-          amount={800000}
-          diffAmount={12000}
-          percent={13.6}
+          today={{
+            date: todayDate,
+            amount: todayAmount,
+            diffAmount,
+            percent,
+          }}
+          previous={{
+            date: yesterdayDate,
+            amount: yesterdayAmount,
+          }}
         />
-        {/* 누적 매출 */}
-        <SalesCard
-          title="누적 매출"
-          date="2025.07.18 금"
-          amount={6400000}
-          diffAmount={40000}
-          percent={0.63}
+
+        <TotalSalesCard
+          title="누적매출"
+          date={`${todayDate} 기준`}
+          amount={(sales?.cumulativeSalesBeforeYesterday ?? 0) + todayAmount}
+          percent={percent}
         />
       </div>
-      {/* 인기 메뉴 TOP 5 */}
-      <div className="flex flex-col justify-between bg-white rounded-xl p-6 shadow h-full">
-        <div className="flex flex-col mb-2">
+
+      <div className="flex flex-col bg-white rounded-xl p-6">
+        <div className="flex flex-col mb-[25px]">
           <p className="text-title-18-bold text-navy-80">인기 메뉴 TOP 5</p>
-          <span className="text-13-regular text-black-60">2025.07.18 금</span>
+          <span className="text-13-regular text-black-60">{todayDate}</span>
         </div>
-        <ul className="space-y-2">
-          {[1, 2, 3, 4, 5].map((rank) => (
-            <li key={rank} className="flex justify-between">
-              <span>{rank}위 참치마요주먹밥</span>
-              <span className="font-medium">100개</span>
+        <ul>
+          {(popularMenu ?? []).slice(0, 5).map((menu, i) => (
+            <li key={menu.menuId} className="flex justify-between h-[52px]">
+              <span className="flex text-16-bold gap-[10px]">
+                {i + 1} <p className="text-16-semibold">{menu.menuName}</p>
+              </span>
+              <span className="text-16-medium">{menu.soldCount}개</span>
             </li>
           ))}
         </ul>
@@ -40,5 +71,4 @@ const HeaderStatus = () => {
     </div>
   );
 };
-
 export default HeaderStatus;

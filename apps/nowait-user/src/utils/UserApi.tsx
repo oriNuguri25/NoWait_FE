@@ -63,6 +63,7 @@ const refreshToken = async (): Promise<string | null> => {
     }
 
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("recentSearches");
     return null;
   }
 };
@@ -89,14 +90,65 @@ UserApi.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // 토큰 만료 에러 체크 (401 상태 코드 또는 "access token expired" 메시지)
-    if (
+    // 토큰 만료 감지 함수
+    const checkTokenExpired = (data: any, message: string): boolean => {
+      if (!data) return false;
+
+      const dataStr = typeof data === "string" ? data : JSON.stringify(data);
+      return dataStr.toLowerCase().includes(message.toLowerCase());
+    };
+
+    // 토큰 갱신 조건: access token 만료이지만 refresh token은 정상일 때만
+    const isAccessTokenExpired =
       error.response?.status === 401 ||
-      (error.response?.data &&
-        (error.response.data.includes?.("access token expired") ||
-          error.response.data.message?.includes?.("access token expired") ||
-          error.response.data === "access token expired"))
-    ) {
+      checkTokenExpired(error.response?.data, "access token expired") ||
+      checkTokenExpired(
+        error.response?.data?.message,
+        "access token expired"
+      ) ||
+      checkTokenExpired(error.response?.data, "token expired") ||
+      checkTokenExpired(error.response?.data?.message, "token expired");
+
+    // refresh token 문제가 있는 경우 토큰 갱신하지 않음
+    const isRefreshTokenInvalid =
+      checkTokenExpired(error.response?.data, "expired refresh token") ||
+      checkTokenExpired(
+        error.response?.data?.message,
+        "expired refresh token"
+      ) ||
+      checkTokenExpired(error.response?.data, "invalid refresh token") ||
+      checkTokenExpired(
+        error.response?.data?.message,
+        "invalid refresh token"
+      ) ||
+      checkTokenExpired(
+        error.response?.data,
+        "Invalid or expired refresh token"
+      ) ||
+      checkTokenExpired(
+        error.response?.data?.message,
+        "Invalid or expired refresh token"
+      );
+
+    // 디버깅을 위한 로그 추가
+    console.log("🔍 에러 응답 분석:");
+    console.log("Status:", error.response?.status);
+    console.log("Data:", error.response?.data);
+    console.log("Message:", error.response?.data?.message);
+    console.log("isAccessTokenExpired:", isAccessTokenExpired);
+    console.log("isRefreshTokenInvalid:", isRefreshTokenInvalid);
+
+    // refresh token에 문제가 있으면 바로 로그인 페이지로 이동
+    if (isRefreshTokenInvalid) {
+      console.log("Refresh token 문제 감지 - 재로그인 필요");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("recentSearches");
+      window.location.href = "/login";
+      return Promise.reject(error);
+    }
+
+    // access token만 만료된 경우에만 토큰 갱신 시도
+    if (isAccessTokenExpired) {
       // 이미 재시도한 요청이면 더 이상 재시도하지 않음
       if (originalRequest._retry) {
         console.log("토큰 갱신 재시도 실패, 로그인 페이지로 이동");
@@ -123,6 +175,7 @@ UserApi.interceptors.response.use(
       } catch (refreshError) {
         console.log("토큰 갱신 중 오류 발생:", refreshError);
         localStorage.removeItem("accessToken");
+        localStorage.removeItem("recentSearches");
         window.location.href = "/login";
         return Promise.reject(error);
       }

@@ -1,7 +1,7 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "../pages/home/HomePage";
 import WaitingSuccessPage from "../pages/waiting/waitingSuccess/WaitingSuccessPage";
-import MapPage from "../pages/waiting/MapPage";
+import MapPage from "../pages/waiting/boothMap/MapPage";
 import StoreDetailPage from "../pages/waiting/storeDetail/StoreDetailPage";
 import RedirectToStorePage from "../pages/order/home/RedirectToStorePage";
 import StorePage from "../pages/order/home/StorePage";
@@ -18,6 +18,7 @@ import RemittanceWaitPage from "../pages/order/remittenceWait/RemittanceWaitPage
 import OrderDetailsPage from "../pages/order/orderDetails/OrderDetailsPage";
 import RemittancePage from "../pages/order/remittance/RemittancePage";
 import BookmarkPage from "../pages/waiting/bookmark/BookmarkPage";
+import StoreNoticePage from "../pages/waiting/storeNotice/StoreNoticePage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -46,8 +47,9 @@ const Router = () => {
       />
       {/* <Route path="/store/:id/reserve" element={withAuth(StoreReservePage)} /> */}
       <Route path="/store/:id" element={withAuth(StoreDetailPage)} />
-      <Route path="/map" element={withAuth(MapPage)} />
+      <Route path="/map" element={<MapPage/>} />
       <Route path="/bookmark" element={withAuth(BookmarkPage)} />
+      <Route path="/store/:id/notice" element={withAuth(StoreNoticePage)} />
       <Route
         path="/store/:id/partysize"
         element={withAuth(WaitingPartySizeForm)}
@@ -56,7 +58,7 @@ const Router = () => {
         path="/store/:id/waiting/summary"
         element={withAuth(WaitingSummaryPage)}
       />
-            <Route
+      <Route
         path="/store/:id/waiting/success"
         element={withAuth(WaitingSuccessPage)}
       />

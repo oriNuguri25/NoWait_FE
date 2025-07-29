@@ -23,7 +23,7 @@ interface WaitingCardProps {
   onDelete: () => void;
 }
 const truncateName = (name: string, maxLength: number = 3) => {
-  return name.length > maxLength ? name.slice(0, maxLength) + "..." : name;
+  return name?.length > maxLength ? name.slice(0, maxLength) + "..." : name;
 };
 
 export function WaitingCard({
@@ -55,23 +55,36 @@ export function WaitingCard({
   }, [status]);
 
   useEffect(() => {
-    if (status === "CALLING" && calledAt) {
-      const start = new Date(calledAt).getTime();
-
-      const updateElapsed = () => {
-        const now = Date.now();
-        const diffSec = Math.floor((now - start) / 1000);
-        const remainingSec = Math.max(totalDurationSec - diffSec, 0); // 음수 방지
-
-        const min = String(Math.floor(remainingSec / 60)).padStart(2, "0");
-        const sec = String(remainingSec % 60).padStart(2, "0");
-        setElapsed(`${min}:${sec}`);
-      };
-
-      updateElapsed(); // 최초 계산
-      const interval = setInterval(updateElapsed, 1000);
-      return () => clearInterval(interval);
+    if (status !== "CALLING" || !calledAt) {
+      setElapsed("10:00");
+      return;
     }
+
+    const startTime = new Date(calledAt).getTime();
+
+    const updateElapsed = () => {
+      const now = Date.now();
+      const diffSec = Math.floor((now - startTime) / 1000);
+      const remainingSec = Math.max(totalDurationSec - diffSec, 0);
+
+      const min = String(Math.floor(remainingSec / 60)).padStart(2, "0");
+      const sec = String(remainingSec % 60).padStart(2, "0");
+      setElapsed(`${min}:${sec}`);
+    };
+
+    updateElapsed(); // 초기 값 설정
+
+    const interval = setInterval(updateElapsed, 1000);
+
+    // 테스트용 10초 후 미입장 처리
+    const timeout = setTimeout(() => {
+      onNoShow();
+    }, 10000); // 10초
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
   }, [status, calledAt]);
   return (
     <div className="[@media(max-width:431px)]:w-[335px] [@media(min-width:768px)_and_(max-width:821px)]:w-[329px] relative lg:w-[372px] h-[200px] bg-white rounded-[16px] px-6 py-[18px]">
@@ -80,9 +93,10 @@ export function WaitingCard({
         <p className="text-title-20-bold text-black-80">
           #{number < 10 ? `0${number}` : number}번
         </p>
-        <div className="flex items-center gap-2 text-13-medium text-black-50">
+        <div className="flex items-center text-13-medium text-black-50">
           <span>{time}</span>
-          <span>· {waitMinutes}분 대기 중</span>
+          <span className="px-[2px]">·</span>
+          <span>{waitMinutes}분 대기 중</span>
           {<CloseButton onClick={onDelete} />}
         </div>
       </div>
@@ -136,13 +150,13 @@ export function WaitingCard({
             <>
               <button
                 onClick={onClose}
-                className="w-[60%] bg-black-30 text-black-80 rounded-[8px] flex justify-center items-center py-2"
+                className="w-[60%] bg-black-30 text-black-80 text-15-semibold rounded-[8px] flex justify-center items-center py-2"
               >
                 미입장
               </button>
               <button
                 onClick={onEnter}
-                className="w-[35%] bg-[#E8F3FF] text-[#2C7CF6] py-2 rounded-[8px] flex justify-center items-center gap-1"
+                className="w-[35%] bg-[#E8F3FF] text-[#2C7CF6] text-15-semibold py-2 rounded-[8px] flex justify-center items-center gap-1"
               >
                 <img src={openDoorIcon} /> 입장
               </button>
@@ -154,7 +168,7 @@ export function WaitingCard({
               </div>
               <button
                 onClick={onEnter}
-                className="w-[35%] bg-[#E8F3FF] text-[#2C7CF6] py-2 rounded-[8px] flex justify-center items-center gap-1"
+                className="w-[35%] bg-[#E8F3FF] text-[#2C7CF6] text-15-semibold py-2 rounded-[8px] flex justify-center items-center gap-1"
               >
                 입장
               </button>
@@ -162,13 +176,13 @@ export function WaitingCard({
           ))}
 
         {status === "CANCELLED" && (
-          <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
+          <div className="w-full bg-black-5 text-black-40 text-15-semibold rounded-[8px] flex justify-center items-center py-2">
             취소된 입장
           </div>
         )}
 
         {status === "CONFIRMED" && (
-          <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
+          <div className="w-full bg-black-5 text-black-40 text-15-semibold rounded-[8px] flex justify-center items-center py-2">
             완료된 입장
           </div>
         )}

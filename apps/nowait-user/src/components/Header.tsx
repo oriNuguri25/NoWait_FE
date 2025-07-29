@@ -3,12 +3,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.svg?react";
 import Menu from "../assets/icon/menu.svg?react";
-import Search from "../assets/icon/search_black.svg?react";
+import Search from "../assets/icon/search.svg?react";
 import Cancel from "../assets/icon/cancel.svg?react";
 import Portal from "./common/modal/Portal";
+import SearchModal from "./common/modal/SearchModal";
 
 const HomeHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -17,6 +19,14 @@ const HomeHeader = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  const openSearch = () => {
+    setIsSearchOpen(true);
+  };
+
+  const closeSearch = () => {
+    setIsSearchOpen(false);
   };
 
   const handleBookmarkClick = () => {
@@ -34,7 +44,7 @@ const HomeHeader = () => {
       <div className="flex justify-between items-center py-4">
         <Logo className="w-14.5 h-6" />
         <div className="flex flex-row gap-3">
-          <button onClick={() => {}} className="cursor-pointer">
+          <button onClick={openSearch} className="cursor-pointer">
             <Search className="icon-m" />
           </button>
           <button onClick={toggleMenu} className="cursor-pointer">
@@ -113,6 +123,9 @@ const HomeHeader = () => {
           )}
         </AnimatePresence>
       </Portal>
+
+      {/* 전체 화면 검색 모달 */}
+      <SearchModal isOpen={isSearchOpen} onClose={closeSearch} />
     </>
   );
 };

@@ -3,7 +3,7 @@ import DefaultDepartmentImage from "../assets/default-department.png";
 interface PropsType {
   width: string;
   height: string;
-  src: string;
+  src?: string;
 }
 const DepartmentImage = ({ width, height, src }: PropsType) => {
   return (

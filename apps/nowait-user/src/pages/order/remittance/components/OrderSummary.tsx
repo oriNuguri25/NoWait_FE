@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { CartType } from "../../../../types/order/cart";
 import ArrowDown from "../../../../assets/icon/arrow_down.svg?react";
+import defaultMenuImageSm from "../../../../assets/default-menu-image-sm.png"
 import SlideToggle from "./SlideToggle";
 
 interface PropsType {
@@ -52,7 +53,7 @@ const OrderSummary = ({ cart }: PropsType) => {
                 </div>
                 <img
                   className="w-[76px] h-[76px] rounded-[12px] object-cover"
-                  src={`${item.image}` || "/default-menu.png"}
+                  src={`${item.image}` || defaultMenuImageSm}
                   alt="음식 메뉴 이미지"
                 />
               </li>

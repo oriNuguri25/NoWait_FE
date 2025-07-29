@@ -6,12 +6,45 @@ import InfiniteStoreList from "./components/InfiniteStoreList";
 import WaitingListModal from "./components/WaitingListModal";
 import MyWaitingDetail from "./components/MyWaitingDetail";
 import BannerMap from "../../assets/icon/banner_img.svg?react";
-import { mockWaitingItems } from "../../data/mockData";
+import { useWaitingStores } from "../../hooks/useWaitingStores";
+import { useMyWaitingList } from "../../hooks/useMyWaitingList";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortOption, setSortOption] = useState("대기 적은 순");
   const [isWaitingDetailOpen, setIsWaitingDetailOpen] = useState(false);
+
+  // 정렬 옵션에 따른 order 설정
+  const order = sortOption === "대기 적은 순" ? "asc" : "desc";
+  const { waitingStores, isLoading, error } = useWaitingStores(order);
+
+  // 내 대기 목록 가져오기
+  const { myWaitingList, refetch: refetchMyWaitingList } = useMyWaitingList();
+
+  // myWaitingList를 WaitingItem 형태로 변환
+  const waitingItems = myWaitingList.map((store) => ({
+    id: store.storeId.toString(),
+    number: store.rank,
+    storeName: store.storeName,
+    waitingCount: store.teamsAhead,
+    departmentName: store.departmentName,
+    category: store.departmentName, // category는 departmentName과 동일하게 설정
+    people: store.partySize,
+    date: (() => {
+      const date = new Date(store.registeredAt);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      return `${year}.${month}.${day} ${hours}:${minutes}`;
+    })(),
+    location: store.location,
+    imageUrl: store.bannerImageUrl || store.profileImageUrl, // bannerImage가 있다면 사용, 없으면 profileImage 사용
+    departmentId: store.storeId, // departmentId는 storeId로 설정
+  }));
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -44,50 +77,58 @@ const HomePage = () => {
       <div className="flex flex-col px-5 pb-8">
         <HomeHeader />
         {/* 내 대기 순서 */}
-        <div className="flex flex-col">
-          <div className="flex flex-row mt-4.5 gap-1.5 text-title-20-bold text-black-100">
-            <div className="flex">나의 대기카드</div>
-          </div>
+        {myWaitingList.length > 0 && (
+          <div className="flex flex-col">
+            <div className="flex flex-row mt-4.5 gap-1.5 text-title-20-bold text-black-100">
+              <div className="flex">나의 대기카드</div>
+            </div>
 
-          <MainCard
-            type="myWaitingCard"
-            storeName="스페이시스"
-            waitingTeams={5}
-            onClick={handleWaitingCardClick}
-          />
-        </div>
+            <MainCard
+              type="myWaitingCard"
+              waitingStores={myWaitingList}
+              onClick={handleWaitingCardClick}
+              onRefresh={refetchMyWaitingList}
+            />
+          </div>
+        )}
       </div>
       <div className="flex flex-col px-5 gap-10">
         {/* 바로 입장 가능한 주점 */}
-        <div className="flex flex-col">
-          <div className="flex flex-row gap-1.5 items-center mb-3.5">
-            <div className="flex text-start text-headline-22-bold text-black-90">
-              {getSectionTitle()}
-            </div>
-            <div
-              onClick={handleModalOpen}
-              className="flex w-6 h-6 bg-black-15 rounded-full items-center justify-center cursor-pointer"
-            >
-              <ArrowDown className="text-black-60 icon-s" />
-            </div>
-          </div>
-          <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
-            {mockWaitingItems.map((store) => (
-              <div key={store.id} className="flex-shrink-0">
-                <MainCard
-                  type="homeCard"
-                  imageUrl={store.imageUrl}
-                  storeName={store.storeName}
-                  departmentId={store.departmentId}
-                  waitingCount={store.waitingCount}
-                />
+        {!isLoading && !error && waitingStores.length > 0 && (
+          <div className="flex flex-col">
+            <div className="flex flex-row gap-1.5 items-center mb-3.5">
+              <div className="flex text-start text-headline-22-bold text-black-90">
+                {getSectionTitle()}
               </div>
-            ))}
+              <div
+                onClick={handleModalOpen}
+                className="flex w-6 h-6 bg-black-15 rounded-full items-center justify-center cursor-pointer"
+              >
+                <ArrowDown className="text-black-60 icon-s" />
+              </div>
+            </div>
+            <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
+              {waitingStores.map((store) => (
+                <div key={store.storeId} className="flex-shrink-0">
+                  <MainCard
+                    type="homeCard"
+                    imageUrl={store.bannerImageUrl || ""}
+                    storeName={store.storeName}
+                    departmentName={store.departmentName}
+                    waitingCount={store.waitingCount}
+                    onClick={() => navigate(`/store/${store.storeId}`)}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* 축제 부스 찾기 안내 */}
-        <div className="flex flex-row rounded-2xl bg-black-15 gap-3.75 justify-between pl-5 items-center">
+        <div
+          onClick={() => navigate("/map")}
+          className="flex flex-row rounded-2xl bg-black-15 gap-3.75 justify-between pl-5 items-center"
+        >
           <div className="flex flex-col py-5 gap-1.5">
             <div className="flex text-18-bold text-black-90">
               축제 부스 한눈에 찾기
@@ -114,7 +155,7 @@ const HomePage = () => {
       {isWaitingDetailOpen && (
         <MyWaitingDetail
           onClose={handleWaitingDetailClose}
-          waitingItems={mockWaitingItems}
+          waitingItems={waitingItems}
         />
       )}
     </div>

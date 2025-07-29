@@ -54,7 +54,7 @@ const PaymentCheckModal = ({
         </div>
       </div>
 
-      <div className="flex flex-row mt-7.5 bg-black-15 rounded-[14px] px-3.5 py-3.5 w-70 gap-2.5">
+      <div className="flex flex-row mt-7.5 bg-black-15 rounded-[14px] px-3.5 py-3.5 w-70 gap-2.5 max-[450px]:w-60">
         <div
           className="flex rounded-full w-9 h-9 items-center justify-center text-title-18-semibold text-white-100"
           style={{ backgroundColor: getTableBackgroundColor(tableNumber) }}
@@ -97,25 +97,31 @@ const PaymentCheckModal = ({
   );
 };
 
-// Cooked Modal
-interface CookedModalProps {
+// Order Status Update Modal
+interface OrderStatusModalProps {
   orderId: number;
-  tableNumber: number;
-  depositorName: string;
-  totalAmount: number;
-  timeText: string;
+  title: string;
+  description: string;
+  targetStatus: "COOKING" | "COOKED";
   onClose: () => void;
   onSuccess?: () => void;
 }
 
-const CookedModal = ({ orderId, onClose, onSuccess }: CookedModalProps) => {
+const OrderStatusModal = ({
+  orderId,
+  title,
+  description,
+  targetStatus,
+  onClose,
+  onSuccess,
+}: OrderStatusModalProps) => {
   const updateOrderStatus = useUpdateOrderStatus();
 
   const handleConfirm = async () => {
     try {
       await updateOrderStatus.mutateAsync({
         orderId,
-        status: "COOKING",
+        status: targetStatus,
       });
       onSuccess?.();
       onClose();
@@ -124,17 +130,16 @@ const CookedModal = ({ orderId, onClose, onSuccess }: CookedModalProps) => {
       // 에러 처리 (예: 토스트 메시지 표시)
     }
   };
+
   return (
     <div
       className="flex flex-col justify-center items-center bg-white rounded-[20px] max-w-sm w-full px-5.5 pt-7.5 pb-5.5"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="flex flex-col text-center justify-center items-center gap-2.5">
-        <div className="flex text-title-20-bold text-black-85">
-          주문을 복구할까요?
-        </div>
+        <div className="flex text-title-20-bold text-black-85">{title}</div>
         <div className="flex flex-col justify-center items-center text-14-regular text-black-60">
-          <div className="flex">주문 상태가 조리 중으로 변경됩니다.</div>
+          <div className="flex">{description}</div>
         </div>
       </div>
 
@@ -158,5 +163,37 @@ const CookedModal = ({ orderId, onClose, onSuccess }: CookedModalProps) => {
   );
 };
 
-export { PaymentCheckModal, CookedModal };
-export type { PaymentCheckModalProps, CookedModalProps };
+interface CookedModalProps {
+  orderId: number;
+  onClose: () => void;
+  onSuccess?: () => void;
+}
+
+const CookedModal = ({ orderId, onClose, onSuccess }: CookedModalProps) => (
+  <OrderStatusModal
+    orderId={orderId}
+    title="주문을 복구할까요?"
+    description="주문 상태가 조리 중으로 변경됩니다."
+    targetStatus="COOKING"
+    onClose={onClose}
+    onSuccess={onSuccess}
+  />
+);
+
+const CookCompleteModal = ({
+  orderId,
+  onClose,
+  onSuccess,
+}: CookedModalProps) => (
+  <OrderStatusModal
+    orderId={orderId}
+    title="조리가 완료되었나요?"
+    description="주문 상태가 주문 완료로 변경됩니다."
+    targetStatus="COOKED"
+    onClose={onClose}
+    onSuccess={onSuccess}
+  />
+);
+
+export { PaymentCheckModal, CookedModal, CookCompleteModal, OrderStatusModal };
+export type { PaymentCheckModalProps, CookedModalProps, OrderStatusModalProps };

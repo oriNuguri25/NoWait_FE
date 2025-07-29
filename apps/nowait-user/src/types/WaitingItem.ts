@@ -3,6 +3,7 @@ export interface WaitingItem {
   number: number;
   storeName: string;
   waitingCount: number;
+  departmentName: string;
   category: string;
   people: number;
   date: string;

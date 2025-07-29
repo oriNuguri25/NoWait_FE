@@ -1,9 +1,9 @@
 import ArrowBack from "../../../assets/icon/arrow_back.svg?react";
-import MapPin from "../../../assets/icon/map-pin.svg?react";
 import { useState, useRef, useEffect } from "react";
 import type { WaitingItem } from "../../../types/WaitingItem";
-import { mockWaitingItems } from "../../../data/mockData";
 import MainCard from "./MainCard";
+import CancelWaitingModal from "./CancelWaitingModal";
+import { useCancelWaiting } from "../../../hooks/useCancelWaiting";
 
 interface MyWaitingDetailProps {
   onClose?: () => void;
@@ -14,18 +14,69 @@ const MyWaitingDetail = ({
   onClose,
   waitingItems = [],
 }: MyWaitingDetailProps) => {
-  // 기본 더미 데이터 (API 데이터가 없을 경우)
-  const items = waitingItems.length > 0 ? waitingItems : mockWaitingItems;
+  const items = waitingItems;
 
   // 현재 활성 카드 인덱스 상태
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState(0);
+  const [scrollOffset, setScrollOffset] = useState(0);
+  const [animationKey, setAnimationKey] = useState(0);
   const [animationDirection, setAnimationDirection] = useState<
     "up" | "down" | null
   >(null);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [scrollOffset, setScrollOffset] = useState(0);
+
+  // 대기 취소 모달 상태
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+
+  // 대기 취소 mutation
+  const cancelWaitingMutation = useCancelWaiting();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const prevIndexRef = useRef(0);
+
+  // 대기 취소 버튼 클릭 핸들러
+  const handleCancelWaitingClick = () => {
+    setIsCancelModalOpen(true);
+  };
+
+  // 대기 취소 확인 핸들러
+  const handleCancelConfirm = () => {
+    const currentStoreId = Number(items[currentIndex]?.id);
+    if (currentStoreId) {
+      cancelWaitingMutation.mutate(currentStoreId, {
+        onSuccess: () => {
+          setIsCancelModalOpen(false);
+          onClose?.(); // 성공 시 모달 닫기
+        },
+      });
+    }
+  };
+
+  // 대기 취소 모달 닫기
+  const handleCancelModalClose = () => {
+    setIsCancelModalOpen(false);
+  };
+
+  // 숫자 애니메이션 효과
+  useEffect(() => {
+    if (currentIndex !== prevIndexRef.current) {
+      // 슬라이드 방향 판단
+      const isRightSlide = currentIndex > prevIndexRef.current;
+
+      // 애니메이션 방향 설정
+      setAnimationDirection(isRightSlide ? "up" : "down");
+
+      // 강제 리렌더링을 위한 키 변경
+      setAnimationKey((prev) => prev + 1);
+
+      // 애니메이션 완료 후 방향 리셋
+      const timer = setTimeout(() => {
+        setAnimationDirection(null);
+      }, 300);
+
+      prevIndexRef.current = currentIndex;
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex]);
 
   // 스크롤 이벤트 핸들러
   useEffect(() => {
@@ -44,114 +95,13 @@ const MyWaitingDetail = ({
       setScrollOffset(offset);
 
       if (boundedIndex !== currentIndex) {
-        setPrevIndex(currentIndex);
-
-        // 애니메이션 방향 결정
-        if (boundedIndex > currentIndex) {
-          setAnimationDirection("up");
-        } else {
-          setAnimationDirection("down");
-        }
-
-        setIsAnimating(true);
         setCurrentIndex(boundedIndex);
-
-        // 애니메이션 완료 후 상태 초기화
-        setTimeout(() => {
-          setIsAnimating(false);
-          setAnimationDirection(null);
-        }, 300);
       }
     };
 
     container.addEventListener("scroll", handleScroll);
     return () => container.removeEventListener("scroll", handleScroll);
   }, [items.length, currentIndex]);
-
-  // 숫자 애니메이션 컴포넌트 (각 자릿수별 애니메이션)
-  const AnimatedDigits = ({
-    value,
-    prevValue,
-    direction,
-    isAnimating,
-  }: {
-    value: number;
-    prevValue: number;
-    direction: "up" | "down" | null;
-    isAnimating: boolean;
-  }) => {
-    // 숫자를 문자열로 변환 후 각 자릿수로 분리
-    const currentDigits = value.toString().split("").map(Number);
-    const prevDigits = prevValue.toString().split("").map(Number);
-
-    // 단일 자릿수 애니메이션 컴포넌트
-    const SingleDigit = ({
-      digit,
-      prevDigit,
-      digitIndex,
-      totalDigits,
-    }: {
-      digit: number;
-      prevDigit: number;
-      digitIndex: number;
-      totalDigits: number;
-    }) => {
-      // 오른쪽부터 애니메이션 (delay 계산: 일의자리가 먼저, 십의자리가 나중에)
-      const reverseIndex = totalDigits - 1 - digitIndex;
-      const animationDelay = reverseIndex * 100; // 100ms씩 지연
-
-      // 이 자릿수가 실제로 변경되었는지 확인
-      const isDigitChanged = digit !== prevDigit;
-      const shouldAnimate = isAnimating && isDigitChanged;
-
-      return (
-        <span className="relative inline-block overflow-hidden align-baseline text-22-bold min-w-[0.6em] text-center">
-          <span
-            className={`inline-block transition-transform duration-300 ease-out ${
-              !shouldAnimate
-                ? ""
-                : direction === "up"
-                ? "animate-slide-up"
-                : "animate-slide-down"
-            }`}
-            style={{
-              transitionDelay: shouldAnimate ? `${animationDelay}ms` : "0ms",
-            }}
-          >
-            {digit}
-          </span>
-          {shouldAnimate && (
-            <span
-              className={`absolute top-0 left-0 inline-block transition-transform duration-300 ease-out w-full text-center ${
-                direction === "up"
-                  ? "animate-slide-up-out"
-                  : "animate-slide-down-out"
-              }`}
-              style={{
-                transitionDelay: `${animationDelay}ms`,
-              }}
-            >
-              {prevDigit}
-            </span>
-          )}
-        </span>
-      );
-    };
-
-    return (
-      <span className="inline-flex items-baseline">
-        {currentDigits.map((digit, index) => (
-          <SingleDigit
-            key={index}
-            digit={digit}
-            prevDigit={prevDigits[index] || 0}
-            digitIndex={index}
-            totalDigits={currentDigits.length}
-          />
-        ))}
-      </span>
-    );
-  };
 
   return (
     <div className="fixed inset-0 z-50 bg-[#222] flex items-center justify-center">
@@ -161,9 +111,6 @@ const MyWaitingDetail = ({
           <button onClick={onClose} className="p-2">
             <ArrowBack className="icon-m" />
           </button>
-          <div className="flex px-2.5 py-2 rounded-lg bg-white border-black-20 border-[1px] bg-black-20 text-14-semibold text-black-70 ">
-            대기취소
-          </div>
         </div>
 
         {/* 메인 콘텐츠 */}
@@ -176,12 +123,22 @@ const MyWaitingDetail = ({
             <div className="text-22-bold text-black-90 flex items-baseline justify-center gap-1">
               <span>내 앞 대기</span>
               <span className="text-primary flex items-baseline">
-                <AnimatedDigits
-                  value={items[currentIndex]?.waitingCount || 0}
-                  prevValue={items[prevIndex]?.waitingCount || 0}
-                  direction={animationDirection}
-                  isAnimating={isAnimating}
-                />
+                <span
+                  key={animationKey}
+                  className={`text-22-bold transform-style-preserve-3d ${
+                    animationDirection === "up"
+                      ? "animate-number-slide-up"
+                      : animationDirection === "down"
+                      ? "animate-number-slide-down"
+                      : ""
+                  }`}
+                  style={{
+                    transformStyle: "preserve-3d",
+                    perspective: "1000px",
+                  }}
+                >
+                  {items[currentIndex]?.waitingCount || 0}
+                </span>
                 <span>팀</span>
               </span>
             </div>
@@ -249,14 +206,26 @@ const MyWaitingDetail = ({
             </div>
           </div>
 
-          {/* 하단 버튼 영역 */}
-          <div className="flex gap-2.5 pb-7.5 max-w-sm">
-            <button className="flex-1 w-15 h-15 flex rounded-full items-center justify-center p-4 bg-[#F4F4F4]">
-              <MapPin className="icon-m" />
+          <div className="flex w-full px-5 py-8">
+            <button
+              className="flex w-full rounded-xl bg-white-100 border border-black-25 py-5 justify-center items-center"
+              onClick={handleCancelWaitingClick}
+            >
+              <div className="flex text-17-semibold text-black-60">
+                대기 취소
+              </div>
             </button>
           </div>
         </div>
       </div>
+
+      {/* 대기 취소 확인 모달 */}
+      <CancelWaitingModal
+        isOpen={isCancelModalOpen}
+        onClose={handleCancelModalClose}
+        onConfirm={handleCancelConfirm}
+        isLoading={cancelWaitingMutation.isPending}
+      />
     </div>
   );
 };

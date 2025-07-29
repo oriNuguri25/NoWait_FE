@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import AdminApi from "../utils/AdminApi";
+import AdminApi from "../../utils/AdminApi";
 
 export interface Reservation {
   id: number;
@@ -18,21 +18,16 @@ interface ReservationResponse {
   reservationList: Reservation[];
 }
 
-interface ApiResponse {
-  success: boolean;
-  response: ReservationResponse;
-}
-
 const fetchReservations = async (
   storeId: number
 ): Promise<ReservationResponse> => {
-  const res = await AdminApi.get<ApiResponse>(`/reservations/admin/${storeId}`);
+  const res = await AdminApi.get(`/reservations/admin/${storeId}/completed`);
   return res.data.response;
 };
 
-export const useGetReservationList = (storeId: number | null) => {
+export const useGetCompletedList = (storeId: number | null) => {
   return useQuery({
-    queryKey: ["reservations", storeId],
+    queryKey: ["completed", storeId],
     queryFn: () => {
       if (storeId === null) throw new Error("storeId is null");
       return fetchReservations(storeId);
