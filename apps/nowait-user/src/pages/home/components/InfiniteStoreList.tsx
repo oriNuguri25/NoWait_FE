@@ -140,8 +140,8 @@ const InfiniteStoreList = () => {
                     type="store"
                     storeId={store.storeId}
                     name={store.name}
-                    departmentId={store.departmentId}
-                    images={store.images}
+                    departmentName={store.departmentName}
+                    profileImageUrl={store.profileImageUrl}
                     isActive={store.isActive}
                     deleted={store.deleted}
                     waitingCount={store.waitingCount}

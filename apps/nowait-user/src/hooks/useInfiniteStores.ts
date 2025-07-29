@@ -2,14 +2,13 @@ import { useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import UserApi from "../utils/UserApi";
 
-// 실제 서버 API 응답 타입 (StoreCard에서 직접 사용)
 interface Store {
   storeId: number;
-  departmentId: number;
+  departmentName: string;
   name: string;
   location: string;
   description: string;
-  images: string[];
+  profileImageUrl: string;
   isActive: boolean;
   deleted: boolean;
   createdAt: string;

@@ -1,7 +1,6 @@
 import { useColor } from "color-thief-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getDepartmentName } from "../../../constants/departments";
 import { NotOpenIcon, WaitingIcon, WaitingCardIcon } from "./HomeIcon";
 import type { WaitingItem } from "../../../types/WaitingItem";
 import block from "../../../assets/block.png";
@@ -18,8 +17,8 @@ interface StoreCardProps {
   type: "store";
   storeId: number;
   name: string;
-  departmentId: number;
-  images: string[];
+  departmentName: string;
+  profileImageUrl: string;
   isActive: boolean;
   deleted: boolean;
   waitingCount?: number;
@@ -184,8 +183,8 @@ const WaitingCard = ({ item }: { item: WaitingItem }) => {
 const StoreCardComponent = ({
   storeId,
   name,
-  departmentId,
-  images,
+  departmentName,
+  profileImageUrl,
   isActive,
   deleted,
   waitingCount,
@@ -197,8 +196,6 @@ const StoreCardComponent = ({
     return null;
   }
 
-  const departmentName = getDepartmentName(departmentId);
-  const mainImage = images && images.length > 0 ? images[0] : undefined;
   const status = isActive ? "open" : "closed";
 
   // 스토어 클릭 핸들러
@@ -214,7 +211,7 @@ const StoreCardComponent = ({
       <div className="rounded-full w-11 h-11 bg-gray-200 flex-shrink-0">
         <img
           alt={`${name} 주점 이미지`}
-          src={mainImage}
+          src={profileImageUrl}
           className="w-full h-full object-cover rounded-full"
         />
       </div>
@@ -521,8 +518,8 @@ const MainCard = (props: MainCardProps) => {
       <StoreCardComponent
         storeId={props.storeId}
         name={props.name}
-        departmentId={props.departmentId}
-        images={props.images}
+        departmentName={props.departmentName}
+        profileImageUrl={props.profileImageUrl}
         isActive={props.isActive}
         deleted={props.deleted}
         waitingCount={props.waitingCount}
