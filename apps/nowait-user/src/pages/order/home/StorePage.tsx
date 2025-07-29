@@ -31,7 +31,7 @@ const StorePage = () => {
         <div className="flex-grow">
           <StoreHeader />
           <SectionDivider />
-          <MenuList mode="order" />
+          <MenuList storeId={storeId} mode="order" />
         </div>
       </div>
       {cart && cart.length > 0 && (
