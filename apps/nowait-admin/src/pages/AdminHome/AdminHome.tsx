@@ -85,14 +85,14 @@ const AdminHome = () => {
   }, [reservations, activeTab]);
 
   // 호출 버튼 클릭 이벤트
-  const handleCall = (userId: number) => {
+  const handleCall = (id: number, userId: number) => {
     updateStatus(
       { storeId, userId, status: "CALLING" },
       {
         onSuccess: () => {
           setReservations((prev) =>
             prev.map((res) =>
-              res.id === userId
+              res.id === id
                 ? {
                     ...res,
                     status: "CALLING",
@@ -109,14 +109,14 @@ const AdminHome = () => {
     );
   };
 
-  const handleEnter = (userId: number) => {
+  const handleEnter = (id: number, userId: number) => {
     updateStatus(
       { storeId, userId, status: "CONFIRMED" },
       {
         onSuccess: () => {
           setReservations((prev) =>
             prev.map((res) =>
-              res.id === userId ? { ...res, status: "CONFIRMED" } : res
+              res.id === id ? { ...res, status: "CONFIRMED" } : res
             )
           );
         },
@@ -124,14 +124,14 @@ const AdminHome = () => {
     );
   };
 
-  const handleClose = (userId: number) => {
+  const handleClose = (id: number, userId: number) => {
     updateStatus(
       { storeId, userId, status: "CANCELLED" },
       {
         onSuccess: () => {
           setReservations((prev) =>
             prev.map((res) =>
-              res.id === userId ? { ...res, status: "CANCELLED" } : res
+              res.id === id ? { ...res, status: "CANCELLED" } : res
             )
           );
         },
@@ -145,6 +145,7 @@ const AdminHome = () => {
       return prev;
     });
   };
+
   useEffect(() => {
     if (!Array.isArray(waitingList) || !Array.isArray(completedList)) return;
 
@@ -256,10 +257,10 @@ const AdminHome = () => {
               phone="010-1234-1234"
               status={res.status}
               calledAt={res.calledAt}
-              isNoShow={noShowIds.includes(res.userId)}
-              onCall={() => handleCall(res.userId)}
-              onEnter={() => handleEnter(res.userId)}
-              onClose={() => handleClose(res.userId)}
+              isNoShow={noShowIds.includes(res.id)}
+              onCall={() => handleCall(res.id, res.userId)}
+              onEnter={() => handleEnter(res.id, res.userId)}
+              onClose={() => handleClose(res.id, res.userId)}
               onDelete={() => setShowModal(true)}
               onNoShow={() => handleNoShow(res.id)}
             />

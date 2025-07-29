@@ -55,6 +55,7 @@ export function WaitingCard({
   }, [status]);
 
   useEffect(() => {
+<<<<<<< Updated upstream
     if (status === "CALLING" && calledAt) {
       const start = new Date(calledAt).getTime();
 
@@ -73,6 +74,32 @@ export function WaitingCard({
       return () => clearInterval(interval);
     }
   }, [status, calledAt]);
+=======
+    if (status !== "CALLING" || !calledAt) return;
+
+    const startTime = new Date(calledAt).getTime();
+
+    const updateElapsed = () => {
+      const now = Date.now();
+      const diffSec = Math.floor((now - startTime) / 1000);
+      const remainingSec = Math.max(totalDurationSec - diffSec, 0);
+
+      const min = String(Math.floor(remainingSec / 60)).padStart(2, "0");
+      const sec = String(remainingSec % 60).padStart(2, "0");
+      setElapsed(`${min}:${sec}`);
+
+      // 남은 시간이 0초면 자동으로 미입장 처리
+      if (remainingSec === 0) {
+        onNoShow();
+      }
+    };
+
+    updateElapsed(); // 초기 값 설정
+    const interval = setInterval(updateElapsed, 1000);
+
+    return () => clearInterval(interval);
+  }, [status, calledAt, onNoShow]);
+>>>>>>> Stashed changes
   return (
     <div className="[@media(max-width:431px)]:w-[335px] [@media(min-width:768px)_and_(max-width:821px)]:w-[329px] relative lg:w-[372px] h-[200px] bg-white rounded-[16px] px-6 py-[18px]">
       {/* 헤더 */}
