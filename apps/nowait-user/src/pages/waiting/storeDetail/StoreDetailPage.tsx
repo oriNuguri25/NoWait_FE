@@ -11,6 +11,7 @@ import { useBookmarkState } from "../../../hooks/useBookmarkState";
 import { useQuery } from "@tanstack/react-query";
 import { getStore } from "../../../api/reservation";
 import CommonSwiper from "../../../components/CommonSwiper";
+import DepartmentImage from "../../../components/DepartmentImage";
 
 const BANNERIMAGES = [
   {
@@ -46,13 +47,12 @@ const StoreDetailPage = () => {
     queryFn: () => getStore(storeId),
     select: (data) => data.response,
   });
-  console.log(store, "스토어");
   const handleBookmarkButton = async () => {
     try {
-      if (!isBookmarked) {
+      if (isBookmarked) {
         await createBookmarkMutate.mutate(storeId);
       } else {
-        await deleteBookmarkMutate.mutate(bookmarkData.bookmarkId);
+        await deleteBookmarkMutate.mutate(storeId);
       }
     } catch (error) {
       console.log(error);
@@ -71,11 +71,7 @@ const StoreDetailPage = () => {
               </p>
               <h1 className="text-headline-22-bold">{store?.name}</h1>
             </div>
-            <img
-              className="w-[52px] h-[52px] rounded-[100%] bg-black-60"
-              src={store?.profileImage.imageUrl}
-              alt="학과 대표 이미지"
-            />
+            <DepartmentImage width="52px" height="52px" src={store?.profileImage.imageUrl}/>
           </div>
           <div className="pb-5">
             <p className="inline-block text-[12px] font-bold rounded-[6px] px-2 py-[7px] bg-[#ffeedf] text-[#ff5e07]">

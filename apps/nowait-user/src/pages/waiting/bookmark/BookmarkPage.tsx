@@ -22,7 +22,8 @@ const dummyData = [
 ];
 
 const BookmarkPage = () => {
-  const {bookmarkData} = useBookmarkState()
+  const { bookmarkData } = useBookmarkState();
+  console.log(bookmarkData);
   return (
     <div>
       <div className="px-5">
@@ -31,14 +32,15 @@ const BookmarkPage = () => {
           북마크한 부스
         </h1>
         <ul>
-          {bookmarkData?.map((data:any) => {
+          {bookmarkData?.map((data: any) => {
             return (
               <BookmarkedStoreItem
-                key={data.id}
+                key={data.name}
                 id={data.id}
-                image={data.image}
+                bannerImages={data.bannerImages}
                 waitingCount={data.waitingCount}
-                storeName={data.storeName}
+                ProfileImage={data.profileImage}
+                name={data.name}
                 departmentName={data.departmentName}
                 storeId={data.storeId}
               />

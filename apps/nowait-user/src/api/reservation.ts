@@ -6,6 +6,15 @@ interface ReservationType {
   partySize: number;
 }
 
+export interface BookmarkResponse {
+  success: boolean;
+  response: {
+    bookmarkId: string;
+    userId: string;
+    storeId: string;
+  };
+}
+
 // 주점 정보 가져오기
 export const getStore = async (storeId: string | undefined) => {
   const res = await UserApi.get(`/v1/stores/${storeId}`);
@@ -31,13 +40,15 @@ export const getBookmark = async () => {
 };
 
 // 북마크 생성
-export const createBookmark = async (storeId: string | undefined) => {
+export const createBookmark = async (
+  storeId: string | undefined
+): Promise<BookmarkResponse> => {
   const res = await UserApi.post(`/bookmarks/${storeId}`);
   return res.data;
 };
 
 // 북마크 삭제
-export const deleteBookmark = async (bookmarkId: string) => {
-  const res = await UserApi.delete(`/bookmarks/${bookmarkId}`);
+export const deleteBookmark = async (storeId: string | undefined) => {
+  const res = await UserApi.delete(`/bookmarks/${storeId}`);
   return res.data;
 };

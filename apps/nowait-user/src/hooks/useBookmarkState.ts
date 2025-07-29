@@ -33,9 +33,11 @@ export const useBookmarkState = (storeId?: string) => {
     //     (bookmark: BookmarkType) => String(bookmark.storeId) === id
     //   ),
   });
+  console.log(data,"북마크 데이터")
   const isBookmarked = data?.response?.find(
         (bookmark: BookmarkType) => String(bookmark.storeId) === id
       )
+      console.log(isBookmarked,"이즈북마크드드드드드드드드")
   return {
     isBookmarked: isBookmarked !== undefined,
     bookmarkData: data,
