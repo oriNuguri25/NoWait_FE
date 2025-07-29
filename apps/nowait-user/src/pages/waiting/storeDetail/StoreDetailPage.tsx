@@ -25,12 +25,16 @@ const StoreDetailPage = () => {
     queryFn: () => getStore(storeId),
     select: (data) => data.response,
   });
+  console.log(store, "주점 데이터");
   const handleBookmarkButton = async () => {
     try {
-      if (isBookmarked) {
+      if (!isBookmarked) {
         await createBookmarkMutate.mutate(storeId);
+        console.log("생성")
       } else {
         await deleteBookmarkMutate.mutate(storeId);
+        console.log("삭제")
+
       }
     } catch (error) {
       console.log(error);
@@ -54,7 +58,7 @@ const StoreDetailPage = () => {
             <DepartmentImage
               width="52px"
               height="52px"
-              src={store?.profileImage.imageUrl}
+              src={store?.profileImage?.imageUrl}
             />
           </div>
           {/* 주점 대기팀 인원 수 */}
@@ -86,10 +90,15 @@ const StoreDetailPage = () => {
             {store?.description}
           </h2>
           {/* 공지사항(데이터 변경 예정) */}
-          {store?.notice && (
+          {store?.noticeTitle && (
             <button
               onClick={() =>
-                navigate(`/store/${storeId}/notice`, { state: store?.notice })
+                navigate(`/store/${storeId}/notice`, {
+                  state: {
+                    title: store?.noticeTitle,
+                    content: store?.noticeContent,
+                  },
+                })
               }
               className="w-full flex justify-between items-center gap-4 py-3.5 px-4 bg-black-15 rounded-[10px]"
             >

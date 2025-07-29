@@ -37,7 +37,7 @@ const MapPage = () => {
   const [openBooth, setOpenBooth] = useState(false);
 
   const openBoothButton = (id: number) => {
-    setOpenBooth(true)
+    setOpenBooth(true);
   };
   return (
     <div className="relative overflow-hidden" style={{ height }}>
@@ -48,11 +48,14 @@ const MapPage = () => {
 
       {/* 축제 맵 */}
       <div className="relative top-0 left-0 h-screen-dvh w-full">
-        <img
-          className="w-full h-full object-cover"
-          src={boothMap}
-          alt="축제 맵 이미지"
-        />
+        <div className="overflow-scroll">
+          <img
+            className=""
+            // src={boothMap}
+            src="/test-map.png"
+            alt="축제 맵 이미지"
+          />
+        </div>
         {/* 마커 */}
         <ul className="absolute top-0 left-0 w-full h-full">
           {booth.map((booth) => (

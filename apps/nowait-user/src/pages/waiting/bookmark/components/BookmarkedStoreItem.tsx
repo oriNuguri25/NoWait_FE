@@ -2,6 +2,7 @@ import BookmarkIcon from "../../storeDetail/components/BookmarkIcon";
 import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
 import { useBookmarkState } from "../../../../hooks/useBookmarkState";
 import DepartmentImage from "../../../../components/DepartmentImage";
+import defaultMenuImageLg from "../../../../assets/default-menu-image-lg.png"
 
 interface BannerImages {
   id: number;
@@ -55,7 +56,7 @@ const BookmarkedStoreItem = ({
       <div className="relative top-0 right-0">
         <img
           className="w-full h-[195px] rounded-[14px] overflow-hidden object-cover"
-          src={bannerImages[0].imageUrl}
+          src={bannerImages[0]?.imageUrl || defaultMenuImageLg}
           alt="북마크한 주점 메인 이미지"
         />
         {waitingCount !== 0 && (
@@ -69,7 +70,7 @@ const BookmarkedStoreItem = ({
           <DepartmentImage
             width="40px"
             height="40px"
-            src={ProfileImage.imageUrl}
+            src={ProfileImage?.imageUrl}
           />
           <div className="flex flex-col justify-between">
             <h1 className="text-title-16-bold text-black-90">{name}</h1>

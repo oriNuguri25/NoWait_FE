@@ -12,13 +12,13 @@ import KakaoRedirectHandler from "../pages/login/KakaoRedirectHandler";
 import AuthGuard from "../components/AuthGuard";
 import PageTransitionWrapper from "../components/layout/PageTransitionWrapper";
 import WaitingPartySizeForm from "../pages/waiting/waitingPartysize/WaitingPartySizeForm";
-import WaitingSummaryPage from "../pages/waiting/waitingSummary/WaitingSummaryPage";
 import AddMenuPage from "../pages/order/addMenu/AddMenuPage";
 import RemittanceWaitPage from "../pages/order/remittenceWait/RemittanceWaitPage";
 import OrderDetailsPage from "../pages/order/orderDetails/OrderDetailsPage";
 import RemittancePage from "../pages/order/remittance/RemittancePage";
 import BookmarkPage from "../pages/waiting/bookmark/BookmarkPage";
 import StoreNoticePage from "../pages/waiting/storeNotice/StoreNoticePage";
+import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -47,7 +47,7 @@ const Router = () => {
       />
       {/* <Route path="/store/:id/reserve" element={withAuth(StoreReservePage)} /> */}
       <Route path="/store/:id" element={withAuth(StoreDetailPage)} />
-      <Route path="/map" element={<MapPage/>} />
+      <Route path="/map" element={withAuth(MapPage)} />
       <Route path="/bookmark" element={withAuth(BookmarkPage)} />
       <Route path="/store/:id/notice" element={withAuth(StoreNoticePage)} />
       <Route

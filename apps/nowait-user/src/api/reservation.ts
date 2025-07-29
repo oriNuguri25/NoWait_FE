@@ -15,7 +15,8 @@ interface StoreResponse {
     name: string;
     location: string;
     description: string;
-    notice: string;
+    noticeTitle: string;
+    noticeContent : string;
     openTime: string;
     profileImage: {
       id: number;
