@@ -57,7 +57,7 @@ const boothData: BoothRanking[] = [
 const AdminAnalytics = () => {
   // const { data, isLoading, isError } = useGetTopSales();
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col items-center justify-center ">
       <HeaderStatus />
       <BoothSalesRankingCard date="2025.07.18 금" data={boothData} />
     </div>

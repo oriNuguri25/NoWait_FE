@@ -4,7 +4,7 @@ import TotalSalesCard from "./TotalSalesCard";
 
 const HeaderStatus = () => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-[10px] max-h-[352px]">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-[10px] w-[754px] max-h-[50%]">
       <div className="flex flex-col gap-[10px]">
         {/* 오늘 매출 */}
         <SalesCard

@@ -1,18 +1,21 @@
 import { useMutation } from "@tanstack/react-query";
 import AdminApi from "../../utils/AdminApi";
 
+interface UpdateReservationParams {
+  storeId: number;
+  userId: number;
+  status: "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED" | "NO_SHOW";
+}
+
 export const useUpdateReservationStatus = () => {
   return useMutation({
     mutationFn: async ({
-      reservationId,
+      storeId,
+      userId,
       status,
-    }: {
-      reservationId: number;
-      status: "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED" | "NO_SHOW";
-    }) => {
+    }: UpdateReservationParams) => {
       const res = await AdminApi.patch(
-        `/reservations/admin/updates/${reservationId}`,
-        { status }
+        `/reservations/admin/update/${storeId}/${userId}/${status}`
       );
       return res.data;
     },
