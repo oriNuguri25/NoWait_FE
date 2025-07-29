@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import AdminApi from "../../utils/AdminApi";
 
 export interface Reservation {
-  id: number;
+  id: string;
   storeId: number;
   userName: string;
   requestedAt: string;
@@ -24,7 +24,7 @@ const fetchReservations = async (
   const res = await AdminApi.get(
     `/reservations/admin/${storeId}/waiting/users`
   );
-  return res.data;
+  return res.data.response;
 };
 
 export const useGetReservationList = (storeId: number | null) => {

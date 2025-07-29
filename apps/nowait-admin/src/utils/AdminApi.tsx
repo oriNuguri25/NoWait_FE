@@ -23,4 +23,15 @@ AdminApi.interceptors.request.use(
   }
 );
 
+// 디버깅용 코드
+AdminApi.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 403) {
+      console.warn("403 Forbidden - 인증 에러 발생");
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default AdminApi;

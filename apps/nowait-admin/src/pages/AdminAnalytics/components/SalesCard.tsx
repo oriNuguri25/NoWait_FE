@@ -23,7 +23,7 @@ const SalesCard: React.FC<SalesCardProps> = ({ today, previous }) => {
   const [isHoverForward, setIsHoverForward] = useState(false);
 
   return (
-    <div className="bg-white rounded-[12px] p-6 shadow-sm w-full h-full flex flex-col justify-between">
+    <div className="bg-white rounded-[12px] p-6 w-full h-full flex flex-col justify-between">
       <div className="flex justify-between">
         <span>
           <p className="text-title-18-bold text-navy-80">
@@ -64,7 +64,15 @@ const SalesCard: React.FC<SalesCardProps> = ({ today, previous }) => {
 
           {showToday && (
             <>
-              <span className="text-14-regular text-primary">
+              <span
+                className={`text-14-regular gap-[4px] ${
+                  today.percent > 0
+                    ? "text-primary" // 상승
+                    : today.percent < 0
+                    ? "text-[#3A75E5]" // 하락
+                    : "text-gray-500" // 변동 없음
+                }`}
+              >
                 {today.percent >= 0 ? "+" : ""}
                 {today.percent}%
               </span>

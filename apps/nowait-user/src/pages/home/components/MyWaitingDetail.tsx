@@ -1,9 +1,9 @@
 import ArrowBack from "../../../assets/icon/arrow_back.svg?react";
-import MapPin from "../../../assets/icon/map-pin.svg?react";
 import { useState, useRef, useEffect } from "react";
 import type { WaitingItem } from "../../../types/WaitingItem";
-import { mockWaitingItems } from "../../../data/mockData";
 import MainCard from "./MainCard";
+import CancelWaitingModal from "./CancelWaitingModal";
+import { useCancelWaiting } from "../../../hooks/useCancelWaiting";
 
 interface MyWaitingDetailProps {
   onClose?: () => void;
@@ -14,8 +14,7 @@ const MyWaitingDetail = ({
   onClose,
   waitingItems = [],
 }: MyWaitingDetailProps) => {
-  // 기본 더미 데이터 (API 데이터가 없을 경우)
-  const items = waitingItems.length > 0 ? waitingItems : mockWaitingItems;
+  const items = waitingItems;
 
   // 현재 활성 카드 인덱스 상태
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -24,8 +23,37 @@ const MyWaitingDetail = ({
   const [animationDirection, setAnimationDirection] = useState<
     "up" | "down" | null
   >(null);
+
+  // 대기 취소 모달 상태
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+
+  // 대기 취소 mutation
+  const cancelWaitingMutation = useCancelWaiting();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const prevIndexRef = useRef(0);
+
+  // 대기 취소 버튼 클릭 핸들러
+  const handleCancelWaitingClick = () => {
+    setIsCancelModalOpen(true);
+  };
+
+  // 대기 취소 확인 핸들러
+  const handleCancelConfirm = () => {
+    const currentStoreId = Number(items[currentIndex]?.id);
+    if (currentStoreId) {
+      cancelWaitingMutation.mutate(currentStoreId, {
+        onSuccess: () => {
+          setIsCancelModalOpen(false);
+          onClose?.(); // 성공 시 모달 닫기
+        },
+      });
+    }
+  };
+
+  // 대기 취소 모달 닫기
+  const handleCancelModalClose = () => {
+    setIsCancelModalOpen(false);
+  };
 
   // 숫자 애니메이션 효과
   useEffect(() => {
@@ -83,9 +111,6 @@ const MyWaitingDetail = ({
           <button onClick={onClose} className="p-2">
             <ArrowBack className="icon-m" />
           </button>
-          <div className="flex px-2.5 py-2 rounded-lg bg-white border-black-20 border-[1px] bg-black-20 text-14-semibold text-black-70 ">
-            대기취소
-          </div>
         </div>
 
         {/* 메인 콘텐츠 */}
@@ -100,13 +125,17 @@ const MyWaitingDetail = ({
               <span className="text-primary flex items-baseline">
                 <span
                   key={animationKey}
-                  className={`text-22-bold ${
+                  className={`text-22-bold transform-style-preserve-3d ${
                     animationDirection === "up"
                       ? "animate-number-slide-up"
                       : animationDirection === "down"
                       ? "animate-number-slide-down"
                       : ""
                   }`}
+                  style={{
+                    transformStyle: "preserve-3d",
+                    perspective: "1000px",
+                  }}
                 >
                   {items[currentIndex]?.waitingCount || 0}
                 </span>
@@ -177,14 +206,26 @@ const MyWaitingDetail = ({
             </div>
           </div>
 
-          {/* 하단 버튼 영역 */}
-          <div className="flex gap-2.5 pb-7.5 max-w-sm">
-            <button className="flex-1 w-15 h-15 flex rounded-full items-center justify-center p-4 bg-[#F4F4F4]">
-              <MapPin className="icon-m" />
+          <div className="flex w-full px-5 py-8">
+            <button
+              className="flex w-full rounded-xl bg-white-100 border border-black-25 py-5 justify-center items-center"
+              onClick={handleCancelWaitingClick}
+            >
+              <div className="flex text-17-semibold text-black-60">
+                대기 취소
+              </div>
             </button>
           </div>
         </div>
       </div>
+
+      {/* 대기 취소 확인 모달 */}
+      <CancelWaitingModal
+        isOpen={isCancelModalOpen}
+        onClose={handleCancelModalClose}
+        onConfirm={handleCancelConfirm}
+        isLoading={cancelWaitingMutation.isPending}
+      />
     </div>
   );
 };

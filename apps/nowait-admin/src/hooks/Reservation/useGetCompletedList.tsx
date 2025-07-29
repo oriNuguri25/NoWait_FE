@@ -22,7 +22,7 @@ const fetchReservations = async (
   storeId: number
 ): Promise<ReservationResponse> => {
   const res = await AdminApi.get(`/reservations/admin/${storeId}/completed`);
-  return res.data;
+  return res.data.response;
 };
 
 export const useGetCompletedList = (storeId: number | null) => {

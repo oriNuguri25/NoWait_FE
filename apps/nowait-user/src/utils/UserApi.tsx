@@ -90,24 +90,53 @@ UserApi.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // 토큰 만료 감지 함수
+    const checkTokenExpired = (data: any, message: string): boolean => {
+      if (!data) return false;
+
+      const dataStr = typeof data === "string" ? data : JSON.stringify(data);
+      return dataStr.toLowerCase().includes(message.toLowerCase());
+    };
+
     // 토큰 갱신 조건: access token 만료이지만 refresh token은 정상일 때만
     const isAccessTokenExpired =
-      error.response?.data &&
-      (error.response.data.includes?.("expired access token") ||
-        error.response.data.message?.includes?.("expired access token") ||
-        error.response.data === "expired access token");
+      error.response?.status === 401 ||
+      checkTokenExpired(error.response?.data, "access token expired") ||
+      checkTokenExpired(
+        error.response?.data?.message,
+        "access token expired"
+      ) ||
+      checkTokenExpired(error.response?.data, "token expired") ||
+      checkTokenExpired(error.response?.data?.message, "token expired");
 
     // refresh token 문제가 있는 경우 토큰 갱신하지 않음
     const isRefreshTokenInvalid =
-      error.response?.data &&
-      (error.response.data.includes?.("expired refresh token") ||
-        error.response.data.message?.includes?.("expired refresh token") ||
-        error.response.data.includes?.("invalid refresh token") ||
-        error.response.data.message?.includes?.("invalid refresh token") ||
-        error.response.data.includes?.("Invalid or expired refresh token") ||
-        error.response.data.message?.includes?.(
-          "Invalid or expired refresh token"
-        ));
+      checkTokenExpired(error.response?.data, "expired refresh token") ||
+      checkTokenExpired(
+        error.response?.data?.message,
+        "expired refresh token"
+      ) ||
+      checkTokenExpired(error.response?.data, "invalid refresh token") ||
+      checkTokenExpired(
+        error.response?.data?.message,
+        "invalid refresh token"
+      ) ||
+      checkTokenExpired(
+        error.response?.data,
+        "Invalid or expired refresh token"
+      ) ||
+      checkTokenExpired(
+        error.response?.data?.message,
+        "Invalid or expired refresh token"
+      );
+
+    // 디버깅을 위한 로그 추가
+    console.log("🔍 에러 응답 분석:");
+    console.log("Status:", error.response?.status);
+    console.log("Data:", error.response?.data);
+    console.log("Message:", error.response?.data?.message);
+    console.log("isAccessTokenExpired:", isAccessTokenExpired);
+    console.log("isRefreshTokenInvalid:", isRefreshTokenInvalid);
 
     // refresh token에 문제가 있으면 바로 로그인 페이지로 이동
     if (isRefreshTokenInvalid) {

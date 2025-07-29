@@ -34,33 +34,39 @@ const CustomSelect = ({
   </div>
 );
 
-const OperatingTimeSelector = () => {
-  const [startHour, setStartHour] = useState("");
-  const [startMinute, setStartMinute] = useState("");
-  const [endHour, setEndHour] = useState("");
-  const [endMinute, setEndMinute] = useState("");
-
+const OperatingTimeSelector = ({
+  startHour,
+  setStartHour,
+  startMinute,
+  setStartMinute,
+  endHour,
+  setEndHour,
+  endMinute,
+  setEndMinute,
+}: {
+  startHour: string;
+  setStartHour: (val: string) => void;
+  startMinute: string;
+  setStartMinute: (val: string) => void;
+  endHour: string;
+  setEndHour: (val: string) => void;
+  endMinute: string;
+  setEndMinute: (val: string) => void;
+}) => {
   return (
     <div className="mb-8">
-      {/* 제목 */}
       <label className="block text-title-16-bold mb-1">운영 시간</label>
       <p className="text-sm text-gray-400 mb-3">
         부스의 운영 시간을 설정해 주세요
       </p>
-
-      {/* 선택 영역 */}
       <div className="flex items-center gap-2">
         <span className="text-sm text-gray-600 mr-1">시작</span>
-
-        {/* 시작 시 */}
         <CustomSelect
           value={startHour}
           onChange={(e) => setStartHour(e.target.value)}
           options={hours}
           placeholder="시"
         />
-
-        {/* 시작 분 */}
         <CustomSelect
           value={startMinute}
           onChange={(e) => setStartMinute(e.target.value)}
@@ -71,16 +77,12 @@ const OperatingTimeSelector = () => {
         <span className="mx-2 text-gray-600">-</span>
 
         <span className="text-sm text-gray-600 mr-1">종료</span>
-
-        {/* 종료 시 */}
         <CustomSelect
           value={endHour}
           onChange={(e) => setEndHour(e.target.value)}
           options={hours}
           placeholder="시"
         />
-
-        {/* 종료 분 */}
         <CustomSelect
           value={endMinute}
           onChange={(e) => setEndMinute(e.target.value)}

@@ -2,18 +2,17 @@ import { useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import UserApi from "../utils/UserApi";
 
-// 실제 서버 API 응답 타입 (StoreCard에서 직접 사용)
 interface Store {
   storeId: number;
-  departmentId: number;
+  departmentName: string;
   name: string;
   location: string;
   description: string;
-  images: string[];
+  profileImageUrl: string;
   isActive: boolean;
   deleted: boolean;
   createdAt: string;
-  waitingCount?: number; // 대기인원 API 연동 시 추가 예정
+  waitingCount: number;
 }
 
 // 실제 서버 응답 구조
@@ -21,7 +20,7 @@ interface ServerResponse {
   success: boolean;
   response: {
     hasNext: boolean;
-    storeReadDtos: Store[];
+    storePageReadDtos: Store[];
   };
   error: null;
 }
@@ -45,8 +44,8 @@ const fetchStores = async ({
     console.log("서버 응답 전체:", response.data);
 
     // 서버 응답 구조에 맞게 데이터 추출
-    if (response.data.success && response.data.response?.storeReadDtos) {
-      const storeArray = response.data.response.storeReadDtos;
+    if (response.data.success && response.data.response?.storePageReadDtos) {
+      const storeArray = response.data.response.storePageReadDtos;
       const hasNext = response.data.response.hasNext;
 
       console.log("추출된 주점 배열:", storeArray);
@@ -54,10 +53,9 @@ const fetchStores = async ({
 
       // 삭제된 주점 필터링하고 실제 서버 데이터 그대로 반환
       const stores: Store[] = storeArray
-        .filter((store) => store && !store.deleted)
-        .map((store) => ({
+        .filter((store: Store) => store && !store.deleted)
+        .map((store: Store) => ({
           ...store,
-          waitingCount: undefined, // 대기인원 API 연동 시 추가 예정
         }));
 
       console.log("필터링된 주점 데이터:", stores);

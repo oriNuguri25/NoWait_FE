@@ -48,7 +48,6 @@ export function WaitingCard({
     if (status !== "CALLING" || !calledAt) return;
 
     const startTime = new Date(calledAt).getTime();
-
     const updateElapsed = () => {
       const now = Date.now();
       const diffSec = Math.floor((now - startTime) / 1000);
@@ -69,6 +68,7 @@ export function WaitingCard({
 
     return () => clearInterval(interval);
   }, [status, calledAt, onNoShow]);
+
 
   return (
     <div className="[@media(max-width:431px)]:w-[335px] [@media(min-width:768px)_and_(max-width:821px)]:w-[329px] relative lg:w-[372px] h-[200px] bg-white rounded-[16px] px-6 py-[18px]">

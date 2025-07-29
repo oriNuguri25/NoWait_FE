@@ -5,18 +5,18 @@ import { useBookmarkState } from "../../../../hooks/useBookmarkState";
 interface PropsType {
   id: number;
   image: string;
-  wait: string;
+  waitingCount: string;
   storeName: string;
-  lesson: string;
+  departmentName: string;
   storeId: string;
 }
 
 const BookmarkedStoreItem = ({
   id,
   image,
-  wait,
+  waitingCount,
   storeName,
-  lesson,
+  departmentName,
   storeId,
 }: PropsType) => {
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation();
@@ -42,10 +42,10 @@ const BookmarkedStoreItem = ({
           alt="북마크한 주점 메인 이미지"
         ></img>
         <p className="absolute top-[12px] right-[12px] text-primary bg-[#ffe9df] px-2 py-[7px] font-bold text-[12px] rounded-[6px]">
-          {wait}
+          {waitingCount}
         </p>
       </div>
-      <div className="flex justify-between py-3">
+      <div className="flex items-start justify-between py-3">
         <div className="flex items-center gap-2.5">
           <img
             className="w-[40px] h-[40px] object-cover rounded-full bg-black-40"
@@ -54,7 +54,7 @@ const BookmarkedStoreItem = ({
           ></img>
           <div className="flex flex-col justify-between">
             <h1 className="text-title-16-bold text-black-90">{storeName}</h1>
-            <h2 className="text-14-regular text-black-70">{lesson}</h2>
+            <h2 className="text-14-regular text-black-70">{departmentName}</h2>
           </div>
         </div>
         <button className="mr-[5px]" onClick={handleBookmarkButton}>

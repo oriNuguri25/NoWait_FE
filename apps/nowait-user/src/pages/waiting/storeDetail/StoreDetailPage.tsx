@@ -10,20 +10,17 @@ import BookmarkIcon from "./components/BookmarkIcon";
 import { useBookmarkState } from "../../../hooks/useBookmarkState";
 import { useQuery } from "@tanstack/react-query";
 import { getStore } from "../../../api/reservation";
-
-const TAG = [
-  { id: 1, type: "default", tag: "태그 추가" },
-  { id: 2, type: "default", tag: "컴공 과" },
-  { id: 3, type: "waiting", tag: "웨이팅 15팀" },
-];
+import CommonSwiper from "../../../components/CommonSwiper";
+import SectionDivider from "../../../components/SectionDivider";
+import { formatTimeRange } from "../../../utils/formatTimeRange";
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id: storeId } = useParams();
   const { isBookmarked, bookmarkData } = useBookmarkState();
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation();
-  const { data:store } = useQuery({
-    queryKey: ["store"],
+  const { data: store } = useQuery({
+    queryKey: ["store", storeId],
     queryFn: () => getStore(storeId),
     select: (data) => data.response,
   });
@@ -42,75 +39,76 @@ const StoreDetailPage = () => {
 
   return (
     <div>
-      <div className="px-5">
-        <h1 className="-mx-5 h-[246px] bg-amber-400">
-          <img className="w-full" src="" alt="학과 주점 대표 이미지" />
-        </h1>
+      <div className="px-5 w-full min-h-screen-dvh mb-[124px]">
+        {/* 주점 배너 이미지 */}
+        <CommonSwiper slideImages={store?.bannerImages || []}></CommonSwiper>
+        {/* 학과 정보 섹션 */}
         <section className="border-b-1 border-[#f4f4f4]">
           <div className="flex justify-between items-center py-[21px]">
             <div className="flex flex-col justify-between gap-[3px]">
-              <p className="text-14-regular text-black-70">{store?.departmentName}</p>
+              <p className="text-14-regular text-black-70">
+                {store?.departmentName}
+              </p>
               <h1 className="text-headline-22-bold">{store?.name}</h1>
             </div>
             <img
               className="w-[52px] h-[52px] rounded-[100%] bg-black-60"
-              src={store?.profileImage}
+              src={store?.profileImage?.imageUrl || ""}
               alt="학과 대표 이미지"
             />
           </div>
-          <ul className="pb-5 flex gap-1.5">
-            {TAG.map((item) => {
-              return (
-                <li
-                  key={item.id}
-                  className={`text-[12px] font-bold rounded-[4px] px-2 py-[7px] ${
-                    item.type === "default"
-                      ? "bg-[#f1f1f1] text-[#959595]"
-                      : "bg-[#ffeedf] text-[#ff5e07]"
-                  }`}
-                >
-                  {item.tag}
-                </li>
-              );
-            })}
-          </ul>
+          {/* 주점 대기팀 인원 수 */}
+          {store?.waitingCount !== 0 && (
+            <div className="pb-5">
+              <p className="inline-block text-[12px] font-bold rounded-[6px] px-2 py-[7px] bg-[#ffeedf] text-[#ff5e07]">
+                대기 {store?.waitingCount}팀
+              </p>
+            </div>
+          )}
         </section>
+        {/* 주점 정보(위치,운영 시간, 공지사항) */}
         <section className="pt-5 pb-[28px]">
           <div className="mb-6">
             <p className="flex items-center mb-1.5 text-16-regular text-black-80">
               <span className="w-[18px] flex justify-center  mr-1.5">
                 <SubStract />
               </span>
-              가천대학교 무한광장
+              {store?.location}
             </p>
             <p className="flex items-center text-16-regular text-black-80">
               <span className="w-[18px] flex justify-center mr-1.5">
                 <Clock />
               </span>
-              18:00 - 24:00
+              {formatTimeRange(store?.openTime)}
             </p>
           </div>
-          <h2 className="mb-10 text-16-regular text-black-80">
-            안녕하세요! 컴공과가 버그 없이 준비한 이스터에그가 가득 부스
-            스페이시스입니다 🚀 남다른 디버깅 실력으로 굽는 츄러스, 데이터 손실
-            없는 아이스티, 그리고 메모리 오류 없는 넉넉한 양까지 완벽
-            구현했습니다.
+          <h2 className="mb-10 text-16-regular text-black-80 break-keep">
+            {store?.description}
           </h2>
-          <div className="flex justify-between items-center py-3.5 px-4 bg-black-15 rounded-[10px]">
-            <div className="flex gap-1.5 min-w-0">
-              <p className="text-[14px] font-bold text-black-50 shrink-0">
-                공지
-              </p>
-              <h1 className="text-14-medium text-black-70 overflow-hidden text-ellipsis line-clamp-1">
-                입장 시 신분증 검사 필수 입장 시 신분증
-                검사dddddddasdasdasdddddddddddddddddddddddddaaaaaaaaaaaa
-              </h1>
-            </div>
-            <Arrow className="shrink-0" fill="#AAAAAA" />
-          </div>
+          {/* 공지사항(데이터 변경 예정) */}
+          {store?.notice && (
+            <button
+              onClick={() =>
+                navigate(`/store/${storeId}/notice`, { state: store?.notice })
+              }
+              className="w-full flex justify-between items-center gap-4 py-3.5 px-4 bg-black-15 rounded-[10px]"
+            >
+              <div className="flex gap-1.5 min-w-0">
+                <p className="text-[14px] font-bold text-black-50 shrink-0">
+                  공지
+                </p>
+                <h1 className="text-14-medium text-black-70 overflow-hidden whitespace-nowrap text-ellipsis line-clamp-1">
+                  입장 시 신분증 검사 필수 입장 시 신분증
+                  검사필수필수필수필수필수필수필수필수필수필수필수필수
+                </h1>
+              </div>
+              <Arrow className="shrink-0" fill="#AAAAAA" />
+            </button>
+          )}
         </section>
-        <div className="-mx-5 bg-black-25 h-[16px] mb-[30px]"></div>
-        <MenuList mode="store" />
+        <SectionDivider />
+        {/* 주점 메뉴 리스트 */}
+        <MenuList storeId={storeId} mode="store" />
       </div>
       <PageFooterButton className="gap-2">
         <Button
@@ -122,9 +120,20 @@ const StoreDetailPage = () => {
         >
           <BookmarkIcon />
         </Button>
-        <Button onClick={() => navigate(`/store/${storeId}/partysize`)}>
-          대기하기
-        </Button>
+        {/* 주점 미오픈 시 버튼 */}
+        {!store?.isActive ? (
+          <Button disabled={store?.isActive}>지금은 대기할 수 없어요</Button>
+        ) : (
+          // 내 웨이팅 등록 현황에 따른 버튼
+          <Button
+            disabled={store?.isWaiting}
+            onClick={() =>
+              navigate(`/store/${storeId}/partysize`, { state: store?.name })
+            }
+          >
+            {store?.isWaiting ? "대기 중이에요" : "대기하기"}
+          </Button>
+        )}
       </PageFooterButton>
     </div>
   );
