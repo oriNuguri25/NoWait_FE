@@ -80,7 +80,7 @@ const PaymentCard = ({
       {/* PaymentCheckModal 오버레이 */}
       {showPaymentCheckModal && (
         <div
-          className="fixed inset-0 bg-black/30 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 max-[450px]:px-8.75"
           onClick={handleClosePaymentCheckModal}
         >
           <PaymentCheckModal
@@ -315,7 +315,7 @@ const CookCard = ({
       {/* CookCompleteModal 오버레이 */}
       {showCookCompleteModal && (
         <div
-          className="fixed inset-0 bg-black/30 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 max-[450px]:px-8.75"
           onClick={handleCloseCookCompleteModal}
         >
           <CookCompleteModal
@@ -422,7 +422,7 @@ const CookedCard = ({
       {/* CookedModal 오버레이 */}
       {showCookedModal && (
         <div
-          className="fixed inset-0 bg-black/30 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 max-[450px]:px-8.75"
           onClick={handleCloseCookedModal}
         >
           <CookedModal

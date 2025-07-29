@@ -1,12 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import AdminApi from "../../utils/AdminApi";
 
-interface SalesResponse {
-  success: boolean;
-  response: number | string; // "해당일 매출 데이터가 없습니다." 또는 숫자형 매출값
+interface SalesData {
+  storeId: number;
+  date: string;
+  todaySalesSum: number;
+  yesterdaySalesSum: number;
+  cumulativeSalesBeforeYesterday: number;
+  ObjectallZero: boolean;
 }
 
-const fetchSalesByDate = async (date: string): Promise<number | string> => {
+interface SalesResponse {
+  success: boolean;
+  response: SalesData | string;
+}
+const fetchSalesByDate = async (date: string): Promise<SalesData | string> => {
   const res = await AdminApi.get<SalesResponse>(`/admin/statistics/sales`, {
     params: { date },
   });

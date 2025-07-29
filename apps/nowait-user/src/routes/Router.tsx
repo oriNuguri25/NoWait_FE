@@ -18,6 +18,7 @@ import RemittanceWaitPage from "../pages/order/remittenceWait/RemittanceWaitPage
 import OrderDetailsPage from "../pages/order/orderDetails/OrderDetailsPage";
 import RemittancePage from "../pages/order/remittance/RemittancePage";
 import BookmarkPage from "../pages/waiting/bookmark/BookmarkPage";
+import StoreNoticePage from "../pages/waiting/storeNotice/StoreNoticePage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -48,6 +49,7 @@ const Router = () => {
       <Route path="/store/:id" element={withAuth(StoreDetailPage)} />
       <Route path="/map" element={withAuth(MapPage)} />
       <Route path="/bookmark" element={withAuth(BookmarkPage)} />
+      <Route path="/store/:id/notice" element={withAuth(StoreNoticePage)} />
       <Route
         path="/store/:id/partysize"
         element={withAuth(WaitingPartySizeForm)}
@@ -56,7 +58,7 @@ const Router = () => {
         path="/store/:id/waiting/summary"
         element={withAuth(WaitingSummaryPage)}
       />
-            <Route
+      <Route
         path="/store/:id/waiting/success"
         element={withAuth(WaitingSuccessPage)}
       />

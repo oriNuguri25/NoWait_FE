@@ -42,7 +42,7 @@ const AddMenuPage = () => {
         </h1>
         <div className="py-8">
           <h1 className="text-headline-22-bold mb-2">{name}</h1>
-          <h2>{description}</h2>
+          <h2 className="text-16-regular text-black-70">{description}</h2>
         </div>
       </div>
       {/* 메뉴 가격 및 수량 컨트롤 */}

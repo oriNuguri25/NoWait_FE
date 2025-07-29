@@ -23,7 +23,7 @@ interface WaitingCardProps {
   onDelete: () => void;
 }
 const truncateName = (name: string, maxLength: number = 3) => {
-  return name.length > maxLength ? name.slice(0, maxLength) + "..." : name;
+  return name?.length > maxLength ? name.slice(0, maxLength) + "..." : name;
 };
 
 export function WaitingCard({
@@ -137,13 +137,13 @@ export function WaitingCard({
             <>
               <button
                 onClick={onClose}
-                className="w-[60%] bg-black-30 text-black-80 rounded-[8px] flex justify-center items-center py-2"
+                className="w-[60%] bg-black-30 text-black-80 text-15-semibold rounded-[8px] flex justify-center items-center py-2"
               >
                 미입장
               </button>
               <button
                 onClick={onEnter}
-                className="w-[35%] bg-[#E8F3FF] text-[#2C7CF6] py-2 rounded-[8px] flex justify-center items-center gap-1"
+                className="w-[35%] bg-[#E8F3FF] text-[#2C7CF6] text-15-semibold py-2 rounded-[8px] flex justify-center items-center gap-1"
               >
                 <img src={openDoorIcon} /> 입장
               </button>
@@ -155,7 +155,7 @@ export function WaitingCard({
               </div>
               <button
                 onClick={onEnter}
-                className="w-[35%] bg-[#E8F3FF] text-[#2C7CF6] py-2 rounded-[8px] flex justify-center items-center gap-1"
+                className="w-[35%] bg-[#E8F3FF] text-[#2C7CF6] text-15-semibold py-2 rounded-[8px] flex justify-center items-center gap-1"
               >
                 입장
               </button>
@@ -163,13 +163,13 @@ export function WaitingCard({
           ))}
 
         {status === "CANCELLED" && (
-          <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
+          <div className="w-full bg-black-5 text-black-40 text-15-semibold rounded-[8px] flex justify-center items-center py-2">
             취소된 입장
           </div>
         )}
 
         {status === "CONFIRMED" && (
-          <div className="w-full bg-black-5 text-black-40 rounded-[8px] flex justify-center items-center py-2">
+          <div className="w-full bg-black-5 text-black-40 text-15-semibold rounded-[8px] flex justify-center items-center py-2">
             완료된 입장
           </div>
         )}

@@ -315,7 +315,7 @@ const MenuSection = () => {
 const BoothForm = () => {
   const width = useWindowWidth();
   const isTablet = width >= 768 && width <= 1024;
-  const [activeTab, setActiveTab] = useState<"booth" | "menu">("booth");
+  const [activeTab, setActiveTab] = useState<"booth" | "menu">("menu");
   const [boothName, setBoothName] = useState("");
   const [boothIntro, setBoothIntro] = useState("");
   const [isFocused, setIsFocused] = useState(false);

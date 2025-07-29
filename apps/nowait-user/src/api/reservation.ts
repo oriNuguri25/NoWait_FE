@@ -4,8 +4,44 @@ interface ReservationType {
   partySize: number;
 }
 
+interface StoreResponse {
+  success: boolean;
+  response: {
+    storeId: number;
+    waitingCount: number;
+    isWaiting: false;
+    departmentId: number;
+    departmentName: string;
+    name: string;
+    location: string;
+    description: string;
+    notice: string;
+    openTime: string;
+    profileImage: {
+      id: number;
+      storeId: number;
+      imageUrl: string;
+      imageType: string;
+    };
+    bannerImages:
+      | {
+          id: number;
+          storeId: number;
+          imageUrl: string;
+          imageType: string;
+        }[]
+      | undefined;
+    isActive: boolean;
+    deleted: boolean;
+    createdAt: string;
+    isBookmarked: boolean;
+  };
+}
+
 // 주점 정보 가져오기
-export const getStore = async (storeId: string | undefined) => {
+export const getStore = async (
+  storeId: string | undefined
+): Promise<StoreResponse> => {
   const res = await UserApi.get(`/v1/stores/${storeId}`);
   return res.data;
 };
