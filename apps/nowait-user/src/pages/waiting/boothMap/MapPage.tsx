@@ -1,5 +1,4 @@
 import HomeHeader from "../../../components/Header";
-import boothMap from "../../../assets/boothMap.png";
 import BoothMarker from "../../../assets/icon/BoothMarker.svg?react";
 import BoothList from "./components/BoothList";
 import useWindowHeight from "../../../hooks/useWindowHeight";

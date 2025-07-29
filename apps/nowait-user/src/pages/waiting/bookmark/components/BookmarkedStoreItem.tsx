@@ -2,37 +2,16 @@ import BookmarkIcon from "../../storeDetail/components/BookmarkIcon";
 import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
 import { useBookmarkState } from "../../../../hooks/useBookmarkState";
 import DepartmentImage from "../../../../components/DepartmentImage";
-import defaultMenuImageLg from "../../../../assets/default-menu-image-lg.png"
+import defaultMenuImageLg from "../../../../assets/default-menu-image-lg.png";
+import type { StoreType } from "../../../../types/wait/store";
 
-interface BannerImages {
-  id: number;
-  imageType: string;
-  imageUrl: string;
-  storeId: number;
-}
-
-interface ProfileImage {
-  id: number;
-  imageType: string;
-  imageUrl: string;
-  storeId: number;
-}
-
-interface PropsType {
-  id: number;
-  bannerImages: BannerImages[];
-  waitingCount: number;
-  ProfileImage: ProfileImage;
-  name: string;
-  departmentName: string;
-  storeId: string;
-}
+type PropsType = StoreType;
 
 const BookmarkedStoreItem = ({
   id,
   bannerImages,
   waitingCount,
-  ProfileImage,
+  profileImage,
   name,
   departmentName,
   storeId,
@@ -70,7 +49,7 @@ const BookmarkedStoreItem = ({
           <DepartmentImage
             width="40px"
             height="40px"
-            src={ProfileImage?.imageUrl}
+            src={profileImage?.imageUrl}
           />
           <div className="flex flex-col justify-between">
             <h1 className="text-title-16-bold text-black-90">{name}</h1>

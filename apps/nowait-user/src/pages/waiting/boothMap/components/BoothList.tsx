@@ -1,126 +1,14 @@
 import { motion, useMotionValue, animate } from "framer-motion";
 import BookmarkedStoreItem from "../../bookmark/components/BookmarkedStoreItem";
-import { useRef, useState } from "react";
 import { useBookmarkState } from "../../../../hooks/useBookmarkState";
 import { useInfiniteStores } from "../../../../hooks/useInfiniteStores";
 
 const snapPoints = [0, -400]; // 0: 닫힘, -400: 열림
 
-interface BannerImages {
-  id: number;
-  imageType: string;
-  imageUrl: string;
-  storeId: number;
-}
-
-const dummyData = [
-{
-    id: 1,
-    bannerImages: [
-      {
-        id: 1,
-        imageType: "banner",
-        imageUrl: "/bookmarkStoreImage.png",
-        storeId: 1,
-      },
-    ],
-    waitCount: "대기 0팀",
-    name: "스페이시스",
-    departmentName: "약과",
-    storeId: "1",
-    profileImage : {
-      id:1,
-      storeId:1,
-      imageUrl : "/bookmarkStoreImage.png",
-      imageType: "PROFILE"
-    }
-  },
-  {
-    id: 2,
-    bannerImages: [
-      {
-        id: 2,
-        imageType: "banner",
-        imageUrl: "/bookmarkStoreImage.png",
-        storeId: 2,
-      },
-    ],
-    waitCount: "대기 0팀",
-    name: "스페이시스",
-    departmentName: "약과",
-    storeId: "2",
-    profileImage : {
-      id:1,
-      storeId:1,
-      imageUrl : "/bookmarkStoreImage.png",
-      imageType: "PROFILE"
-    }
-  },
-  {
-    id: 3,
-    bannerImages: [
-      {
-        id: 3,
-        imageType: "banner",
-        imageUrl: "/bookmarkStoreImage.png",
-        storeId: 3,
-      },
-    ],
-    waitCount: "대기 0팀",
-    name: "스페이시스",
-    departmentName: "약과",
-    storeId: "3",
-    profileImage : {
-      id:3,
-      storeId:3,
-      imageUrl : "/bookmarkStoreImage.png",
-      imageType: "PROFILE"
-    }
-  },
-  {
-    id: 4,
-    bannerImages: [
-      {
-        id: 4,
-        imageType: "banner",
-        imageUrl: "/bookmarkStoreImage.png",
-        storeId: 4,
-      },
-    ],
-    waitCount: "대기 0팀",
-    name: "스페이시스",
-    departmentName: "약과",
-    storeId: "4",
-    profileImage : {
-      id:4,
-      storeId:4,
-      imageUrl : "/bookmarkStoreImage.png",
-      imageType: "PROFILE"
-    }
-  },
-];
-interface ProfileImage {
-  id: number;
-  imageType: string;
-  imageUrl: string;
-  storeId: number;
-}
-
-interface PropsType {
-  id: number;
-  bannerImages: BannerImages[];
-  waitingCount: number;
-  ProfileImage: ProfileImage;
-  name: string;
-  departmentName: string;
-  storeId: string;
-}
-
 const BoothList = () => {
   const y = useMotionValue(0);
-const { bookmarkData } = useBookmarkState();
-  const { stores } =
-    useInfiniteStores();
+  const { bookmarkData } = useBookmarkState();
+  const { stores } = useInfiniteStores();
   const handleDragEnd = () => {
     const currentY = y.get();
 
@@ -147,14 +35,14 @@ const { bookmarkData } = useBookmarkState();
           <h2 className="text-14-regular text-[#8F8F8F]">39개의 부스</h2>
         </div>
         <ul className="h-[600px] overflow-y-scroll">
-          {stores?.map((data:any) => {
+          {stores?.map((data: any) => {
             return (
               <BookmarkedStoreItem
                 key={data.name}
                 id={data.id}
                 bannerImages={data.bannerImages}
                 waitingCount={data.waitingCount}
-                ProfileImage={data.ProfileImage}
+                profileImage={data.ProfileImage}
                 name={data.name}
                 departmentName={data.departmentName}
                 storeId={data.storeId}

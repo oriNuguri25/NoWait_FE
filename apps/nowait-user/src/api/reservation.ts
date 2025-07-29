@@ -1,52 +1,6 @@
+import type { BookmarkResponse } from "../types/wait/bookmark";
+import type { StoreResponse } from "../types/wait/store";
 import UserApi from "../utils/UserApi";
-
-interface ReservationType {
-  partySize: number;
-}
-
-interface StoreResponse {
-  success: boolean;
-  response: {
-    storeId: number;
-    waitingCount: number;
-    isWaiting: false;
-    departmentId: number;
-    departmentName: string;
-    name: string;
-    location: string;
-    description: string;
-    noticeTitle: string;
-    noticeContent : string;
-    openTime: string;
-    profileImage: {
-      id: number;
-      storeId: number;
-      imageUrl: string;
-      imageType: string;
-    };
-    bannerImages:
-      | {
-          id: number;
-          storeId: number;
-          imageUrl: string;
-          imageType: string;
-        }[]
-      | undefined;
-    isActive: boolean;
-    deleted: boolean;
-    createdAt: string;
-    isBookmarked: boolean;
-  };
-}
-
-export interface BookmarkResponse {
-  success: boolean;
-  response: {
-    bookmarkId: string;
-    userId: string;
-    storeId: string;
-  };
-}
 
 // 주점 정보 가져오기
 export const getStore = async (
@@ -59,7 +13,7 @@ export const getStore = async (
 // 주점 예약하기
 export const createReservation = async (
   storeId: string,
-  payload: ReservationType
+  payload: { partySize: number }
 ) => {
   const res = await UserApi.post(
     `/reservations/create/redis/${storeId}`,

@@ -1,25 +1,7 @@
 import HomeHeader from "../../../components/Header";
 import { useBookmarkState } from "../../../hooks/useBookmarkState";
+import type { StoreType } from "../../../types/wait/store";
 import BookmarkedStoreItem from "./components/BookmarkedStoreItem";
-
-const dummyData = [
-  {
-    id: 1,
-    image: "/bookmarkStoreImage.png",
-    waitingCount: "대기 0팀",
-    storeName: "스페이시스",
-    departmentName: "바이오메카트로닉스공학과",
-    storeId: "1",
-  },
-  {
-    id: 2,
-    image: "/bookmarkStoreImage.png",
-    waitingCount: "대기 0팀",
-    storeName: "스페이시스",
-    departmentName: "약과",
-    storeId: "2",
-  },
-];
 
 const BookmarkPage = () => {
   const { bookmarkData } = useBookmarkState();
@@ -32,14 +14,14 @@ const BookmarkPage = () => {
           북마크한 부스
         </h1>
         <ul>
-          {bookmarkData?.map((data: any) => {
+          {bookmarkData?.map((data: StoreType) => {
             return (
               <BookmarkedStoreItem
                 key={data.name}
                 id={data.id}
                 bannerImages={data.bannerImages}
                 waitingCount={data.waitingCount}
-                ProfileImage={data.profileImage}
+                profileImage={data.profileImage}
                 name={data.name}
                 departmentName={data.departmentName}
                 storeId={data.storeId}
