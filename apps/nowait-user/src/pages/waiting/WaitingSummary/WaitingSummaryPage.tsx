@@ -5,6 +5,7 @@ import PageFooterButton from "../../../components/order/PageFooterButton";
 import useThrottle from "../../../hooks/useThrottle";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import BackOnlyHeader from "../../../components/BackOnlyHeader";
 
 const WaitingSummaryPage = () => {
   const navigate = useNavigate();
@@ -34,7 +35,8 @@ const WaitingSummaryPage = () => {
   }, 3000);
   return (
     <div>
-      <div className="px-5 pt-[40px]">
+      <BackOnlyHeader />
+      <div className="px-5 mt-[30px]">
         <h1 className="text-headline-24-bold mb-[40px]">
           현재 <span className="text-primary">{store?.waitingCount}</span>팀이
           <br />

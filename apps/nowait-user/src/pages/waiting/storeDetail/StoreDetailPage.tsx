@@ -28,7 +28,7 @@ const StoreDetailPage = () => {
     queryFn: () => getStore(storeId!),
     select: (data) => data.response,
   });
-
+  console.log(store,"주점ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ")
   const handleBookmarkButton = async () => {
     try {
       if (!isBookmarked) {
