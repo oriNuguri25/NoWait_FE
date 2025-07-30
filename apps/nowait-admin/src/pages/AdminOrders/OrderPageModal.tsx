@@ -90,7 +90,17 @@ const PaymentCheckModal = ({
           }`}
           onClick={updateOrderStatus.isPending ? undefined : handleConfirm}
         >
-          {updateOrderStatus.isPending ? "처리중..." : "확인"}
+          {updateOrderStatus.isPending ? (
+            <div className="flex items-center justify-center">
+              <div className="flex space-x-1">
+                <div className="w-1 h-1 bg-white rounded-full"></div>
+                <div className="w-1 h-1 bg-white rounded-full"></div>
+                <div className="w-1 h-1 bg-white rounded-full"></div>
+              </div>
+            </div>
+          ) : (
+            "확인"
+          )}
         </div>
       </div>
     </div>
@@ -156,7 +166,17 @@ const OrderStatusModal = ({
           }`}
           onClick={updateOrderStatus.isPending ? undefined : handleConfirm}
         >
-          {updateOrderStatus.isPending ? "처리중..." : "확인"}
+          {updateOrderStatus.isPending ? (
+            <div className="flex items-center justify-center">
+              <div className="flex space-x-1">
+                <div className="w-1 h-1 bg-white rounded-full"></div>
+                <div className="w-1 h-1 bg-white rounded-full"></div>
+                <div className="w-1 h-1 bg-white rounded-full"></div>
+              </div>
+            </div>
+          ) : (
+            "확인"
+          )}
         </div>
       </div>
     </div>
