@@ -1,5 +1,4 @@
 import React from "react";
-import arrowIcon from "../../../assets/keyboard_arrow_down.svg";
 
 interface BoothRanking {
   rank: number;
