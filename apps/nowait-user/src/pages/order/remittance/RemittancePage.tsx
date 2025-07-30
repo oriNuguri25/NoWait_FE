@@ -12,6 +12,8 @@ import RemitOptions from "./components/RemitOptions";
 import ConfirmModal from "../../../components/order/ConfirmModal";
 import useModal from "../../../hooks/useModal";
 import BackHeader from "../../../components/BackHeader";
+import { useQuery } from "@tanstack/react-query";
+import { getStorePayments } from "../../../api/order";
 
 const RemittancePage = () => {
   const navigate = useNavigate();
@@ -23,6 +25,14 @@ const RemittancePage = () => {
   const [remitValue, setRemitValue] = useState("kakao");
   const totalPrice = sumTotalPrice(cart);
   const payerFocus = useRef<HTMLInputElement>(null);
+  console.log(remitValue);
+
+  const { data: remittance } = useQuery({
+    queryKey: ["remittance", storeId],
+    queryFn: () => getStorePayments(storeId),
+    enabled: !!storeId,
+    select: (data) => data.response,
+  });
 
   const orderHandleButton = () => {
     //입금자명을 입력하지 않고 이체 버튼 클릭 시 입금자명 input으로 포커스
@@ -49,7 +59,12 @@ const RemittancePage = () => {
           payerFocus={payerFocus}
         />
         <SectionDivider />
-        <RemitOptions remitValue={remitValue} setRemitValue={setRemitValue} />
+        <RemitOptions
+          remitValue={remitValue}
+          setRemitValue={setRemitValue}
+          totalPrice={totalPrice}
+          account={remittance?.accountNumber}
+        />
         <SectionDivider />
         <section>
           <div className="flex justify-between items-center pt-6 pb-5.5">
@@ -67,7 +82,16 @@ const RemittancePage = () => {
       </PageFooterButton>
       {modal.isOpen && (
         <ConfirmModal
-          open={() => navigate(`/${storeId}/remittanceWait`, { state: payer })}
+          open={() => {
+            if (remitValue === "kakao") {
+              window.open("https://www.naver.com", "_blank");
+            } else if (remitValue === "toss") {
+              window.open("https://www.naver.com", "_blank");
+            } else if (remitValue === "naver") {
+              window.open("https://www.naver.com", "_blank");
+            }
+            navigate(`/${storeId}/remittanceWait`, { state: payer });
+          }}
           close={modal.close}
           title={`${
             remitValue === "direct" ? "직접 " : ""

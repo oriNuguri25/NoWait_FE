@@ -41,3 +41,16 @@ export interface OrderDetailsServerResponse {
     totalPrice: number;
   }[];
 }
+
+export interface StorePaymentsResponse {
+  success: boolean;
+  response: {
+    paymentMethodId: number;
+    storeId: number;
+    tossUrl?: string;
+    kakaoPayUrl?: string;
+    naverPayUrl?: string;
+    accountNumber?: string;
+    createdAt: string;
+  };
+}

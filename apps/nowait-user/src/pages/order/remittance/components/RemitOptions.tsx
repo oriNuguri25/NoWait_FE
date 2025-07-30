@@ -12,24 +12,30 @@ import SlideToggle from "./SlideToggle";
 interface PropsType {
   remitValue: string;
   setRemitValue: React.Dispatch<React.SetStateAction<string>>;
+  totalPrice: number;
+  account?: string;
 }
 
-const RemitOptions = ({ remitValue, setRemitValue }: PropsType) => {
+const RemitOptions = ({
+  remitValue,
+  setRemitValue,
+  totalPrice,
+  account,
+}: PropsType) => {
   const { showToast } = useToastStore();
   const [remitDescriptionToggle, setRemitDescriptionToggle] = useState(false);
-  const account = `카카오뱅크 3333-04-2095277`;
   const clipBoardDelay = 2000;
 
   const handleCopyClipBoard = useThrottle(async () => {
     try {
       //http 사용 시 또는 핸드폰으로 사용 시 복사가 안될 수도 있음.
-      await navigator.clipboard.writeText(account);
+      await navigator.clipboard.writeText(`${account}${totalPrice}`);
       showToast("계좌번호가 복사되었습니다");
     } catch (error) {
       //이를 방지하기 위해 실패 시 고전 방식의 복사 방법 추가
       const $textarea = document.createElement("textarea");
       document.body.appendChild($textarea);
-      $textarea.value = account;
+      $textarea.value = `${account}${totalPrice}`;
       $textarea.select();
       const success = document.execCommand("copy");
       document.body.removeChild($textarea);

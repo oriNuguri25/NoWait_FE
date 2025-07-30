@@ -3,6 +3,7 @@ import type {
   CreateOrderServerResponse,
   OrderDetailsServerResponse,
   OrderType,
+  StorePaymentsResponse,
 } from "../types/order/order";
 
 export const api = axios.create({
@@ -26,4 +27,20 @@ export const getOrderDetails = async (
 ): Promise<OrderDetailsServerResponse> => {
   const res = await api.get(`/orders/items/${storeId}/${tableId}`);
   return res.data;
+};
+
+//주점 QR, 계좌번호 조회
+export const getStorePayments = async (
+  storeId: string | undefined
+): Promise<StorePaymentsResponse> => {
+  try {
+    const res = await api.get(`/v1/store-payments/${storeId}`);
+    if (typeof res.data === "string") {
+      return JSON.parse(res.data);
+    }
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
