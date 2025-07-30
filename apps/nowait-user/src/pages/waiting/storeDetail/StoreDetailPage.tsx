@@ -6,7 +6,7 @@ import { Button } from "@repo/ui";
 import { useNavigate, useParams } from "react-router-dom";
 import MenuList from "../../../components/common/MenuList";
 import { useBookmarkMutation } from "../../../hooks/mutate/useBookmark";
-import BookmarkIcon from "./components/BookmarkIcon";
+import BookmarkIcon from "../../../components/common/BookmarkIcon";
 import { useBookmarkState } from "../../../hooks/useBookmarkState";
 import { useQuery } from "@tanstack/react-query";
 import { getStore } from "../../../api/reservation";
@@ -18,23 +18,23 @@ import DepartmentImage from "../../../components/DepartmentImage";
 const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id: storeId } = useParams();
-  const { isBookmarked, bookmarkData } = useBookmarkState();
-  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation();
+  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
+    withInvalidate: true,
+  });
+  const { isBookmarked } = useBookmarkState(storeId);
+
   const { data: store } = useQuery({
     queryKey: ["store", storeId],
-    queryFn: () => getStore(storeId),
+    queryFn: () => getStore(storeId!),
     select: (data) => data.response,
   });
-  console.log(store, "주점 데이터");
+
   const handleBookmarkButton = async () => {
     try {
       if (!isBookmarked) {
         await createBookmarkMutate.mutate(storeId);
-        console.log("생성")
       } else {
         await deleteBookmarkMutate.mutate(storeId);
-        console.log("삭제")
-
       }
     } catch (error) {
       console.log(error);
@@ -127,11 +127,11 @@ const StoreDetailPage = () => {
           buttonType="icon"
           onClick={handleBookmarkButton}
         >
-          <BookmarkIcon />
+          <BookmarkIcon isBookmarked={isBookmarked} />
         </Button>
         {/* 주점 미오픈 시 버튼 */}
         {!store?.isActive ? (
-          <Button disabled={store?.isActive}>지금은 대기할 수 없어요</Button>
+          <Button disabled={!store?.isActive}>지금은 대기할 수 없어요</Button>
         ) : (
           // 내 웨이팅 등록 현황에 따른 버튼
           <Button

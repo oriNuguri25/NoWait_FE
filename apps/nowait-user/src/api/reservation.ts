@@ -23,17 +23,14 @@ export const createReservation = async (
 };
 
 // 북마크 조회
-export const getBookmark = async () => {
+export const getBookmark = async (): Promise<BookmarkResponse> => {
   const res = await UserApi.get("/bookmarks");
   return res.data;
 };
 
 // 북마크 생성
-export const createBookmark = async (
-  storeId: string | undefined
-): Promise<BookmarkResponse> => {
-  const res = await UserApi.post(`/bookmarks/${storeId}`);
-  return res.data;
+export const createBookmark = async (storeId: string | undefined) => {
+  await UserApi.post(`/bookmarks/${storeId}`);
 };
 
 // 북마크 삭제

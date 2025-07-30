@@ -6,6 +6,7 @@ interface PropsType {
   src?: string;
 }
 const DepartmentImage = ({ width, height, src }: PropsType) => {
+  console.log("학과 이미지=>",src)
   return (
       <img
         className={`object-cover w-[${width}] h-[${height}] rounded-full`}

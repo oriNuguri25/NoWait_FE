@@ -2,7 +2,7 @@
 export interface StoreResponse {
   success: boolean;
   response: {
-    storeId: number;
+    storeId: string;
     waitingCount: number;
     isWaiting: false;
     departmentId: number;
@@ -15,14 +15,14 @@ export interface StoreResponse {
     openTime: string;
     profileImage: {
       id: number;
-      storeId: number;
+      storeId: string;
       imageUrl: string;
       imageType: string;
     };
     bannerImages:
       | {
           id: number;
-          storeId: number;
+          storeId: string;
           imageUrl: string;
           imageType: string;
         }[]
@@ -39,7 +39,7 @@ export interface BannerImages {
   id: number;
   imageType: string;
   imageUrl: string;
-  storeId: number;
+  storeId: string;
 }
 
 // 학과 대표 이미지 타입
@@ -47,15 +47,40 @@ export interface ProfileImage {
   id: number;
   imageType: string;
   imageUrl: string;
-  storeId: number;
+  storeId: string;
+}
+export interface StoreType {
+  bannerImages: BannerImages[];
+  bookmarkId: number;
+  departmentId: number;
+  departmentName: string;
+  description: string;
+  isActive: boolean;
+  isBookmark: boolean;
+  location: string;
+  name: string;
+  noticeTitle: string | null;
+  noticeContent: string | null;
+  openTime: string;
+  profileImage: ProfileImage;
+  storeId: string;
+  waitingCount: number;
 }
 
-export interface StoreType {
-  id: number;
+export interface BookmarkListType {
   bannerImages: BannerImages[];
-  waitingCount: number;
-  profileImage: ProfileImage;
-  name: string;
+  bookmarkId: number;
+  departmentId: number;
   departmentName: string;
+  description: string;
+  isActive: boolean;
+  isBookmark: boolean;
+  location: string;
+  name: string;
+  noticeTitle: string | null;
+  noticeContent: string | null;
+  openTime: string;
+  profileImage: ProfileImage;
   storeId: string;
+  waitingCount: number;
 }

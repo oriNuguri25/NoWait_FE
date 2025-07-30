@@ -1,14 +1,22 @@
-import BookmarkIcon from "../../storeDetail/components/BookmarkIcon";
-import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
-import { useBookmarkState } from "../../../../hooks/useBookmarkState";
+import BookmarkIcon from "../../../../components/common/BookmarkIcon";
 import DepartmentImage from "../../../../components/DepartmentImage";
 import defaultMenuImageLg from "../../../../assets/default-menu-image-lg.png";
-import type { StoreType } from "../../../../types/wait/store";
+import type { BannerImages, ProfileImage } from "../../../../types/wait/store";
+import { createBookmark, deleteBookmark } from "../../../../api/reservation";
+import { useState } from "react";
+import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
 
-type PropsType = StoreType;
+type PropsType = {
+  bookmarkId: number;
+  bannerImages: BannerImages[];
+  waitingCount: number;
+  profileImage: ProfileImage;
+  name: string;
+  departmentName: string;
+  storeId: string;
+};
 
 const BookmarkedStoreItem = ({
-  id,
   bannerImages,
   waitingCount,
   profileImage,
@@ -16,22 +24,25 @@ const BookmarkedStoreItem = ({
   departmentName,
   storeId,
 }: PropsType) => {
-  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation();
-  const { isBookmarked, bookmarkData } = useBookmarkState(storeId);
-  console.log(bookmarkData, "북마크데이터 1");
+  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
+    withInvalidate: false,
+  });
+  const [isBookmarked, setIsBookmarked] = useState(true);
   const handleBookmarkButton = async () => {
     try {
-      if (!isBookmarked) {
-        await createBookmarkMutate.mutate(storeId);
+      if (isBookmarked) {
+        await deleteBookmarkMutate.mutate(storeId);
+        setIsBookmarked(false);
       } else {
-        await deleteBookmarkMutate.mutate(bookmarkData.bookmarkId);
+        await createBookmarkMutate.mutate(storeId);
+        setIsBookmarked(true);
       }
     } catch (error) {
       console.log(error);
     }
   };
   return (
-    <li key={id} className="mb-6">
+    <li className="mb-6">
       <div className="relative top-0 right-0">
         <img
           className="w-full h-[195px] rounded-[14px] overflow-hidden object-cover"
@@ -57,7 +68,7 @@ const BookmarkedStoreItem = ({
           </div>
         </div>
         <button className="mr-[5px]" onClick={handleBookmarkButton}>
-          <BookmarkIcon />
+          <BookmarkIcon isBookmarked={isBookmarked} />
         </button>
       </div>
     </li>

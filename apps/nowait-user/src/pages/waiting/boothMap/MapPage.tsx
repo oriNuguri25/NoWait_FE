@@ -3,7 +3,7 @@ import BoothMarker from "../../../assets/icon/BoothMarker.svg?react";
 import BoothList from "./components/BoothList";
 import useWindowHeight from "../../../hooks/useWindowHeight";
 import { useState } from "react";
-import BookmarkIcon from "../storeDetail/components/BookmarkIcon";
+import BookmarkIcon from "../../../components/common/BookmarkIcon";
 import Clock from "../../../assets/icon/clock.svg?react";
 import { Button } from "@repo/ui";
 

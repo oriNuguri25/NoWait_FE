@@ -11,12 +11,12 @@ const MenuList = ({ storeId, mode }: { storeId:string | undefined | null, mode: 
     queryFn: () => getStoreMenus(storeId),
     select:(data)=>data.response.menuReadDto
   });
-  console.log(data)
+  console.log("스토어 메뉴 리스트 =>",data)
   return (
     <div className="py-[30px]">
       <h1 className="text-title-20-semibold mb-3">메뉴</h1>
       <ul>
-        {data && data?.map((data: MenuType) => {
+        {data?.map((data: MenuType) => {
           return <MenuItem key={data.menuId} data={data} mode={mode} />;
         })}
       </ul>
