@@ -5,7 +5,7 @@ import { useBookmarkState } from "../../../../hooks/useBookmarkState";
 interface PropsType {
   id: number;
   image: string;
-  waitingCount: string;
+  waitingCount: number;
   storeName: string;
   departmentName: string;
   storeId: string;

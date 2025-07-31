@@ -7,6 +7,9 @@ import { useState } from "react";
 import BookmarkIcon from "../storeDetail/components/BookmarkIcon";
 import Clock from "../../../assets/icon/clock.svg?react";
 import { Button } from "@repo/ui";
+import { useInfiniteStores } from "../../../hooks/useInfiniteStores";
+import { AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const boothInfomation = [
   { id: 1, name: "스페이시스", department: "컴퓨터공학과", waitingCount: 0 },
@@ -27,17 +30,24 @@ const boothPosition: Record<number, { top: string; left: string }> = {
   4: { top: "45%", left: "90%" },
 };
 
-const booth = boothInfomation.map((booth) => ({
-  ...booth,
-  ...boothPosition[booth.id],
-}));
-
 const MapPage = () => {
+  const navigate = useNavigate()
   const height = useWindowHeight();
-  const [openBooth, setOpenBooth] = useState(false);
+  const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
+  const { stores } = useInfiniteStores();
+  const booth = stores.map((booth) => ({
+    ...booth,
+    ...boothPosition[booth.storeId],
+  }));
 
   const openBoothButton = (id: number) => {
-    setOpenBooth(true)
+    if (selectedBooth === id) {
+      // 이미 선택된 마커를 다시 클릭 → 초기화 (리스트로 복귀)
+      setSelectedBooth(null);
+    } else {
+      // 새로운 마커 클릭 → 해당 마커 정보 표시
+      setSelectedBooth(id);
+    }
   };
   return (
     <div className="relative overflow-hidden" style={{ height }}>
@@ -57,11 +67,16 @@ const MapPage = () => {
         <ul className="absolute top-0 left-0 w-full h-full">
           {booth.map((booth) => (
             <li
-              key={booth.id}
+              key={booth.storeId}
               className="absolute"
               style={{ top: booth.top, left: booth.left }}
             >
-              <button onClick={() => openBoothButton(booth.id)}>
+              <button
+                className={`transition-transform origin-bottom duration-200 ${
+                  selectedBooth === booth.storeId ? "scale-120" : "scale-100"
+                }`}
+                onClick={() => openBoothButton(booth.storeId)}
+              >
                 <BoothMarker />
               </button>
             </li>
@@ -69,15 +84,21 @@ const MapPage = () => {
         </ul>
       </div>
       {/* 부스 리스트 */}
-      {openBooth ? (
+      {/* <AnimatePresence></AnimatePresence> */}
+      {selectedBooth !== null ? (
         <div className="fixed bottom-[30px] left-1/2 -translate-x-1/2 w-[calc(100%-32px)] bg-white rounded-[20px] z-30">
           <div className="pt-[20px] pb-[16px] px-[20px]">
             <div className="flex items-start justify-between">
               <div className="mb-[16px]">
                 <h1 className="text-title-20-semibold text-black-90 mb-1">
-                  스페이시스
+                  {stores.find((b) => b.storeId === selectedBooth)?.name}
                 </h1>
-                <h2 className="text-16-regular">컴퓨터공학과</h2>
+                <h2 className="text-16-regular">
+                  {
+                    stores.find((b) => b.storeId === selectedBooth)
+                      ?.departmentName
+                  }
+                </h2>
               </div>
               <BookmarkIcon />
             </div>
@@ -85,9 +106,15 @@ const MapPage = () => {
               <span className="w-[18px] flex justify-center mr-1.5">
                 <Clock />
               </span>
-              대기 없음
+              {stores.find((b) => b.storeId === selectedBooth)?.waitingCount ===
+              0
+                ? "대기없음"
+                : `대기 ${
+                    boothInfomation.find((b) => b.id === selectedBooth)
+                      ?.waitingCount
+                  }명`}
             </p>
-            <Button>상세 보기</Button>
+            <Button onClick={()=>navigate(`/store/${selectedBooth}`)}>상세 보기</Button>
           </div>
         </div>
       ) : (
