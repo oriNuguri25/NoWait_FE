@@ -3,8 +3,8 @@ import BoothProfileImage from "./BoothProfileImage";
 import NoticeEditor from "./NoticeEditor";
 import OperatingTimeSelector from "./OperatingTimeSelector";
 import placeholderIcon from "../../../assets/image_placeholder.svg";
-
-type BannerImage = File | { id: number; imageUrl: string; imageType?: string };
+import type { BannerImage } from "../types/booth";
+import type { ProfileImage } from "../types/booth";
 
 const BoothSection = ({
   boothName,
@@ -17,6 +17,8 @@ const BoothSection = ({
   setIsTextareaFocused,
   bannerImages,
   setBannerImages,
+  profileImage,
+  setProfileImage,
   boothNotice,
   setBoothNotice,
   startHour,
@@ -38,6 +40,8 @@ const BoothSection = ({
   setIsTextareaFocused: (val: boolean) => void;
   bannerImages: BannerImage[];
   setBannerImages: React.Dispatch<React.SetStateAction<BannerImage[]>>;
+  profileImage: ProfileImage;
+  setProfileImage: React.Dispatch<React.SetStateAction<ProfileImage>>;
   boothNotice: string;
   setBoothNotice: (val: string) => void;
   startHour: string;
@@ -49,7 +53,6 @@ const BoothSection = ({
   endMinute: string;
   setEndMinute: (val: string) => void;
 }) => {
-  const [profileImage, setProfileImage] = useState<File | null>(null);
   return (
     <>
       <div className="flex items-center py-[50px]">

@@ -6,6 +6,7 @@ import { useUpdateStore } from "../../hooks/booth/store/useUpdateStore";
 import { useUploadStoreProfileImage } from "../../hooks/booth/store/useUploadStoreProfileImage";
 import { useUploadStoreBannerImages } from "../../hooks/booth/store/useUploadStoreBannerImages";
 import type { BannerImage } from "./types/booth";
+import type { ProfileImage } from "./types/booth";
 import BoothSection from "./components/BoothSection";
 
 const BoothForm = () => {
@@ -29,6 +30,9 @@ const BoothForm = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [isTextareaFocused, setIsTextareaFocused] = useState(false);
   const [bannerImages, setBannerImages] = useState<BannerImage[]>([]);
+  const [profileImage, setProfileImage] = useState<ProfileImage>(null);
+
+  console.log(store, "store 정보");
 
   const handleSave = () => {
     updateStore(
@@ -77,6 +81,13 @@ const BoothForm = () => {
         }));
         setBannerImages(formatted);
       }
+      if (store?.profileImage) {
+        setProfileImage({
+          id: store.profileImage.id,
+          imageUrl: store.profileImage.imageUrl,
+          imageType: "PROFILE",
+        });
+      }
     }
   }, [store]);
 
@@ -122,6 +133,8 @@ const BoothForm = () => {
             setIsTextareaFocused={setIsTextareaFocused}
             bannerImages={bannerImages}
             setBannerImages={setBannerImages}
+            profileImage={profileImage}
+            setProfileImage={setProfileImage}
             boothNotice={boothNotice}
             setBoothNotice={setBoothNotice}
             startHour={startHour}
