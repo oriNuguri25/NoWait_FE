@@ -6,10 +6,10 @@ interface MenuModalProps {
   initialData?: {
     id?: number;
     name: string;
-    adminName: string;
+    adminName?: string;
     price: string;
     description: string;
-    isRepresentative: boolean;
+    isRepresentative?: boolean;
     image?: File;
   };
   onClose: () => void;
@@ -211,7 +211,10 @@ const MenuModal = ({
         <div className="flex">
           {isEdit && (
             <div className="flex w-full gap-2">
-              <button className="w-full h-[48px] px-3 py-[10px] rounded-[10px] bg-[#FFF0EB] text-primary text-16-semibold">
+              <button
+                onClick={onClose}
+                className="w-full h-[48px] px-3 py-[10px] rounded-[10px] bg-[#FFF0EB] text-primary text-16-semibold"
+              >
                 삭제하기
               </button>
               <button
