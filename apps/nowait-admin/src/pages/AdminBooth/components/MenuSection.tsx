@@ -159,7 +159,7 @@ const MenuSection = () => {
   }, [fetchedMenus]);
 
   return (
-    <div className="mt-[40px] mb-[20px]">
+    <div className="mt-[40px] mb-[20px] max-w-[614px]">
       <div className="flex justify-between items-center mb-[20px]">
         <h2 className="text-title-18-bold">메뉴</h2>
         <div className="flex gap-[10px]">

@@ -59,41 +59,52 @@ const BoothSection = ({
 }) => {
   return (
     <>
-      <div className="flex items-center py-[50px]">
-        <BoothProfileImage
-          profileImage={profileImage}
-          setProfileImage={setProfileImage}
-        />
-        <div className="flex flex-col w-[494px] ml-[50px] h-[115px]">
-          <span className="text-title-18-bold text-gray-500 mb-[6px] flex">
-            부스명
-          </span>
-          <span className="text-sm text-gray-500 mb-[14px] flex">
-            컴퓨터공학과
-          </span>
-          <div className="flex h-full relative">
-            <input
-              type="text"
-              value={boothName}
-              maxLength={20}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-              onChange={(e) => setBoothName(e.target.value)}
-              placeholder="부스명을 입력해주세요"
-              className="w-full h-full bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-sm bg-black-5 "
-            />
-            <span className="absolute right-[20px] top-1/2 -translate-y-1/2 text-xs text-gray-400">
-              <span className={isFocused ? "text-black" : "text-gray-400"}>
-                {boothName.length}
-              </span>{" "}
-              / 20
+      <div className="flex flex-col items-center pb-[50px] max-w-[614px]">
+        <div className="flex justify-between items-center w-full my-[40px]">
+          {/* 좌측 타이틀 */}
+          <h2 className="text-headline-22-bold text-black-80">부스 프로필</h2>
+
+          {/* 우측 버튼 */}
+          <button className="px-4 py-1 rounded-lg w-[68px] text-14-semibold text-black-70 bg-black-20 px-[10px] py-[7.5px]">
+            미리보기
+          </button>
+        </div>
+        <div className="flex w-full">
+          <BoothProfileImage
+            profileImage={profileImage}
+            setProfileImage={setProfileImage}
+          />
+          <div className="flex flex-col w-full ml-[50px] h-[115px]">
+            <span className="text-title-18-bold text-gray-500 mb-[6px] flex">
+              부스명
             </span>
+            <span className="text-sm text-gray-500 mb-[14px] flex">
+              컴퓨터공학과
+            </span>
+            <div className="flex w-full h-full relative">
+              <input
+                type="text"
+                value={boothName}
+                maxLength={14}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                onChange={(e) => setBoothName(e.target.value)}
+                placeholder="부스명을 입력해주세요"
+                className="w-full h-full bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-sm bg-black-5 "
+              />
+              <span className="absolute right-[20px] top-1/2 -translate-y-1/2 text-xs text-gray-400">
+                <span className={isFocused ? "text-black" : "text-gray-400"}>
+                  {boothName.length}
+                </span>{" "}
+                / 14
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* 부스 소개 */}
-      <div className="flex flex-col mb-[50px] relative">
+      <div className="flex flex-col mb-[50px] relative max-w-[614px]">
         <label className="block font-semibold">부스 소개</label>
         <p className="mt-[6px] mb-[14px] text-14-regular text-black-60">
           부스를 자유롭게 소개해주세요
@@ -113,7 +124,7 @@ const BoothSection = ({
       </div>
 
       {/* 배너 이미지 */}
-      <div className="flex flex-col mb-[50px]">
+      <div className="flex flex-col mb-[50px] max-w-[614px]">
         <label className="block font-semibold">배너 이미지</label>
         <p className="text-14-regular text-black-60 mb-[14px]">
           첫번째 이미지는 우리 부스를 대표하는 이미지로 설정돼요

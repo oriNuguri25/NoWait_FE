@@ -40,8 +40,8 @@ const BoothProfileImage = ({
           />
         )}
       </div>
-      <label className="absolute bottom-0 right-0 bg-white rounded-full p-1 border border-[#ECECEC] cursor-pointer">
-        <img src={editIcon} className="w-4 h-4" alt="편집" />
+      <label className="absolute bottom-0 right-0 bg-white w-[38px] h-[38px] rounded-full p-1 border border-[#ECECEC] cursor-pointer">
+        <img src={editIcon} className="w-full h-full" alt="편집" />
         <input
           type="file"
           accept="image/*"
