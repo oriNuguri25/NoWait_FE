@@ -5,6 +5,7 @@ import OperatingTimeSelector from "./OperatingTimeSelector";
 import placeholderIcon from "../../../assets/image_placeholder.svg";
 import type { BannerImage } from "../types/booth";
 import type { ProfileImage } from "../types/booth";
+import deletBttn from "../../../assets/booth/del.svg";
 
 const BoothSection = ({
   boothName,
@@ -164,11 +165,42 @@ const BoothSection = ({
                   }
                   if (img && typeof (img as any).imageUrl === "string") {
                     return (
-                      <img
-                        src={(img as any).imageUrl}
-                        alt={`배너 ${i + 1}`}
-                        className="object-cover w-full h-full rounded-lg"
-                      />
+                      <div className="relative w-full h-full">
+                        {img ? (
+                          <img
+                            src={
+                              img instanceof File
+                                ? URL.createObjectURL(img)
+                                : (img as any).imageUrl
+                            }
+                            alt={`배너 ${i + 1}`}
+                            className="object-cover w-full h-full rounded-lg"
+                          />
+                        ) : (
+                          <img
+                            src={placeholderIcon}
+                            alt="업로드"
+                            className="object-cover w-full h-full rounded-lg"
+                          />
+                        )}
+
+                        {/* 대표 사진 라벨 */}
+                        {i === 0 && img && (
+                          <span className="absolute bottom-0 left-0 bg-black bg-opacity-80 text-white px-6 py-1 w-full text-center rounded-b-xl">
+                            대표 사진
+                          </span>
+                        )}
+
+                        {/* 삭제 버튼 */}
+                        {img && (
+                          <button
+                            type="button"
+                            className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2"
+                          >
+                            <img src={deletBttn} alt="삭제" />
+                          </button>
+                        )}
+                      </div>
                     );
                   }
                   return <img src={placeholderIcon} alt="업로드" />;

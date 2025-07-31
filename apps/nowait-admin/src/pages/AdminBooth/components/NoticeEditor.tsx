@@ -83,8 +83,6 @@ const NoticeEditor = ({
   notice: string;
   setNotice: (val: string) => void;
 }) => {
-  const [title, setTitle] = useState("");
-
   const editor = useEditor({
     extensions: [StarterKit, Underline],
     content: notice || "내용을 입력해주세요",
@@ -120,9 +118,9 @@ const NoticeEditor = ({
     <div className="w-full bg-white border border-[#DDDDDD] rounded-xl max-w-[614px]">
       <input
         type="text"
-        value={title}
-        onFocus={() => setTitle("")}
-        onChange={(e) => setTitle(e.target.value)}
+        value={noticeTitle}
+        onFocus={() => setNoticeTitle("")}
+        onChange={(e) => setNoticeTitle(e.target.value)}
         placeholder="제목을 입력해주세요"
         className="w-full px-5 py-3 text-[#666666] bg-black-20 font-semibold rounded-t-xl outline-none"
       />
