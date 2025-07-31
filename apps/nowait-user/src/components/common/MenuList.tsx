@@ -15,7 +15,7 @@ const dummy = [
     {
     menuId: 2,
     image: "",
-    name: "strin",
+    name: "strinaa",
     description: "string",
     price: 1000,
     isSoldOut: false,
@@ -23,7 +23,7 @@ const dummy = [
     {
     menuId: 3,
     image: "",
-    name: "strin",
+    name: "strindddddd",
     description: "string",
     price: 1000,
     isSoldOut: false,
@@ -47,7 +47,7 @@ const MenuList = ({
     <div className="py-[30px]">
       <h1 className="text-title-20-semibold mb-3">메뉴</h1>
       <ul>
-        {dummy?.map((data: any) => {
+        {data?.map((data: MenuType) => {
           return <MenuItem key={data.menuId} data={data} mode={mode} />;
         })}
       </ul>

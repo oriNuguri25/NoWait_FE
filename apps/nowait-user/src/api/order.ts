@@ -6,7 +6,10 @@ import type {
   StorePaymentsResponse,
 } from "../types/order/order";
 
+const API_URI = import.meta.env.VITE_SERVER_URI;
+
 export const api = axios.create({
+  baseURL: "/",
   withCredentials: true,
 });
 
@@ -26,6 +29,7 @@ export const getOrderDetails = async (
   tableId: string
 ): Promise<OrderDetailsServerResponse> => {
   const res = await api.get(`/orders/items/${storeId}/${tableId}`);
+  console.log(res, "주문내역");
   return res.data;
 };
 
@@ -35,9 +39,7 @@ export const getStorePayments = async (
 ): Promise<StorePaymentsResponse> => {
   try {
     const res = await api.get(`/v1/store-payments/${storeId}`);
-    if (typeof res.data === "string") {
-      return JSON.parse(res.data);
-    }
+    console.log(res, "계좌번호 조회------------------------------");
     return res.data;
   } catch (error) {
     console.log(error);

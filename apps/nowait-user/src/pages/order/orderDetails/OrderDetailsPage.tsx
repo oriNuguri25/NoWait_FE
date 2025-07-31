@@ -28,6 +28,7 @@ const OrderDetailsPage = () => {
     queryFn: () => getOrderDetails(storeId, tableId!),
     select: (data) => data.response,
   });
+  console.log(data)
 
   //주문내역 없을 시
   if (!data || data?.length < 1) return <EmptyOrderDetails />;

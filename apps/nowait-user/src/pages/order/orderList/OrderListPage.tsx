@@ -13,13 +13,16 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getStoreMenus } from "../../../api/menu";
 import { getSoldOutMenusInCart } from "../../../utils/checkSoldOutMenus";
+import useModal from "../../../hooks/useModal";
+import Portal from "../../../components/common/modal/Portal";
 
 const OrderListPage = () => {
   const navigate = useNavigate();
   const { storeId } = useParams();
   const { cart, removeFromCart } = useCartStore();
-  const [checked, setChecked] = useState<any>();
-
+  const modal = useModal();
+  const [soldOutMenus, setSoldOutMenus] = useState<any>();
+  console.log(soldOutMenus);
   const { data: menus } = useQuery({
     queryKey: ["storeMenus", storeId],
     queryFn: () => getStoreMenus(storeId),
@@ -29,17 +32,14 @@ const OrderListPage = () => {
   // 장바구니와 최신 메뉴 데이터 동기화, 현재 alert로 사용자에게 보여줌.(변경예정)
   useEffect(() => {
     if (!menus) return;
-    const soldOutMenus = getSoldOutMenusInCart(cart, menus);
-    if (soldOutMenus.length > 0) {
-      alert(
-        `현재 ${soldOutMenus.map((menu) => menu.name)}이 품절 상태 입니다.`
-      );
-      // 장바구니에서 품절된 메뉴 삭제
-      for (let index = 0; index < soldOutMenus.length; index++) {
-        removeFromCart(soldOutMenus[index].menuId);
-      }
-      navigate(-1);
-      setChecked(soldOutMenus);
+
+    const soldOut = getSoldOutMenusInCart(cart, menus);
+
+    if (soldOut.length > 0) {
+      setSoldOutMenus(soldOut);
+        // soldOut.forEach((menu) => removeFromCart(menu.menuId));
+
+      modal.open();
     }
   }, [menus, cart]);
 
@@ -87,6 +87,40 @@ const OrderListPage = () => {
           <TotalButton variant="orderPage" actionText="주문하기" />
         </Button>
       </PageFooterButton>
+      {modal.isOpen && soldOutMenus?.length > 0 && (
+        <Portal>
+          <div className="fixed inset-0 z-50 bg-black/30" onClick={modal.close}>
+            <div className="absolute left-1/2 bottom-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[calc(100%-40px)] max-w-[430px] bg-white rounded-[20px] px-[22px] pt-[30px] pb-[22px]">
+              <h1 className="text-title-20-bold text-black-90 text-center mb-[20px]">
+                현재
+                {soldOutMenus.map((menu: any, idx: number) => (
+                  <span key={menu.menuId}>
+                    {menu.name}
+                    {idx < soldOutMenus.length - 1 && ", "}
+                  </span>
+                ))}
+                는<br /> 품절 상태입니다.
+              </h1>
+              <div className="flex gap-2.5">
+                <Button
+                  backgroundColor="#F4F4F4"
+                  textColor="#666666"
+                  onClick={modal.close}
+                >
+                  주문 계속하기
+                </Button>
+                <Button
+                  // backgroundColor="#F4F4F4"
+                  // textColor="#666666"
+                  onClick={() => navigate(-1)}
+                >
+                  더 추가하기
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Portal>
+      )}
     </div>
   );
 };
