@@ -8,6 +8,7 @@ import { useUploadStoreBannerImages } from "../../hooks/booth/store/useUploadSto
 import type { BannerImage } from "./types/booth";
 import type { ProfileImage } from "./types/booth";
 import BoothSection from "./components/BoothSection";
+import AccountPage from "./components/AccountPage";
 
 const BoothForm = () => {
   const width = useWindowWidth();
@@ -176,8 +177,10 @@ const BoothForm = () => {
               </button>
             </div>
           </>
-        ) : (
+        ) : activeTab === "menu" ? (
           <MenuSection />
+        ) : (
+          <AccountPage />
         )}
       </div>
     </div>
