@@ -357,6 +357,12 @@ pre {
     letter-spacing: 0%;
     font-weight: 500;
   }
+  .text-12-bold {
+    font-size: 12px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    font-weight: 700;
+  }
 
   .text-12-semibold {
     font-size: 12px;
@@ -410,6 +416,13 @@ pre {
   /* 미리보기 빨간 뱃지 폰트 */
   .text-7-bold {
     font-size: 7.55px;
+    line-height: 100%;
+    letter-spacing: 0;
+    font-weight: 700;
+  }
+
+  .text-12-bold {
+    font-size: 12px;
     line-height: 100%;
     letter-spacing: 0;
     font-weight: 700;

@@ -24,13 +24,13 @@ const ConfirmRemoveModal = ({
             onClick={onCancel}
             className="flex-1 py-2 rounded-md border border-black-20 text-black-65 bg-white"
           >
-            취소
+            아니오
           </button>
           <button
             onClick={onConfirm}
             className="flex-1 py-2 rounded-md bg-primary text-white font-medium"
           >
-            삭제
+            네
           </button>
         </div>
       </div>

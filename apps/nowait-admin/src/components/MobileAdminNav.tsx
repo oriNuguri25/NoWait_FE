@@ -7,6 +7,7 @@ import statIconActive from "../assets/statIconActive.svg";
 import boothIcon from "../assets/Tent.svg";
 import boothIconActive from "../assets/boothIconActive.svg";
 import cancelIcon from "../assets/Cancel.svg";
+import logoutIcon from "../assets/log-out.svg";
 import { useLocation, useNavigate } from "react-router";
 
 const menuItems = [
@@ -71,10 +72,9 @@ const MobileAdminNav = ({ onClose }: { onClose: () => void }) => {
         </ul>
 
         {/* 하단 - 로그아웃 */}
-        <div className="flex justify-start items-center gap-2 px-3 mt-8">
-          <button className="text-primary font-medium text-title-18-semibold">
-            계정 로그아웃
-          </button>
+        <div className="flex justify-start items-center text-[#999999] text-16-semibold gap-[2.5px] px-3 mt-8">
+          <img src={logoutIcon} />
+          {"로그아웃"}
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ const AdminAuth = () => {
 
       {/* 2. Feature Section 1 */}
       <section className="w-[576px] [@media(max-width:431px)]:w-[325px] mx-auto ">
-        <RedBadge label="웨이팅 관리" />
+        <RedBadge label="웨이팅 관리" small={false} />
         <h3 className="text-headline-28-bold mb-1 mt-4">
           대기 없이 빠르게
           <br />
@@ -36,7 +36,7 @@ const AdminAuth = () => {
 
       {/* 3. Feature Section 2 */}
       <section className="w-[576px] [@media(max-width:431px)]:w-[325px] mx-auto text-right">
-        <RedBadge label="주문 관리" />
+        <RedBadge label="주문 관리" small={false} />
         <h3 className="text-headline-28-bold mb-1 mt-4">
           주문 접수, 입금 확인도
           <br />
@@ -52,7 +52,7 @@ const AdminAuth = () => {
 
       {/* 4. Feature Section 3 */}
       <section className="w-[576px]  [@media(max-width:431px)]:w-[325px] mx-auto mb-[200px]">
-        <RedBadge label="운영 현황 요약" />
+        <RedBadge label="운영 현황 요약" small={false} />
         <h3 className="text-headline-28-bold mb-1 mt-4">
           운영 상황을 한눈에
           <br />
