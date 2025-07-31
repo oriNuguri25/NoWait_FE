@@ -4,7 +4,7 @@ import openDoorIcon from "../../../assets/door_open.svg";
 import alarmIcon from "../../../assets/alarm.svg";
 import { useEffect, useState } from "react";
 
-const totalDurationSec = 600; // 10분
+const totalDurationSec = 10; // 10초, 10분은 600
 
 type WaitingCardStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 interface WaitingCardProps {
@@ -47,16 +47,6 @@ export function WaitingCard({
   console.log(calledAt, "호출시간");
 
   useEffect(() => {
-    if (status === "CALLING") {
-      const timer = setTimeout(() => {
-        onNoShow();
-      }, 10 * 1 * 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [status]);
-
-  useEffect(() => {
     if (status === "CALLING" && calledAt) {
       const start = new Date(calledAt).getTime();
 
@@ -68,6 +58,11 @@ export function WaitingCard({
         const min = String(Math.floor(remainingSec / 60)).padStart(2, "0");
         const sec = String(remainingSec % 60).padStart(2, "0");
         setElapsed(`${min}:${sec}`);
+
+        // 시간이 다 되면 노쇼 처리
+        if (remainingSec === 0) {
+          onNoShow();
+        }
       };
 
       updateElapsed(); // 최초 계산
@@ -87,7 +82,9 @@ export function WaitingCard({
           <span>{time}</span>
           <span className="px-[2px]">·</span>
           <span>{waitMinutes}분 대기 중</span>
-          {<CloseButton onClick={onDelete} />}
+          {(status === "WAITING" || status === "CALLING") && (
+            <CloseButton onClick={onDelete} />
+          )}
         </div>
       </div>
 
@@ -122,13 +119,13 @@ export function WaitingCard({
           <>
             <button
               onClick={onCall}
-              className="w-[60%] bg-[#FFF0EB] text-[#FF6736] py-2 rounded-[8px] flex justify-center items-center gap-1"
+              className="w-[60%] bg-[#FFF0EB] text-15-semibold text-[#FF6736] py-2 rounded-[8px] flex justify-center items-center gap-1"
             >
               <img src={callIcon} /> 호출
             </button>
             <button
               onClick={onEnter}
-              className="w-[35%] bg-[#E8F3FF] text-[#2C7CF6] py-2 rounded-[8px] flex justify-center items-center gap-1"
+              className="w-[35%] bg-[#E8F3FF] text-15-semibold text-[#2C7CF6] py-2 rounded-[8px] flex justify-center items-center gap-1"
             >
               <img src={openDoorIcon} /> 입장
             </button>
