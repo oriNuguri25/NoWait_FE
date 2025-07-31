@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import placeholderIcon from "../../../assets/image_placeholder.svg";
-import closeIcon from "../../../assets/close.svg";
+import placeholderIcon from "../../../../assets/image_placeholder.svg";
+import closeIcon from "../../../../assets/close.svg";
 interface MenuModalProps {
   isEdit: boolean;
   initialData?: {

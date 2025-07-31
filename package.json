@@ -21,6 +21,7 @@
     "@tiptap/starter-kit": "^3.0.7",
     "@toast-ui/react-editor": "^3.2.3",
     "clsx": "^2.1.1",
+    "dompurify": "^3.2.6",
     "framer-motion": "^12.20.1",
     "prosemirror-model": "^1.25.2",
     "prosemirror-state": "^1.4.3",

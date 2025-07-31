@@ -6,6 +6,7 @@ import placeholderIcon from "../../../assets/image_placeholder.svg";
 import type { BannerImage } from "../types/booth";
 import type { ProfileImage } from "../types/booth";
 import deletBttn from "../../../assets/booth/del.svg";
+import PreviewModal from "./Modal/PreviewModal";
 
 const BoothSection = ({
   departName,
@@ -60,6 +61,7 @@ const BoothSection = ({
   endMinute: string;
   setEndMinute: (val: string) => void;
 }) => {
+  const [showPreview, setShowPreview] = useState(false);
   return (
     <>
       <div className="flex flex-col items-center pb-[50px] max-w-[614px]">
@@ -68,9 +70,46 @@ const BoothSection = ({
           <h2 className="text-headline-22-bold text-black-80">부스 프로필</h2>
 
           {/* 우측 버튼 */}
-          <button className="px-4 py-1 rounded-lg w-[68px] text-14-semibold text-black-70 bg-black-20 px-[10px] py-[7.5px]">
+          <button
+            onClick={() => setShowPreview(true)}
+            className="px-4 py-1 rounded-lg w-[68px] text-14-semibold text-black-70 bg-black-20 px-[10px] py-[7.5px]"
+          >
             미리보기
           </button>
+          {showPreview && (
+            <PreviewModal
+              onClose={() => setShowPreview(false)}
+              boothName={boothName}
+              departName={departName}
+              boothIntro={boothIntro}
+              noticeTitle={noticeTitle}
+              boothNotice={boothNotice}
+              startHour={startHour}
+              startMinute={startMinute}
+              endHour={endHour}
+              endMinute={endMinute}
+              profileImage={
+                profileImage
+                  ? profileImage instanceof File
+                    ? {
+                        id: 0,
+                        imageUrl: URL.createObjectURL(profileImage),
+                        imageType: "PROFILE",
+                      }
+                    : profileImage
+                  : null
+              }
+              bannerImages={bannerImages.map((img, i) =>
+                img instanceof File
+                  ? {
+                      id: i,
+                      imageUrl: URL.createObjectURL(img),
+                      imageType: "BANNER",
+                    }
+                  : { ...img, imageType: "BANNER" }
+              )}
+            />
+          )}
         </div>
         <div className="flex w-full">
           <BoothProfileImage
