@@ -19,6 +19,8 @@ const BoothSection = ({
   setBannerImages,
   profileImage,
   setProfileImage,
+  noticeTitle,
+  setNoticeTitle,
   boothNotice,
   setBoothNotice,
   startHour,
@@ -44,6 +46,8 @@ const BoothSection = ({
   setProfileImage: React.Dispatch<React.SetStateAction<ProfileImage>>;
   boothNotice: string;
   setBoothNotice: (val: string) => void;
+  noticeTitle: string;
+  setNoticeTitle: (val: string) => void;
   startHour: string;
   setStartHour: (val: string) => void;
   startMinute: string;
@@ -175,7 +179,12 @@ const BoothSection = ({
       />
 
       {/* 공지사항 */}
-      <NoticeEditor notice={boothNotice} setNotice={setBoothNotice} />
+      <NoticeEditor
+        noticeTitle={noticeTitle}
+        setNoticeTitle={setNoticeTitle}
+        notice={boothNotice}
+        setNotice={setBoothNotice}
+      />
 
       {/* 버튼 */}
     </>

@@ -26,6 +26,7 @@ const BoothForm = () => {
   const [startMinute, setStartMinute] = useState("");
   const [endHour, setEndHour] = useState("");
   const [endMinute, setEndMinute] = useState("");
+  const [noticeTitle, setNoticeTitle] = useState("");
 
   const [isFocused, setIsFocused] = useState(false);
   const [isTextareaFocused, setIsTextareaFocused] = useState(false);
@@ -41,7 +42,8 @@ const BoothForm = () => {
         name: boothName,
         location: "제2학관 앞마당", // 입력받는 필드 필요
         description: boothIntro,
-        notice: boothNotice,
+        noticeTitle: noticeTitle,
+        noticeContent: boothNotice,
         openTime: `${startHour}${startMinute}${endHour}${endMinute}`,
       },
       {
@@ -135,6 +137,8 @@ const BoothForm = () => {
             setBannerImages={setBannerImages}
             profileImage={profileImage}
             setProfileImage={setProfileImage}
+            noticeTitle={noticeTitle}
+            setNoticeTitle={setNoticeTitle}
             boothNotice={boothNotice}
             setBoothNotice={setBoothNotice}
             startHour={startHour}
