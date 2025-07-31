@@ -8,6 +8,7 @@ import type { ProfileImage } from "../types/booth";
 import deletBttn from "../../../assets/booth/del.svg";
 
 const BoothSection = ({
+  departName,
   boothName,
   setBoothName,
   isFocused,
@@ -33,6 +34,7 @@ const BoothSection = ({
   endMinute,
   setEndMinute,
 }: {
+  departName: string;
   boothName: string;
   setBoothName: (val: string) => void;
   isFocused: boolean;

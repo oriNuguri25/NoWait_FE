@@ -22,22 +22,6 @@ const MenuBar = ({ editor }: { editor: any }) => {
   return (
     <div className="flex px-[14px] py-[8px] border-b border-[#F4F4F4] text-gray-600">
       <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={`${baseBtnClass} ${
-          editor.isActive("heading", { level: 1 }) ? "bg-gray-100" : ""
-        }`}
-      >
-        H1
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={`${baseBtnClass} ${
-          editor.isActive("heading", { level: 2 }) ? "bg-gray-100" : ""
-        }`}
-      >
-        H2
-      </button>
-      <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         className={`${baseBtnClass} ${
           editor.isActive("bold") ? "bg-gray-100" : ""
@@ -85,7 +69,7 @@ const NoticeEditor = ({
 }) => {
   const editor = useEditor({
     extensions: [StarterKit, Underline],
-    content: notice || "내용을 입력해주세요",
+    content: notice || "",
   });
 
   // 부모로 내용 동기화

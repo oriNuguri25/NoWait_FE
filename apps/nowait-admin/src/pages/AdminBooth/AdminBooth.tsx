@@ -22,6 +22,7 @@ const BoothForm = () => {
     "menu"
   );
   const [boothName, setBoothName] = useState("");
+  const [departName, setDepartName] = useState("");
   const [boothIntro, setBoothIntro] = useState("");
   const [boothNotice, setBoothNotice] = useState("");
   const [startHour, setStartHour] = useState("");
@@ -77,7 +78,9 @@ const BoothForm = () => {
     if (store) {
       setBoothName(store.name);
       setBoothIntro(store.description);
-
+      setDepartName(store.departmentName);
+      if (store.noticeTitle) setNoticeTitle(store.noticeTitle);
+      if (store.noticeContent) setBoothNotice(store.noticeContent);
       if (store.bannerImages) {
         const formatted = store.bannerImages.map((img: any) => ({
           ...img,
@@ -138,6 +141,7 @@ const BoothForm = () => {
         {activeTab === "booth" ? (
           <>
             <BoothSection
+              departName={departName}
               boothName={boothName}
               setBoothName={setBoothName}
               isFocused={isFocused}
