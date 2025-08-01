@@ -7,6 +7,9 @@ import { useCreateMenu } from "../../../hooks/booth/menu/useCreateMenu";
 import { useUploadMenuImage } from "../../../hooks/booth/useUploadMenuImage";
 import { useGetAllMenus } from "../../../hooks/booth/menu/useGetAllMenus";
 import { useUpdateMenu } from "../../../hooks/booth/useUpdateMenu";
+import addIcon from "../../../assets/booth/add.svg";
+import MenuRemoveModal from "./Modal/MenuRemoveModal";
+import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
 
 interface Menu {
   id: number;
@@ -21,12 +24,14 @@ const MenuSection = () => {
   const [editMode, setEditMode] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
   const { data: fetchedMenus = [], isLoading } = useGetAllMenus(1);
 
   // 메뉴 생성 훅
   const { mutate: createMenu } = useCreateMenu();
   const { mutate: uploadMenuImage } = useUploadMenuImage();
+  const { mutate: deleteMenu } = useDeleteMenu();
   const [menus, setMenus] = useState<Menu[]>([]);
 
   // 메뉴 수정 훅
@@ -130,6 +135,21 @@ const MenuSection = () => {
     });
   };
 
+  const handleDeleteMenu = () => {
+    if (!selectedMenu) return;
+
+    deleteMenu(selectedMenu.id, {
+      onSuccess: () => {
+        setMenus((prev) => prev.filter((menu) => menu.id !== selectedMenu.id));
+        setIsRemoveModalOpen(false);
+        alert("메뉴가 삭제되었습니다.");
+      },
+      onError: () => {
+        alert("메뉴 삭제에 실패했습니다.");
+      },
+    });
+  };
+
   const toggleSoldOut = (index: number) => {
     const updatedMenus = [...menus];
     updatedMenus[index].soldOut = !updatedMenus[index].soldOut;
@@ -163,20 +183,20 @@ const MenuSection = () => {
         <h2 className="text-title-18-bold">메뉴</h2>
         <div className="flex gap-[10px]">
           <button
-            className={`text-sm px-4 py-2 rounded-[8px] ${
+            className={`text-14-semibold px-[10px] py-[7.5px] rounded-[8px] ${
               editMode
                 ? "bg-[#FFF0EB] text-primary"
-                : "bg-black-5 text-black-80"
+                : "bg-black-5 text-black-70"
             }`}
             onClick={() => setEditMode((prev) => !prev)}
           >
             {editMode ? "편집 완료" : "순서 편집"}
           </button>
           <button
-            className="text-sm px-4 py-2 bg-black-5 text-black-80 rounded-[8px]"
+            className="flex text-14-semibold px-[10px] py-[7.5px] bg-black-5 text-black-70 rounded-[8px]"
             onClick={() => setIsAddModalOpen(true)}
           >
-            메뉴 추가 +
+            메뉴 추가 <img src={addIcon} />
           </button>
         </div>
       </div>
@@ -268,8 +288,16 @@ const MenuSection = () => {
         <MenuModal
           isEdit={true}
           initialData={selectedMenu}
-          onClose={() => setIsEditModalOpen(false)}
+          onClose={() => {
+            setIsEditModalOpen(false);
+          }}
           onSubmit={handleEditMenu}
+        />
+      )}
+      {isRemoveModalOpen && (
+        <MenuRemoveModal
+          onCancel={() => setIsRemoveModalOpen(false)}
+          onConfirm={handleDeleteMenu}
         />
       )}
     </div>

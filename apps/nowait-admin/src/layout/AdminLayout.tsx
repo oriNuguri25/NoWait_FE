@@ -8,7 +8,7 @@ const AdminLayout = () => {
   const width = useWindowWidth();
 
   const isCompact = width < 1024;
-  const isMobile = width <= 431;
+  const isMobile = width <= 767;
 
   const { pathname } = useLocation();
   const isBoothPage = pathname === "/admin/booth";
