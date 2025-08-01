@@ -12,6 +12,9 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
   return {
     plugins: [react(), svgr()],
+    build: {
+      outDir: "dist",
+    },
     server: {
       proxy: {
         // /orders 로 시작하는 요청은 모두 백엔드서버 주소로 전달
