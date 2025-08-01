@@ -5,7 +5,7 @@ import {Button} from "@repo/ui"
 import Clock from "../../../../assets/icon/clock.svg?react"
 
 interface PropsType {
-  storeId: any;
+  storeId: string | undefined;
 }
 
 const BoothDetail = ({ storeId }: PropsType) => {

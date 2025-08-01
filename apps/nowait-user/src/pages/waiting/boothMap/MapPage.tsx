@@ -5,6 +5,8 @@ import useWindowHeight from "../../../hooks/useWindowHeight";
 import { useState } from "react";
 import { useInfiniteStores } from "../../../hooks/useInfiniteStores";
 import BoothDetail from "./components/BoothDetail";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { getAllStores } from "../../../api/reservation";
 
 const boothPosition: Record<number, { top: string; left: string }> = {
   1: { top: "45%", left: "60%" },
@@ -16,11 +18,25 @@ const boothPosition: Record<number, { top: string; left: string }> = {
 const MapPage = () => {
   const height = useWindowHeight();
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
+  // const {data:storeMarkers} = useQuery({
+  //       queryKey: ["stores"],
+  //   queryFn: getAllStores,
+  //   // initialPageParam: 0,
+  //   // getNextPageParam: (lastPage, allPages) => {
+  //   //   // 서버에서 받은 hasNext를 기준으로 다음 페이지 여부 결정
+  //   //   if (!lastPage.hasNext) {
+  //   //     return undefined;
+  //   //   }
+  //   //   return allPages.length;
+  //   // },
+  // })
   const { stores } = useInfiniteStores();
-  const booths = stores.map((booth) => ({
+  const booths = stores?.map((booth) => ({
     ...booth,
     ...boothPosition[booth.storeId],
   }));
+
+  const detailBooth = booths.find((booth) => booth.storeId === selectedBooth);
 
   const openBoothButton = (id: number) => {
     if (selectedBooth === id) {
@@ -72,10 +88,9 @@ const MapPage = () => {
       {/* <AnimatePresence></AnimatePresence> */}
       {selectedBooth !== null ? (
         <BoothDetail
-          storeId={booths.find((booth) => {
-            booth.storeId === selectedBooth;
-
-          })}
+          storeId={String(
+            booths.find((booth) => booth.storeId === selectedBooth)?.storeId
+          )}
         />
       ) : (
         <BoothList />
