@@ -1,16 +1,16 @@
 import { motion, useMotionValue, animate } from "framer-motion";
-import BookmarkedStoreItem from "../../bookmark/components/BookmarkedStoreItem";
 import { useBookmarkState } from "../../../../hooks/useBookmarkState";
 import { useInfiniteStores } from "../../../../hooks/useInfiniteStores";
-import { useRef, useState } from "react";
+import StoreListItem from "../../../../components/common/StoreListItem";
+import BoothItem from "./BoothItem";
 
 const snapPoints = [0, -400]; // 0: 닫힘, -400: 열림
 
 const BoothList = () => {
-
+  const { isBookmarked } = useBookmarkState();
   const y = useMotionValue(0);
-  // const { bookmarkData } = useBookmarkState();
-  const { stores } = useInfiniteStores();
+  const { stores, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteStores();
   const handleDragEnd = () => {
     const currentY = y.get();
     // 가장 가까운 스냅 지점으로 스냅
@@ -40,7 +40,7 @@ const BoothList = () => {
         <ul className="h-[600px] overflow-y-scroll">
           {stores.map((store) => {
             return (
-              <BookmarkedStoreItem
+              <BoothItem
                 key={store.storeId}
                 bannerImages={store.bannerImages[0]?.imageUrl}
                 waitingCount={store.waitingCount}

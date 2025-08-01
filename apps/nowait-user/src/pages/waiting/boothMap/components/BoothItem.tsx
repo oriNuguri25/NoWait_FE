@@ -1,12 +1,11 @@
 import BookmarkIcon from "../../../../components/common/BookmarkIcon";
 import DepartmentImage from "../../../../components/DepartmentImage";
-import defaultMenuImageLg from "../../../../assets/default-menu-image-lg.png";
-import type { BannerImages, ProfileImage } from "../../../../types/wait/store";
-import { createBookmark, deleteBookmark } from "../../../../api/reservation";
-import { useState } from "react";
 import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
+import { useBookmarkState } from "../../../../hooks/useBookmarkState";
+import defaultMenuImageLg from "../../../../assets/default-menu-image-lg.png";
 
-type PropsType = {
+
+interface PropsType {
   bookmarkId?: number;
   bannerImages?: string;
   waitingCount: number;
@@ -14,9 +13,9 @@ type PropsType = {
   name: string;
   departmentName: string;
   storeId: string;
-};
+}
 
-const BookmarkedStoreItem = ({
+const BoothItem = ({
   bannerImages,
   waitingCount,
   profileImage,
@@ -25,17 +24,16 @@ const BookmarkedStoreItem = ({
   storeId,
 }: PropsType) => {
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
-    withInvalidate: false,
+    withInvalidate: true,
   });
-  const [isBookmarked, setIsBookmarked] = useState(true);
+  const { isBookmarked } = useBookmarkState(storeId);
+
   const handleBookmarkButton = async () => {
     try {
       if (isBookmarked) {
         await deleteBookmarkMutate.mutate(storeId);
-        setIsBookmarked(false);
       } else {
         await createBookmarkMutate.mutate(storeId);
-        setIsBookmarked(true);
       }
     } catch (error) {
       console.log(error);
@@ -57,11 +55,7 @@ const BookmarkedStoreItem = ({
       </div>
       <div className="flex items-start justify-between py-3">
         <div className="flex items-center gap-2.5">
-          <DepartmentImage
-            width="40px"
-            height="40px"
-            src={profileImage}
-          />
+          <DepartmentImage width="40px" height="40px" src={profileImage} />
           <div className="flex flex-col justify-between">
             <h1 className="text-title-16-bold text-black-90">{name}</h1>
             <h2 className="text-14-regular text-black-70">{departmentName}</h2>
@@ -75,4 +69,4 @@ const BookmarkedStoreItem = ({
   );
 };
 
-export default BookmarkedStoreItem;
+export default BoothItem;

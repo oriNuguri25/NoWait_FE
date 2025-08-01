@@ -18,24 +18,17 @@ const boothPosition: Record<number, { top: string; left: string }> = {
 const MapPage = () => {
   const height = useWindowHeight();
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
-  // const {data:storeMarkers} = useQuery({
-  //       queryKey: ["stores"],
-  //   queryFn: getAllStores,
-  //   // initialPageParam: 0,
-  //   // getNextPageParam: (lastPage, allPages) => {
-  //   //   // 서버에서 받은 hasNext를 기준으로 다음 페이지 여부 결정
-  //   //   if (!lastPage.hasNext) {
-  //   //     return undefined;
-  //   //   }
-  //   //   return allPages.length;
-  //   // },
-  // })
+  const {data:storeMarkers} = useQuery({
+        queryKey: ["stores"],
+    queryFn: getAllStores,
+  })
+  console.log(storeMarkers,"스토어 마커")
   const { stores } = useInfiniteStores();
   const booths = stores?.map((booth) => ({
     ...booth,
     ...boothPosition[booth.storeId],
   }));
-
+  console.log(stores,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
   const detailBooth = booths.find((booth) => booth.storeId === selectedBooth);
 
   const openBoothButton = (id: number) => {
@@ -88,9 +81,7 @@ const MapPage = () => {
       {/* <AnimatePresence></AnimatePresence> */}
       {selectedBooth !== null ? (
         <BoothDetail
-          storeId={String(
-            booths.find((booth) => booth.storeId === selectedBooth)?.storeId
-          )}
+          booth={detailBooth}
         />
       ) : (
         <BoothList />
