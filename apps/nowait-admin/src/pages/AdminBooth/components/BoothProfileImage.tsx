@@ -1,20 +1,34 @@
 import React from "react";
 import editIcon from "../../../assets/edit_icon.svg";
 import booth_thumbnail from "../../../assets/booth_thumbnail.svg";
+import type { ProfileImage } from "../types/booth";
 
 const BoothProfileImage = ({
   profileImage,
   setProfileImage,
 }: {
-  profileImage: File | null;
-  setProfileImage: (file: File | null) => void;
+  profileImage: ProfileImage;
+  setProfileImage: React.Dispatch<React.SetStateAction<ProfileImage>>;
 }) => {
+  const getImageSrc = (): string => {
+    if (profileImage instanceof File) {
+      return URL.createObjectURL(profileImage);
+    }
+    if (
+      profileImage &&
+      typeof profileImage === "object" &&
+      "imageUrl" in profileImage
+    ) {
+      return profileImage.imageUrl;
+    }
+    return booth_thumbnail;
+  };
   return (
     <div className="relative self-start">
       <div className="h-25 w-25 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
         {profileImage ? (
           <img
-            src={URL.createObjectURL(profileImage)}
+            src={getImageSrc()}
             alt="프로필 미리보기"
             className="object-cover w-full h-full"
           />
@@ -26,8 +40,8 @@ const BoothProfileImage = ({
           />
         )}
       </div>
-      <label className="absolute bottom-0 right-0 bg-white rounded-full p-1 border border-[#ECECEC] cursor-pointer">
-        <img src={editIcon} className="w-4 h-4" alt="편집" />
+      <label className="absolute bottom-0 right-0 bg-white w-[38px] h-[38px] rounded-full p-1 border border-[#ECECEC] cursor-pointer">
+        <img src={editIcon} className="w-full h-full" alt="편집" />
         <input
           type="file"
           accept="image/*"

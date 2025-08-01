@@ -3,7 +3,7 @@ import { SmallActionButton } from "./SmallActionButton";
 import Add from "../assets/icon/Add.svg?react";
 
 interface PropsType {
-  mode: "default" | "orderDetails";
+  mode: "default" | "orderDetails"
   title: string;
   buttonText: string;
 }

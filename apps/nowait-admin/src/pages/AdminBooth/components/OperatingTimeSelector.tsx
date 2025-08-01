@@ -1,8 +1,17 @@
-import { useState } from "react";
 import dropIcon from "../../../assets/drop_down.svg";
 
-const hours = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0"));
-const minutes = ["00", "10", "20", "30", "40", "50"];
+// 오전/오후 + 시 조합 (01시~12시)
+const hours = Array.from({ length: 12 }, (_, i) =>
+  [`오전`, `오후`].flatMap(
+    (period) => `${period} ${String(i + 1).padStart(2, "0")}시`
+  )
+).flat();
+
+// 분: 00 ~ 55 (5분 단위)
+const minutes = Array.from(
+  { length: 12 },
+  (_, i) => `${String(i * 5).padStart(2, "0")}분`
+);
 
 const CustomSelect = ({
   value,
@@ -15,11 +24,11 @@ const CustomSelect = ({
   options: string[];
   placeholder: string;
 }) => (
-  <div className="relative w-[100px]">
+  <div className="relative w-[120px]">
     <select
       value={value}
       onChange={onChange}
-      className="appearance-none border border-gray-300 rounded-lg pl-3 pr-8 py-2 text-sm w-full"
+      className="appearance-none border border-gray-300 rounded-lg pl-3 pr-8 py-2 text-sm w-full bg-white"
     >
       <option value="">{placeholder}</option>
       {options.map((opt) => (
@@ -28,8 +37,8 @@ const CustomSelect = ({
         </option>
       ))}
     </select>
-    <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
-      <img src={dropIcon} />
+    <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2">
+      <img src={dropIcon} alt="dropdown" className="w-3 h-3" />
     </div>
   </div>
 );
@@ -54,7 +63,7 @@ const OperatingTimeSelector = ({
   setEndMinute: (val: string) => void;
 }) => {
   return (
-    <div className="mb-8">
+    <div className="mb-8 max-w-[614px]">
       <label className="block text-title-16-bold mb-1">운영 시간</label>
       <p className="text-sm text-gray-400 mb-3">
         부스의 운영 시간을 설정해 주세요
@@ -65,7 +74,7 @@ const OperatingTimeSelector = ({
           value={startHour}
           onChange={(e) => setStartHour(e.target.value)}
           options={hours}
-          placeholder="시"
+          placeholder="시간"
         />
         <CustomSelect
           value={startMinute}
@@ -81,7 +90,7 @@ const OperatingTimeSelector = ({
           value={endHour}
           onChange={(e) => setEndHour(e.target.value)}
           options={hours}
-          placeholder="시"
+          placeholder="시간"
         />
         <CustomSelect
           value={endMinute}

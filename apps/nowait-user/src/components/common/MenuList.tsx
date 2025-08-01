@@ -42,7 +42,7 @@ const MenuList = ({
     queryFn: () => getStoreMenus(storeId),
     select: (data) => data.response.menuReadDto,
   });
-
+  
   return (
     <div className="py-[30px]">
       <h1 className="text-title-20-semibold mb-3">메뉴</h1>

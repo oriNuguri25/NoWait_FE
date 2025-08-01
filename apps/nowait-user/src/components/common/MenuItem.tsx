@@ -43,7 +43,7 @@ const MenuItem = ({ data, mode }: PropsType) => {
           className={`w-[80px] h-[80px] bg-black-25 rounded-[12px] object-cover ${
             data.isSoldOut && "opacity-40"
           }`}
-          src={`${data.image}` || defaultMenuImageSm}
+          src={data.images[0]?.imageUrl ?? defaultMenuImageSm}
           alt="음식 메뉴 이미지"
         />
       </button>

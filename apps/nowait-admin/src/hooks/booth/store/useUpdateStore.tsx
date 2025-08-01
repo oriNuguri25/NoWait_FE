@@ -6,7 +6,8 @@ interface UpdateStoreParams {
   name: string;
   location: string;
   description: string;
-  notice: string;
+  noticeTitle: string;
+  noticeContent: string;
   openTime: string;
 }
 

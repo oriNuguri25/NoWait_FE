@@ -141,7 +141,7 @@ const InfiniteStoreList = () => {
                     storeId={store.storeId}
                     name={store.name}
                     departmentName={store.departmentName}
-                    profileImageUrl={store.profileImageUrl}
+                    profileImageUrl={store.profileImage?.imageUrl || ""}
                     isActive={store.isActive}
                     deleted={store.deleted}
                     waitingCount={store.waitingCount}

@@ -1,28 +1,12 @@
 import HomeHeader from "../../../components/Header";
 import { useBookmarkState } from "../../../hooks/useBookmarkState";
+import type { BookmarkListType } from "../../../types/wait/store";
 import BookmarkedStoreItem from "./components/BookmarkedStoreItem";
-
-const dummyData = [
-  {
-    id: 1,
-    image: "/bookmarkStoreImage.png",
-    waitingCount: "대기 0팀",
-    storeName: "스페이시스",
-    departmentName: "바이오메카트로닉스공학과",
-    storeId: "1",
-  },
-  {
-    id: 2,
-    image: "/bookmarkStoreImage.png",
-    waitingCount: "대기 0팀",
-    storeName: "스페이시스",
-    departmentName: "약과",
-    storeId: "2",
-  },
-];
+import BookmarkEmptyPage from "./components/BookmarkEmptyPage";
 
 const BookmarkPage = () => {
-  const {bookmarkData} = useBookmarkState()
+  const { bookmarkList } = useBookmarkState();
+
   return (
     <div>
       <div className="px-5">
@@ -30,21 +14,26 @@ const BookmarkPage = () => {
         <h1 className="mt-5 mb-4 text-title-20-bold text-black-90">
           북마크한 부스
         </h1>
-        <ul>
-          {bookmarkData?.map((data:any) => {
-            return (
-              <BookmarkedStoreItem
-                key={data.id}
-                id={data.id}
-                image={data.image}
-                waitingCount={data.waitingCount}
-                storeName={data.storeName}
-                departmentName={data.departmentName}
-                storeId={data.storeId}
-              />
-            );
-          })}
-        </ul>
+        {!bookmarkList || bookmarkList?.length < 1 ? (
+          <BookmarkEmptyPage />
+        ) : (
+          <ul>
+            {bookmarkList?.map((data: BookmarkListType) => {
+              return (
+                <BookmarkedStoreItem
+                  key={data.bookmarkId}
+                  bookmarkId={data.bookmarkId}
+                  bannerImages={data.bannerImages}
+                  waitingCount={data.waitingCount}
+                  profileImage={data.profileImage}
+                  name={data.name}
+                  departmentName={data.departmentName}
+                  storeId={data.storeId}
+                />
+              );
+            })}
+          </ul>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import SuccessMessagePage from "../../../components/common/SuccessMessagePage";
 import { useNavigate } from "react-router-dom";
-import waitSuccess from "../../../assets/orderSuccess.png";
+import waitSuccess from "../../../assets/waitSuccess.png";
 
 const WaitingSuccessPage = () => {
   const navigate = useNavigate();

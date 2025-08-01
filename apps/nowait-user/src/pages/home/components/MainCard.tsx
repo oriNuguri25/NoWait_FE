@@ -208,12 +208,18 @@ const StoreCardComponent = ({
       className="flex flex-row py-3 gap-3 w-full min-w-0 items-center cursor-pointer"
       onClick={handleStoreClick}
     >
-      <div className="rounded-full w-11 h-11 bg-gray-200 flex-shrink-0">
-        <img
-          alt={`${name} 주점 이미지`}
-          src={profileImageUrl}
-          className="w-full h-full object-cover rounded-full"
-        />
+      <div className="rounded-full w-11 h-11 bg-gray-200 flex-shrink-0 flex items-center justify-center">
+        {profileImageUrl ? (
+          <img
+            alt={`${name} 주점 이미지`}
+            src={profileImageUrl}
+            className="w-full h-full object-cover rounded-full"
+          />
+        ) : (
+          <div className="text-16-bold text-black-60 flex items-center justify-center">
+            {name.charAt(0)}
+          </div>
+        )}
       </div>
       <div className="flex flex-col flex-1 min-w-0">
         <div className="flex flex-row gap-2 items-center min-w-0">

@@ -128,3 +128,11 @@ body,
 textarea {
   resize: none;
 }
+
+.swipeable-list-item__content {
+  transform: translateX(0) !important; /* 초기화 */
+  transition: transform 0.3s ease;
+}
+.swipeable-list-item__content.swiping-left {
+  transform: translateX(-70px) !important;
+}

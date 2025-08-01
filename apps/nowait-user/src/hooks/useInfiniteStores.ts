@@ -8,7 +8,12 @@ interface Store {
   name: string;
   location: string;
   description: string;
-  profileImageUrl: string;
+  profileImage: {
+    id: number;
+    storeId: number;
+    imageUrl: string;
+    imageType: string;
+  } | null;
   isActive: boolean;
   deleted: boolean;
   createdAt: string;
@@ -20,7 +25,7 @@ interface ServerResponse {
   success: boolean;
   response: {
     hasNext: boolean;
-    storePageReadDtos: Store[];
+    storePageReadResponses: Store[];
   };
   error: null;
 }
@@ -44,8 +49,11 @@ const fetchStores = async ({
     console.log("서버 응답 전체:", response.data);
 
     // 서버 응답 구조에 맞게 데이터 추출
-    if (response.data.success && response.data.response?.storePageReadDtos) {
-      const storeArray = response.data.response.storePageReadDtos;
+    if (
+      response.data.success &&
+      response.data.response?.storePageReadResponses
+    ) {
+      const storeArray = response.data.response.storePageReadResponses;
       const hasNext = response.data.response.hasNext;
 
       console.log("추출된 주점 배열:", storeArray);

@@ -1,13 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
-import placeholderIcon from "../../../assets/image_placeholder.svg";
+import { useEffect, useState } from "react";
 import editOrderIcon from "../../../assets/edit_order_icon.svg";
 import ToggleSwitch from "../../AdminHome/components/ToggleSwitch";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import MenuModal from "../components/menuModal";
+import MenuModal from "./Modal/menuModal";
 import { useCreateMenu } from "../../../hooks/booth/menu/useCreateMenu";
 import { useUploadMenuImage } from "../../../hooks/booth/useUploadMenuImage";
 import { useGetAllMenus } from "../../../hooks/booth/menu/useGetAllMenus";
 import { useUpdateMenu } from "../../../hooks/booth/useUpdateMenu";
+import addIcon from "../../../assets/booth/add.svg";
+import MenuRemoveModal from "./Modal/MenuRemoveModal";
+import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
 
 interface Menu {
   id: number;
@@ -22,12 +24,14 @@ const MenuSection = () => {
   const [editMode, setEditMode] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
   const { data: fetchedMenus = [], isLoading } = useGetAllMenus(1);
 
   // 메뉴 생성 훅
   const { mutate: createMenu } = useCreateMenu();
   const { mutate: uploadMenuImage } = useUploadMenuImage();
+  const { mutate: deleteMenu } = useDeleteMenu();
   const [menus, setMenus] = useState<Menu[]>([]);
 
   // 메뉴 수정 훅
@@ -131,6 +135,21 @@ const MenuSection = () => {
     });
   };
 
+  const handleDeleteMenu = () => {
+    if (!selectedMenu) return;
+
+    deleteMenu(selectedMenu.id, {
+      onSuccess: () => {
+        setMenus((prev) => prev.filter((menu) => menu.id !== selectedMenu.id));
+        setIsRemoveModalOpen(false);
+        alert("메뉴가 삭제되었습니다.");
+      },
+      onError: () => {
+        alert("메뉴 삭제에 실패했습니다.");
+      },
+    });
+  };
+
   const toggleSoldOut = (index: number) => {
     const updatedMenus = [...menus];
     updatedMenus[index].soldOut = !updatedMenus[index].soldOut;
@@ -159,28 +178,36 @@ const MenuSection = () => {
   }, [fetchedMenus]);
 
   return (
-    <div className="mt-[40px] mb-[20px]">
+    <div className="mt-[40px] mb-[20px] max-w-[614px]">
       <div className="flex justify-between items-center mb-[20px]">
         <h2 className="text-title-18-bold">메뉴</h2>
         <div className="flex gap-[10px]">
           <button
-            className="text-sm px-4 py-2 bg-black-5 text-black-80 rounded-[8px]"
+            className={`text-14-semibold px-[10px] py-[7.5px] rounded-[8px] ${
+              editMode
+                ? "bg-[#FFF0EB] text-primary"
+                : "bg-black-5 text-black-70"
+            }`}
             onClick={() => setEditMode((prev) => !prev)}
           >
             {editMode ? "편집 완료" : "순서 편집"}
           </button>
           <button
-            className="text-sm px-4 py-2 bg-black-5 text-black-80 rounded-[8px]"
+            className="flex text-14-semibold px-[10px] py-[7.5px] bg-black-5 text-black-70 rounded-[8px]"
             onClick={() => setIsAddModalOpen(true)}
           >
-            메뉴 추가 +
+            메뉴 추가 <img src={addIcon} />
           </button>
         </div>
       </div>
 
       <div className="flex justify-between mb-[10px]">
         <p className="text-sm text-black-40 mb-2">{menus.length}개의 메뉴</p>
-        {!editMode && <p className="text-sm text-black-40 mb-2">품절 표시</p>}
+        {
+          <p className="text-sm text-black-40 mb-2">
+            {editMode ? "순서 표시" : "품절 표시"}
+          </p>
+        }
       </div>
 
       <div className="border-t border-[#EEEEEE]">
@@ -189,8 +216,6 @@ const MenuSection = () => {
             droppableId="menu-list"
             isDropDisabled={!editMode}
             direction="vertical"
-            // isCombineEnabled={false}
-            // ignoreContainerClipping={false}
           >
             {(provided) => (
               <div {...provided.droppableProps} ref={provided.innerRef}>
@@ -204,15 +229,13 @@ const MenuSection = () => {
                     {(provided) => (
                       <div
                         className="flex justify-between items-center py-4"
+                        onClick={() => !editMode && openEditModal(menu)}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...(editMode ? provided.dragHandleProps : {})}
                       >
                         <div className="flex items-center gap-4">
-                          <div
-                            className="w-[48px] h-[48px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden"
-                            onClick={() => !editMode && openEditModal(menu)}
-                          >
+                          <div className="w-[48px] h-[48px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
                             <img
                               src={menu.imageUrl}
                               className="w-full h-full object-cover"
@@ -265,8 +288,16 @@ const MenuSection = () => {
         <MenuModal
           isEdit={true}
           initialData={selectedMenu}
-          onClose={() => setIsEditModalOpen(false)}
+          onClose={() => {
+            setIsEditModalOpen(false);
+          }}
           onSubmit={handleEditMenu}
+        />
+      )}
+      {isRemoveModalOpen && (
+        <MenuRemoveModal
+          onCancel={() => setIsRemoveModalOpen(false)}
+          onConfirm={handleDeleteMenu}
         />
       )}
     </div>
