@@ -4,7 +4,7 @@ interface WaitingIconProps {
 
 export function WaitingIcon({ waitingCount = 0 }: WaitingIconProps) {
   return (
-    <div className="px-1.5 py-1.25 rounded-md bg-[#FFEEDF]">
+    <div className="px-1.5 py-1.25 rounded-md bg-[#FFF0EB]">
       <div className="font-bold text-[10px] text-[#FF5E07]">
         대기 {waitingCount}팀
       </div>

@@ -10,6 +10,7 @@ export interface SearchStore {
   isActive: boolean;
   deleted: boolean;
   createdAt: string;
+  waitingCount: number;
 }
 
 export interface SearchResponse {

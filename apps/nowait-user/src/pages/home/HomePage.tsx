@@ -42,7 +42,13 @@ const HomePage = () => {
       return `${year}.${month}.${day} ${hours}:${minutes}`;
     })(),
     location: store.location,
-    imageUrl: store.bannerImageUrl || store.profileImageUrl, // bannerImage가 있다면 사용, 없으면 profileImage 사용
+    imageUrl:
+      store.bannerImageUrl && store.bannerImageUrl.length > 0
+        ? store.bannerImageUrl[0]
+        : store.profileImageUrl, // bannerImage가 있다면 사용, 없으면 profileImage 사용
+    bannerImageUrl: Array.isArray(store.bannerImageUrl)
+      ? store.bannerImageUrl
+      : [], // bannerImageUrl 배열 추가
     departmentId: store.storeId, // departmentId는 storeId로 설정
   }));
 

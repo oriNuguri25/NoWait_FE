@@ -13,7 +13,7 @@ interface MyWaitingStore {
   registeredAt: string;
   location: string;
   profileImageUrl: string;
-  bannerImageUrl?: string;
+  bannerImageUrl?: string[];
 }
 
 // 서버 응답 구조
