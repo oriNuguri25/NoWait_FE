@@ -27,17 +27,6 @@ const truncateName = (name: string, maxLength: number = 3) => {
   return name?.length > maxLength ? name.slice(0, maxLength) + "..." : name;
 };
 
-// const calcRemainingTime = (calledAt?: string) => {
-//   if (!calledAt) return null;
-//   const startTime = new Date(calledAt).getTime();
-//   const diffSec = Math.floor((Date.now() - startTime) / 1000);
-//   const remainingSec = Math.max(totalDurationSec - diffSec, 0);
-
-//   const min = String(Math.floor(remainingSec / 60)).padStart(2, "0");
-//   const sec = String(remainingSec % 60).padStart(2, "0");
-//   return `${min}:${sec}`;
-// };
-
 export function WaitingCard({
   number,
   time,
@@ -55,6 +44,7 @@ export function WaitingCard({
   onDelete,
 }: WaitingCardProps) {
   const [elapsed, setElapsed] = useState("10:00");
+  console.log(calledAt, "호출시간");
 
   useEffect(() => {
     if (status === "CALLING") {
