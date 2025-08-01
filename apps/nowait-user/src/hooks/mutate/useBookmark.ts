@@ -1,13 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  createBookmark,
-  deleteBookmark,
-} from "../../api/reservation";
+import { createBookmark, deleteBookmark } from "../../api/reservation";
 
-export const useBookmarkMutation = () => {
+export const useBookmarkMutation = ({ withInvalidate = true } = {}) => {
   const queryclient = useQueryClient();
   const onSuccess = () => {
-    queryclient.invalidateQueries({ queryKey: ["bookmark"] });
+    if (withInvalidate) {
+      queryclient.invalidateQueries({ queryKey: ["bookmark"] });
+    }
   };
   const createBookmarkMutate = useMutation({
     mutationFn: createBookmark,

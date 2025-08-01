@@ -3,6 +3,7 @@ import QuantitySelector from "../../../components/common/QuantitySelector";
 import PageFooterButton from "../../../components/order/PageFooterButton";
 import { Button } from "@repo/ui";
 import { useNavigate, useParams } from "react-router-dom";
+import BackOnlyHeader from "../../../components/BackOnlyHeader";
 
 const WaitingPartySizeForm = () => {
   const navigate = useNavigate();
@@ -11,7 +12,8 @@ const WaitingPartySizeForm = () => {
 
   return (
     <div>
-      <div className="px-5 pt-[40px]">
+      <BackOnlyHeader />
+      <div className="px-5 mt-[30px]">
         <h1 className="text-headline-24-bold mb-[50px]">
           대기 등록을 위해
           <br />
