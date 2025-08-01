@@ -227,7 +227,7 @@ const BoothSection = ({
 
                         {/* 대표 사진 라벨 */}
                         {i === 0 && img && (
-                          <span className="absolute bottom-0 left-0 bg-black bg-opacity-80 text-white px-6 py-1 w-full text-center rounded-b-xl">
+                          <span className="absolute bottom-0 left-0 bg-black bg-opacity-80 h-[22px] text-white text-[10px] font-bold px-6 py-1 w-full text-center rounded-b-xl">
                             대표 사진
                           </span>
                         )}
