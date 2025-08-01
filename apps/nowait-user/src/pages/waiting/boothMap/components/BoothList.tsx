@@ -1,8 +1,6 @@
 import { motion, useMotionValue, animate } from "framer-motion";
 import BookmarkedStoreItem from "../../bookmark/components/BookmarkedStoreItem";
-import { useBookmarkState } from "../../../../hooks/useBookmarkState";
 import { useInfiniteStores } from "../../../../hooks/useInfiniteStores";
-import { useRef, useState } from "react";
 
 const snapPoints = [0, -400]; // 0: 닫힘, -400: 열림
 

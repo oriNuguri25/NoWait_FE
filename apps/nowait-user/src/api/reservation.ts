@@ -2,39 +2,39 @@ import type { BookmarkResponse } from "../types/wait/bookmark";
 import type { StoreResponse } from "../types/wait/store";
 import UserApi from "../utils/UserApi";
 
-interface Store {
-  storeId: number;
-  bannerImages: {
-    id: number;
-    imageType: string;
-    imageUrl: string;
-    storeId: number;
-  }[];
-  departmentName: string;
-  name: string;
-  location: string;
-  description: string;
-  profileImage: {
-    id: number;
-    storeId: number;
-    imageUrl: string;
-    imageType: string;
-  } | null;
-  isActive: boolean;
-  deleted: boolean;
-  createdAt: string;
-  waitingCount: number;
-}
+// interface Store {
+//   storeId: number;
+//   bannerImages: {
+//     id: number;
+//     imageType: string;
+//     imageUrl: string;
+//     storeId: number;
+//   }[];
+//   departmentName: string;
+//   name: string;
+//   location: string;
+//   description: string;
+//   profileImage: {
+//     id: number;
+//     storeId: number;
+//     imageUrl: string;
+//     imageType: string;
+//   } | null;
+//   isActive: boolean;
+//   deleted: boolean;
+//   createdAt: string;
+//   waitingCount: number;
+// }
 
 // 실제 서버 응답 구조
-interface ServerResponse {
-  success: boolean;
-  response: {
-    hasNext: boolean;
-    storePageReadResponses: Store[];
-  };
-  error: null;
-}
+// interface ServerResponse {
+//   success: boolean;
+//   response: {
+//     hasNext: boolean;
+//     storePageReadResponses: Store[];
+//   };
+//   error: null;
+// }
 
 // 모든 주점 정보 가져오기
 export const getAllStores = async() => {

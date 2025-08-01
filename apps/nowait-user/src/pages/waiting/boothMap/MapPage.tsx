@@ -5,8 +5,6 @@ import useWindowHeight from "../../../hooks/useWindowHeight";
 import { useState } from "react";
 import { useInfiniteStores } from "../../../hooks/useInfiniteStores";
 import BoothDetail from "./components/BoothDetail";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getAllStores } from "../../../api/reservation";
 
 const boothPosition: Record<number, { top: string; left: string }> = {
   1: { top: "45%", left: "60%" },
@@ -36,7 +34,7 @@ const MapPage = () => {
     ...boothPosition[booth.storeId],
   }));
 
-  const detailBooth = booths.find((booth) => booth.storeId === selectedBooth);
+  // const detailBooth = booths.find((booth) => booth.storeId === selectedBooth);
 
   const openBoothButton = (id: number) => {
     if (selectedBooth === id) {

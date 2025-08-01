@@ -15,7 +15,6 @@ import { getStoreMenus } from "../../../api/menu";
 import { getSoldOutMenusInCart } from "../../../utils/checkSoldOutMenus";
 import useModal from "../../../hooks/useModal";
 import Portal from "../../../components/common/modal/Portal";
-import type { MenuType } from "../../../types/order/menu";
 import type { CartType } from "../../../types/order/cart";
 
 const OrderListPage = () => {

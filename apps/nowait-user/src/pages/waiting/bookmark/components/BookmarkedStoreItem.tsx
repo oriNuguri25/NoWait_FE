@@ -1,8 +1,6 @@
 import BookmarkIcon from "../../../../components/common/BookmarkIcon";
 import DepartmentImage from "../../../../components/DepartmentImage";
 import defaultMenuImageLg from "../../../../assets/default-menu-image-lg.png";
-import type { BannerImages, ProfileImage } from "../../../../types/wait/store";
-import { createBookmark, deleteBookmark } from "../../../../api/reservation";
 import { useState } from "react";
 import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
 

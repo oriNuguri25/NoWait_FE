@@ -18,7 +18,7 @@ import OrderDetailsPage from "../pages/order/orderDetails/OrderDetailsPage";
 import RemittancePage from "../pages/order/remittance/RemittancePage";
 import BookmarkPage from "../pages/waiting/bookmark/BookmarkPage";
 import StoreNoticePage from "../pages/waiting/storeNotice/StoreNoticePage";
-import WaitingSummaryPage from "../pages/waiting/waitingSummary/WaitingSummaryPage";
+import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
