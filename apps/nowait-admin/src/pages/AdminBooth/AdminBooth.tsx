@@ -14,7 +14,7 @@ const BoothForm = () => {
   const width = useWindowWidth();
   const isTablet = width >= 768 && width <= 1024;
   const storeId = 1; // TODO: 실제 storeId 받아오기
-  const { data: store, isLoading } = useGetStore(storeId);
+  const { data: store } = useGetStore(storeId);
   const { mutate: updateStore } = useUpdateStore();
   const { mutate: uploadProfileImage } = useUploadStoreProfileImage();
   const { mutate: uploadBannerImages } = useUploadStoreBannerImages();

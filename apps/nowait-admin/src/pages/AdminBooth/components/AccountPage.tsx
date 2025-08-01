@@ -14,7 +14,7 @@ const AccountPage = () => {
   const [accountName, setAccountName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
 
-  const { data: storePayment, isLoading: isFetching } = useGetStorePayment();
+  const { data: storePayment } = useGetStorePayment();
   const { mutate: createPayment } = useCreateStorePayment();
   const { mutate: updatePayment } = useUpdateStorePayment();
 

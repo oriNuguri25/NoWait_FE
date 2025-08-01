@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/admin/(.*)", "destination": "/apps/nowait-admin/$1" },
+    { "source": "/user/(.*)", "destination": "/apps/nowait-user/$1" }
+  ]
+}

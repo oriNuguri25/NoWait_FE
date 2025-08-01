@@ -34,8 +34,6 @@ interface PreviewModalProps {
 const PreviewModal: React.FC<PreviewModalProps> = ({
   boothName,
   departName,
-  boothIntro,
-  noticeTitle,
   boothNotice,
   startHour,
   startMinute,
