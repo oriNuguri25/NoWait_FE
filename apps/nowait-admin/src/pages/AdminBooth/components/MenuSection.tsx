@@ -159,12 +159,16 @@ const MenuSection = () => {
   }, [fetchedMenus]);
 
   return (
-    <div className="mt-[40px] mb-[20px]">
+    <div className="mt-[40px] mb-[20px] max-w-[614px]">
       <div className="flex justify-between items-center mb-[20px]">
         <h2 className="text-title-18-bold">메뉴</h2>
         <div className="flex gap-[10px]">
           <button
-            className="text-sm px-4 py-2 bg-black-5 text-black-80 rounded-[8px]"
+            className={`text-sm px-4 py-2 rounded-[8px] ${
+              editMode
+                ? "bg-[#FFF0EB] text-primary"
+                : "bg-black-5 text-black-80"
+            }`}
             onClick={() => setEditMode((prev) => !prev)}
           >
             {editMode ? "편집 완료" : "순서 편집"}
@@ -180,7 +184,11 @@ const MenuSection = () => {
 
       <div className="flex justify-between mb-[10px]">
         <p className="text-sm text-black-40 mb-2">{menus.length}개의 메뉴</p>
-        {!editMode && <p className="text-sm text-black-40 mb-2">품절 표시</p>}
+        {
+          <p className="text-sm text-black-40 mb-2">
+            {editMode ? "순서 표시" : "품절 표시"}
+          </p>
+        }
       </div>
 
       <div className="border-t border-[#EEEEEE]">
@@ -189,8 +197,6 @@ const MenuSection = () => {
             droppableId="menu-list"
             isDropDisabled={!editMode}
             direction="vertical"
-            // isCombineEnabled={false}
-            // ignoreContainerClipping={false}
           >
             {(provided) => (
               <div {...provided.droppableProps} ref={provided.innerRef}>
@@ -204,15 +210,13 @@ const MenuSection = () => {
                     {(provided) => (
                       <div
                         className="flex justify-between items-center py-4"
+                        onClick={() => !editMode && openEditModal(menu)}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...(editMode ? provided.dragHandleProps : {})}
                       >
                         <div className="flex items-center gap-4">
-                          <div
-                            className="w-[48px] h-[48px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden"
-                            onClick={() => !editMode && openEditModal(menu)}
-                          >
+                          <div className="w-[48px] h-[48px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
                             <img
                               src={menu.imageUrl}
                               className="w-full h-full object-cover"

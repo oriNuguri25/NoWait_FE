@@ -18,8 +18,11 @@ const BoothForm = () => {
   const { mutate: uploadProfileImage } = useUploadStoreProfileImage();
   const { mutate: uploadBannerImages } = useUploadStoreBannerImages();
 
-  const [activeTab, setActiveTab] = useState<"booth" | "menu">("menu");
+  const [activeTab, setActiveTab] = useState<"booth" | "menu" | "account">(
+    "menu"
+  );
   const [boothName, setBoothName] = useState("");
+  const [departName, setDepartName] = useState("");
   const [boothIntro, setBoothIntro] = useState("");
   const [boothNotice, setBoothNotice] = useState("");
   const [startHour, setStartHour] = useState("");
@@ -75,7 +78,9 @@ const BoothForm = () => {
     if (store) {
       setBoothName(store.name);
       setBoothIntro(store.description);
-
+      setDepartName(store.departmentName);
+      if (store.noticeTitle) setNoticeTitle(store.noticeTitle);
+      if (store.noticeContent) setBoothNotice(store.noticeContent);
       if (store.bannerImages) {
         const formatted = store.bannerImages.map((img: any) => ({
           ...img,
@@ -95,76 +100,86 @@ const BoothForm = () => {
 
   return (
     <div
-      className={`w-full bg-white overflow-y-auto border-l border-l-[#ECECEC] ${
-        isTablet ? "px-[90px] py-[20px]" : "px-[90px] py-[20px]"
+      className={` bg-white w-full overflow-y-auto border-l border-l-[#ECECEC] ${
+        isTablet ? "px-[100px] py-[20px]" : "px-[100px] py-[20px]"
       }`}
     >
-      {/* 탭 */}
-      <div className="flex">
-        <button
-          className={`px-4 py-2 mr-2 rounded-full text-sm font-semibold ${
-            activeTab === "menu"
-              ? "bg-black text-white"
-              : "bg-white text-black-60 border border-black-35"
-          }`}
-          onClick={() => setActiveTab("menu")}
-        >
-          메뉴 관리
-        </button>
-        <button
-          className={`px-4 py-2 rounded-full text-sm font-semibold ${
-            activeTab === "booth"
-              ? "bg-black text-white"
-              : "bg-white text-black-60 border border-black-35"
-          }`}
-          onClick={() => setActiveTab("booth")}
-        >
-          부스 관리
-        </button>
+      <div className="max-w-[614px] w-full mx-auto">
+        {/* 탭 */}
+        <div className="flex">
+          <button
+            className={`px-4 py-2 mr-2 rounded-full text-sm font-semibold ${
+              activeTab === "menu"
+                ? "bg-black text-white"
+                : "bg-white text-black-60"
+            }`}
+            onClick={() => setActiveTab("menu")}
+          >
+            메뉴 관리
+          </button>
+          <button
+            className={`px-4 py-2 rounded-full text-sm font-semibold ${
+              activeTab === "booth"
+                ? "bg-black text-white"
+                : "bg-white text-black-60 "
+            }`}
+            onClick={() => setActiveTab("booth")}
+          >
+            부스 관리
+          </button>
+          <button
+            className={`px-4 py-2 rounded-full text-sm font-semibold ${
+              activeTab === "account"
+                ? "bg-black text-white"
+                : "bg-white text-black-60 "
+            }`}
+            onClick={() => setActiveTab("account")}
+          >
+            계좌 관리
+          </button>
+        </div>
+        {activeTab === "booth" ? (
+          <>
+            <BoothSection
+              departName={departName}
+              boothName={boothName}
+              setBoothName={setBoothName}
+              isFocused={isFocused}
+              setIsFocused={setIsFocused}
+              boothIntro={boothIntro}
+              setBoothIntro={setBoothIntro}
+              isTextareaFocused={isTextareaFocused}
+              setIsTextareaFocused={setIsTextareaFocused}
+              bannerImages={bannerImages}
+              setBannerImages={setBannerImages}
+              profileImage={profileImage}
+              setProfileImage={setProfileImage}
+              noticeTitle={noticeTitle}
+              setNoticeTitle={setNoticeTitle}
+              boothNotice={boothNotice}
+              setBoothNotice={setBoothNotice}
+              startHour={startHour}
+              setStartHour={setStartHour}
+              startMinute={startMinute}
+              setStartMinute={setStartMinute}
+              endHour={endHour}
+              setEndHour={setEndHour}
+              endMinute={endMinute}
+              setEndMinute={setEndMinute}
+            />
+            <div className="flex max-w-[614px] w-full mt-[50px]">
+              <button
+                className="w-full h-[51px] py-4 rounded-lg bg-[#111114] text-white text-14-regular"
+                onClick={handleSave}
+              >
+                저장하기
+              </button>
+            </div>
+          </>
+        ) : (
+          <MenuSection />
+        )}
       </div>
-      {activeTab === "booth" ? (
-        <>
-          <BoothSection
-            boothName={boothName}
-            setBoothName={setBoothName}
-            isFocused={isFocused}
-            setIsFocused={setIsFocused}
-            boothIntro={boothIntro}
-            setBoothIntro={setBoothIntro}
-            isTextareaFocused={isTextareaFocused}
-            setIsTextareaFocused={setIsTextareaFocused}
-            bannerImages={bannerImages}
-            setBannerImages={setBannerImages}
-            profileImage={profileImage}
-            setProfileImage={setProfileImage}
-            noticeTitle={noticeTitle}
-            setNoticeTitle={setNoticeTitle}
-            boothNotice={boothNotice}
-            setBoothNotice={setBoothNotice}
-            startHour={startHour}
-            setStartHour={setStartHour}
-            startMinute={startMinute}
-            setStartMinute={setStartMinute}
-            endHour={endHour}
-            setEndHour={setEndHour}
-            endMinute={endMinute}
-            setEndMinute={setEndMinute}
-          />
-          <div className="flex w-full gap-[10px] mt-[50px]">
-            <button className="w-full h-[51px] py-4 rounded-lg bg-[#F6F6F6] text-black-70 text-14-regular">
-              미리보기
-            </button>
-            <button
-              className="w-full h-[51px] py-4 rounded-lg bg-[#111114] text-white text-14-regular"
-              onClick={handleSave}
-            >
-              저장하기
-            </button>
-          </div>
-        </>
-      ) : (
-        <MenuSection />
-      )}
     </div>
   );
 };

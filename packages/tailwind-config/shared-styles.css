@@ -322,7 +322,7 @@ pre {
     letter-spacing: 0%;
     font-weight: 400;
   }
-  
+
   .text-14-semibold {
     font-size: 14px;
     line-height: 136%;
@@ -377,6 +377,13 @@ pre {
     line-height: 144%;
     letter-spacing: 0%;
     font-weight: 400;
+  }
+
+  .text-10-bold {
+    font-size: 10px;
+    line-height: 136%;
+    letter-spacing: -1%;
+    font-weight: 700;
   }
 
   /* Work Sans 폰트 유틸리티 */
