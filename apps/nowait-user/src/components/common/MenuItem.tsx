@@ -32,7 +32,7 @@ const MenuItem = ({ data, mode }: PropsType) => {
               {data.name}
             </h2>
             {data.isSoldOut && (
-              <span className="text-[12px] font-bold text-primary bg-[#FFE9DF] rounded-[6px] px-2 py-1.5">
+              <span className="text-[12px] font-bold text-primary bg-[#FFF0EB] rounded-[6px] px-2 py-1.5">
                 품절
               </span>
             )}

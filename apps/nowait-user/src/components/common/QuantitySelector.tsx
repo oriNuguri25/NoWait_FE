@@ -45,12 +45,12 @@ const QuantitySelector = (props: PropsType) => {
     <div className="flex items-center justify-end gap-0.5">
       <button
         className={`${
-          isQuantityMin ? "bg-[#F5F8FA]" : "bg-[#F2F6F9]"
+          isQuantityMin ? "bg-black-10" : "bg-black-20"
         } rounded-[7px] w-[28px] h-[28px] flex items-center justify-center`}
         disabled={isQuantityMin}
         onClick={decreaseQuantityButton}
       >
-        <Minus fill={`${isQuantityMin ? "#DBE3E9" : "#97A7B2"}`} />
+        <Minus fill={`${isQuantityMin ? "#E6E6E6" : "#888888"}`} />
       </button>
       <p
         className={`w-[30px] text-center ${
@@ -63,12 +63,12 @@ const QuantitySelector = (props: PropsType) => {
       </p>
       <button
         className={`${
-          isQuantityMax ? "bg-[#F5F8FA]" : "bg-[#F2F6F9]"
+          isQuantityMax ? "bg-black-10" : "bg-black-20"
         } rounded-[7px] w-[28px] h-[28px] flex items-center justify-center`}
         disabled={isQuantityMax}
         onClick={increaseQuantityButton}
       >
-        <Plus fill={`${isQuantityMax ? "#DBE3E9" : "#97A7B2"}`} />
+        <Plus fill={`${isQuantityMax ? "#E6E6E6" : "#888888"}`} />
       </button>
     </div>
   );

@@ -19,6 +19,10 @@ export default defineConfig(({ mode }) => {
           target: env.VITE_SERVER_URI,
           changeOrigin: true,
         },
+        "/v1": {
+          target: env.VITE_SERVER_URI,
+          changeOrigin: true,
+        },
       },
     },
   };
