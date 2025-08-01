@@ -49,6 +49,7 @@ const SwipeItem = ({
       setIsOpen(false);
     }
   };
+  console.log(isOpen, "배포용");
 
   return (
     <div className="relative w-full overflow-hidden select-none">
