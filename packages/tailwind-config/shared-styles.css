@@ -385,6 +385,50 @@ pre {
     letter-spacing: -1%;
     font-weight: 700;
   }
+  /* 미리보기 학과명 폰트 */
+  .text-major {
+    font-size: 8.81px;
+    line-height: 144%;
+    letter-spacing: -1%;
+    font-weight: 400;
+  }
+  /* 부스명 */
+  .text-boothname {
+    font-size: 13.85px;
+    line-height: 136%;
+    letter-spacing: -1%;
+    font-weight: 700;
+  }
+
+  /* 부스 위치 */
+  .text-location {
+    font-size: 10.07px;
+    line-height: 144%;
+    letter-spacing: -1%;
+    font-weight: 400;
+  }
+  /* 미리보기 빨간 뱃지 폰트 */
+  .text-7-bold {
+    font-size: 7.55px;
+    line-height: 100%;
+    letter-spacing: 0;
+    font-weight: 700;
+  }
+
+  /* 미리보기 하단 "공지" 폰트 */
+  .text-notice {
+    font-size: 8.81px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 700;
+  }
+
+  .text-notice-medium {
+    font-size: 8.81px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 500;
+  }
 
   /* Work Sans 폰트 유틸리티 */
   .font-work-sans {
