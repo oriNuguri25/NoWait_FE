@@ -2,12 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import AdminApi from "../../utils/AdminApi";
 
 interface TopSalesItem {
-  rank: number;
-  name: string;
-  department: string;
-  salesCount: number;
-  isCurrentBooth: boolean;
-  rankChange: number;
+  currentRank: number;
+  delta: number;
+  departmentId: number;
+  departmentName: string;
+  orderCount: number;
+  profileUrl: string;
+  storeId: number;
+  storeName: string;
+  totalSales: number;
 }
 
 interface TopSalesResponse {

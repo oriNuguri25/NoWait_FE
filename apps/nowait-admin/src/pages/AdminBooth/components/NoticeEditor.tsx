@@ -73,9 +73,13 @@ const MenuBar = ({ editor }: { editor: any }) => {
   );
 };
 const NoticeEditor = ({
+  noticeTitle,
+  setNoticeTitle,
   notice,
   setNotice,
 }: {
+  noticeTitle: string;
+  setNoticeTitle: (val: string) => void;
   notice: string;
   setNotice: (val: string) => void;
 }) => {

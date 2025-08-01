@@ -4,7 +4,8 @@ import openDoorIcon from "../../../assets/door_open.svg";
 import alarmIcon from "../../../assets/alarm.svg";
 import { useEffect, useState } from "react";
 
-const totalDurationSec = 600;
+const totalDurationSec = 600; // 10분
+
 type WaitingCardStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 interface WaitingCardProps {
   number: number;
@@ -26,6 +27,17 @@ const truncateName = (name: string, maxLength: number = 3) => {
   return name?.length > maxLength ? name.slice(0, maxLength) + "..." : name;
 };
 
+// const calcRemainingTime = (calledAt?: string) => {
+//   if (!calledAt) return null;
+//   const startTime = new Date(calledAt).getTime();
+//   const diffSec = Math.floor((Date.now() - startTime) / 1000);
+//   const remainingSec = Math.max(totalDurationSec - diffSec, 0);
+
+//   const min = String(Math.floor(remainingSec / 60)).padStart(2, "0");
+//   const sec = String(remainingSec % 60).padStart(2, "0");
+//   return `${min}:${sec}`;
+// };
+
 export function WaitingCard({
   number,
   time,
@@ -45,30 +57,34 @@ export function WaitingCard({
   const [elapsed, setElapsed] = useState("10:00");
 
   useEffect(() => {
-    if (status !== "CALLING" || !calledAt) return;
-
-    const startTime = new Date(calledAt).getTime();
-    const updateElapsed = () => {
-      const now = Date.now();
-      const diffSec = Math.floor((now - startTime) / 1000);
-      const remainingSec = Math.max(totalDurationSec - diffSec, 0);
-
-      const min = String(Math.floor(remainingSec / 60)).padStart(2, "0");
-      const sec = String(remainingSec % 60).padStart(2, "0");
-      setElapsed(`${min}:${sec}`);
-
-      // 시간이 다 되면 자동 미입장 처리
-      if (remainingSec === 0) {
+    if (status === "CALLING") {
+      const timer = setTimeout(() => {
         onNoShow();
-      }
-    };
+      }, 10 * 1 * 1000);
 
-    updateElapsed(); // 최초 실행
-    const interval = setInterval(updateElapsed, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
 
-    return () => clearInterval(interval);
-  }, [status, calledAt, onNoShow]);
+  useEffect(() => {
+    if (status === "CALLING" && calledAt) {
+      const start = new Date(calledAt).getTime();
 
+      const updateElapsed = () => {
+        const now = Date.now();
+        const diffSec = Math.floor((now - start) / 1000);
+        const remainingSec = Math.max(totalDurationSec - diffSec, 0); // 음수 방지
+
+        const min = String(Math.floor(remainingSec / 60)).padStart(2, "0");
+        const sec = String(remainingSec % 60).padStart(2, "0");
+        setElapsed(`${min}:${sec}`);
+      };
+
+      updateElapsed(); // 최초 계산
+      const interval = setInterval(updateElapsed, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [status, calledAt]);
 
   return (
     <div className="[@media(max-width:431px)]:w-[335px] [@media(min-width:768px)_and_(max-width:821px)]:w-[329px] relative lg:w-[372px] h-[200px] bg-white rounded-[16px] px-6 py-[18px]">
