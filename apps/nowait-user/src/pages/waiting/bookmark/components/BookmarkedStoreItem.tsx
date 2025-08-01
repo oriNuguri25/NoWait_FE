@@ -1,16 +1,14 @@
 import BookmarkIcon from "../../../../components/common/BookmarkIcon";
 import DepartmentImage from "../../../../components/DepartmentImage";
 import defaultMenuImageLg from "../../../../assets/default-menu-image-lg.png";
-import type { BannerImages, ProfileImage } from "../../../../types/wait/store";
-import { createBookmark, deleteBookmark } from "../../../../api/reservation";
 import { useState } from "react";
 import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
 
 type PropsType = {
-  bookmarkId: number;
-  bannerImages: BannerImages[];
+  bookmarkId?: number;
+  bannerImages?: string;
   waitingCount: number;
-  profileImage: ProfileImage;
+  profileImage?: string;
   name: string;
   departmentName: string;
   storeId: string;
@@ -46,7 +44,7 @@ const BookmarkedStoreItem = ({
       <div className="relative top-0 right-0">
         <img
           className="w-full h-[195px] rounded-[14px] overflow-hidden object-cover"
-          src={bannerImages[0]?.imageUrl || defaultMenuImageLg}
+          src={bannerImages || defaultMenuImageLg}
           alt="북마크한 주점 메인 이미지"
         />
         {waitingCount !== 0 && (
@@ -60,7 +58,7 @@ const BookmarkedStoreItem = ({
           <DepartmentImage
             width="40px"
             height="40px"
-            src={profileImage?.imageUrl}
+            src={profileImage}
           />
           <div className="flex flex-col justify-between">
             <h1 className="text-title-16-bold text-black-90">{name}</h1>

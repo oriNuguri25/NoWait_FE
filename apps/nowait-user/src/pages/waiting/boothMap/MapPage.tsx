@@ -3,21 +3,8 @@ import BoothMarker from "../../../assets/icon/BoothMarker.svg?react";
 import BoothList from "./components/BoothList";
 import useWindowHeight from "../../../hooks/useWindowHeight";
 import { useState } from "react";
-import BookmarkIcon from "../../../components/common/BookmarkIcon";
-import Clock from "../../../assets/icon/clock.svg?react";
-import { Button } from "@repo/ui";
-
-const boothInfomation = [
-  { id: 1, name: "스페이시스", department: "컴퓨터공학과", waitingCount: 0 },
-  {
-    id: 2,
-    name: "그냥맛집임",
-    department: "바이오메카트로닉스공학과",
-    waitingCount: 2,
-  },
-  { id: 3, name: "특별한부스", department: "경영학과", waitingCount: 3 },
-  { id: 4, name: "평범한부스", department: "문과", waitingCount: 0 },
-];
+import { useInfiniteStores } from "../../../hooks/useInfiniteStores";
+import BoothDetail from "./components/BoothDetail";
 
 const boothPosition: Record<number, { top: string; left: string }> = {
   1: { top: "45%", left: "60%" },
@@ -26,17 +13,37 @@ const boothPosition: Record<number, { top: string; left: string }> = {
   4: { top: "45%", left: "90%" },
 };
 
-const booth = boothInfomation.map((booth) => ({
-  ...booth,
-  ...boothPosition[booth.id],
-}));
-
 const MapPage = () => {
   const height = useWindowHeight();
-  const [openBooth, setOpenBooth] = useState(false);
+  const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
+  // const {data:storeMarkers} = useQuery({
+  //       queryKey: ["stores"],
+  //   queryFn: getAllStores,
+  //   // initialPageParam: 0,
+  //   // getNextPageParam: (lastPage, allPages) => {
+  //   //   // 서버에서 받은 hasNext를 기준으로 다음 페이지 여부 결정
+  //   //   if (!lastPage.hasNext) {
+  //   //     return undefined;
+  //   //   }
+  //   //   return allPages.length;
+  //   // },
+  // })
+  const { stores } = useInfiniteStores();
+  const booths = stores?.map((booth) => ({
+    ...booth,
+    ...boothPosition[booth.storeId],
+  }));
+
+  // const detailBooth = booths.find((booth) => booth.storeId === selectedBooth);
 
   const openBoothButton = (id: number) => {
-    setOpenBooth(true);
+    if (selectedBooth === id) {
+      // 이미 선택된 마커를 다시 클릭 → 초기화
+      setSelectedBooth(null);
+    } else {
+      // 새로운 마커 클릭 → 해당 마커 정보 표시
+      setSelectedBooth(id);
+    }
   };
   return (
     <div className="relative overflow-hidden" style={{ height }}>
@@ -57,13 +64,18 @@ const MapPage = () => {
         </div>
         {/* 마커 */}
         <ul className="absolute top-0 left-0 w-full h-full">
-          {booth.map((booth) => (
+          {booths.map((booth) => (
             <li
-              key={booth.id}
+              key={booth.storeId}
               className="absolute"
               style={{ top: booth.top, left: booth.left }}
             >
-              <button onClick={() => openBoothButton(booth.id)}>
+              <button
+                className={`transition-transform origin-bottom duration-200 ${
+                  selectedBooth === booth.storeId ? "scale-120" : "scale-100"
+                }`}
+                onClick={() => openBoothButton(booth.storeId)}
+              >
                 <BoothMarker />
               </button>
             </li>
@@ -71,27 +83,13 @@ const MapPage = () => {
         </ul>
       </div>
       {/* 부스 리스트 */}
-      {openBooth ? (
-        <div className="fixed bottom-[30px] left-1/2 -translate-x-1/2 w-[calc(100%-32px)] bg-white rounded-[20px] z-30">
-          <div className="pt-[20px] pb-[16px] px-[20px]">
-            <div className="flex items-start justify-between">
-              <div className="mb-[16px]">
-                <h1 className="text-title-20-semibold text-black-90 mb-1">
-                  스페이시스
-                </h1>
-                <h2 className="text-16-regular">컴퓨터공학과</h2>
-              </div>
-              <BookmarkIcon />
-            </div>
-            <p className="flex items-center text-16-regular text-black-80 mb-[20px]">
-              <span className="w-[18px] flex justify-center mr-1.5">
-                <Clock />
-              </span>
-              대기 없음
-            </p>
-            <Button>상세 보기</Button>
-          </div>
-        </div>
+      {/* <AnimatePresence></AnimatePresence> */}
+      {selectedBooth !== null ? (
+        <BoothDetail
+          storeId={String(
+            booths.find((booth) => booth.storeId === selectedBooth)?.storeId
+          )}
+        />
       ) : (
         <BoothList />
       )}

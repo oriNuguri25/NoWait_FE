@@ -39,14 +39,14 @@ const RemitOptions = ({
     try {
       //http 사용 시 또는 핸드폰으로 사용 시 복사가 안될 수도 있음.
       await navigator.clipboard.writeText(
-        `${bank} ${accountNumber} ${totalPrice}`
+        `${bank} ${accountNumber} ${totalPrice.toLocaleString()}원`
       );
       showToast("계좌번호가 복사되었습니다");
     } catch (error) {
       //이를 방지하기 위해 실패 시 고전 방식의 복사 방법 추가
       const $textarea = document.createElement("textarea");
       document.body.appendChild($textarea);
-      $textarea.value = `${bank} ${accountNumber} ${totalPrice}`;
+      $textarea.value = `${bank} ${accountNumber} ${totalPrice.toLocaleString()}원`;
       $textarea.select();
       const success = document.execCommand("copy");
       document.body.removeChild($textarea);
@@ -134,7 +134,7 @@ const RemitOptions = ({
                   ></img>
                   <div>
                     <h1 className="text-14-semibold text-black-80">
-                      노웨잇대학생회
+                      {accountHolder}
                     </h1>
                     <h2 className="text-[12px] font-regular text-black-60">
                       {bank} {accountNumber}

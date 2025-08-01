@@ -23,9 +23,9 @@ const BookmarkPage = () => {
                 <BookmarkedStoreItem
                   key={data.bookmarkId}
                   bookmarkId={data.bookmarkId}
-                  bannerImages={data.bannerImages}
+                  bannerImages={data.bannerImages[0].imageUrl}
                   waitingCount={data.waitingCount}
-                  profileImage={data.profileImage}
+                  profileImage={data.profileImage.imageUrl}
                   name={data.name}
                   departmentName={data.departmentName}
                   storeId={data.storeId}

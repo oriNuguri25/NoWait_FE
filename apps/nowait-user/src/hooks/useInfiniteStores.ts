@@ -4,6 +4,12 @@ import UserApi from "../utils/UserApi";
 
 interface Store {
   storeId: number;
+  bannerImages: {
+    id: number;
+    imageType: string;
+    imageUrl: string;
+    storeId: number;
+  }[];
   departmentName: string;
   name: string;
   location: string;
