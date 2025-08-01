@@ -19,8 +19,8 @@ interface SalesCardProps {
 
 const SalesCard: React.FC<SalesCardProps> = ({ today, previous }) => {
   const [showToday, setShowToday] = useState(true);
-  const [isHoverBack, setIsHoverBack] = useState(false);
-  const [isHoverForward, setIsHoverForward] = useState(false);
+  // const [isHoverBack, setIsHoverBack] = useState(false);
+  // const [isHoverForward, setIsHoverForward] = useState(false);
 
   return (
     <div className="bg-white rounded-[12px] p-6 w-full h-full flex flex-col justify-between">
@@ -41,8 +41,8 @@ const SalesCard: React.FC<SalesCardProps> = ({ today, previous }) => {
               showToday ? activeBackIcon : backIcon // 비활성 이미지로 고정
             }
             className={`h-5 w-5 cursor-pointer`}
-            onMouseEnter={() => showToday && setIsHoverBack(true)}
-            onMouseLeave={() => showToday && setIsHoverBack(false)}
+            onMouseEnter={() => showToday}
+            onMouseLeave={() => showToday}
             onClick={() => showToday && setShowToday(false)}
           />
 
@@ -50,8 +50,8 @@ const SalesCard: React.FC<SalesCardProps> = ({ today, previous }) => {
           <img
             src={!showToday ? activeForwardIcon : forwardIcon}
             className={`h-5 w-5 cursor-pointer `}
-            onMouseEnter={() => !showToday && setIsHoverForward(true)}
-            onMouseLeave={() => !showToday && setIsHoverForward(false)}
+            onMouseEnter={() => !showToday}
+            onMouseLeave={() => !showToday}
             onClick={() => !showToday && setShowToday(true)}
           />
         </span>

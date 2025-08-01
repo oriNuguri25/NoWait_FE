@@ -26,7 +26,7 @@ const MenuSection = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
-  const { data: fetchedMenus = [], isLoading } = useGetAllMenus(1);
+  const { data: fetchedMenus = [] } = useGetAllMenus(1);
 
   // 메뉴 생성 훅
   const { mutate: createMenu } = useCreateMenu();

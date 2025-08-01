@@ -8,6 +8,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
   // 툴바 버튼 클릭시 리랜더링
   useEffect(() => {
     if (!editor) return;
+    console.log(editorChanged);
 
     const update = () => setEditorChanged((prev) => prev + 1);
     editor.on("transaction", update);
