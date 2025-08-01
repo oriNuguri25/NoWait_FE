@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import placeholderIcon from "../../../../assets/image_placeholder.svg";
 import closeIcon from "../../../../assets/close.svg";
 interface MenuModalProps {
@@ -71,9 +71,7 @@ const MenuModal = ({
   const [description, setDescription] = useState(
     initialData?.description || ""
   );
-  const [isRepresentative, setIsRepresentative] = useState(
-    initialData?.isRepresentative || false
-  );
+  const isRepresentative = useState(initialData?.isRepresentative || false);
   const [image, setImage] = useState<File | null>(initialData?.image || null);
 
   const isFormValid =
