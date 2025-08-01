@@ -73,13 +73,13 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-10">
-      <div className="flex flex-col px-5 pb-8">
-        <HomeHeader />
+    <div className="flex flex-col">
+      <HomeHeader />
+      <div className="flex flex-col px-5 mb-10">
         {/* 내 대기 순서 */}
         {myWaitingList.length > 0 && (
           <div className="flex flex-col">
-            <div className="flex flex-row mt-4.5 gap-1.5 text-title-20-bold text-black-100">
+            <div className="flex flex-row gap-1.5 text-title-20-bold text-black-100">
               <div className="flex">나의 대기카드</div>
             </div>
 
