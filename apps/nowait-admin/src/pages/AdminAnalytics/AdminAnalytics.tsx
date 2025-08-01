@@ -11,51 +11,8 @@ interface BoothRanking {
   salesCount: number;
   rankChange: number;
   isCurrentBooth?: boolean;
+  profileImageUrl: string;
 }
-
-// fakeData
-const boothData: BoothRanking[] = [
-  {
-    rank: 1,
-    name: "불타는닭발부스",
-    department: "컴퓨터공학과",
-    salesCount: 52,
-    rankChange: 1,
-    isCurrentBooth: false,
-  },
-  {
-    rank: 2,
-    name: "하이볼의집",
-    department: "식품영양학과",
-    salesCount: 52,
-    rankChange: -1,
-    isCurrentBooth: false,
-  },
-  {
-    rank: 3,
-    name: "치즈폭탄존",
-    department: "관광경영학과",
-    salesCount: 52,
-    rankChange: 0,
-    isCurrentBooth: false,
-  },
-  {
-    rank: 4,
-    name: "치킨사교클럽",
-    department: "치위생학과",
-    salesCount: 52,
-    rankChange: 3,
-    isCurrentBooth: false,
-  },
-  {
-    rank: 27,
-    name: "스페이시스",
-    department: "경찰행정학과",
-    salesCount: 52,
-    rankChange: 3,
-    isCurrentBooth: true,
-  },
-];
 
 const AdminAnalytics = () => {
   const today = new Date();
@@ -70,13 +27,23 @@ const AdminAnalytics = () => {
     return <p>매출 데이터가 없습니다.</p>;
   }
 
+  const boothRankingData: BoothRanking[] =
+    boothRank && boothRank.length > 0
+      ? boothRank.map((item) => ({
+          rank: item.currentRank, // currentRank → rank
+          name: item.storeName, // storeName → name
+          department: item.departmentName, // departmentName → department
+          salesCount: item.orderCount, // orderCount → salesCount
+          rankChange: item.delta, // delta → rankChange
+          isCurrentBooth: 1 == item.storeId, // 필요 시 조건 넣어 true/false 처리
+          profileImageUrl: item.profileUrl,
+        }))
+      : [];
+
   return (
     <div className="w-full flex flex-col items-center justify-center ">
       <HeaderStatus sales={sales} popularMenu={popularMenu} />
-      <BoothSalesRankingCard
-        date={formatted}
-        data={boothRank?.length === 0 ? boothData : boothRank ?? []}
-      />
+      <BoothSalesRankingCard date={formatted} data={boothRankingData} />
     </div>
   );
 };

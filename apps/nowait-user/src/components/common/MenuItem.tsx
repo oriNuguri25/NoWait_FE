@@ -32,7 +32,7 @@ const MenuItem = ({ data, mode }: PropsType) => {
               {data.name}
             </h2>
             {data.isSoldOut && (
-              <span className="text-[12px] font-bold text-primary bg-[#FFE9DF] rounded-[6px] px-2 py-1.5">
+              <span className="text-[12px] font-bold text-primary bg-[#FFF0EB] rounded-[6px] px-2 py-1.5">
                 품절
               </span>
             )}
@@ -43,7 +43,7 @@ const MenuItem = ({ data, mode }: PropsType) => {
           className={`w-[80px] h-[80px] bg-black-25 rounded-[12px] object-cover ${
             data.isSoldOut && "opacity-40"
           }`}
-          src={`${data.image}` || defaultMenuImageSm}
+          src={data.images[0]?.imageUrl ?? defaultMenuImageSm}
           alt="음식 메뉴 이미지"
         />
       </button>

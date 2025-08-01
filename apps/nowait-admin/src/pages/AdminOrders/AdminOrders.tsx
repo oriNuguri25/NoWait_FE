@@ -64,12 +64,12 @@ const AdminOrders = () => {
 
   return (
     <div
-      className="flex flex-col w-full overflow-hidden"
+      className="w-full md:w-[752px] max-w-[804px] flex flex-col items-center mx-auto overflow-hidden"
       style={{ height: "calc(100vh - 2.5rem)" }}
     >
       {/* 헤더 영역 - 고정 높이 */}
       <div
-        className={`flex flex-row justify-between items-center flex-shrink-0 ${
+        className={`flex flex-row w-full justify-between items-center flex-shrink-0 ${
           isMobile ? "mb-5" : "mb-7.5"
         }`}
       >
@@ -101,7 +101,7 @@ const AdminOrders = () => {
 
         {/* 모바일 탭 버튼 (425px 이하에서만 표시) */}
         {isMobile && (
-          <div className="flex items-start gap-1">
+          <div className="flex items-start gap-1 w-full">
             <div
               className={`rounded-full px-3.5 py-1.75 cursor-pointer ${
                 mobileActiveTab === "입금 대기"
@@ -147,7 +147,7 @@ const AdminOrders = () => {
       {!isMobile && (
         <>
           {activeTab === "전체" ? (
-            <div className="flex flex-row gap-2.5 flex-1 min-h-0 overflow-hidden">
+            <div className="flex flex-row gap-2.5 flex-1 min-h-0 overflow-hidden w-full">
               {/* 입금 대기 블럭 */}
               <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
                 <div className="flex flex-row ml-1.5 gap-1.5 flex-shrink-0 mb-3.5">
@@ -282,7 +282,7 @@ const AdminOrders = () => {
       {isMobile && (
         <>
           {mobileActiveTab === "입금 대기" && (
-            <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+            <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
               <div className="flex flex-row px-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0">
                 <div className="flex text-14-medium leading-[136%] text-navy-35">
                   테이블
@@ -346,7 +346,7 @@ const AdminOrders = () => {
           )}
 
           {mobileActiveTab === "조리 중" && (
-            <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+            <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
               <div className="flex flex-row px-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0 text-14-medium leading-[136%] text-navy-35">
                 <div className="flex">테이블</div>
                 <div className="flex w-38.5 max-[376px]:w-32 text-start">
@@ -385,7 +385,7 @@ const AdminOrders = () => {
           )}
 
           {mobileActiveTab === "조리 완료" && (
-            <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+            <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
               <div className="flex flex-row pl-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border border-black-25 items-center text-14-medium leading-[136%] text-navy-35 flex-shrink-0">
                 <div className="flex">테이블</div>
                 <div className="flex max-[376px]:w-20 w-29">금액</div>

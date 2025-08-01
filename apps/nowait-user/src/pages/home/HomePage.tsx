@@ -42,7 +42,13 @@ const HomePage = () => {
       return `${year}.${month}.${day} ${hours}:${minutes}`;
     })(),
     location: store.location,
-    imageUrl: store.bannerImageUrl || store.profileImageUrl, // bannerImage가 있다면 사용, 없으면 profileImage 사용
+    imageUrl:
+      store.bannerImageUrl && store.bannerImageUrl.length > 0
+        ? store.bannerImageUrl[0]
+        : store.profileImageUrl, // bannerImage가 있다면 사용, 없으면 profileImage 사용
+    bannerImageUrl: Array.isArray(store.bannerImageUrl)
+      ? store.bannerImageUrl
+      : [], // bannerImageUrl 배열 추가
     departmentId: store.storeId, // departmentId는 storeId로 설정
   }));
 
@@ -73,13 +79,13 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-10">
-      <div className="flex flex-col px-5 pb-8">
-        <HomeHeader />
+    <div className="flex flex-col">
+      <HomeHeader />
+      <div className="flex flex-col px-5 mb-10">
         {/* 내 대기 순서 */}
         {myWaitingList.length > 0 && (
           <div className="flex flex-col">
-            <div className="flex flex-row mt-4.5 gap-1.5 text-title-20-bold text-black-100">
+            <div className="flex flex-row gap-1.5 text-title-20-bold text-black-100">
               <div className="flex">나의 대기카드</div>
             </div>
 

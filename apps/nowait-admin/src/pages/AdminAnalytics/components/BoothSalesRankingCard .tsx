@@ -1,5 +1,4 @@
 import React from "react";
-import arrowIcon from "../../../assets/keyboard_arrow_down.svg";
 
 interface BoothRanking {
   rank: number;
@@ -8,6 +7,7 @@ interface BoothRanking {
   salesCount: number;
   rankChange: number;
   isCurrentBooth?: boolean;
+  profileImageUrl: string;
 }
 
 interface BoothSalesRankingCardProps {
@@ -47,7 +47,13 @@ const BoothSalesRankingCard: React.FC<BoothSalesRankingCardProps> = ({
                 <span className="text-14-semibold text-gray-600 w-[30px] h-[23px]">
                   {item.rank}
                 </span>
-                <div className="w-9 h-9 rounded-full bg-[#5A6ACF] mr-[10px]" />
+                <div className="w-9 h-9 rounded-full overflow-hidden mr-[10px]">
+                  <img
+                    src={item.profileImageUrl}
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div className="flex items-center text-sm gap-2">
                   <span className="text-16-semibold text-black">
                     {item.name}

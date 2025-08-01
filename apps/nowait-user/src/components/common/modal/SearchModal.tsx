@@ -117,15 +117,17 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
       className="flex flex-row py-3 gap-3 w-full min-w-0 items-center cursor-pointer"
       onClick={() => handleStoreClick(store)}
     >
-      <div className="rounded-full w-11 h-11 bg-gray-200 flex-shrink-0 overflow-hidden">
+      <div className="rounded-full w-11 h-11 bg-gray-200 flex-shrink-0 overflow-hidden flex items-center justify-center">
         {store.profileImage ? (
           <img
             alt={`${store.name} 주점 이미지`}
             src={store.profileImage}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-full"
           />
         ) : (
-          <div className="w-full h-full bg-gray-200" />
+          <div className="text-16-bold text-black-60 flex items-center justify-center">
+            {store.name.charAt(0)}
+          </div>
         )}
       </div>
       <div className="flex flex-col flex-1 min-w-0">
@@ -135,9 +137,9 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
           </div>
           <div className="flex-shrink-0">
             {store.isActive ? (
-              <div className="px-1.5 py-1.25 rounded-md bg-[#FFEEDF]">
+              <div className="px-1.5 py-1.25 rounded-md bg-[#FFF0EB]">
                 <div className="font-bold text-[10px] text-[#FF5E07]">
-                  영업중
+                  대기 {store.waitingCount}팀
                 </div>
               </div>
             ) : (

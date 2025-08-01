@@ -6,31 +6,35 @@ import { Button } from "@repo/ui";
 import { useNavigate, useParams } from "react-router-dom";
 import MenuList from "../../../components/common/MenuList";
 import { useBookmarkMutation } from "../../../hooks/mutate/useBookmark";
-import BookmarkIcon from "./components/BookmarkIcon";
+import BookmarkIcon from "../../../components/common/BookmarkIcon";
 import { useBookmarkState } from "../../../hooks/useBookmarkState";
 import { useQuery } from "@tanstack/react-query";
 import { getStore } from "../../../api/reservation";
 import CommonSwiper from "../../../components/CommonSwiper";
 import SectionDivider from "../../../components/SectionDivider";
 import { formatTimeRange } from "../../../utils/formatTimeRange";
+import DepartmentImage from "../../../components/DepartmentImage";
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id: storeId } = useParams();
-  const { isBookmarked, bookmarkData } = useBookmarkState();
-  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation();
+  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
+    withInvalidate: true,
+  });
+  const { isBookmarked } = useBookmarkState(storeId);
+
   const { data: store } = useQuery({
     queryKey: ["store", storeId],
-    queryFn: () => getStore(storeId),
+    queryFn: () => getStore(storeId!),
     select: (data) => data.response,
   });
-  console.log(store);
+  console.log(store,"주점ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ")
   const handleBookmarkButton = async () => {
     try {
       if (!isBookmarked) {
         await createBookmarkMutate.mutate(storeId);
       } else {
-        await deleteBookmarkMutate.mutate(bookmarkData.bookmarkId);
+        await deleteBookmarkMutate.mutate(storeId);
       }
     } catch (error) {
       console.log(error);
@@ -51,10 +55,10 @@ const StoreDetailPage = () => {
               </p>
               <h1 className="text-headline-22-bold">{store?.name}</h1>
             </div>
-            <img
-              className="w-[52px] h-[52px] rounded-[100%] bg-black-60"
-              src={store?.profileImage?.imageUrl || ""}
-              alt="학과 대표 이미지"
+            <DepartmentImage
+              width="52px"
+              height="52px"
+              src={store?.profileImage?.imageUrl}
             />
           </div>
           {/* 주점 대기팀 인원 수 */}
@@ -86,10 +90,15 @@ const StoreDetailPage = () => {
             {store?.description}
           </h2>
           {/* 공지사항(데이터 변경 예정) */}
-          {store?.notice && (
+          {store?.noticeTitle && (
             <button
               onClick={() =>
-                navigate(`/store/${storeId}/notice`, { state: store?.notice })
+                navigate(`/store/${storeId}/notice`, {
+                  state: {
+                    title: store?.noticeTitle,
+                    content: store?.noticeContent,
+                  },
+                })
               }
               className="w-full flex justify-between items-center gap-4 py-3.5 px-4 bg-black-15 rounded-[10px]"
             >
@@ -118,11 +127,11 @@ const StoreDetailPage = () => {
           buttonType="icon"
           onClick={handleBookmarkButton}
         >
-          <BookmarkIcon />
+          <BookmarkIcon isBookmarked={isBookmarked} />
         </Button>
         {/* 주점 미오픈 시 버튼 */}
         {!store?.isActive ? (
-          <Button disabled={store?.isActive}>지금은 대기할 수 없어요</Button>
+          <Button disabled={!store?.isActive}>지금은 대기할 수 없어요</Button>
         ) : (
           // 내 웨이팅 등록 현황에 따른 버튼
           <Button

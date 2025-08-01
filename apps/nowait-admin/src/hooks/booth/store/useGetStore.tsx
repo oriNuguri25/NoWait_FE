@@ -1,16 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 import AdminApi from "../../../utils/AdminApi";
 
-interface StoreResponse {
+export interface StoreResponse {
   storeId: number;
   departmentId: number;
+  departmentName: string;
   name: string;
   location: string;
   description: string;
-  notice: string;
+  noticeTitle: string | null;
+  noticeContent: string | null;
   openTime: string;
-  profileImage: string | null;
-  bannerImages: { id: number; imageUrl: string }[];
+  profileImage: {
+    id: number;
+    imageUrl: string;
+    imageType: "PROFILE";
+  } | null;
+  bannerImages: {
+    id: number;
+    imageUrl: string;
+    imageType: "BANNER";
+  }[];
   isActive: boolean;
   deleted: boolean;
   createdAt: string;

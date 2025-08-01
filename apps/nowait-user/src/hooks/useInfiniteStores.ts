@@ -14,7 +14,12 @@ interface Store {
   name: string;
   location: string;
   description: string;
-  profileImageUrl: string;
+  profileImage: {
+    id: number;
+    storeId: number;
+    imageUrl: string;
+    imageType: string;
+  } | null;
   isActive: boolean;
   deleted: boolean;
   createdAt: string;

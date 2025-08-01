@@ -1,50 +1,16 @@
 import { motion, useMotionValue, animate } from "framer-motion";
 import BookmarkedStoreItem from "../../bookmark/components/BookmarkedStoreItem";
-import { useRef, useState } from "react";
+import { useBookmarkState } from "../../../../hooks/useBookmarkState";
 import { useInfiniteStores } from "../../../../hooks/useInfiniteStores";
+import { useRef, useState } from "react";
 
 const snapPoints = [0, -400]; // 0: 닫힘, -400: 열림
 
-const dummyData = [
-  {
-    id: 1,
-    image: "/bookmarkStoreImage.png",
-    wait: "대기 0팀",
-    storeName: "스페이시스",
-    lesson: "바이오메카트로닉스공학과",
-    storeId: "1",
-  },
-  {
-    id: 2,
-    image: "/bookmarkStoreImage.png",
-    wait: "대기 0팀",
-    storeName: "스페이시스",
-    lesson: "약과",
-    storeId: "2",
-  },
-  {
-    id: 3,
-    image: "/bookmarkStoreImage.png",
-    wait: "대기 0팀",
-    storeName: "스페이시스",
-    lesson: "약과",
-    storeId: "2",
-  },
-  {
-    id: 4,
-    image: "/bookmarkStoreImage.png",
-    wait: "대기 0팀",
-    storeName: "스페이시스",
-    lesson: "약과",
-    storeId: "2",
-  },
-];
-
 const BoothList = () => {
-  const { stores } = useInfiniteStores();
 
   const y = useMotionValue(0);
-
+  // const { bookmarkData } = useBookmarkState();
+  const { stores } = useInfiniteStores();
   const handleDragEnd = () => {
     const currentY = y.get();
     // 가장 가까운 스냅 지점으로 스냅
@@ -72,16 +38,16 @@ const BoothList = () => {
           </h2>
         </div>
         <ul className="h-[600px] overflow-y-scroll">
-          {stores.map((data) => {
+          {stores.map((store) => {
             return (
               <BookmarkedStoreItem
-                key={data.storeId}
-                id={data.storeId}
-                image={data?.bannerImages[0]?.imageUrl}
-                waitingCount={data.waitingCount}
-                storeName={data.name}
-                departmentName={data.departmentName}
-                storeId={String(data.storeId)}
+                key={store.storeId}
+                bannerImages={store.bannerImages[0]?.imageUrl}
+                waitingCount={store.waitingCount}
+                profileImage={store.profileImage?.imageUrl}
+                name={store.name}
+                departmentName={store.departmentName}
+                storeId={String(store.storeId)}
               />
             );
           })}

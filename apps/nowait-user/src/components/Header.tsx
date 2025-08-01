@@ -41,7 +41,7 @@ const HomeHeader = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center py-4">
+      <div className="flex justify-between items-center py-4 px-5 mb-4.5">
         <Logo className="w-14.5 h-6" />
         <div className="flex flex-row gap-3">
           <button onClick={openSearch} className="cursor-pointer">
