@@ -4,7 +4,7 @@ import { useInfiniteStores } from "../../../../hooks/useInfiniteStores";
 import StoreListItem from "../../../../components/common/StoreListItem";
 import BoothItem from "./BoothItem";
 
-const snapPoints = [0, -400]; // 0: 닫힘, -400: 열림
+const snapPoints = [0, -615]; // 0: 닫힘, -400: 열림
 
 const BoothList = () => {
   const { isBookmarked } = useBookmarkState();
@@ -22,12 +22,16 @@ const BoothList = () => {
 
   return (
     <motion.div
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 100 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
       style={{ y }}
       drag="y"
-      dragConstraints={{ top: -400, bottom: 0 }}
+      dragConstraints={{ top: -615, bottom: 0 }}
       onDragEnd={handleDragEnd}
       onClick={(e) => e.stopPropagation()}
-      className="fixed -bottom-[615px] left-0 w-full bg-white rounded-[36px] z-30"
+      className="fixed -bottom-[615px] left-0 w-full bg-white rounded-t-[36px] z-30"
     >
       <p className="w-[40px] h-[4px] rounded-full bg-black-30 mx-auto mt-2.5 mb-[26px]"></p>
       <div className="px-5">
