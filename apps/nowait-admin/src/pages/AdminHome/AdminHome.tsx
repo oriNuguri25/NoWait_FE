@@ -3,8 +3,6 @@ import RoundTabButton from "./components/RoundTabButton";
 import refreshIcon from "../../assets/refresh.svg";
 import { WaitingCard } from "./components/WaitingCard";
 import { useGetReservationList } from "../../hooks/Reservation/useGetReservationList";
-import on from "../../assets/on.svg";
-import off from "../../assets/off.svg";
 import { useUpdateReservationStatus } from "../../hooks/Reservation/useUpdateReservationStatus";
 import ConfirmRemoveModal from "../../components/ConfirmRemoveModal";
 import ToggleSwitch from "./components/ToggleSwitch";
@@ -14,6 +12,7 @@ type WaitingStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 interface Reservation {
   id: number;
   userId: number;
+  reservationNumber: string;
   time: string;
   requestedAt: string;
   waitMinutes: number;
@@ -41,8 +40,8 @@ const AdminHome = () => {
   const { data: completedList, refetch: refetchCompleted } =
     useGetCompletedList(storeId); //canceled, conformed
 
-  console.log(waitingList);
-  console.log(completedList);
+  console.log(waitingList, "대기/호출");
+  console.log(completedList, "완료/취소");
   const toggle = () => setIsOn((prev) => !prev);
   //대기 중 카드 개수
   const waitingCount = reservations.filter(
@@ -171,6 +170,7 @@ const AdminHome = () => {
       return {
         id: Number(idFromNumber),
         userId: Number(res.userId),
+        reservationNumber: res.reservationNumber,
         requestedAt: res.createdAt,
         time: requested.toLocaleTimeString("ko-KR", {
           hour: "2-digit",
@@ -188,7 +188,13 @@ const AdminHome = () => {
     };
 
     const merged = [...waitingList, ...completedList].map(normalize);
-    setReservations(merged);
+    const unique = merged.filter(
+      (res, idx, arr) =>
+        idx ===
+        arr.findIndex((r) => r.reservationNumber === res.reservationNumber)
+    );
+
+    setReservations(unique);
   }, [waitingList, completedList]);
   return (
     <div
@@ -248,7 +254,7 @@ const AdminHome = () => {
 
           return (
             <WaitingCard
-              key={res.id}
+              key={res.userId + "-" + res.requestedAt}
               number={res.id}
               time={requested.toLocaleTimeString("ko-KR", {
                 hour: "2-digit",
