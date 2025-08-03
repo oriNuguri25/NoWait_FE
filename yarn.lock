@@ -2113,6 +2113,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/trusted-types@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "@types/trusted-types@npm:2.0.7"
+  checksum: 10c0/4c4855f10de7c6c135e0d32ce462419d8abbbc33713b31d294596c0cc34ae1fa6112a2f9da729c8f7a20707782b0d69da3b1f8df6645b0366d08825ca1522e0c
+  languageName: node
+  linkType: hard
+
 "@types/use-sync-external-store@npm:^0.0.6":
   version: 0.0.6
   resolution: "@types/use-sync-external-store@npm:0.0.6"
@@ -2912,7 +2919,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csstype@npm:^3.0.2":
+"csstype@npm:^3.0.2, csstype@npm:^3.1.3":
   version: 3.1.3
   resolution: "csstype@npm:3.1.3"
   checksum: 10c0/80c089d6f7e0c5b2bd83cf0539ab41474198579584fa10d86d0cafe0642202343cbc119e076a0b1aece191989477081415d66c9fefbf3c957fc2fc4b7009f248
@@ -3059,6 +3066,18 @@ __metadata:
   version: 2.5.8
   resolution: "dompurify@npm:2.5.8"
   checksum: 10c0/4101708d190b67be00350369d72619266a2e0ebb7dcab12628cf07711329b1df12239baea613df41b65cba571128e8ea4c29c442f4e2c98670a9bb5563521f03
+  languageName: node
+  linkType: hard
+
+"dompurify@npm:^3.2.6":
+  version: 3.2.6
+  resolution: "dompurify@npm:3.2.6"
+  dependencies:
+    "@types/trusted-types": "npm:^2.0.7"
+  dependenciesMeta:
+    "@types/trusted-types":
+      optional: true
+  checksum: 10c0/c8f8e5b0879a0d93c84a2e5e78649a47d0c057ed0f7850ca3d573d2cca64b84fb1ff85bd4b20980ade69c4e5b80ae73011340f1c2ff375c7ef98bb8268e1d13a
   languageName: node
   linkType: hard
 
@@ -3876,6 +3895,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"goober@npm:^2.1.16":
+  version: 2.1.16
+  resolution: "goober@npm:2.1.16"
+  peerDependencies:
+    csstype: ^3.0.10
+  checksum: 10c0/f4c8256bf9c27873d47c1443f348779ac7f322516cb80a5dc647a6ebe790ce6bb9d3f487a0fb8be0b583fb96b9b2f6b7463f7fea3cd680306f95fa6fc9db1f6a
+  languageName: node
+  linkType: hard
+
 "gopd@npm:^1.0.1, gopd@npm:^1.2.0":
   version: 1.2.0
   resolution: "gopd@npm:1.2.0"
@@ -4355,6 +4383,13 @@ __metadata:
     json-schema: "npm:0.4.0"
     verror: "npm:1.10.0"
   checksum: 10c0/5e4bca99e90727c2040eb4c2190d0ef1fe51798ed5714e87b841d304526190d960f9772acc7108fa1416b61e1122bcd60e4460c91793dce0835df5852aab55af
+  languageName: node
+  linkType: hard
+
+"jsqr@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "jsqr@npm:1.4.0"
+  checksum: 10c0/69fbfe4c866a04c97b377901a166544a583bfc76b838c275efa9af058d64e5612267079b1e96ea7b6434385803571b1c6a97a43c85f4373e8afa4f4034fc916c
   languageName: node
   linkType: hard
 
@@ -4843,12 +4878,17 @@ __metadata:
     "@toast-ui/react-editor": "npm:^3.2.3"
     "@yarnpkg/sdks": "npm:^3.2.2"
     clsx: "npm:^2.1.1"
+    dompurify: "npm:^3.2.6"
     framer-motion: "npm:^12.20.1"
+    jsqr: "npm:^1.4.0"
+    prop-types: "npm:^15.8.1"
     prosemirror-model: "npm:^1.25.2"
     prosemirror-state: "npm:^1.4.3"
     prosemirror-transform: "npm:^1.10.4"
     react-beautiful-dnd: "npm:^13.1.1"
+    react-hot-toast: "npm:^2.5.2"
     react-quill: "npm:^2.0.0"
+    react-swipeable-list: "npm:^1.10.0"
     react-toastify: "npm:^11.0.5"
     turbo: "npm:^2.5.5"
     typescript: "npm:^5.8.3"
@@ -5032,10 +5072,12 @@ __metadata:
     autoprefixer: "npm:^10.4.20"
     axios: "npm:^1.10.0"
     clsx: "npm:^2.1.1"
+    dompurify: "npm:^3.2.6"
     eslint: "npm:^9.25.0"
     eslint-plugin-react-hooks: "npm:^5.2.0"
     eslint-plugin-react-refresh: "npm:^0.4.19"
     globals: "npm:^16.0.0"
+    jsqr: "npm:^1.4.0"
     lucide-react: "npm:^0.522.0"
     postcss: "npm:^8.5.3"
     prosemirror-model: "npm:^1.25.2"
@@ -5044,9 +5086,11 @@ __metadata:
     react: "npm:^19.1.0"
     react-beautiful-dnd: "npm:^13.1.1"
     react-dom: "npm:^19.1.0"
+    react-hot-toast: "npm:^2.5.2"
     react-quill: "npm:^2.0.0"
     react-router: "npm:^7.6.2"
     react-router-dom: "npm:^7.6.2"
+    react-swipeable-list: "npm:^1.10.0"
     tailwindcss: "npm:^4.1.5"
     typescript: "npm:~5.8.3"
     typescript-eslint: "npm:^8.30.1"
@@ -5389,7 +5433,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -5747,6 +5791,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hot-toast@npm:^2.5.2":
+  version: 2.5.2
+  resolution: "react-hot-toast@npm:2.5.2"
+  dependencies:
+    csstype: "npm:^3.1.3"
+    goober: "npm:^2.1.16"
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 10c0/2db00b491bd1d2ec3ed04754a32b640272cdb32985f95e32ef033fcc996588a93e67d9764b005f9f391ee2bad5d0f9f343ba290dca82fcd439e08e708a161d76
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1, react-is@npm:^16.7.0, react-is@npm:^16.8.1":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -5837,6 +5894,13 @@ __metadata:
   peerDependencies:
     react-dom: ^16.8.0 || ^17 || ^18 || ^19
   checksum: 10c0/97b12651899effaf9096a40fb107caec83ae3bbad0469c612aed07b375a915097970d9ecc93f7aa97ee9580b635f2d3ccde1f7229e4a6fdb76763777750f10e7
+  languageName: node
+  linkType: hard
+
+"react-swipeable-list@npm:^1.10.0":
+  version: 1.10.0
+  resolution: "react-swipeable-list@npm:1.10.0"
+  checksum: 10c0/10f812279ffb941f568d0a7ea8fb3675add2e3dd8027e4018f3dbeb9efe53eb9dff7b78482952e1dada01431149c2e261242ab3be6011cd040f1667a93bb225f
   languageName: node
   linkType: hard
 

@@ -52,20 +52,20 @@ const BoothForm = () => {
       },
       {
         onSuccess: () => {
-          // 업로드할 파일만 필터링
-          const filesToUpload = bannerImages.filter(
+          if (profileImage && profileImage instanceof File) {
+            uploadProfileImage({ storeId, image: profileImage });
+          }
+
+          // 배너 이미지 업로드 (File 타입만 필터링)
+          const newBannerFiles = bannerImages.filter(
             (img): img is File => img instanceof File
           );
 
-          if (filesToUpload.length > 0) {
-            // 첫 번째 파일은 대표 프로필 이미지
-            uploadProfileImage({ storeId, image: filesToUpload[0] });
-
-            // 나머지는 배너 이미지
-            const restFiles = filesToUpload.slice(1);
-            if (restFiles.length > 0) {
-              uploadBannerImages({ storeId, images: restFiles });
-            }
+          if (newBannerFiles.length > 0) {
+            uploadBannerImages({
+              storeId,
+              images: newBannerFiles,
+            });
           }
 
           alert("부스 정보가 성공적으로 저장되었습니다!");

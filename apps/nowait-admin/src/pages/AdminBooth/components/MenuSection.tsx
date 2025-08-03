@@ -11,6 +11,12 @@ import addIcon from "../../../assets/booth/add.svg";
 import MenuRemoveModal from "./Modal/MenuRemoveModal";
 import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
 
+// 세잘마다 , 붙여서 가격표시
+const formatNumber = (num: number) => {
+  if (!num) return "";
+  return String(num).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 interface Menu {
   id: number;
   name: string;
@@ -58,8 +64,6 @@ const MenuSection = () => {
 
     createMenu(payload, {
       onSuccess: (data) => {
-        // axios 응답 res.data를 반환했으므로 data 는 아래 형태
-        // { success: true, response: { menuId, storeId, name, description, price, isSoldOut, … } }
         const created = data.response;
         console.log(created, "생성된 메뉴");
 
@@ -180,7 +184,7 @@ const MenuSection = () => {
   return (
     <div className="mt-[40px] mb-[20px] max-w-[614px]">
       <div className="flex justify-between items-center mb-[20px]">
-        <h2 className="text-title-18-bold">메뉴</h2>
+        <h2 className="text-headline-22-bold">메뉴</h2>
         <div className="flex gap-[10px]">
           <button
             className={`text-14-semibold px-[10px] py-[7.5px] rounded-[8px] ${
@@ -229,12 +233,14 @@ const MenuSection = () => {
                     {(provided) => (
                       <div
                         className="flex justify-between items-center py-4"
-                        onClick={() => !editMode && openEditModal(menu)}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...(editMode ? provided.dragHandleProps : {})}
                       >
-                        <div className="flex items-center gap-4">
+                        <div
+                          className="flex items-center w-full gap-4"
+                          onClick={() => !editMode && openEditModal(menu)}
+                        >
                           <div className="w-[48px] h-[48px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
                             <img
                               src={menu.imageUrl}
@@ -247,7 +253,7 @@ const MenuSection = () => {
                               {menu.name}
                             </span>
                             <span className="text-sm text-black-60">
-                              {menu.price}
+                              {formatNumber(menu.price)}원
                             </span>
                           </div>
                         </div>
@@ -280,8 +286,13 @@ const MenuSection = () => {
       {isAddModalOpen && (
         <MenuModal
           isEdit={false}
-          onClose={() => setIsAddModalOpen(false)}
+          onClose={() => {
+            setIsAddModalOpen(false);
+          }}
           onSubmit={handleAddMenu}
+          onDelete={() => {
+            setIsRemoveModalOpen(true);
+          }}
         />
       )}
       {isEditModalOpen && selectedMenu && (
@@ -292,6 +303,9 @@ const MenuSection = () => {
             setIsEditModalOpen(false);
           }}
           onSubmit={handleEditMenu}
+          onDelete={() => {
+            setIsRemoveModalOpen(true);
+          }}
         />
       )}
       {isRemoveModalOpen && (
