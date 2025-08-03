@@ -1,5 +1,19 @@
 import React from "react";
 
+const formatDateWithDay = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return dateStr;
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  const days = ["일", "월", "화", "수", "목", "금", "토"];
+  const dayName = days[date.getDay()];
+
+  return `${year}.${month}.${day} ${dayName}`;
+};
+
 interface BoothRanking {
   rank: number;
   name: string;
@@ -13,20 +27,38 @@ interface BoothRanking {
 interface BoothSalesRankingCardProps {
   date: string;
   data: BoothRanking[];
+  disabled: boolean;
 }
 
 const BoothSalesRankingCard: React.FC<BoothSalesRankingCardProps> = ({
   date,
   data,
+  disabled,
 }) => {
   return (
-    <div className="bg-white max-h-[364px] rounded-[12px] p-6 shadow-sm w-[754px] max-h-[50%] mt-[10px]">
-      <div className="flex justify-between mb-4">
-        <div className="flex flex-col">
+    <div
+      className={`bg-white h-[364px] rounded-[12px] p-6 shadow-sm w-[754px] max-h-[50%] mt-[10px] ${
+        disabled ? "flex flex-col justify-center items-center relative" : ""
+      }`}
+    >
+      <div
+        className={`flex justify-between mb-4 ${
+          disabled ? "absolute left-[22px] top-[22px] w-[710px]" : ""
+        }`}
+      >
+        <div className="flex items-center">
           <h2 className="text-title-18-bold text-navy-80">부스별 판매순위</h2>
         </div>
-        <span className="text-[12px] text-gray-400">{date}</span>
+        <span className="flex text-[12px] text-gray-400 items-center">
+          {formatDateWithDay(date)}
+        </span>
       </div>
+      {disabled && (
+        <div className="flex flex-col justify-center items-center text-black-60 text-13-regular">
+          <p>집계된 데이터가 없어요.</p>
+          <p>축제가 시작되면 순위를 표시할게요.</p>
+        </div>
+      )}
 
       <ul>
         {data.map((item) => {
