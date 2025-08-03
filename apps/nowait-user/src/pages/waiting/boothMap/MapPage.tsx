@@ -33,7 +33,7 @@ const MapPage = () => {
   const height = useWindowHeight();
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
   const { data: storeMarkers } = useQuery({
-    queryKey: ["stores"],
+    queryKey: ["storesMarkers"],
     queryFn: getAllStores,
     select: (data) => data?.response?.storePageReadResponses,
   });
