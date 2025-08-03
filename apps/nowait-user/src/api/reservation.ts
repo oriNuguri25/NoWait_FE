@@ -38,7 +38,7 @@ interface ServerResponse {
 
 // 모든 주점 정보 가져오기
 export const getAllStores = async() => {
-    const response = await UserApi.get<any[]>(
+    const response = await UserApi.get<ServerResponse>(
       "/v1/stores/all-stores",
       {
         params: {

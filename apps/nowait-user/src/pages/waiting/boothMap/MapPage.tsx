@@ -15,6 +15,18 @@ const boothPosition: Record<number, { top: string; left: string }> = {
   2: { top: "45%", left: "70%" },
   3: { top: "45%", left: "80%" },
   4: { top: "45%", left: "90%" },
+  5: { top: "50%", left: "60%" },
+  6: { top: "65%", left: "70%" },
+  7: { top: "70%", left: "80%" },
+  8: { top: "72%", left: "90%" },
+  9: { top: "75%", left: "60%" },
+  10: { top: "80%", left: "70%" },
+  11: { top: "90%", left: "80%" },
+  12: { top: "92%", left: "90%" },
+  13: { top: "12%", left: "60%" },
+  14: { top: "15%", left: "70%" },
+  15: { top: "20%", left: "80%" },
+  16: { top: "45%", left: "90%" },
 };
 
 const MapPage = () => {
@@ -23,6 +35,7 @@ const MapPage = () => {
   const { data: storeMarkers } = useQuery({
     queryKey: ["stores"],
     queryFn: getAllStores,
+    select: (data) => data?.response?.storePageReadResponses,
   });
   console.log(storeMarkers, "스토어 마커");
   const { stores } = useInfiniteStores();
