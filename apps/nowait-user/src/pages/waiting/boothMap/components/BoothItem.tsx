@@ -40,7 +40,7 @@ const BoothItem = ({
     }
   };
   return (
-    <li className="mb-6">
+    <div className="mb-6">
       <div className="relative top-0 right-0">
         <img
           className="w-full h-[195px] rounded-[14px] overflow-hidden object-cover"
@@ -65,7 +65,7 @@ const BoothItem = ({
           <BookmarkIcon isBookmarked={isBookmarked} />
         </button>
       </div>
-    </li>
+    </div>
   );
 };
 

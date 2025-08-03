@@ -5,9 +5,8 @@ import useWindowHeight from "../../../hooks/useWindowHeight";
 import { useState } from "react";
 import { useInfiniteStores } from "../../../hooks/useInfiniteStores";
 import BoothDetail from "./components/BoothDetail";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getAllStores } from "../../../api/reservation";
-import Draggable from "react-draggable";
 import { motion } from "framer-motion";
 
 const boothPosition: Record<number, { top: string; left: string }> = {
@@ -33,19 +32,17 @@ const MapPage = () => {
   const height = useWindowHeight();
   const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
   const { data: storeMarkers } = useQuery({
-    queryKey: ["stores"],
+    queryKey: ["storesMarkers"],
     queryFn: getAllStores,
     select: (data) => data?.response?.storePageReadResponses,
   });
-  console.log(storeMarkers, "스토어 마커");
-  const { stores } = useInfiniteStores();
-  const booths = stores?.map((booth) => ({
+  
+  const booths = storeMarkers?.map((booth) => ({
     ...booth,
     ...boothPosition[booth.storeId],
   }));
-  console.log(stores, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-  console.log(booths, "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
-  const detailBooth = booths.find((booth) => booth.storeId === selectedBooth);
+
+  const detailBooth = booths?.find((booth) => booth.storeId === selectedBooth);
 
   const openBoothButton = (id: number) => {
     console.log(id);
@@ -106,7 +103,7 @@ const MapPage = () => {
             />
             {/* 마커 */}
             <ul className="absolute top-0 left-0 w-full h-full">
-              {booths.map((booth) => (
+              {booths?.map((booth) => (
                 <li
                   key={booth.storeId}
                   className="absolute"
@@ -129,7 +126,6 @@ const MapPage = () => {
         </div>
       </div>
       {/* 부스 리스트 */}
-      {/* <AnimatePresence></AnimatePresence> */}
       {selectedBooth !== null ? (
         <BoothDetail booth={detailBooth} />
       ) : (

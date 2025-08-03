@@ -1,16 +1,76 @@
 import { motion, useMotionValue, animate } from "framer-motion";
-import { useBookmarkState } from "../../../../hooks/useBookmarkState";
 import { useInfiniteStores } from "../../../../hooks/useInfiniteStores";
-import StoreListItem from "../../../../components/common/StoreListItem";
 import BoothItem from "./BoothItem";
+import { useEffect, useRef } from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 const snapPoints = [0, -400]; // 0: 닫힘, -400: 열림
 
 const BoothList = () => {
-  const { isBookmarked } = useBookmarkState();
   const y = useMotionValue(0);
   const { stores, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteStores();
+
+  // 가상 스크롤을 위한 ref
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  // 가상 스크롤 설정
+  const rowVirtualizer = useVirtualizer({
+    count: stores.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 285,
+  });
+
+  // 무한 스크롤 트리거
+  useEffect(() => {
+    const virtualItems = rowVirtualizer.getVirtualItems();
+    const lastItem = virtualItems[virtualItems.length - 1];
+
+    if (
+      lastItem &&
+      lastItem.index >= stores.length - 5 &&
+      hasNextPage &&
+      !isFetchingNextPage
+    ) {
+      console.log("🚀 fetchNextPage 호출!");
+      fetchNextPage();
+    }
+  }, [
+    rowVirtualizer.getTotalSize(),
+    stores.length,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  ]);
+
+  // 추가 무한 스크롤 트리거 (스크롤 이벤트 기반)
+  useEffect(() => {
+    const handleStoreScroll = () => {
+      if (parentRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = parentRef.current;
+        const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
+
+        console.log("스크롤 비율:", scrollPercentage);
+
+        if (
+          scrollPercentage > 0.8 && // 80% 스크롤했을 때
+          hasNextPage &&
+          !isFetchingNextPage
+        ) {
+          console.log("🚀 스크롤 이벤트로 fetchNextPage 호출!");
+          fetchNextPage();
+        }
+      }
+    };
+
+    const storeScrollElement = parentRef.current;
+    if (storeScrollElement) {
+      storeScrollElement.addEventListener("scroll", handleStoreScroll);
+      return () =>
+        storeScrollElement.removeEventListener("scroll", handleStoreScroll);
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   const handleDragEnd = () => {
     const currentY = y.get();
     // 가장 가까운 스냅 지점으로 스냅
@@ -42,21 +102,52 @@ const BoothList = () => {
               {stores.length}개의 부스
             </h2>
           </div>
-          <ul className="h-[600px] overflow-y-scroll pb-[215px]">
-            {stores.map((store) => {
-              return (
-                <BoothItem
-                  key={store.storeId}
-                  bannerImages={store.bannerImages[0]?.imageUrl}
-                  waitingCount={store.waitingCount}
-                  profileImage={store.profileImage?.imageUrl}
-                  name={store.name}
-                  departmentName={store.departmentName}
-                  storeId={String(store.storeId)}
-                />
-              );
-            })}
-          </ul>
+          {!isLoading && stores.length > 0 && (
+            <div
+              ref={parentRef}
+              style={{
+                height: "600px",
+                overflow: "auto",
+              }}
+              className="scrollbar-hide"
+            >
+              <ul
+                style={{
+                  height: `calc(${rowVirtualizer.getTotalSize()}px - 200px)`,
+                  position: "relative",
+                  paddingBottom: "215px",
+                }}
+                className="overflow-y-scroll pb-[215px]"
+              >
+                {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                  const store = stores[virtualRow.index];
+                  if (!store) return null;
+                  return (
+                    <li
+                      key={store.storeId}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: `${virtualRow.size}px`,
+                        transform: `translateY(${virtualRow.start}px)`,
+                      }}
+                    >
+                      <BoothItem
+                        bannerImages={store.bannerImages[0]?.imageUrl}
+                        waitingCount={store.waitingCount}
+                        profileImage={store.profileImage?.imageUrl}
+                        name={store.name}
+                        departmentName={store.departmentName}
+                        storeId={String(store.storeId)}
+                      />
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </motion.div>
