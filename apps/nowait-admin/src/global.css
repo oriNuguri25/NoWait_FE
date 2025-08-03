@@ -121,8 +121,8 @@ body,
 
 /* 라운드 버튼 넘칠때 그라데이션 효과 */
 .mask-fade-right {
-  mask-image: linear-gradient(to right, black 80%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+  mask-image: linear-gradient(to right, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 90%, transparent 100%);
 }
 
 textarea {
