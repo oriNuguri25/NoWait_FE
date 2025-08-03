@@ -33,8 +33,13 @@ const AdminHome = () => {
   const storeId = 1; //현재는 임시로 mockdata씀
   const [isOn, setIsOn] = useState(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const { data: waitingList } = useGetReservationList(storeId); //calling, wating
-  const { data: completedList } = useGetCompletedList(storeId); //canceled, conformed
+  const [targetReservation, setTargetReservation] =
+    useState<Reservation | null>(null);
+
+  const { data: waitingList, refetch: refetchWaiting } =
+    useGetReservationList(storeId); //calling, wating
+  const { data: completedList, refetch: refetchCompleted } =
+    useGetCompletedList(storeId); //canceled, conformed
 
   console.log(waitingList);
   console.log(completedList);
@@ -146,6 +151,12 @@ const AdminHome = () => {
     });
   };
 
+  const handleRefresh = () => {
+    Promise.all([refetchWaiting(), refetchCompleted()]).then(() => {
+      console.log("데이터 새로고침 완료");
+    });
+  };
+
   useEffect(() => {
     if (!Array.isArray(waitingList) || !Array.isArray(completedList)) return;
 
@@ -188,26 +199,15 @@ const AdminHome = () => {
         className="flex w-full [@media(min-width:375px)_and_(max-width:431px)]:justify-center m-0"
       >
         <div className="flex flex-col w-full">
-          <div className="flex justify-between mb-[30px]">
-            <div className="flex items-center">
-              <h1 className="text-title-20-bold">대기 접수</h1>&nbsp;
-              <span className="flex items-center">
-                <img
-                  src={on}
-                  alt="대기현환 on"
-                  className={`
-      absolute transition-all duration-300 ease-in
-      ${isOn ? "opacity-100 scale-100" : "opacity-0"}
-    `}
-                />
-                <img
-                  src={off}
-                  alt="대기현황 off"
-                  className={`
-      absolute transition-all duration-300 ease-in
-      ${!isOn ? "opacity-100 scale-100" : "opacity-0"}
-    `}
-                />
+          <div className="flex items-center justify-between mb-[30px]">
+            <div className="flex items-baseline space-x-[6px]">
+              <h1 className="text-title-20-bold">대기 접수</h1>
+              <span
+                className={`text-title-20-bold transition-all duration-700 ${
+                  isOn ? "text-primary" : "text-navy-35"
+                }`}
+              >
+                {isOn ? "on" : "off"}
               </span>
             </div>
             <ToggleSwitch isOn={isOn} toggle={toggle} />
@@ -229,7 +229,10 @@ const AdminHome = () => {
               />
             ))}
           </div>
-          <div className="hover:rotate-90 transition-transform duration-500 cursor-pointer">
+          <div
+            className="hover:rotate-90 transition-transform duration-500 cursor-pointer"
+            onClick={handleRefresh}
+          >
             <img
               src={refreshIcon}
               className="[@media(max-width:431px)]:hidden"
@@ -264,18 +267,22 @@ const AdminHome = () => {
               onCall={() => handleCall(res.id, res.userId)}
               onEnter={() => handleEnter(res.id, res.userId)}
               onClose={() => handleClose(res.id, res.userId)}
-              onDelete={() => setShowModal(true)}
+              onDelete={() => {
+                setTargetReservation(res);
+                setShowModal(true);
+              }}
               onNoShow={() => handleNoShow(res.id)}
             />
           );
         })}
       </div>
-      {showModal && (
+      {showModal && targetReservation && (
         <ConfirmRemoveModal
           onCancel={() => setShowModal(false)}
           onConfirm={() => {
-            // handleDelete(); // 삭제 처리 로직
+            handleClose(targetReservation.id, targetReservation.userId);
             setShowModal(false);
+            setTargetReservation(null);
           }}
         />
       )}
