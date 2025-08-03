@@ -15,76 +15,77 @@ interface SalesCardProps {
     date: string;
     amount: number;
   };
+  disabled: boolean;
 }
 
-const SalesCard: React.FC<SalesCardProps> = ({ today, previous }) => {
+const SalesCard: React.FC<SalesCardProps> = ({ today, previous, disabled }) => {
   const [showToday, setShowToday] = useState(true);
   // const [isHoverBack, setIsHoverBack] = useState(false);
   // const [isHoverForward, setIsHoverForward] = useState(false);
+
+  const formatDate = (date: String) => {
+    if (!date) return "";
+    return `${date.replace(/-/g, ".")}`;
+  };
 
   return (
     <div className="bg-white rounded-[12px] p-6 w-full h-full flex flex-col justify-between">
       <div className="flex justify-between">
         <span>
-          <p className="text-title-18-bold text-navy-80">
-            {showToday ? "오늘 매출" : "이전 매출"}
-          </p>
+          <p className="text-title-18-bold text-navy-80">오늘 매출</p>
           <p className="text-13-regular text-black-60 mt-1">
-            {showToday ? today.date : previous.date}
+            {formatDate(today.date)}
           </p>
         </span>
-        {/* 이전,다음 이동 버튼 */}
+
         <span className="flex">
-          {/* 이전 버튼: 오늘 매출일 때만 활성화 */}
+          {/* 이전 버튼 */}
           <img
-            src={
-              showToday ? activeBackIcon : backIcon // 비활성 이미지로 고정
-            }
-            className={`h-5 w-5 cursor-pointer`}
-            onMouseEnter={() => showToday}
-            onMouseLeave={() => showToday}
+            src={showToday ? (disabled ? backIcon : activeBackIcon) : backIcon}
+            className={`h-5 w-5 ${
+              disabled ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
             onClick={() => showToday && setShowToday(false)}
           />
-
-          {/* 다음 버튼: 이전 매출일 때만 활성화 */}
+          {/* 다음 버튼 */}
           <img
-            src={!showToday ? activeForwardIcon : forwardIcon}
-            className={`h-5 w-5 cursor-pointer `}
-            onMouseEnter={() => !showToday}
-            onMouseLeave={() => !showToday}
+            src={
+              !showToday
+                ? disabled
+                  ? forwardIcon
+                  : activeForwardIcon
+                : forwardIcon
+            }
+            className={`h-5 w-5 ${
+              disabled ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
             onClick={() => !showToday && setShowToday(true)}
           />
         </span>
       </div>
+
       <div className="flex flex-col">
         <div className="flex items-baseline">
           <p className="text-headline-22-bold text-navy-80">
-            {(showToday ? today.amount : previous.amount).toLocaleString()}원
+            {today.amount.toLocaleString()}원
           </p>
 
-          {showToday && (
-            <>
-              <span
-                className={`text-14-regular gap-[4px] ${
-                  today.percent > 0
-                    ? "text-primary" // 상승
-                    : today.percent < 0
-                    ? "text-[#3A75E5]" // 하락
-                    : "text-gray-500" // 변동 없음
-                }`}
-              >
-                {today.percent >= 0 ? "+" : ""}
-                {today.percent}%
-              </span>
-            </>
+          {!disabled && showToday && (
+            <span>
+              {today.percent > 0 ? "+" : ""}
+              {today.percent > 0 ? today.percent + "%" : ""}
+            </span>
           )}
         </div>
-        {showToday && (
+
+        {!disabled && showToday && (
           <p className="text-13-regular text-black-80">
-            어제보다 {today.diffAmount.toLocaleString()}원{" "}
-            {today.diffAmount >= 0 ? "더 벌었어요!" : "덜 벌었어요!"}
+            {today.diffAmount > 0
+              ? `어제보다 ${today.diffAmount.toLocaleString()}원{" "}더 벌었어요!`
+              : ""}
           </p>
         )}
+        {disabled && showToday && <></>}
       </div>
     </div>
   );

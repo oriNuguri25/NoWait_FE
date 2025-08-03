@@ -43,7 +43,11 @@ const AdminAnalytics = () => {
   return (
     <div className="w-full flex flex-col items-center justify-center ">
       <HeaderStatus sales={sales} popularMenu={popularMenu} />
-      <BoothSalesRankingCard date={formatted} data={boothRankingData} />
+      <BoothSalesRankingCard
+        date={formatted}
+        data={boothRankingData}
+        disabled={boothRank?.length === 0}
+      />
     </div>
   );
 };
