@@ -11,7 +11,8 @@ const AdminLayout = () => {
   const isMobile = width <= 767;
 
   const { pathname } = useLocation();
-  const isBoothPage = pathname === "/admin/booth";
+  const isBoothPage =
+    pathname === "/admin/booth" || pathname === "/admin/booth/guides";
 
   return (
     <div className={`${isMobile ? "flex flex-col" : "flex"} w-screen`}>
