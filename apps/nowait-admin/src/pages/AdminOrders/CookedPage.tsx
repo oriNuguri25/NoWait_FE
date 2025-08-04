@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import type { RefObject, Dispatch, SetStateAction } from "react";
 import { CookedCard, CookedDetail } from "./OrderCard";
 import type { Order } from "../../types/order";
 
@@ -7,6 +8,9 @@ interface CookedPageProps {
   isLoading?: boolean;
   error?: unknown;
   onRefresh?: () => void;
+  scrollContainerRef?: RefObject<HTMLDivElement | null>;
+  savedScrollPosition?: number;
+  setSavedScrollPosition?: Dispatch<SetStateAction<number>>;
 }
 
 const CookedPage = ({
@@ -14,10 +18,25 @@ const CookedPage = ({
   isLoading,
   error,
   onRefresh,
+  scrollContainerRef: externalScrollContainerRef,
+  savedScrollPosition: externalSavedScrollPosition,
+  setSavedScrollPosition: externalSetSavedScrollPosition,
 }: CookedPageProps) => {
   const [selectedCookedOrder, setSelectedCookedOrder] = useState<Order | null>(
     null
   );
+  const [internalSavedScrollPosition, setInternalSavedScrollPosition] =
+    useState<number>(0);
+  const internalScrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // 외부에서 전달받은 ref와 상태를 사용하거나, 내부에서 관리
+  const scrollContainerRef =
+    externalScrollContainerRef || internalScrollContainerRef;
+  const savedScrollPosition =
+    externalSavedScrollPosition ?? internalSavedScrollPosition;
+  const setSavedScrollPosition = externalSetSavedScrollPosition
+    ? externalSetSavedScrollPosition
+    : setInternalSavedScrollPosition;
 
   // 시간 포맷팅 함수 (17:30 형식)
   const getFormattedTime = (createdAt: string) => {
@@ -29,12 +48,24 @@ const CookedPage = ({
 
   // CookedCard 클릭 핸들러
   const handleCookedCardClick = (cookedOrder: Order) => {
+    if (scrollContainerRef.current) {
+      // 현재 스크롤 위치 저장
+      setSavedScrollPosition(scrollContainerRef.current.scrollTop);
+      // 스크롤을 맨 위로 올리기
+      scrollContainerRef.current.scrollTop = 0;
+    }
     setSelectedCookedOrder(cookedOrder);
   };
 
   // CookedDetail 닫기 핸들러
   const handleCloseCookedDetail = () => {
     setSelectedCookedOrder(null);
+    // 약간의 딜레이 후 스크롤 위치 복원
+    setTimeout(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = savedScrollPosition;
+      }
+    }, 0);
   };
 
   return (
@@ -71,6 +102,7 @@ const CookedPage = ({
 
           {/* 스크롤 가능한 내용 영역 */}
           <div
+            ref={scrollContainerRef}
             className={`flex-1 min-h-0 relative ${
               selectedCookedOrder ? "overflow-hidden" : "overflow-y-auto"
             }`}

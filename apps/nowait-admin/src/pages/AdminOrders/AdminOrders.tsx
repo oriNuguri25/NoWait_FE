@@ -22,7 +22,15 @@ const AdminOrders = () => {
     null
   );
   const [savedScrollPosition, setSavedScrollPosition] = useState<number>(0);
+  const [savedCookedScrollPosition, setSavedCookedScrollPosition] =
+    useState<number>(0);
+  const [
+    savedDesktopCookedScrollPosition,
+    setSavedDesktopCookedScrollPosition,
+  ] = useState<number>(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const cookedScrollContainerRef = useRef<HTMLDivElement>(null);
+  const desktopCookedScrollContainerRef = useRef<HTMLDivElement>(null);
   const windowWidth = useWindowWidth();
   const isMobile = windowWidth <= 450;
 
@@ -73,12 +81,24 @@ const AdminOrders = () => {
 
   // CookedCard 클릭 핸들러 (모바일용)
   const handleCookedCardClick = (cookedOrder: Order) => {
+    if (cookedScrollContainerRef.current) {
+      // 현재 스크롤 위치 저장
+      setSavedCookedScrollPosition(cookedScrollContainerRef.current.scrollTop);
+      // 스크롤을 맨 위로 올리기
+      cookedScrollContainerRef.current.scrollTop = 0;
+    }
     setSelectedCookedOrder(cookedOrder);
   };
 
   // CookedDetail 닫기 핸들러 (모바일용)
   const handleCloseCookedDetail = () => {
     setSelectedCookedOrder(null);
+    // 약간의 딜레이 후 스크롤 위치 복원
+    setTimeout(() => {
+      if (cookedScrollContainerRef.current) {
+        cookedScrollContainerRef.current.scrollTop = savedCookedScrollPosition;
+      }
+    }, 0);
   };
 
   return (
@@ -292,6 +312,9 @@ const AdminOrders = () => {
               isLoading={isLoading}
               error={error}
               onRefresh={refetch}
+              scrollContainerRef={desktopCookedScrollContainerRef}
+              savedScrollPosition={savedDesktopCookedScrollPosition}
+              setSavedScrollPosition={setSavedDesktopCookedScrollPosition}
             />
           )}
         </>
@@ -411,6 +434,7 @@ const AdminOrders = () => {
                 <div className="flex">주문 시간</div>
               </div>
               <div
+                ref={cookedScrollContainerRef}
                 className={`flex flex-col bg-white rounded-b-2xl border-t-0 border-black-25 border flex-1 min-h-0 relative ${
                   selectedCookedOrder ? "overflow-hidden" : "overflow-y-auto"
                 }`}
