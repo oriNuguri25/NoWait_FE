@@ -1,6 +1,6 @@
 import BackArrowButton from "../../../assets/arrow_back.svg?react";
 import { useState } from "react";
-import Menu from "../../../assets/menu.svg?react";
+import Menu from "../../../assets/Menu.svg?react";
 import { useNavigate } from "react-router-dom";
 import { useWindowWidth } from "../../../hooks/useWindowWidth";
 
