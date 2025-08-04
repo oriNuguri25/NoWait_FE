@@ -4,7 +4,6 @@ import { useWindowWidth } from "../hooks/useWindowWidth";
 import { useLocation } from "react-router-dom";
 import NwIcon from "../assets/nwLogo.svg?react";
 import NwTextIcon from "../assets/nw_text_logo.svg?react";
-import profile from "../assets/profile.png";
 import waitIcon from "../assets/Waiting.svg"; // 대기 아이콘 등
 import orderIcon from "../assets/Order.svg";
 import statIcon from "../assets/Statistics.svg";
