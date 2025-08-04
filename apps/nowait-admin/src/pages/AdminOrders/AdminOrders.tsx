@@ -1,5 +1,11 @@
 import { useState, useRef } from "react";
-import { PaymentCard, PaymentDetail, CookCard, CookedCard } from "./OrderCard";
+import {
+  PaymentCard,
+  PaymentDetail,
+  CookCard,
+  CookedCard,
+  CookedDetail,
+} from "./OrderCard";
 import RefreshIcon from "../../assets/refresh.svg?react";
 import CookedPage from "./CookedPage";
 import { useGetOrderList } from "../../hooks/useGetOrderList";
@@ -12,6 +18,9 @@ const AdminOrders = () => {
     "입금 대기" | "조리 중" | "조리 완료"
   >("입금 대기");
   const [selectedPayment, setSelectedPayment] = useState<Order | null>(null);
+  const [selectedCookedOrder, setSelectedCookedOrder] = useState<Order | null>(
+    null
+  );
   const [savedScrollPosition, setSavedScrollPosition] = useState<number>(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const windowWidth = useWindowWidth();
@@ -60,6 +69,16 @@ const AdminOrders = () => {
         scrollContainerRef.current.scrollTop = savedScrollPosition;
       }
     }, 0);
+  };
+
+  // CookedCard 클릭 핸들러 (모바일용)
+  const handleCookedCardClick = (cookedOrder: Order) => {
+    setSelectedCookedOrder(cookedOrder);
+  };
+
+  // CookedDetail 닫기 핸들러 (모바일용)
+  const handleCloseCookedDetail = () => {
+    setSelectedCookedOrder(null);
   };
 
   return (
@@ -391,7 +410,11 @@ const AdminOrders = () => {
                 <div className="flex max-[376px]:w-20 w-29">금액</div>
                 <div className="flex">주문 시간</div>
               </div>
-              <div className="flex flex-col bg-white rounded-b-2xl border-t-0 border-black-25 border flex-1 min-h-0 overflow-y-auto">
+              <div
+                className={`flex flex-col bg-white rounded-b-2xl border-t-0 border-black-25 border flex-1 min-h-0 relative ${
+                  selectedCookedOrder ? "overflow-hidden" : "overflow-y-auto"
+                }`}
+              >
                 {isLoading ? (
                   <div className="flex flex-col items-center justify-center h-full text-center px-5 py-4">
                     <div className="text-16-medium text-black-60">
@@ -409,6 +432,7 @@ const AdminOrders = () => {
                       totalAmount={cooked.totalPrice || 0}
                       createdAt={getFormattedTime(cooked.createdAt)}
                       onSuccess={refetch}
+                      onClick={() => handleCookedCardClick(cooked)}
                     />
                   ))
                 ) : (
@@ -419,6 +443,22 @@ const AdminOrders = () => {
                         : "조리 완료된 주문이 없어요!"}
                     </div>
                   </div>
+                )}
+
+                {/* CookedDetail 오버레이 (모바일용) */}
+                {selectedCookedOrder && (
+                  <CookedDetail
+                    orderId={selectedCookedOrder.id}
+                    tableNumber={selectedCookedOrder.tableId}
+                    timeText={getFormattedTime(selectedCookedOrder.createdAt)}
+                    depositorName={selectedCookedOrder.depositorName}
+                    totalAmount={selectedCookedOrder.totalPrice || 0}
+                    menuNamesAndQuantities={
+                      selectedCookedOrder.menuNamesAndQuantities
+                    }
+                    onClose={handleCloseCookedDetail}
+                    onSuccess={refetch}
+                  />
                 )}
               </div>
             </div>

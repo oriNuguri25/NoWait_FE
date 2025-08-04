@@ -329,6 +329,136 @@ const CookCard = ({
   );
 };
 
+const CookedDetail = ({
+  orderId,
+  tableNumber,
+  timeText,
+  depositorName,
+  totalAmount,
+  menuNamesAndQuantities,
+  onClose,
+  onSuccess,
+}: CookedDetailProps) => {
+  const [showCookedModal, setShowCookedModal] = useState(false);
+
+  const menuEntries = menuNamesAndQuantities
+    ? Object.entries(menuNamesAndQuantities)
+    : [];
+
+  const handleRestoreClick = () => {
+    setShowCookedModal(true);
+  };
+
+  const handleCloseCookedModal = () => {
+    setShowCookedModal(false);
+  };
+
+  return (
+    <>
+      <div className="absolute inset-0 bg-white z-50 flex flex-col px-5.5 py-4 justify-between">
+        <div className="flex flex-col">
+          {/* 헤더 */}
+          <div className="flex flex-row cursor-pointer" onClick={onClose}>
+            <ArrowRight className="flex icon-s" />
+            <div className="flex text-16-semibold text-black-50">이전으로</div>
+          </div>
+
+          <div className="flex flex-row mt-6 gap-2.5">
+            <div
+              className="flex rounded-full w-9 h-9 items-center justify-center text-title-18-semibold text-white-100"
+              style={{ backgroundColor: getTableBackgroundColor(tableNumber) }}
+            >
+              {tableNumber}
+            </div>
+            <div className="flex text-title-18-semibold text-black-90 items-center">
+              {tableNumber}번 테이블
+            </div>
+          </div>
+
+          <div className="flex mt-6 text-title-18-semibold text-black-90">
+            입금 내역
+          </div>
+
+          <div className="flex flex-col mt-4 gap-2.5">
+            <div className="flex flex-row justify-between">
+              <div className="flex text-16-medium text-black-60">입금자</div>
+              <div className="flex text-16-semibold text-black-80">
+                {depositorName}
+              </div>
+            </div>
+
+            <div className="flex flex-row justify-between">
+              <div className="flex text-16-medium text-black-60">입금 금액</div>
+              <div className="flex text-16-semibold text-black-80">
+                {totalAmount.toLocaleString()}원
+              </div>
+            </div>
+
+            <div className="flex flex-row justify-between">
+              <div className="flex text-16-medium text-black-60">주문 시간</div>
+              <div className="flex text-16-semibold text-black-80">
+                {timeText}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex mt-6 mb-6 border-t border-black-25" />
+
+          <div className="flex text-title-18-semibold text-black-90">
+            주문 메뉴 {menuEntries.length}
+          </div>
+
+          <div className="flex flex-col mt-4 gap-2.5 text-16-semibold text-black-80">
+            {menuEntries.map(([menuName, quantity], index) => (
+              <div key={index} className="flex flex-row justify-between">
+                <div className="flex flex-[0.3]">{menuName}</div>
+                <div className="flex flex-1 justify-between">
+                  <div className="flex">{quantity}</div>
+                  <div className="flex">
+                    {(12000 * quantity).toLocaleString()}원
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div
+          className="flex items-center justify-center h-12 bg-white rounded-lg border border-black-30 text-14-semibold text-black-70"
+          onClick={handleRestoreClick}
+        >
+          주문 복구
+        </div>
+      </div>
+
+      {/* CookedModal 오버레이 */}
+      {showCookedModal && (
+        <div
+          className="fixed inset-0 bg-black/30 flex items-center justify-center z-50"
+          onClick={handleCloseCookedModal}
+        >
+          <CookedModal
+            orderId={orderId}
+            onClose={handleCloseCookedModal}
+            onSuccess={onSuccess}
+          />
+        </div>
+      )}
+    </>
+  );
+};
+
+interface CookedDetailProps {
+  orderId: number;
+  tableNumber: number;
+  timeText: string;
+  depositorName: string;
+  totalAmount: number;
+  menuNamesAndQuantities?: MenuNamesAndQuantities;
+  onClose: () => void;
+  onSuccess?: () => void;
+}
+
 interface CookedCardProps {
   orderId: number;
   tableNumber: number;
@@ -337,6 +467,7 @@ interface CookedCardProps {
   totalAmount: number;
   createdAt: string;
   onSuccess?: () => void;
+  onClick?: () => void;
 }
 
 const CookedCard = ({
@@ -347,6 +478,7 @@ const CookedCard = ({
   totalAmount,
   createdAt,
   onSuccess,
+  onClick,
 }: CookedCardProps) => {
   const [showCookedModal, setShowCookedModal] = useState(false);
   const windowWidth = useWindowWidth();
@@ -363,6 +495,12 @@ const CookedCard = ({
       ? `${firstMenuName} 외 ${remainingMenuCount}개`
       : firstMenuName;
 
+  const handleCardClick = () => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
   const handleRestoreClick = () => {
     setShowCookedModal(true);
   };
@@ -375,7 +513,10 @@ const CookedCard = ({
     <>
       {/* 모바일 버전 */}
       {isMobile ? (
-        <div className="flex flex-row gap-5 px-5.5 py-3.5 justify-between border-b border-black-25 items-center text-16-regular leading-[136%] tracking-[-0.02em] text-black-70">
+        <div
+          className="flex flex-row gap-5 px-5.5 py-3.5 justify-between border-b border-black-25 items-center text-16-regular leading-[136%] tracking-[-0.02em] text-black-70 cursor-pointer"
+          onClick={handleCardClick}
+        >
           <div className="flex flex-row gap-2.5">
             <div className="flex w-8.5">{tableNumber}번</div>
             <div className="flex max-[376px]:w-20 w-30">
@@ -385,14 +526,20 @@ const CookedCard = ({
           </div>
           <div
             className="flex rounded-lg border border-black-30 px-2.5 py-1.25 text-14-semibold text-black-70 flex-shrink-0 cursor-pointer hover:bg-black-10"
-            onClick={handleRestoreClick}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleRestoreClick();
+            }}
           >
             주문 복구
           </div>
         </div>
       ) : (
         /* 데스크톱 버전 */
-        <div className="flex flex-row gap-2.5 px-5 py-4 border-b border-black-20 items-center">
+        <div
+          className="flex flex-row gap-2.5 px-5 py-4 border-b border-black-20 items-center cursor-pointer"
+          onClick={handleCardClick}
+        >
           <div className="flex flex-[0.7] text-16-regular text-black-70">
             {tableNumber}번
           </div>
@@ -411,7 +558,10 @@ const CookedCard = ({
           <div className="flex-1 flex justify-end">
             <div
               className="rounded-lg border border-black-30 px-2.5 py-1.25 text-14-semibold text-black-70 flex-shrink-0 cursor-pointer hover:bg-black-10"
-              onClick={handleRestoreClick}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRestoreClick();
+              }}
             >
               주문 복구
             </div>
@@ -436,4 +586,4 @@ const CookedCard = ({
   );
 };
 
-export { PaymentCard, PaymentDetail, CookCard, CookedCard };
+export { PaymentCard, PaymentDetail, CookCard, CookedCard, CookedDetail };
