@@ -1,7 +1,6 @@
 import { useState } from "react";
 import placeholderIcon from "../../../../assets/image_placeholder.svg";
 import closeIcon from "../../../../assets/close.svg";
-import toast from "react-hot-toast";
 interface MenuModalProps {
   isEdit: boolean;
   initialData?: {
