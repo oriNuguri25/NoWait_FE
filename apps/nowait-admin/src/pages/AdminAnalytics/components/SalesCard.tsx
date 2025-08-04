@@ -18,7 +18,7 @@ interface SalesCardProps {
   disabled: boolean;
 }
 
-const SalesCard: React.FC<SalesCardProps> = ({ today, previous, disabled }) => {
+const SalesCard: React.FC<SalesCardProps> = ({ today, disabled }) => {
   const [showToday, setShowToday] = useState(true);
   // const [isHoverBack, setIsHoverBack] = useState(false);
   // const [isHoverForward, setIsHoverForward] = useState(false);
