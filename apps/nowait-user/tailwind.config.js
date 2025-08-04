@@ -46,6 +46,9 @@ module.exports = {
         "user-cards": "repeat(auto-fit, minmax(300px, 1fr))",
         "user-layout": "1fr 300px",
       },
+      height: {
+        "screen-dvh": "100dvh",
+      },
     },
   },
 

@@ -1,0 +1,37 @@
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_ADMIN_API_URL;
+// 자유게시판 전체 데이터
+const AdminApi = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+AdminApi.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("adminToken");
+    console.log(token, "토큰 알려줘");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// 디버깅용 코드
+AdminApi.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 403) {
+      console.warn("403 Forbidden - 인증 에러 발생");
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default AdminApi;

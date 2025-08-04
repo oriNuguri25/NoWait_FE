@@ -1,5 +1,6 @@
 /* ===== 폰트 Import ===== */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css");
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 /* ===== 공통 CSS 변수 ===== */
 :root {
@@ -117,7 +118,7 @@ h5,
 h6 {
   font-family: "Pretendard Variable", "Pretendard", -apple-system,
     BlinkMacSystemFont, system-ui, sans-serif;
-  font-weight: 600;
+  /* font-weight: 600; */
 }
 
 code,
@@ -129,6 +130,12 @@ pre {
 /* ===== 모바일 폰트 사이즈 유틸리티 ===== */
 @layer utilities {
   /* [MO] Headline */
+  .text-headline-32-bold {
+    font-size: 32px;
+    line-height: 136%;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
   .text-headline-28-bold {
     font-size: 28px;
     line-height: 130%;
@@ -151,6 +158,20 @@ pre {
   }
 
   /* [MO] Title */
+  .text-title-26-semibold {
+    font-size: 26px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 600;
+  }
+
+  .text-title-24-semibold {
+    font-size: 24px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 600;
+  }
+
   .text-title-20-bold {
     font-size: 20px;
     line-height: 136%;
@@ -171,6 +192,12 @@ pre {
     letter-spacing: 0%;
     font-weight: 700;
   }
+  .text-title-17-bold {
+    font-size: 17px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 700;
+  }
 
   .text-title-18-semibold {
     font-size: 18px;
@@ -178,7 +205,12 @@ pre {
     letter-spacing: 0%;
     font-weight: 600;
   }
-
+  .text-title-18-medium {
+    font-size: 18px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 500;
+  }
   .text-title-16-bold {
     font-size: 16px;
     line-height: 150%;
@@ -187,11 +219,53 @@ pre {
   }
 
   /* [MO] Text */
+  .text-30-semibold {
+    font-size: 30px;
+    line-height: auto;
+    letter-spacing: 0%;
+    font-weight: 600;
+  }
+
+  .text-22-bold {
+    font-size: 22px;
+    line-height: 130%;
+    letter-spacing: 0%;
+    font-weight: 700;
+  }
+
+  .text-18-bold {
+    font-size: 18px;
+    line-height: 130%;
+    letter-spacing: 0%;
+    font-weight: 700;
+  }
+
   .text-17-semibold {
     font-size: 17px;
-    line-height: auto;
+    line-height: 136%;
     letter-spacing: 0;
     font-weight: 600;
+  }
+
+  .text-16-bold {
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0;
+    font-weight: 700;
+  }
+
+  .text-16-semibold {
+    font-size: 16px;
+    line-height: 136%;
+    letter-spacing: 0;
+    font-weight: 600;
+  }
+
+  .text-16-bold {
+    font-size: 16px;
+    line-height: 144%;
+    letter-spacing: -0.01em;
+    font-weight: 700;
   }
 
   .text-16-regular {
@@ -199,6 +273,13 @@ pre {
     line-height: 144%;
     letter-spacing: -0.01em;
     font-weight: 400;
+  }
+
+  .text-16-medium {
+    font-size: 16px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 500;
   }
 
   .text-15-semibold {
@@ -222,11 +303,45 @@ pre {
     font-weight: 400;
   }
 
+  .text-14-regular {
+    font-size: 14px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 400;
+  }
+
   .text-14-medium {
     font-size: 14px;
     line-height: 144%;
     letter-spacing: 0%;
     font-weight: 500;
+  }
+  .text-14-regular {
+    font-size: 14px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 400;
+  }
+
+  .text-14-semibold {
+    font-size: 14px;
+    line-height: 136%;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+
+  .text-14-bold {
+    font-size: 14px;
+    line-height: 130%;
+    letter-spacing: 0em;
+    font-weight: 700;
+  }
+
+  .text-13-bold {
+    font-size: 13px;
+    line-height: 136%;
+    letter-spacing: 0%;
+    font-weight: 700;
   }
 
   .text-13-regular {
@@ -234,6 +349,19 @@ pre {
     line-height: 144%;
     letter-spacing: 0%;
     font-weight: 400;
+  }
+
+  .text-13-medium {
+    font-size: 13px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 500;
+  }
+  .text-12-bold {
+    font-size: 12px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    font-weight: 700;
   }
 
   .text-12-semibold {
@@ -248,6 +376,76 @@ pre {
     line-height: 144%;
     letter-spacing: 0%;
     font-weight: 500;
+  }
+
+  .text-12-regular {
+    font-size: 12px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 400;
+  }
+
+  .text-10-bold {
+    font-size: 10px;
+    line-height: 136%;
+    letter-spacing: -1%;
+    font-weight: 700;
+  }
+  /* 미리보기 학과명 폰트 */
+  .text-major {
+    font-size: 8.81px;
+    line-height: 144%;
+    letter-spacing: -1%;
+    font-weight: 400;
+  }
+  /* 부스명 */
+  .text-boothname {
+    font-size: 13.85px;
+    line-height: 136%;
+    letter-spacing: -1%;
+    font-weight: 700;
+  }
+
+  /* 부스 위치 */
+  .text-location {
+    font-size: 10.07px;
+    line-height: 144%;
+    letter-spacing: -1%;
+    font-weight: 400;
+  }
+  /* 미리보기 빨간 뱃지 폰트 */
+  .text-7-bold {
+    font-size: 7.55px;
+    line-height: 100%;
+    letter-spacing: 0;
+    font-weight: 700;
+  }
+
+  .text-12-bold {
+    font-size: 12px;
+    line-height: 100%;
+    letter-spacing: 0;
+    font-weight: 700;
+  }
+
+  /* 미리보기 하단 "공지" 폰트 */
+  .text-notice {
+    font-size: 8.81px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 700;
+  }
+
+  .text-notice-medium {
+    font-size: 8.81px;
+    line-height: 144%;
+    letter-spacing: 0%;
+    font-weight: 500;
+  }
+
+  /* Work Sans 폰트 유틸리티 */
+  .font-work-sans {
+    font-family: "Work Sans", sans-serif;
   }
 }
 
@@ -525,6 +723,26 @@ pre {
   }
   .bg-navy-5 {
     background-color: var(--navy-5);
+  }
+
+  .bg-cool-black {
+    background-color: var(--cool-black);
+  }
+
+  .border-black-35 {
+    border-color: var(--black-35);
+  }
+
+  .border-black-30 {
+    border-color: var(--black-30);
+  }
+
+  .border-black-25 {
+    border-color: var(--black-25);
+  }
+
+  .border-black-20 {
+    border-color: var(--black-20);
   }
 
   /* White 색상 유틸리티 */

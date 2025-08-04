@@ -1,0 +1,41 @@
+.navigate-push-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.navigate-push-enter-active {
+  opacity: 1;
+  transform: translateX(0%);
+  transition: all 300ms ease-in-out;
+}
+.navigate-push-exit {
+  opacity: 1;
+  transform: translateX(0%);
+}
+.navigate-push-exit-active {
+  opacity: 0;
+  transform: translateX(-30%);
+  transition: all 300ms ease-in-out;
+}
+
+.page-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.page-wrapper {
+  transition: opacity 100ms ease, transform 100ms ease;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+
+/* Fade-out before route change */
+.page-wrapper.fadeOut {
+  transform: translateX(-100%);
+}
+
+/* Fade-in after route change */
+.page-wrapper.fadeIn {
+  transform: translateX(0%);
+}
