@@ -1,4 +1,6 @@
-import { CookedCard } from "./OrderCard";
+import { useState, useRef } from "react";
+import type { RefObject, Dispatch, SetStateAction } from "react";
+import { CookedCard, CookedDetail } from "./OrderCard";
 import type { Order } from "../../types/order";
 
 interface CookedPageProps {
@@ -6,6 +8,9 @@ interface CookedPageProps {
   isLoading?: boolean;
   error?: unknown;
   onRefresh?: () => void;
+  scrollContainerRef?: RefObject<HTMLDivElement | null>;
+  savedScrollPosition?: number;
+  setSavedScrollPosition?: Dispatch<SetStateAction<number>>;
 }
 
 const CookedPage = ({
@@ -13,7 +18,26 @@ const CookedPage = ({
   isLoading,
   error,
   onRefresh,
+  scrollContainerRef: externalScrollContainerRef,
+  savedScrollPosition: externalSavedScrollPosition,
+  setSavedScrollPosition: externalSetSavedScrollPosition,
 }: CookedPageProps) => {
+  const [selectedCookedOrder, setSelectedCookedOrder] = useState<Order | null>(
+    null
+  );
+  const [internalSavedScrollPosition, setInternalSavedScrollPosition] =
+    useState<number>(0);
+  const internalScrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // 외부에서 전달받은 ref와 상태를 사용하거나, 내부에서 관리
+  const scrollContainerRef =
+    externalScrollContainerRef || internalScrollContainerRef;
+  const savedScrollPosition =
+    externalSavedScrollPosition ?? internalSavedScrollPosition;
+  const setSavedScrollPosition = externalSetSavedScrollPosition
+    ? externalSetSavedScrollPosition
+    : setInternalSavedScrollPosition;
+
   // 시간 포맷팅 함수 (17:30 형식)
   const getFormattedTime = (createdAt: string) => {
     const date = new Date(createdAt);
@@ -22,8 +46,30 @@ const CookedPage = ({
     return `${hours}:${minutes}`;
   };
 
+  // CookedCard 클릭 핸들러
+  const handleCookedCardClick = (cookedOrder: Order) => {
+    if (scrollContainerRef.current) {
+      // 현재 스크롤 위치 저장
+      setSavedScrollPosition(scrollContainerRef.current.scrollTop);
+      // 스크롤을 맨 위로 올리기
+      scrollContainerRef.current.scrollTop = 0;
+    }
+    setSelectedCookedOrder(cookedOrder);
+  };
+
+  // CookedDetail 닫기 핸들러
+  const handleCloseCookedDetail = () => {
+    setSelectedCookedOrder(null);
+    // 약간의 딜레이 후 스크롤 위치 복원
+    setTimeout(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = savedScrollPosition;
+      }
+    }, 0);
+  };
+
   return (
-    <div className="flex flex-row gap-2.5 flex-1 min-h-0 overflow-hidden">
+    <div className="flex flex-row gap-2.5 flex-1 min-h-0 overflow-hidden w-full">
       {/* 조리 완료 블럭 */}
       <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
         <div className="flex flex-row ml-1.5 gap-1.5 flex-shrink-0 mb-3">
@@ -55,7 +101,12 @@ const CookedPage = ({
           </div>
 
           {/* 스크롤 가능한 내용 영역 */}
-          <div className="flex-1 overflow-y-auto min-h-0">
+          <div
+            ref={scrollContainerRef}
+            className={`flex-1 min-h-0 relative ${
+              selectedCookedOrder ? "overflow-hidden" : "overflow-y-auto"
+            }`}
+          >
             {isLoading ? (
               <div className="flex flex-col items-center justify-center h-full py-20 text-center">
                 <div className="text-16-medium text-black-60">로딩 중...</div>
@@ -71,6 +122,7 @@ const CookedPage = ({
                   totalAmount={order.totalPrice || 0}
                   createdAt={getFormattedTime(order.createdAt)}
                   onSuccess={onRefresh}
+                  onClick={() => handleCookedCardClick(order)}
                 />
               ))
             ) : (
@@ -81,6 +133,22 @@ const CookedPage = ({
                     : "조리 완료된 주문이 없어요!"}
                 </div>
               </div>
+            )}
+
+            {/* CookedDetail 오버레이 */}
+            {selectedCookedOrder && (
+              <CookedDetail
+                orderId={selectedCookedOrder.id}
+                tableNumber={selectedCookedOrder.tableId}
+                timeText={getFormattedTime(selectedCookedOrder.createdAt)}
+                depositorName={selectedCookedOrder.depositorName}
+                totalAmount={selectedCookedOrder.totalPrice || 0}
+                menuNamesAndQuantities={
+                  selectedCookedOrder.menuNamesAndQuantities
+                }
+                onClose={handleCloseCookedDetail}
+                onSuccess={onRefresh}
+              />
             )}
           </div>
         </div>
