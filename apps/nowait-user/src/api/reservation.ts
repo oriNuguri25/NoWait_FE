@@ -37,21 +37,28 @@ interface ServerResponse {
 }
 
 // 모든 주점 정보 가져오기
-export const getAllStores = async() => {
-    const response = await UserApi.get<ServerResponse>(
-      "/v1/stores/all-stores",
-      {
-        params: {
-          page: 0,
-          size: 50,
-        },
-      }
-    );
-    console.log("스토어 데이터 모든 데이터=======>",response)
-    return response.data
+export const getAllStores = async () => {
+  const response = await UserApi.get<ServerResponse>("/v1/stores/all-stores", {
+    params: {
+      page: 0,
+      size: 50,
+    },
+  });
+  return response.data;
+};
 
-  
-}
+// 모든 주점 정보 가져오기
+export const getInfiniteAllStores = async (
+  pageParam: number
+): Promise<{ storePageReadResponses: Store[]; hasNext: boolean }> => {
+  const response = await UserApi.get<ServerResponse>("/v1/stores/all-stores", {
+    params: {
+      page: pageParam,
+      size: 5,
+    },
+  });
+  return response.data.response;
+};
 
 // 주점 상세 정보 가져오기
 export const getStore = async (

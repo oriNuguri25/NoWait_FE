@@ -1,14 +1,12 @@
-import HomeHeader from "../../../components/Header";
 import BoothMarker from "../../../assets/icon/BoothMarker.svg?react";
 import BoothList from "./components/BoothList";
 import useWindowHeight from "../../../hooks/useWindowHeight";
 import { useState } from "react";
-import { useInfiniteStores } from "../../../hooks/useInfiniteStores";
 import BoothDetail from "./components/BoothDetail";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getAllStores } from "../../../api/reservation";
-import Draggable from "react-draggable";
 import { motion } from "framer-motion";
+import MapHeader from "./components/MapHeader";
 
 const boothPosition: Record<number, { top: string; left: string }> = {
   1: { top: "45%", left: "60%" },
@@ -37,15 +35,13 @@ const MapPage = () => {
     queryFn: getAllStores,
     select: (data) => data?.response?.storePageReadResponses,
   });
-  console.log(storeMarkers, "스토어 마커");
-  const { stores } = useInfiniteStores();
-  const booths = stores?.map((booth) => ({
+
+  const booths = storeMarkers?.map((booth) => ({
     ...booth,
     ...boothPosition[booth.storeId],
   }));
-  console.log(stores, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-  console.log(booths, "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
-  const detailBooth = booths.find((booth) => booth.storeId === selectedBooth);
+
+  const detailBooth = booths?.find((booth) => booth.storeId === selectedBooth);
 
   const openBoothButton = (id: number) => {
     console.log(id);
@@ -58,9 +54,7 @@ const MapPage = () => {
   return (
     <div className="relative overflow-hidden" style={{ height }}>
       {/* 헤더 */}
-      <header className="fixed top-0 left-0 z-50 w-full bg-white">
-        <HomeHeader />
-      </header>
+      <MapHeader />
       {/* 축제 맵 */}
       <div className="relative top-0 left-0 h-screen-dvh w-full">
         <div
@@ -69,7 +63,6 @@ const MapPage = () => {
             height: "100%",
             overflow: "hidden",
             position: "relative",
-            border: "1px solid gray",
           }}
         >
           <motion.div
@@ -106,7 +99,7 @@ const MapPage = () => {
             />
             {/* 마커 */}
             <ul className="absolute top-0 left-0 w-full h-full">
-              {booths.map((booth) => (
+              {booths?.map((booth) => (
                 <li
                   key={booth.storeId}
                   className="absolute"
@@ -129,7 +122,6 @@ const MapPage = () => {
         </div>
       </div>
       {/* 부스 리스트 */}
-      {/* <AnimatePresence></AnimatePresence> */}
       {selectedBooth !== null ? (
         <BoothDetail booth={detailBooth} />
       ) : (
