@@ -62,7 +62,6 @@ const MapPage = () => {
             width: "430px",
             height: "100%",
             overflow: "hidden",
-            position: "relative",
           }}
         >
           <motion.div

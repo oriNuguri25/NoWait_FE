@@ -9,7 +9,8 @@ const DepartmentImage = ({ width, height, src }: PropsType) => {
   
   return (
       <img
-        className={`object-cover w-[${width}] h-[${height}] rounded-full`}
+      style={{ width, height }}
+        className={`object-cover rounded-full`}
         src={src || DefaultDepartmentImage}
         alt="학과 대표 이미지"
       />
