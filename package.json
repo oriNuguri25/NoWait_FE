@@ -8,7 +8,8 @@
   ],
   "scripts": {
     "dev:admin": "turbo run dev --filter=nowait-admin",
-    "dev:user": "turbo run dev --filter=nowait-user"
+    "dev:user": "turbo run dev --filter=nowait-user",
+    "vercel-build": "turbo run build && node scripts/merge-builds.js"
   },
   "devDependencies": {
     "@yarnpkg/sdks": "^3.2.2",
@@ -23,11 +24,13 @@
     "clsx": "^2.1.1",
     "dompurify": "^3.2.6",
     "framer-motion": "^12.20.1",
+    "jsqr": "^1.4.0",
     "prop-types": "^15.8.1",
     "prosemirror-model": "^1.25.2",
     "prosemirror-state": "^1.4.3",
     "prosemirror-transform": "^1.10.4",
     "react-beautiful-dnd": "^13.1.1",
+    "react-hot-toast": "^2.5.2",
     "react-quill": "^2.0.0",
     "react-swipeable-list": "^1.10.0",
     "react-toastify": "^11.0.5",

@@ -14,7 +14,7 @@ const AccountPage = () => {
   const [accountName, setAccountName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
 
-  const { data: storePayment, isLoading: isFetching } = useGetStorePayment();
+  const { data: storePayment } = useGetStorePayment();
   const { mutate: createPayment } = useCreateStorePayment();
   const { mutate: updatePayment } = useUpdateStorePayment();
 
@@ -46,6 +46,15 @@ const AccountPage = () => {
     kakao: "",
     toss: "",
     naver: "",
+  });
+
+  // qr 인지 텍스트 입력인지 구별
+  const [sources, setSources] = useState<{
+    [key in PaymentId]: "text" | "image" | null;
+  }>({
+    kakao: null,
+    toss: null,
+    naver: null,
   });
 
   type PaymentId = "kakao" | "toss" | "naver";
@@ -113,10 +122,12 @@ const AccountPage = () => {
 
         if (code) {
           setUrls((prev) => ({ ...prev, [id]: code.data }));
+          setSources((prev) => ({ ...prev, [id]: "image" })); //이미지 업로드는 source type: image로 설정
         } else {
           alert("QR 코드를 인식할 수 없습니다.");
         }
         setLoading(false);
+        event.target.value = "";
       };
       if (e.target?.result) {
         img.src = e.target.result as string;
@@ -134,10 +145,40 @@ const AccountPage = () => {
         toss: storePayment.response.tossUrl || "",
         naver: storePayment.response.naverPayUrl || "",
       });
-      setAccountName(storePayment.response.accountName || "");
-      setAccountNumber(storePayment.response.accountNumber || "");
+
+      const accountInfo = storePayment.response.accountNumber.split(" ");
+      const bank = accountInfo[0];
+      const name = accountInfo[1];
+      const number = accountInfo[2];
+      setBank(bank);
+      setAccountName(name || "");
+      setAccountNumber(number || "");
     }
   }, [storePayment]);
+
+  useEffect(() => {
+    // URL 패턴 기반 QR 여부 판별
+    setSources({
+      kakao: urls.kakao.startsWith("https://qr.kakaopay.com/")
+        ? "image"
+        : urls.kakao
+        ? "text"
+        : null,
+      toss: urls.toss.startsWith("supertoss://send")
+        ? "image"
+        : urls.toss
+        ? "text"
+        : null,
+      naver: urls.naver.startsWith("https://new-m.pay.naver.com/")
+        ? "image"
+        : urls.naver
+        ? "text"
+        : null,
+    });
+  });
+  console.log(storePayment, "결제정보");
+
+  console.log(sources, "url type");
 
   return (
     <div>
@@ -174,14 +215,16 @@ const AccountPage = () => {
                 <input
                   type="text"
                   value={urls[option.id]}
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setUrls((prev) => ({
                       ...prev,
                       [option.id]: e.target.value,
-                    }))
-                  }
+                    }));
+                    setSources((prev) => ({ ...prev, [option.id]: "text" })); // 직접 입력으로 설정
+                  }}
                   placeholder={option.placeholder}
                   className="flex-1 bg-transparent outline-none text-sm text-gray-700"
+                  readOnly={sources[option.id] === "image"}
                 />
                 <input
                   type="file"
@@ -190,17 +233,31 @@ const AccountPage = () => {
                   className="hidden"
                   onChange={(e) => handleQrUpload(e, option.id)}
                 />
-                <button
-                  disabled={loading}
-                  className={`text-black-80 text-12-bold rounded-[6px] p-[10px] ${
-                    loading
-                      ? "bg-gray-300 cursor-not-allowed"
-                      : "bg-black-30 hover:bg-gray-300"
-                  }`}
-                  onClick={() => handleButtonClick(option.id)}
-                >
-                  {loading ? "인식 중..." : "이미지로 업로드"}
-                </button>
+                {sources[option.id] === "image" ? (
+                  <button
+                    className="bg-[#FFF0EB] text-primary text-12-bold rounded-[6px] p-[10px] hover:bg-red-300"
+                    onClick={() => {
+                      setUrls((prev) => ({ ...prev, [option.id]: "" }));
+                      setSources((prev) => ({ ...prev, [option.id]: null })); // 초기화
+                    }}
+                  >
+                    삭제하기
+                  </button>
+                ) : (
+                  <button
+                    disabled={loading}
+                    className={`text-black-80 text-12-bold rounded-[6px] p-[10px] ${
+                      loading
+                        ? "bg-gray-300 cursor-not-allowed"
+                        : "bg-black-30 hover:bg-gray-300"
+                    }`}
+                    onClick={() => {
+                      handleButtonClick(option.id);
+                    }}
+                  >
+                    {loading ? "인식 중..." : "이미지로 업로드"}
+                  </button>
+                )}
               </div>
             </div>
           ))}

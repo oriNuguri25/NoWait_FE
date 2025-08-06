@@ -114,7 +114,7 @@ export function WaitingCard({
       </div>
 
       {/* 버튼 영역 */}
-      <div className="flex justify-between">
+      <div className="flex justify-center gap-[8px]">
         {status === "WAITING" && (
           <>
             <button

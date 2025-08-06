@@ -3,8 +3,6 @@ import RoundTabButton from "./components/RoundTabButton";
 import refreshIcon from "../../assets/refresh.svg";
 import { WaitingCard } from "./components/WaitingCard";
 import { useGetReservationList } from "../../hooks/Reservation/useGetReservationList";
-import on from "../../assets/on.svg";
-import off from "../../assets/off.svg";
 import { useUpdateReservationStatus } from "../../hooks/Reservation/useUpdateReservationStatus";
 import ConfirmRemoveModal from "../../components/ConfirmRemoveModal";
 import ToggleSwitch from "./components/ToggleSwitch";
@@ -14,6 +12,7 @@ type WaitingStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 interface Reservation {
   id: number;
   userId: number;
+  reservationNumber: string;
   time: string;
   requestedAt: string;
   waitMinutes: number;
@@ -33,11 +32,16 @@ const AdminHome = () => {
   const storeId = 1; //현재는 임시로 mockdata씀
   const [isOn, setIsOn] = useState(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const { data: waitingList } = useGetReservationList(storeId); //calling, wating
-  const { data: completedList } = useGetCompletedList(storeId); //canceled, conformed
+  const [targetReservation, setTargetReservation] =
+    useState<Reservation | null>(null);
 
-  console.log(waitingList);
-  console.log(completedList);
+  const { data: waitingList, refetch: refetchWaiting } =
+    useGetReservationList(storeId); //calling, wating
+  const { data: completedList, refetch: refetchCompleted } =
+    useGetCompletedList(storeId); //canceled, conformed
+
+  console.log(waitingList, "대기/호출");
+  console.log(completedList, "완료/취소");
   const toggle = () => setIsOn((prev) => !prev);
   //대기 중 카드 개수
   const waitingCount = reservations.filter(
@@ -146,6 +150,12 @@ const AdminHome = () => {
     });
   };
 
+  const handleRefresh = () => {
+    Promise.all([refetchWaiting(), refetchCompleted()]).then(() => {
+      console.log("데이터 새로고침 완료");
+    });
+  };
+
   useEffect(() => {
     if (!Array.isArray(waitingList) || !Array.isArray(completedList)) return;
 
@@ -160,6 +170,7 @@ const AdminHome = () => {
       return {
         id: Number(idFromNumber),
         userId: Number(res.userId),
+        reservationNumber: res.reservationNumber,
         requestedAt: res.createdAt,
         time: requested.toLocaleTimeString("ko-KR", {
           hour: "2-digit",
@@ -177,7 +188,13 @@ const AdminHome = () => {
     };
 
     const merged = [...waitingList, ...completedList].map(normalize);
-    setReservations(merged);
+    const unique = merged.filter(
+      (res, idx, arr) =>
+        idx ===
+        arr.findIndex((r) => r.reservationNumber === res.reservationNumber)
+    );
+
+    setReservations(unique);
   }, [waitingList, completedList]);
   return (
     <div
@@ -188,26 +205,15 @@ const AdminHome = () => {
         className="flex w-full [@media(min-width:375px)_and_(max-width:431px)]:justify-center m-0"
       >
         <div className="flex flex-col w-full">
-          <div className="flex justify-between mb-[30px]">
-            <div className="flex items-center">
-              <h1 className="text-title-20-bold">대기 접수</h1>&nbsp;
-              <span className="flex items-center">
-                <img
-                  src={on}
-                  alt="대기현환 on"
-                  className={`
-      absolute transition-all duration-300 ease-in
-      ${isOn ? "opacity-100 scale-100" : "opacity-0"}
-    `}
-                />
-                <img
-                  src={off}
-                  alt="대기현황 off"
-                  className={`
-      absolute transition-all duration-300 ease-in
-      ${!isOn ? "opacity-100 scale-100" : "opacity-0"}
-    `}
-                />
+          <div className="flex items-center justify-between mb-[30px]">
+            <div className="flex items-baseline space-x-[6px]">
+              <h1 className="text-title-20-bold">대기 접수</h1>
+              <span
+                className={`text-title-20-bold transition-all duration-700 ${
+                  isOn ? "text-primary" : "text-navy-35"
+                }`}
+              >
+                {isOn ? "on" : "off"}
               </span>
             </div>
             <ToggleSwitch isOn={isOn} toggle={toggle} />
@@ -217,8 +223,8 @@ const AdminHome = () => {
 
       <section id="대기자 목록" className="flex flex-col w-full">
         {/* <h1 className="title-20-bold mb-5">대기자 목록</h1> */}
-        <div className="flex justify-between items-center">
-          <div className="flex flex-wrap whitespace-nowrap overflow-x-auto scrollbar-hide [@media(max-width:431px)]:flex-nowrap [@media(max-width:431px)]:mask-fade-right -mr-5">
+        <div className="flex justify-between items-center overflow-x-auto scrollbar-hide mask-fade-right relative">
+          <div className="flex flex-wrap whitespace-nowrap  [@media(max-width:431px)]:flex-nowrap -mr-5">
             {tabLabels.map(({ label, count }) => (
               <RoundTabButton
                 key={label}
@@ -229,7 +235,10 @@ const AdminHome = () => {
               />
             ))}
           </div>
-          <div className="hover:rotate-90 transition-transform duration-500 cursor-pointer">
+          <div
+            className="hover:rotate-90 transition-transform duration-500 cursor-pointer"
+            onClick={handleRefresh}
+          >
             <img
               src={refreshIcon}
               className="[@media(max-width:431px)]:hidden"
@@ -245,7 +254,7 @@ const AdminHome = () => {
 
           return (
             <WaitingCard
-              key={res.id}
+              key={res.userId + "-" + res.requestedAt}
               number={res.id}
               time={requested.toLocaleTimeString("ko-KR", {
                 hour: "2-digit",
@@ -264,18 +273,22 @@ const AdminHome = () => {
               onCall={() => handleCall(res.id, res.userId)}
               onEnter={() => handleEnter(res.id, res.userId)}
               onClose={() => handleClose(res.id, res.userId)}
-              onDelete={() => setShowModal(true)}
+              onDelete={() => {
+                setTargetReservation(res);
+                setShowModal(true);
+              }}
               onNoShow={() => handleNoShow(res.id)}
             />
           );
         })}
       </div>
-      {showModal && (
+      {showModal && targetReservation && (
         <ConfirmRemoveModal
           onCancel={() => setShowModal(false)}
           onConfirm={() => {
-            // handleDelete(); // 삭제 처리 로직
+            handleClose(targetReservation.id, targetReservation.userId);
             setShowModal(false);
+            setTargetReservation(null);
           }}
         />
       )}

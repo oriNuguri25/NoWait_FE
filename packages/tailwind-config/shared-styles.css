@@ -729,6 +729,10 @@ pre {
     background-color: var(--cool-black);
   }
 
+  .border-b-black-20 {
+    border-bottom-color: var(--black-20);
+  }
+
   .border-black-35 {
     border-color: var(--black-35);
   }

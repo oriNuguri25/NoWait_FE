@@ -4,8 +4,6 @@ import { useWindowWidth } from "../hooks/useWindowWidth";
 import { useLocation } from "react-router-dom";
 import NwIcon from "../assets/nwLogo.svg?react";
 import NwTextIcon from "../assets/nw_text_logo.svg?react";
-import ArrowDown from "../assets/keyboard_arrow_down.svg?react";
-import profile from "../assets/profile.png";
 import waitIcon from "../assets/Waiting.svg"; // 대기 아이콘 등
 import orderIcon from "../assets/Order.svg";
 import statIcon from "../assets/Statistics.svg";
@@ -14,6 +12,7 @@ import waitIconActive from "../assets/waitIconActive.svg";
 import orderIconActive from "../assets/orderIconActive.svg";
 import statIconActive from "../assets/statIconActive.svg";
 import boothIconActive from "../assets/boothIconActive.svg";
+import logout from "../assets/log-out.png";
 
 const AdminSidebar = () => {
   const width = useWindowWidth();
@@ -30,7 +29,7 @@ const AdminSidebar = () => {
   return (
     <aside
       className={`
-        h-screen flex flex-col justify-between bg-white fixed
+        h-screen flex flex-col justify-between bg-white fixed border-r border-r-[#ECECEC]
         ${
           isCompact
             ? "w-[60px] items-center px-[10px] py-5"
@@ -116,17 +115,8 @@ const AdminSidebar = () => {
 
       {/* 하단: 프로필 */}
       <div className="flex items-center gap-2">
-        <img
-          src={profile}
-          alt="프로필"
-          className="w-9 h-9 rounded-full object-cover"
-        />
-        {!isCompact && (
-          <div className="flex flex-row">
-            <span className="text-sm font-medium text-black">스페이시스</span>
-            <ArrowDown />
-          </div>
-        )}
+        <img src={logout} alt="gnb" />
+        <span className="text-16-semibold text-black-55">로그아웃</span>
       </div>
     </aside>
   );

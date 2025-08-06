@@ -36,7 +36,6 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   departName,
   boothIntro,
   noticeTitle,
-  boothNotice,
   startHour,
   startMinute,
   endHour,
@@ -98,7 +97,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
             <div
               className="h-[98px] mt-[15.43px] mb-[28.5px]"
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(boothNotice),
+                __html: DOMPurify.sanitize(boothIntro),
               }}
             ></div>
             <div className="flex items-center justify-between w-full rounded-[6.29px] px-[10px] py-[8.81px] bg-black-10 border-[#ECECEC] border-[0.63px]">
@@ -106,7 +105,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                 <span className="text-black-50 text-notice mr-[3.78px]">
                   공지
                 </span>{" "}
-                입장 시 신분증 검사 필수
+                {noticeTitle}
               </p>
               <img src={right} />
             </div>

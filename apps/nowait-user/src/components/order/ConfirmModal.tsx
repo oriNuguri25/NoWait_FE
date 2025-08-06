@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@repo/ui";
 import Portal from "../common/modal/Portal";
 import { AnimatePresence, motion } from "framer-motion";

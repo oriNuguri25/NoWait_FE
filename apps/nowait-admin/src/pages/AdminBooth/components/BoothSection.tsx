@@ -188,6 +188,7 @@ const BoothSection = ({
                       const newImages = [...bannerImages];
                       newImages[i] = file;
                       setBannerImages(newImages);
+                      e.target.value = "";
                     }
                   }}
                 />
@@ -237,6 +238,13 @@ const BoothSection = ({
                           <button
                             type="button"
                             className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              const newImages = [...bannerImages];
+                              newImages[i] = null as any;
+                              setBannerImages(newImages);
+                            }}
                           >
                             <img src={deletBttn} alt="삭제" />
                           </button>

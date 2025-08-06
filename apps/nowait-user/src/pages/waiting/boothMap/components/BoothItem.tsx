@@ -3,7 +3,8 @@ import DepartmentImage from "../../../../components/DepartmentImage";
 import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
 import { useBookmarkState } from "../../../../hooks/useBookmarkState";
 import defaultMenuImageLg from "../../../../assets/default-menu-image-lg.png";
-
+import { useState } from "react";
+import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
 
 interface PropsType {
   bookmarkId?: number;

@@ -3,33 +3,6 @@ import type { MenuType } from "../../types/order/menu";
 import MenuItem from "./MenuItem";
 import { getStoreMenus } from "../../api/menu";
 
-const dummy = [
-  {
-    menuId: 1,
-    image: "",
-    name: "strin",
-    description: "string",
-    price: 1000,
-    isSoldOut: false,
-  },
-    {
-    menuId: 2,
-    image: "",
-    name: "strinaa",
-    description: "string",
-    price: 1000,
-    isSoldOut: false,
-  },
-    {
-    menuId: 3,
-    image: "",
-    name: "strindddddd",
-    description: "string",
-    price: 1000,
-    isSoldOut: false,
-  },
-];
-
 const MenuList = ({
   storeId,
   mode,

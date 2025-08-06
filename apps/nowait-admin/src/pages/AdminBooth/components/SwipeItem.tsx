@@ -49,6 +49,7 @@ const SwipeItem = ({
       setIsOpen(false);
     }
   };
+  console.log(isOpen, "배포용");
 
   return (
     <div className="relative w-full overflow-hidden select-none">
@@ -67,7 +68,7 @@ const SwipeItem = ({
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        onClick={setIsEditModalOpen(true)}
+        onClick={() => setIsEditModalOpen(true)}
       >
         <div className="flex items-center gap-4">
           <div className="w-[48px] h-[48px] bg-black-5 rounded-md overflow-hidden">

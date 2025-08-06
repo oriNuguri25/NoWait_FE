@@ -41,7 +41,7 @@ const MapPage = () => {
     ...boothPosition[booth.storeId],
   }));
 
-  const detailBooth = booths?.find((booth) => booth.storeId === selectedBooth);
+  // const detailBooth = booths.find((booth) => booth.storeId === selectedBooth);
 
   const openBoothButton = (id: number) => {
     console.log(id);

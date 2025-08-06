@@ -2,7 +2,6 @@ import QuantitySelector from "../../../../components/common/QuantitySelector";
 import Close from "../../../../assets/icon/close.svg?react";
 import { useCartStore } from "../../../../stores/cartStore";
 import { motion } from "framer-motion";
-import { useState } from "react";
 
 interface PropsType {
   id: string;
@@ -14,7 +13,6 @@ interface PropsType {
 
 const CartItem = ({ id, name, originPrice, price, quantity }: PropsType) => {
   const { removeFromCart, increaseQuantity, decreaseQuantity } = useCartStore();
-  const [isRemoving, setIsRemoving] = useState(false);
   return (
     <motion.li
       layout
@@ -36,7 +34,6 @@ const CartItem = ({ id, name, originPrice, price, quantity }: PropsType) => {
           </div>
           <button
             onClick={() => {
-              setIsRemoving(true);
               setTimeout(() => removeFromCart(id), 300);
             }}
           >
