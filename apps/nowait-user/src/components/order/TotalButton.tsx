@@ -5,7 +5,7 @@ import NumberFlow from "@number-flow/react";
 
 interface PropsType {
   variant?: "default" | "orderPage";
-  addedPrice: number | undefined;
+  addedPrice?: number | undefined;
   actionText: string;
 }
 

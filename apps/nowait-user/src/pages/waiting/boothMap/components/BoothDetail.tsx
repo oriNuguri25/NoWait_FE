@@ -1,15 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { getStore } from "../../../../api/reservation";
 import { useNavigate } from "react-router-dom";
-import {Button} from "@repo/ui"
-import Clock from "../../../../assets/icon/clock.svg?react"
+import { Button } from "@repo/ui";
+import Clock from "../../../../assets/icon/clock.svg?react";
 
 interface PropsType {
   storeId: string | undefined;
 }
 
 const BoothDetail = ({ storeId }: PropsType) => {
-    console.log(storeId,"스토어 아이디")
   const navigate = useNavigate();
 
   const { data: store } = useQuery({
@@ -37,9 +36,7 @@ const BoothDetail = ({ storeId }: PropsType) => {
             ? "대기없음"
             : `대기 ${store?.waitingCount}명`}
         </p>
-        <Button onClick={() => navigate(`/store/${storeId}`)}>
-          상세 보기
-        </Button>
+        <Button onClick={() => navigate(`/store/${storeId}`)}>상세 보기</Button>
       </div>
     </div>
   );
