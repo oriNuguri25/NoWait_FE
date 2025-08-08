@@ -61,10 +61,10 @@ const LoginPage = () => {
           />
           <label
             htmlFor="username"
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-black-40 text-[16px] transition-all duration-200
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-black-40 text-14-regular transition-all duration-200
             peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2
-            peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-[14px] peer-focus:text-primary
-            peer-valid:top-2 peer-valid:-translate-y-0 peer-valid:text-[14px]
+            peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-13-regular peer-focus:text-primary
+            peer-valid:top-2 peer-valid:-translate-y-0 peer-valid:text-13-regular
           "
           >
             {isIdFocused ? "아이디" : ""}
@@ -96,7 +96,7 @@ const LoginPage = () => {
         <button
           type="submit"
           disabled={!id || !pw}
-          className={`fixed w-[576px] bottom-[30px] mt-8 h-[52px] rounded-[12px] cursor-not-allowed transition-all duration-300 ease-in-out ${
+          className={`fixed w-[576px] bottom-[30px] mt-8 h-[52px] rounded-[12px] text-17-semibold cursor-not-allowed transition-all duration-300 ease-in-out ${
             id && pw
               ? "cursor-pointer bg-black-100 text-white-100"
               : "cursor-not-allowed bg-black-25 text-black-55"

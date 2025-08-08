@@ -21,7 +21,7 @@ const AdminAuth = () => {
       {/* 2. Feature Section 1 */}
       <section className="w-[576px] [@media(max-width:431px)]:w-[325px] mx-auto ">
         <RedBadge label="웨이팅 관리" small={false} />
-        <h3 className="text-headline-28-bold mb-1 mt-4">
+        <h3 className="text-headline-28-bold mb-3 mt-3">
           대기 없이 빠르게
           <br />
           입장 안내해요
@@ -31,13 +31,13 @@ const AdminAuth = () => {
           <br />
           간편하게 입장 처리를 할 수 있어요.
         </p>
-        <div className="mt-6 mb-20 aspect-square w-60 bg-gray-100 rounded-lg [@media(max-width:431px)]:w-[325px]" />
+        <div className="mt-[38px] mb-20 aspect-square w-60 bg-gray-100 rounded-lg [@media(max-width:431px)]:w-[325px]" />
       </section>
 
       {/* 3. Feature Section 2 */}
       <section className="w-[576px] [@media(max-width:431px)]:w-[325px] mx-auto text-right">
         <RedBadge label="주문 관리" small={false} />
-        <h3 className="text-headline-28-bold mb-1 mt-4">
+        <h3 className="text-headline-28-bold mb-3 mt-3">
           주문 접수, 입금 확인도
           <br />
           간편하게 확인해요
@@ -47,13 +47,13 @@ const AdminAuth = () => {
           <br />
           입금 여부만 확인하면 주문 처리가 끝나요.
         </p>
-        <div className="mt-6 mb-20 aspect-square w-60 ml-auto bg-gray-100 rounded-lg [@media(max-width:431px)]:w-[325px]" />
+        <div className="mt-[38px] mb-20 aspect-square w-60 ml-auto bg-gray-100 rounded-lg [@media(max-width:431px)]:w-[325px]" />
       </section>
 
       {/* 4. Feature Section 3 */}
       <section className="w-[576px]  [@media(max-width:431px)]:w-[325px] mx-auto mb-[200px]">
         <RedBadge label="운영 현황 요약" small={false} />
-        <h3 className="text-headline-28-bold mb-1 mt-4">
+        <h3 className="text-headline-28-bold mb-3 mt-3">
           운영 상황을 한눈에
           <br />
           정리해드려요
@@ -63,7 +63,7 @@ const AdminAuth = () => {
           <br />
           현재 진행 상황을 실시간 확인할 수 있어요.
         </p>
-        <div className="mt-6 aspect-square w-60 bg-gray-100 rounded-lg [@media(max-width:431px)]:w-[325px]" />
+        <div className="mt-[38px] aspect-square w-60 bg-gray-100 rounded-lg [@media(max-width:431px)]:w-[325px]" />
       </section>
 
       <div
