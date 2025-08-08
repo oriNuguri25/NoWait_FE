@@ -1,4 +1,3 @@
-import ArrowRight from "../../assets/arrow_back.svg?react";
 import { useState } from "react";
 import {
   PaymentCheckModal,
