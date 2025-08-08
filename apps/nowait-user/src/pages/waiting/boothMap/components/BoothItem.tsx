@@ -1,9 +1,7 @@
 import BookmarkIcon from "../../../../components/common/BookmarkIcon";
 import DepartmentImage from "../../../../components/DepartmentImage";
-import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
 import { useBookmarkState } from "../../../../hooks/useBookmarkState";
 import defaultMenuImageLg from "../../../../assets/default-menu-image-lg.png";
-import { useState } from "react";
 import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
 
 interface PropsType {
@@ -13,7 +11,7 @@ interface PropsType {
   profileImage?: string;
   name: string;
   departmentName: string;
-  storeId: string;
+  storeId: number;
 }
 
 const BoothItem = ({

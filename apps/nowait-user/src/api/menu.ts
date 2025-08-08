@@ -5,8 +5,8 @@ const API_URI = import.meta.env.VITE_SERVER_URI;
 interface MenuServerResponse {
   success: boolean;
   response: {
-    menuId: string;
-    storeId: string;
+    menuId: number;
+    storeId: number;
     name: string;
     description: string;
     price: number;
@@ -29,8 +29,8 @@ export const getStoreMenus = async (storeId: string | undefined | null) => {
 
 // 단일 메뉴 조회
 export const getStoreMenu = async (
-  storeId: string,
-  menuId: string
+  storeId: number,
+  menuId: number
 ): Promise<MenuServerResponse> => {
   const res = await axios.get(
     `${API_URI}/v1/menus/${storeId}/${menuId}`
