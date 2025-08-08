@@ -22,6 +22,20 @@ interface PriceInputProps {
   setPrice: React.Dispatch<React.SetStateAction<string>>;
 }
 
+//이모지 제거 함수 (정규식 기반)
+const removeEmoji = (text: string) => {
+  return text.replace(
+    /([\u2700-\u27BF]|[\uE000-\uF8FF]|\u24C2|[\uD83C-\uDBFF\uDC00-\uDFFF])/g,
+    ""
+  );
+};
+
+//메뉴명용: 허용 문자만 남기기
+const filterMenuName = (text: string) => {
+  // 허용 문자: 한글, 영문, 숫자, 공백, 일부 특수문자
+  return removeEmoji(text).replace(/[^ㄱ-ㅎ가-힣a-zA-Z0-9 +:/~%&*,™®[\]]/g, "");
+};
+
 // 가격 표시 세자리 마다 , 붙여서 표시
 const formatNumber = (num: number) => {
   if (!num) return "";
@@ -122,6 +136,7 @@ const MenuModal = ({
               <input
                 type="text"
                 value={name}
+                // onChange={(e) => setName(filterMenuName(e.target.value))}
                 onChange={(e) => setName(e.target.value)}
                 maxLength={25}
                 className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-sm"
