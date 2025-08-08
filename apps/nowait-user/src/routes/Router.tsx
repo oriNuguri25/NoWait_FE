@@ -18,7 +18,8 @@ import OrderDetailsPage from "../pages/order/orderDetails/OrderDetailsPage";
 import RemittancePage from "../pages/order/remittance/RemittancePage";
 import BookmarkPage from "../pages/waiting/bookmark/BookmarkPage";
 import StoreNoticePage from "../pages/waiting/storeNotice/StoreNoticePage";
-import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
+import WaitingSummaryPage from "../pages/waiting/waitingSummary/WaitingSummaryPage";
+import MapManagePage from "../pages/waiting/boothMap/MapManagePage";
 
 // AuthGuard로 래핑하는 헬퍼 함수
 const withAuth = (Component: React.ComponentType) => (
@@ -48,6 +49,7 @@ const Router = () => {
       {/* <Route path="/store/:id/reserve" element={withAuth(StoreReservePage)} /> */}
       <Route path="/store/:id" element={withAuth(StoreDetailPage)} />
       <Route path="/map" element={withAuth(MapPage)} />
+      <Route path="/mapManage" element={withAuth(MapManagePage)} />
       <Route path="/bookmark" element={withAuth(BookmarkPage)} />
       <Route path="/store/:id/notice" element={withAuth(StoreNoticePage)} />
       <Route
