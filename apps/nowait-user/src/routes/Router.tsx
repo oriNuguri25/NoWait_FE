@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import HomePage from "../pages/home/HomePage";
 import WaitingSuccessPage from "../pages/waiting/waitingSuccess/WaitingSuccessPage";
 import MapPage from "../pages/waiting/boothMap/MapPage";
@@ -33,13 +33,13 @@ const withTransition = (Component: React.ComponentType) => (
   </PageTransitionWrapper>
 );
 const Router = () => {
-  const location = useLocation();
   return (
     // <PageTransitionWrapper>
-    <Routes location={location} key={location.pathname}>
-      {/* 공개 라우트 - 인증 불필요 */}
-      <Route path="/login/success" element={<KakaoRedirectHandler />} />
-      <Route path="/login" element={<LoginPage />} />
+    <>
+      <Routes>
+        {/* 공개 라우트 - 인증 불필요 */}
+        <Route path="/login/success" element={<KakaoRedirectHandler />} />
+        <Route path="/login" element={<LoginPage />} />
 
       {/* 보호된 라우트 - 인증 필요 (구체적인 경로 먼저) */}
       <Route
@@ -66,32 +66,41 @@ const Router = () => {
       />
       <Route path="/" element={withAuth(HomePage)} />
 
-      {/* QR 코드 접속 페이지 - 인증 불필요 (일반적인 경로 나중에) */}
-      <Route path="/:storeId/:tableId" element={<RedirectToStorePage />} />
-      <Route path="/:storeId" element={withTransition(StorePage)} />
-      <Route
-        path="/:storeId/menu/:menuId"
-        element={withTransition(AddMenuPage)}
-      />
-      <Route path="/:storeId/order" element={withTransition(OrderListPage)} />
-      <Route
-        path="/:storeId/remittance"
-        element={withTransition(RemittancePage)}
-      />
-      <Route
-        path="/:storeId/remittanceWait"
-        element={withTransition(RemittanceWaitPage)}
-      />
-      <Route
-        path="/:storeId/order/success"
-        element={withTransition(OrderSuccessPage)}
-      />
+        {/* QR 코드 접속 페이지 - 인증 불필요 (일반적인 경로 나중에) */}
+        <Route path="/:storeId/:tableId" element={<RedirectToStorePage />} />
+        <Route path="/:storeId" element={withTransition(StorePage)} />
+        <Route
+          path="/:storeId/menu/:menuId"
+          element={withTransition(AddMenuPage)}
+        />
+        <Route path="/:storeId/order" element={withTransition(OrderListPage)} />
+        <Route
+          path="/:storeId/remittance"
+          element={withTransition(RemittancePage)}
+        />
+        <Route
+          path="/:storeId/remittanceWait"
+          element={withTransition(RemittanceWaitPage)}
+        />
+        <Route
+          path="/:storeId/order/success"
+          element={withTransition(OrderSuccessPage)}
+        />
 
-      <Route
-        path="/:storeId/orderDetails"
-        element={withTransition(OrderDetailsPage)}
-      />
-    </Routes>
+        <Route
+          path="/:storeId/orderDetails"
+          element={withTransition(OrderDetailsPage)}
+        />
+      </Routes>
+      {/* {background && (
+        <Routes>
+          <Route
+            path="/:storeId/menu/:menuId"
+            element={withTransition(AddMenuPage)}
+          />
+        </Routes>
+      )} */}
+    </>
   );
 };
 

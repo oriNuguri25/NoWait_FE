@@ -9,7 +9,9 @@ interface PropsType {
   booth: any | undefined;
 }
 
+
 const BoothDetail = ({ booth }: PropsType) => {
+
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const { storeId, name, departmentName, waitingCount } = booth;
