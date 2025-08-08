@@ -31,10 +31,10 @@ const removeEmoji = (text: string) => {
 };
 
 //메뉴명용: 허용 문자만 남기기
-const filterMenuName = (text: string) => {
-  // 허용 문자: 한글, 영문, 숫자, 공백, 일부 특수문자
-  return removeEmoji(text).replace(/[^ㄱ-ㅎ가-힣a-zA-Z0-9 +:/~%&*,™®[\]]/g, "");
-};
+// const filterMenuName = (text: string) => {
+//   // 허용 문자: 한글, 영문, 숫자, 공백, 일부 특수문자
+//   return removeEmoji(text).replace(/[^ㄱ-ㅎ가-힣a-zA-Z0-9 +:/~%&*,™®[\]]/g, "");
+// };
 
 // 가격 표시 세자리 마다 , 붙여서 표시
 const formatNumber = (num: number) => {
