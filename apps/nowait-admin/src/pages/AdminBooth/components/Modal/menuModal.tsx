@@ -23,12 +23,12 @@ interface PriceInputProps {
 }
 
 //이모지 제거 함수 (정규식 기반)
-const removeEmoji = (text: string) => {
-  return text.replace(
-    /([\u2700-\u27BF]|[\uE000-\uF8FF]|\u24C2|[\uD83C-\uDBFF\uDC00-\uDFFF])/g,
-    ""
-  );
-};
+// const removeEmoji = (text: string) => {
+//   return text.replace(
+//     /([\u2700-\u27BF]|[\uE000-\uF8FF]|\u24C2|[\uD83C-\uDBFF\uDC00-\uDFFF])/g,
+//     ""
+//   );
+// };
 
 //메뉴명용: 허용 문자만 남기기
 // const filterMenuName = (text: string) => {
