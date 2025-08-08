@@ -68,10 +68,10 @@ const BoothForm = () => {
             });
           }
 
-          alert("부스 정보가 성공적으로 저장되었습니다!");
+          console.log("부스 정보가 성공적으로 저장되었습니다!");
           refetch();
         },
-        onError: () => alert("부스 정보 수정에 실패했습니다."),
+        onError: () => console.log("부스 정보 수정에 실패했습니다."),
       }
     );
   };
