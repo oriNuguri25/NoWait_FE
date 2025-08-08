@@ -1,5 +1,6 @@
-import { useState, useRef } from "react";
-import { PaymentCard, PaymentDetail, CookCard, CookedCard } from "./OrderCard";
+import { useState, useRef, useEffect } from "react";
+import { PaymentCard, CookCard, CookedCard } from "./OrderCard";
+import { DetailCard } from "./DetailCard";
 import RefreshIcon from "../../assets/refresh.svg?react";
 import CookedPage from "./CookedPage";
 import { useGetOrderList } from "../../hooks/useGetOrderList";
@@ -61,6 +62,22 @@ const AdminOrders = () => {
       }
     }, 0);
   };
+
+  // CookedCard 클릭 핸들러
+  const handleCookedCardClick = (cooked: Order) => {
+    if (scrollContainerRef.current) {
+      // 현재 스크롤 위치 저장
+      setSavedScrollPosition(scrollContainerRef.current.scrollTop);
+      // 스크롤을 맨 위로 올리기
+      scrollContainerRef.current.scrollTop = 0;
+    }
+    setSelectedPayment(cooked);
+  };
+
+  // 탭 변경 시 Detail 닫기
+  useEffect(() => {
+    setSelectedPayment(null);
+  }, [activeTab, mobileActiveTab]);
 
   return (
     <div
@@ -202,17 +219,16 @@ const AdminOrders = () => {
                     </div>
                   )}
 
-                  {/* PaymentDetail 오버레이 */}
+                  {/* DetailCard 오버레이 */}
                   {selectedPayment && (
-                    <PaymentDetail
+                    <DetailCard
+                      type="payment"
                       orderId={selectedPayment.id}
                       tableNumber={selectedPayment.tableId}
                       timeText={getFormattedTime(selectedPayment.createdAt)}
                       depositorName={selectedPayment.depositorName}
                       totalAmount={selectedPayment.totalPrice || 0}
-                      menuNamesAndQuantities={
-                        selectedPayment.menuNamesAndQuantities
-                      }
+                      menuDetails={selectedPayment.menuDetails}
                       onClose={handleClosePaymentDetail}
                       onSuccess={refetch}
                     />
@@ -251,7 +267,7 @@ const AdminOrders = () => {
                         key={cooking.id}
                         orderId={cooking.id}
                         tableNumber={cooking.tableId}
-                        menuNamesAndQuantities={cooking.menuNamesAndQuantities}
+                        menuDetails={cooking.menuDetails}
                         onSuccess={refetch}
                       />
                     ))
@@ -326,17 +342,16 @@ const AdminOrders = () => {
                   </div>
                 )}
 
-                {/* PaymentDetail 오버레이 */}
+                {/* DetailCard 오버레이 */}
                 {selectedPayment && (
-                  <PaymentDetail
+                  <DetailCard
+                    type="payment"
                     orderId={selectedPayment.id}
                     tableNumber={selectedPayment.tableId}
                     timeText={getFormattedTime(selectedPayment.createdAt)}
                     depositorName={selectedPayment.depositorName}
                     totalAmount={selectedPayment.totalPrice || 0}
-                    menuNamesAndQuantities={
-                      selectedPayment.menuNamesAndQuantities
-                    }
+                    menuDetails={selectedPayment.menuDetails}
                     onClose={handleClosePaymentDetail}
                     onSuccess={refetch}
                   />
@@ -367,7 +382,7 @@ const AdminOrders = () => {
                       key={cooking.id}
                       orderId={cooking.id}
                       tableNumber={cooking.tableId}
-                      menuNamesAndQuantities={cooking.menuNamesAndQuantities}
+                      menuDetails={cooking.menuDetails}
                       onSuccess={refetch}
                     />
                   ))
@@ -391,7 +406,13 @@ const AdminOrders = () => {
                 <div className="flex max-[376px]:w-20 w-29">금액</div>
                 <div className="flex">주문 시간</div>
               </div>
-              <div className="flex flex-col bg-white rounded-b-2xl border-t-0 border-black-25 border flex-1 min-h-0 overflow-y-auto">
+              <div
+                className={`flex flex-col bg-white rounded-b-2xl border-t-0 border-black-25 border flex-1 min-h-0 relative ${
+                  selectedPayment && mobileActiveTab === "조리 완료"
+                    ? "overflow-hidden"
+                    : "overflow-y-auto"
+                }`}
+              >
                 {isLoading ? (
                   <div className="flex flex-col items-center justify-center h-full text-center px-5 py-4">
                     <div className="text-16-medium text-black-60">
@@ -405,10 +426,11 @@ const AdminOrders = () => {
                       orderId={cooked.id}
                       tableNumber={cooked.tableId}
                       depositorName={cooked.depositorName}
-                      menuNamesAndQuantities={cooked.menuNamesAndQuantities}
+                      menuDetails={cooked.menuDetails}
                       totalAmount={cooked.totalPrice || 0}
                       createdAt={getFormattedTime(cooked.createdAt)}
                       onSuccess={refetch}
+                      onClick={() => handleCookedCardClick(cooked)}
                     />
                   ))
                 ) : (
@@ -419,6 +441,21 @@ const AdminOrders = () => {
                         : "조리 완료된 주문이 없어요!"}
                     </div>
                   </div>
+                )}
+
+                {/* DetailCard 오버레이 */}
+                {selectedPayment && mobileActiveTab === "조리 완료" && (
+                  <DetailCard
+                    type="cooked"
+                    orderId={selectedPayment.id}
+                    tableNumber={selectedPayment.tableId}
+                    timeText={getFormattedTime(selectedPayment.createdAt)}
+                    depositorName={selectedPayment.depositorName}
+                    totalAmount={selectedPayment.totalPrice || 0}
+                    menuDetails={selectedPayment.menuDetails}
+                    onClose={handleClosePaymentDetail}
+                    onSuccess={refetch}
+                  />
                 )}
               </div>
             </div>

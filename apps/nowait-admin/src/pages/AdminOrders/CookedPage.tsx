@@ -1,5 +1,7 @@
 import { CookedCard } from "./OrderCard";
+import { DetailCard } from "./DetailCard";
 import type { Order } from "../../types/order";
+import { useState, useRef } from "react";
 
 interface CookedPageProps {
   cookedOrders: Order[];
@@ -14,6 +16,9 @@ const CookedPage = ({
   error,
   onRefresh,
 }: CookedPageProps) => {
+  const [selectedCooked, setSelectedCooked] = useState<Order | null>(null);
+  const [savedScrollPosition, setSavedScrollPosition] = useState<number>(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   // 시간 포맷팅 함수 (17:30 형식)
   const getFormattedTime = (createdAt: string) => {
     const date = new Date(createdAt);
@@ -22,8 +27,30 @@ const CookedPage = ({
     return `${hours}:${minutes}`;
   };
 
+  // CookedCard 클릭 핸들러
+  const handleCookedCardClick = (cooked: Order) => {
+    if (scrollContainerRef.current) {
+      // 현재 스크롤 위치 저장
+      setSavedScrollPosition(scrollContainerRef.current.scrollTop);
+      // 스크롤을 맨 위로 올리기
+      scrollContainerRef.current.scrollTop = 0;
+    }
+    setSelectedCooked(cooked);
+  };
+
+  // CookedDetail 닫기 핸들러
+  const handleCloseCookedDetail = () => {
+    setSelectedCooked(null);
+    // 약간의 딜레이 후 스크롤 위치 복원
+    setTimeout(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = savedScrollPosition;
+      }
+    }, 0);
+  };
+
   return (
-    <div className="flex flex-row gap-2.5 flex-1 min-h-0 overflow-hidden">
+    <div className="flex flex-row w-full gap-2.5 flex-1 min-h-0 overflow-hidden">
       {/* 조리 완료 블럭 */}
       <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
         <div className="flex flex-row ml-1.5 gap-1.5 flex-shrink-0 mb-3">
@@ -55,7 +82,12 @@ const CookedPage = ({
           </div>
 
           {/* 스크롤 가능한 내용 영역 */}
-          <div className="flex-1 overflow-y-auto min-h-0">
+          <div
+            ref={scrollContainerRef}
+            className={`flex-1 min-h-0 relative ${
+              selectedCooked ? "overflow-hidden" : "overflow-y-auto"
+            }`}
+          >
             {isLoading ? (
               <div className="flex flex-col items-center justify-center h-full py-20 text-center">
                 <div className="text-16-medium text-black-60">로딩 중...</div>
@@ -67,10 +99,11 @@ const CookedPage = ({
                   orderId={order.id}
                   tableNumber={order.tableId}
                   depositorName={order.depositorName}
-                  menuNamesAndQuantities={order.menuNamesAndQuantities}
+                  menuDetails={order.menuDetails}
                   totalAmount={order.totalPrice || 0}
                   createdAt={getFormattedTime(order.createdAt)}
                   onSuccess={onRefresh}
+                  onClick={() => handleCookedCardClick(order)}
                 />
               ))
             ) : (
@@ -81,6 +114,21 @@ const CookedPage = ({
                     : "조리 완료된 주문이 없어요!"}
                 </div>
               </div>
+            )}
+
+            {/* DetailCard 오버레이 */}
+            {selectedCooked && (
+              <DetailCard
+                type="cooked"
+                orderId={selectedCooked.id}
+                tableNumber={selectedCooked.tableId}
+                timeText={getFormattedTime(selectedCooked.createdAt)}
+                depositorName={selectedCooked.depositorName}
+                totalAmount={selectedCooked.totalPrice || 0}
+                menuDetails={selectedCooked.menuDetails}
+                onClose={handleCloseCookedDetail}
+                onSuccess={onRefresh}
+              />
             )}
           </div>
         </div>
