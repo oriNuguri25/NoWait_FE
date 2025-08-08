@@ -25,7 +25,7 @@ interface PriceInputProps {
 // 가격 표시 세자리 마다 , 붙여서 표시
 const formatNumber = (num: number) => {
   if (!num) return "";
-  return String(num).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return String(num).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " 원";
 };
 
 const PriceInput: React.FC<PriceInputProps> = ({ price, setPrice }) => {
@@ -53,12 +53,6 @@ const PriceInput: React.FC<PriceInputProps> = ({ price, setPrice }) => {
           `}
           placeholder={isFocused ? "" : "가격을 입력해주세요"}
         />
-        {/* price 값이 있을 때만 "원" 표시 */}
-        {price !== "" && (
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-700">
-            원
-          </span>
-        )}
       </div>
     </div>
   );
