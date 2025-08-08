@@ -17,7 +17,7 @@ const AddMenuPage = () => {
 
   const { data: menu, isLoading } = useQuery({
     queryKey: ["menu", menuId],
-    queryFn: () => getStoreMenu(storeId!, menuId!),
+    queryFn: () => getStoreMenu(Number(storeId!), Number(menuId!)),
     select: (data) => data?.response,
   });
   const [quantity, setQuantity] = useState(1);
