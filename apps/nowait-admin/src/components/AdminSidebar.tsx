@@ -12,7 +12,7 @@ import waitIconActive from "../assets/waitIconActive.svg";
 import orderIconActive from "../assets/orderIconActive.svg";
 import statIconActive from "../assets/statIconActive.svg";
 import boothIconActive from "../assets/boothIconActive.svg";
-import logout from "../assets/log-out.png";
+import logout from "../assets/log-out.svg";
 
 const AdminSidebar = () => {
   const width = useWindowWidth();
