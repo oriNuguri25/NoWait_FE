@@ -34,6 +34,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
   const { data: fetchedMenus = [] } = useGetAllMenus(1);
+  const storeId = Number(localStorage.getItem("storeId"));
 
   // 메뉴 생성 훅
   const { mutate: createMenu } = useCreateMenu();
@@ -57,8 +58,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     image?: File;
   }) => {
     const payload = {
-      storeId: 1,
-      //   나중에 실제 storeId로 바꾸어야함
+      storeId,
       adminDisplayName: newMenu.adminDisplayName,
       name: newMenu.name,
       description: newMenu.description,
@@ -101,16 +101,18 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                 );
               },
               onError: () => {
-                alert("메뉴는 추가되었지만 이미지 업로드에 실패했습니다.");
+                console.log(
+                  "메뉴는 추가되었지만 이미지 업로드에 실패했습니다."
+                );
               },
             }
           );
         } else {
-          alert("메뉴가 성공적으로 추가되었습니다.");
+          console.log("메뉴가 성공적으로 추가되었습니다.");
         }
       },
       onError: () => {
-        alert("메뉴 추가에 실패했습니다.");
+        console.log("메뉴 추가에 실패했습니다.");
       },
     });
   };
@@ -137,10 +139,9 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
             menu.id === updated.id ? { ...menu, ...payload } : menu
           )
         );
-        alert("메뉴가 성공적으로 수정되었습니다.");
       },
       onError: () => {
-        alert("메뉴 수정에 실패했습니다.");
+        console.log("메뉴 수정에 실패했습니다.");
       },
     });
   };
@@ -152,10 +153,10 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
       onSuccess: () => {
         setMenus((prev) => prev.filter((menu) => menu.id !== selectedMenu.id));
         setIsRemoveModalOpen(false);
-        alert("메뉴가 삭제되었습니다.");
+        setIsEditModalOpen(false);
       },
       onError: () => {
-        alert("메뉴 삭제에 실패했습니다.");
+        console.log("메뉴 삭제에 실패했습니다.");
       },
     });
   };
