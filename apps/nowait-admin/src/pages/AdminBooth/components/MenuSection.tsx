@@ -11,6 +11,7 @@ import addIcon from "../../../assets/booth/add.svg";
 import MenuRemoveModal from "./Modal/MenuRemoveModal";
 import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
 import { useToggleMenuSoldOut } from "../../../hooks/booth/menu/useToggleMenuSoldOut";
+import { useUpdateMenuSort } from "../../../hooks/booth/menu/useUpadateMenuSort";
 
 // 세 자리마다 , 붙여서 가격표시
 const formatNumber = (num: number) => {
@@ -26,6 +27,7 @@ interface Menu {
   price: number;
   soldOut: boolean;
   imageUrl?: string;
+  sortOrder: number;
 }
 
 const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
@@ -47,6 +49,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
 
   // 메뉴 수정 훅
   const { mutate: updateMenu } = useUpdateMenu();
+  const { mutate: updateMenuSort } = useUpdateMenuSort();
 
   const openEditModal = (menu: any) => {
     setSelectedMenu(menu);
@@ -81,6 +84,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
           description: created.description,
           price: created.price,
           soldOut: created.isSoldOut,
+          sortOrder: created.sortOrder,
           // imageUrl은 업로드 후에 업데이트
         };
         // 일단 메뉴 배열에 추가
@@ -196,6 +200,18 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     const [removed] = reordered.splice(result.source.index, 1);
     reordered.splice(result.destination.index, 0, removed);
     setMenus(reordered);
+    const body = reordered.map((menu, index) => ({
+      menuId: menu.id,
+      sortOrder: index,
+    }));
+    updateMenuSort(body, {
+      onSuccess: (res) => {
+        console.log("순서 저장 성공", res);
+      },
+      onError: (err) => {
+        console.log("순서 저장 에러", err);
+      },
+    });
   };
 
   useEffect(() => {
@@ -207,6 +223,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
       price: menu.price,
       soldOut: menu.isSoldOut,
       imageUrl: menu.images?.[0]?.imageUrl,
+      sortOrder: menu.sortOrder,
     }));
     setMenus(transformed);
   }, [fetchedMenus]);
