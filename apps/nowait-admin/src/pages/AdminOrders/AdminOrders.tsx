@@ -176,7 +176,7 @@ const AdminOrders = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-row border border-black-25 rounded-t-2xl pl-5 py-2.5 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
+                <div className="flex flex-row border border-black-25 rounded-t-2xl pl-5 py-4 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
                   <div className="flex text-14-medium leading-[136%] text-navy-35">
                     테이블
                   </div>
@@ -247,7 +247,7 @@ const AdminOrders = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-row text-14-medium leading-[136%] text-navy-35 border border-black-30 rounded-t-2xl bg-[#E7ECF0] gap-2.5 py-2.5 pl-5">
+                <div className="flex flex-row text-14-medium leading-[136%] text-navy-35 border border-black-30 rounded-t-2xl bg-[#E7ECF0] gap-2.5 py-4 pl-5">
                   <div className="flex">테이블</div>
                   <div className="flex w-38.5 md:w-32 lg:w-38.5 text-start">
                     메뉴
@@ -299,7 +299,7 @@ const AdminOrders = () => {
         <>
           {mobileActiveTab === "입금 대기" && (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
-              <div className="flex flex-row px-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0">
+              <div className="flex flex-row px-5 py-4 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0">
                 <div className="flex text-14-medium leading-[136%] text-navy-35">
                   테이블
                 </div>
@@ -362,7 +362,7 @@ const AdminOrders = () => {
 
           {mobileActiveTab === "조리 중" && (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
-              <div className="flex flex-row px-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0 text-14-medium leading-[136%] text-navy-35">
+              <div className="flex flex-row px-5 py-4 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0 text-14-medium leading-[136%] text-navy-35">
                 <div className="flex">테이블</div>
                 <div className="flex w-38.5 max-[376px]:w-32 text-start">
                   메뉴
@@ -401,7 +401,7 @@ const AdminOrders = () => {
 
           {mobileActiveTab === "조리 완료" && (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
-              <div className="flex flex-row pl-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border border-black-25 items-center text-14-medium leading-[136%] text-navy-35 flex-shrink-0">
+              <div className="flex flex-row pl-5 py-4 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border border-black-25 items-center text-14-medium leading-[136%] text-navy-35 flex-shrink-0">
                 <div className="flex">테이블</div>
                 <div className="flex max-[376px]:w-20 w-29">금액</div>
                 <div className="flex">주문 시간</div>
