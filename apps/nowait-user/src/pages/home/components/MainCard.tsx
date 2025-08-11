@@ -399,17 +399,19 @@ const MyWaitingCardComponent = ({
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        {/* 슬라이드 인디케이터 */}
-        <div className="absolute flex flex-row gap-1 top-5 right-5">
-          {Array.from({ length: totalSlides }, (_, index) => (
-            <div
-              key={index}
-              className={`flex w-1.5 h-1.5 rounded-md transition-colors duration-300 ${
-                currentSlide === index ? "bg-[#101010]" : "bg-[#000000]/10"
-              }`}
-            ></div>
-          ))}
-        </div>
+        {/* 슬라이드 인디케이터 - 예약이 2개 이상일 때만 표시 */}
+        {totalSlides > 1 && (
+          <div className="absolute flex flex-row gap-1 top-5 right-5">
+            {Array.from({ length: totalSlides }, (_, index) => (
+              <div
+                key={index}
+                className={`flex w-1.5 h-1.5 rounded-md transition-colors duration-300 ${
+                  currentSlide === index ? "bg-[#101010]" : "bg-[#000000]/10"
+                }`}
+              ></div>
+            ))}
+          </div>
+        )}
 
         <div className="flex mt-6.5 text-14-semibold text-[#4D2E2E] leading-[130%] tracking-[0em]">
           {currentStore?.storeName || ""}
