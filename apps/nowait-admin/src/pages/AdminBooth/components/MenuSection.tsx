@@ -34,9 +34,10 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
-  const { data: fetchedMenus = [] } = useGetAllMenus(1);
+
   const { mutate: soldOut } = useToggleMenuSoldOut();
   const storeId = Number(localStorage.getItem("storeId"));
+  const { data: fetchedMenus = [] } = useGetAllMenus(storeId);
 
   // 메뉴 생성 훅
   const { mutate: createMenu } = useCreateMenu();

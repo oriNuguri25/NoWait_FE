@@ -15,6 +15,8 @@ const BoothForm = () => {
   const isTablet = width >= 768;
   // && width <= 1024
   const storeId = Number(localStorage.getItem("storeId"));
+  console.log(storeId, "스토어 아이디");
+
   const { data: store, refetch } = useGetStore(storeId);
   const { mutate: updateStore } = useUpdateStore();
   const { mutate: uploadProfileImage } = useUploadStoreProfileImage();
