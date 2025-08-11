@@ -8,6 +8,8 @@ import MyWaitingDetail from "./components/MyWaitingDetail";
 import BannerMap from "../../assets/icon/banner_img.svg?react";
 import { useWaitingStores } from "../../hooks/useWaitingStores";
 import { useMyWaitingList } from "../../hooks/useMyWaitingList";
+import type { MyWaitingStore } from "../../hooks/useMyWaitingList";
+import type { WaitingStore } from "../../hooks/useWaitingStores";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
@@ -24,7 +26,7 @@ const HomePage = () => {
   const { myWaitingList, refetch: refetchMyWaitingList } = useMyWaitingList();
 
   // myWaitingList를 WaitingItem 형태로 변환
-  const waitingItems = myWaitingList.map((store) => ({
+  const waitingItems = myWaitingList.map((store: MyWaitingStore) => ({
     id: store.storeId,
     number: store.rank,
     storeName: store.storeName,
@@ -114,7 +116,7 @@ const HomePage = () => {
               </div>
             </div>
             <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
-              {waitingStores.map((store) => (
+              {waitingStores.map((store: WaitingStore) => (
                 <div key={store.storeId} className="flex-shrink-0">
                   <MainCard
                     type="homeCard"
