@@ -21,12 +21,15 @@ const AdminOrders = () => {
   // API에서 주문 데이터 가져오기
   const { data: orders = [], isLoading, error, refetch } = useGetOrderList();
 
-  // 시간 포맷팅 함수 (17:30 형식)
-  const getFormattedTime = (createdAt: string) => {
+  // 날짜와 시간 포맷팅 함수 (2025년 6월 2일 08:02 형식)
+  const getFormattedDateTime = (createdAt: string) => {
     const date = new Date(createdAt);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
     const hours = date.getHours().toString().padStart(2, "0");
     const minutes = date.getMinutes().toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
+    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
   };
 
   // 상태별 데이터 필터링
@@ -202,7 +205,7 @@ const AdminOrders = () => {
                         key={payment.id}
                         orderId={payment.id}
                         tableNumber={payment.tableId}
-                        timeText={getFormattedTime(payment.createdAt)}
+                        timeText={getFormattedDateTime(payment.createdAt)}
                         depositorName={payment.depositorName}
                         totalAmount={payment.totalPrice || 0}
                         onClick={() => handlePaymentCardClick(payment)}
@@ -225,7 +228,7 @@ const AdminOrders = () => {
                       type="payment"
                       orderId={selectedPayment.id}
                       tableNumber={selectedPayment.tableId}
-                      timeText={getFormattedTime(selectedPayment.createdAt)}
+                      timeText={getFormattedDateTime(selectedPayment.createdAt)}
                       depositorName={selectedPayment.depositorName}
                       totalAmount={selectedPayment.totalPrice || 0}
                       menuDetails={selectedPayment.menuDetails}
@@ -325,7 +328,7 @@ const AdminOrders = () => {
                       key={payment.id}
                       orderId={payment.id}
                       tableNumber={payment.tableId}
-                      timeText={getFormattedTime(payment.createdAt)}
+                      timeText={getFormattedDateTime(payment.createdAt)}
                       depositorName={payment.depositorName}
                       totalAmount={payment.totalPrice || 0}
                       onClick={() => handlePaymentCardClick(payment)}
@@ -348,7 +351,7 @@ const AdminOrders = () => {
                     type="payment"
                     orderId={selectedPayment.id}
                     tableNumber={selectedPayment.tableId}
-                    timeText={getFormattedTime(selectedPayment.createdAt)}
+                    timeText={getFormattedDateTime(selectedPayment.createdAt)}
                     depositorName={selectedPayment.depositorName}
                     totalAmount={selectedPayment.totalPrice || 0}
                     menuDetails={selectedPayment.menuDetails}
@@ -428,7 +431,7 @@ const AdminOrders = () => {
                       depositorName={cooked.depositorName}
                       menuDetails={cooked.menuDetails}
                       totalAmount={cooked.totalPrice || 0}
-                      createdAt={getFormattedTime(cooked.createdAt)}
+                      createdAt={getFormattedDateTime(cooked.createdAt)}
                       onSuccess={refetch}
                       onClick={() => handleCookedCardClick(cooked)}
                     />
@@ -449,7 +452,7 @@ const AdminOrders = () => {
                     type="cooked"
                     orderId={selectedPayment.id}
                     tableNumber={selectedPayment.tableId}
-                    timeText={getFormattedTime(selectedPayment.createdAt)}
+                    timeText={getFormattedDateTime(selectedPayment.createdAt)}
                     depositorName={selectedPayment.depositorName}
                     totalAmount={selectedPayment.totalPrice || 0}
                     menuDetails={selectedPayment.menuDetails}
