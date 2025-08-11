@@ -25,7 +25,7 @@ const HomePage = () => {
 
   // myWaitingList를 WaitingItem 형태로 변환
   const waitingItems = myWaitingList.map((store) => ({
-    id: store.storeId.toString(),
+    id: store.storeId,
     number: store.rank,
     storeName: store.storeName,
     waitingCount: store.teamsAhead,
