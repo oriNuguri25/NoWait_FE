@@ -11,7 +11,7 @@ import addIcon from "../../../assets/booth/add.svg";
 import MenuRemoveModal from "./Modal/MenuRemoveModal";
 import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
 
-// 세잘마다 , 붙여서 가격표시
+// 세 자리마다 , 붙여서 가격표시
 const formatNumber = (num: number) => {
   if (!num) return "";
   return String(num).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -27,7 +27,7 @@ interface Menu {
   imageUrl?: string;
 }
 
-const MenuSection = () => {
+const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
   const [editMode, setEditMode] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -215,9 +215,9 @@ const MenuSection = () => {
       </div>
 
       <div className="flex justify-between mb-[10px]">
-        <p className="text-sm text-black-40 mb-2">{menus.length}개의 메뉴</p>
+        <p className="text-sm text-black-70 mb-2">{menus.length}개의 메뉴</p>
         {
-          <p className="text-sm text-black-40 mb-2">
+          <p className="text-sm text-black-70 mb-2">
             {editMode ? "순서 표시" : "품절 표시"}
           </p>
         }
@@ -302,6 +302,7 @@ const MenuSection = () => {
           onDelete={() => {
             setIsRemoveModalOpen(true);
           }}
+          isTablet={isTablet}
         />
       )}
       {isEditModalOpen && selectedMenu && (
@@ -315,12 +316,14 @@ const MenuSection = () => {
           onDelete={() => {
             setIsRemoveModalOpen(true);
           }}
+          isTablet={isTablet}
         />
       )}
       {isRemoveModalOpen && (
         <MenuRemoveModal
           onCancel={() => setIsRemoveModalOpen(false)}
           onConfirm={handleDeleteMenu}
+          isTablet={isTablet}
         />
       )}
     </div>
