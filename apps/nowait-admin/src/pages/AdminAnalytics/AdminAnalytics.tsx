@@ -1,6 +1,7 @@
 import { useGetPopularMenu } from "../../hooks/analytics/useGetPopularMenu";
 import { useGetSalesByDate } from "../../hooks/analytics/useGetSalesByDate";
 import { useGetTopSales } from "../../hooks/analytics/useGetTopSalse";
+import { useWindowWidth } from "../../hooks/useWindowWidth";
 import BoothSalesRankingCard from "./components/BoothSalesRankingCard ";
 import HeaderStatus from "./components/HeaderStatus";
 
@@ -17,12 +18,15 @@ interface BoothRanking {
 const AdminAnalytics = () => {
   const today = new Date();
   const formatted = today.toISOString().slice(0, 10);
+  const width = useWindowWidth();
+  const isTablet = width >= 768;
   const { data: boothRank } = useGetTopSales();
   const { data: sales } = useGetSalesByDate(formatted);
   const { data: popularMenu } = useGetPopularMenu();
   console.log(boothRank, "부스별 판매순위");
   console.log(sales, "판매량");
   console.log(popularMenu, "인기 메뉴");
+  const disabled = boothRank?.length === 0;
   if (typeof sales === "string") {
     return <p>매출 데이터가 없습니다.</p>;
   }
@@ -42,11 +46,17 @@ const AdminAnalytics = () => {
 
   return (
     <div className="w-full flex flex-col items-center justify-center ">
-      <HeaderStatus sales={sales} popularMenu={popularMenu} />
+      <HeaderStatus
+        isTablet={isTablet}
+        sales={sales}
+        popularMenu={popularMenu}
+        disabled={disabled}
+      />
       <BoothSalesRankingCard
+        isTablet={isTablet}
         date={formatted}
         data={boothRankingData}
-        disabled={boothRank?.length === 0}
+        disabled={disabled}
       />
     </div>
   );
