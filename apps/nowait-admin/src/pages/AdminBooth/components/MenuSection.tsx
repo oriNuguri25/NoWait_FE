@@ -10,6 +10,7 @@ import { useUpdateMenu } from "../../../hooks/booth/useUpdateMenu";
 import addIcon from "../../../assets/booth/add.svg";
 import MenuRemoveModal from "./Modal/MenuRemoveModal";
 import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
+import { useToggleMenuSoldOut } from "../../../hooks/booth/menu/useToggleMenuSoldOut";
 
 // 세 자리마다 , 붙여서 가격표시
 const formatNumber = (num: number) => {
@@ -34,6 +35,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
   const { data: fetchedMenus = [] } = useGetAllMenus(1);
+  const { mutate: soldOut } = useToggleMenuSoldOut();
   const storeId = Number(localStorage.getItem("storeId"));
 
   // 메뉴 생성 훅
@@ -162,9 +164,28 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
   };
 
   const toggleSoldOut = (index: number) => {
-    const updatedMenus = [...menus];
-    updatedMenus[index].soldOut = !updatedMenus[index].soldOut;
-    setMenus(updatedMenus);
+    const menu = menus[index];
+    const menuId = menu.id;
+    soldOut(
+      { menuId },
+      {
+        onSuccess: (data) => {
+          const updatedMenus = [...menus];
+          updatedMenus[index].soldOut = !updatedMenus[index].soldOut;
+          setMenus(updatedMenus);
+          console.log(data, "품절 토글");
+          console.log(menus);
+        },
+        onError: () => {
+          // 3) 실패 시 롤백
+          setMenus((prev) => {
+            const next = [...prev];
+            next[index] = { ...next[index], soldOut: !next[index].soldOut };
+            return next;
+          });
+        },
+      }
+    );
   };
 
   const handleDragEnd = (result: any) => {
