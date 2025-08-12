@@ -1,3 +1,4 @@
+// gitignore
 .DS_Store
 node_modules
 .turbo
@@ -9,9 +10,7 @@ dist-ssr
 server/dist
 public/dist
 .yarn/install-state.gz
-yarn.lock
 
 .pnp
 .pnp.js
-.pnp.cjs
-.yarn/install-state.gz
+.yarn/install-state.gz 
