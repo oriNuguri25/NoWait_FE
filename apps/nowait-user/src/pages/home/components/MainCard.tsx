@@ -75,8 +75,28 @@ type MainCardProps =
 
 // 대기 카드 컴포넌트
 const WaitingCard = ({ item }: { item: WaitingItem }) => {
-  // 각 카드마다 개별적으로 색상 추출
-  const { data: dominantColor } = useColor(item.imageUrl, "rgbArray", {
+  // S3 URL을 프록시 URL로 변환
+  const getProxyImageUrl = (originalUrl: string) => {
+    if (originalUrl.includes("gtablestoreimage-resize-bucket")) {
+      const path = originalUrl.replace(
+        "https://gtablestoreimage-resize-bucket.s3.ap-northeast-2.amazonaws.com",
+        ""
+      );
+      return `/api/images${path}`; // 프록시 경로 사용
+    } else if (originalUrl.includes("gtablestoreimage")) {
+      const path = originalUrl.replace(
+        "https://gtablestoreimage.s3.ap-northeast-2.amazonaws.com",
+        ""
+      );
+      return `/api/banner-images${path}`; // 다른 프록시 경로 사용
+    }
+    return originalUrl;
+  };
+
+  const proxyImageUrl = getProxyImageUrl(item.imageUrl);
+
+  // 각 카드마다 개별적으로 색상 추출 (프록시 URL 사용)
+  const { data: dominantColor } = useColor(proxyImageUrl, "rgbArray", {
     crossOrigin: "anonymous",
     quality: 10,
   });
@@ -116,7 +136,7 @@ const WaitingCard = ({ item }: { item: WaitingItem }) => {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url('${item.imageUrl}')`,
+            backgroundImage: `url('${proxyImageUrl}')`,
             maskImage:
               "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 60%)",
             WebkitMaskImage:
