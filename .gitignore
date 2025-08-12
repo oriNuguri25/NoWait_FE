@@ -1,0 +1,16 @@
+// gitignore
+.DS_Store
+node_modules
+.turbo
+*.log
+dist-ssr
+*.local
+.env
+.cache
+server/dist
+public/dist
+.yarn/install-state.gz
+
+.pnp
+.pnp.js
+.yarn/install-state.gz 
