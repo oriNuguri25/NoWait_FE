@@ -12,8 +12,11 @@ import AccountPage from "./components/AccountPage";
 
 const BoothForm = () => {
   const width = useWindowWidth();
-  const isTablet = width >= 768 && width <= 1024;
-  const storeId = 1; // TODO: 실제 storeId 받아오기
+  const isTablet = width >= 768;
+  // && width <= 1024
+  const storeId = Number(localStorage.getItem("storeId"));
+  console.log(storeId, "스토어 아이디");
+
   const { data: store, refetch } = useGetStore(storeId);
   const { mutate: updateStore } = useUpdateStore();
   const { mutate: uploadProfileImage } = useUploadStoreProfileImage();
@@ -53,7 +56,10 @@ const BoothForm = () => {
       {
         onSuccess: () => {
           if (profileImage && profileImage instanceof File) {
-            uploadProfileImage({ storeId, image: profileImage });
+            uploadProfileImage({
+              storeId,
+              image: profileImage,
+            });
           }
 
           // 배너 이미지 업로드 (File 타입만 필터링)
@@ -105,7 +111,7 @@ const BoothForm = () => {
   return (
     <div
       className={` bg-white w-full overflow-y-auto border-l border-l-[#ECECEC] ${
-        isTablet ? "px-[100px] py-[20px]" : "px-[100px] py-[20px]"
+        isTablet ? "px-[100px] py-[20px]" : "px-[20px] py-[20px]"
       }`}
     >
       <div className="max-w-[614px] w-full mx-auto">
@@ -181,7 +187,7 @@ const BoothForm = () => {
             </div>
           </>
         ) : activeTab === "menu" ? (
-          <MenuSection />
+          <MenuSection isTablet={isTablet} />
         ) : (
           <AccountPage />
         )}

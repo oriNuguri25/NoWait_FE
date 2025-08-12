@@ -15,9 +15,16 @@ interface HeaderStatusProps {
     menuName: string;
     soldCount: number;
   }[];
+  disabled: boolean;
+  isTablet: boolean;
 }
 
-const HeaderStatus: React.FC<HeaderStatusProps> = ({ sales, popularMenu }) => {
+const HeaderStatus: React.FC<HeaderStatusProps> = ({
+  sales,
+  popularMenu,
+  disabled,
+  isTablet,
+}) => {
   const todayAmount = sales?.todaySalesSum ?? 0;
   const yesterdayAmount = sales?.yesterdaySalesSum ?? 0;
   const totalAmount =
@@ -46,12 +53,16 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({ sales, popularMenu }) => {
   const todayDate = formatDate(today);
   const yesterdayDate = formatDate(yesterday);
 
-  // const disabled = totalAmount === 0;
-
-  const disabled = true; //테스트 용 코드 (축제 시작전)
+  // const disabled = true; //테스트 용 코드 (축제 시작전)
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-[10px] w-[754px] h-[50%]">
+    <div
+      className={`${
+        isTablet
+          ? "grid grid-cols-1 lg:grid-cols-2 gap-[10px] w-[754px] h-[50%]"
+          : "flex flex-col gap-[10px]"
+      }`}
+    >
       <div className="flex flex-col gap-[10px]">
         <SalesCard
           today={{
@@ -65,6 +76,7 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({ sales, popularMenu }) => {
             amount: yesterdayAmount,
           }}
           disabled={disabled}
+          isTablet={isTablet}
         />
 
         <TotalSalesCard
@@ -72,15 +84,16 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({ sales, popularMenu }) => {
           date={`${todayDate} 기준`}
           amount={totalAmount}
           disabled={disabled}
+          isTablet={isTablet}
         />
       </div>
 
       <div
-        className={`flex flex-col bg-white rounded-xl p-6 ${
+        className={`flex flex-col bg-white rounded-[16px] ${
           disabled ? "justify-center items-center relative" : ""
-        }`}
+        } ${isTablet ? "p-6" : "p-[22px] w-[335px] h-[227px]"}`}
       >
-        <div className={`flex flex-col  mb-[25px]`}>
+        <div className={`flex flex-col `}>
           <p
             className={`text-title-18-bold text-navy-80 ${
               disabled ? "absolute top-6 left-6" : ""

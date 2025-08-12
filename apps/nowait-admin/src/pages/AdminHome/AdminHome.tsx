@@ -29,7 +29,7 @@ const AdminHome = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [activeTab, setActiveTab] = useState("전체");
-  const storeId = 1; //현재는 임시로 mockdata씀
+  const storeId = Number(localStorage.getItem("storeId"));
   const [isOn, setIsOn] = useState(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [targetReservation, setTargetReservation] =
@@ -223,7 +223,7 @@ const AdminHome = () => {
 
       <section id="대기자 목록" className="flex flex-col w-full">
         {/* <h1 className="title-20-bold mb-5">대기자 목록</h1> */}
-        <div className="flex justify-between items-center overflow-x-auto scrollbar-hide mask-fade-right relative">
+        <div className="flex justify-between items-center overflow-x-auto scrollbar-hide relative mask-fade-right">
           <div className="flex flex-wrap whitespace-nowrap  [@media(max-width:431px)]:flex-nowrap -mr-5">
             {tabLabels.map(({ label, count }) => (
               <RoundTabButton

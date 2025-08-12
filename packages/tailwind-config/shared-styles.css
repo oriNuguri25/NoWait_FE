@@ -421,6 +421,13 @@ pre {
     font-weight: 700;
   }
 
+  .text-7-regular {
+    font-size: 7.55px;
+    line-height: 144%;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+
   .text-12-bold {
     font-size: 12px;
     line-height: 100%;
