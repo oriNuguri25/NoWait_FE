@@ -28,17 +28,23 @@ interface BoothSalesRankingCardProps {
   date: string;
   data: BoothRanking[];
   disabled: boolean;
+  isTablet: boolean;
 }
 
 const BoothSalesRankingCard: React.FC<BoothSalesRankingCardProps> = ({
   date,
   data,
   disabled,
+  isTablet,
 }) => {
   return (
     <div
-      className={`bg-white h-[364px] rounded-[12px] p-6 shadow-sm w-[754px] max-h-[50%] mt-[10px] ${
+      className={`bg-white  rounded-[16px] mt-[10px] ${
         disabled ? "flex flex-col justify-center items-center relative" : ""
+      } ${
+        isTablet
+          ? "h-[364px] max-h-[50%] p-6 w-[754px]"
+          : "w-[335px] h-[410px] p-[22px]"
       }`}
     >
       <div

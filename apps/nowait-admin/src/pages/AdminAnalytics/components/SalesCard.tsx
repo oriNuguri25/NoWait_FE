@@ -16,9 +16,15 @@ interface SalesCardProps {
     amount: number;
   };
   disabled: boolean;
+  isTablet: boolean;
 }
 
-const SalesCard: React.FC<SalesCardProps> = ({ today, disabled }) => {
+const SalesCard: React.FC<SalesCardProps> = ({
+  today,
+  previous,
+  disabled,
+  isTablet,
+}) => {
   const [showToday, setShowToday] = useState(true);
   // const [isHoverBack, setIsHoverBack] = useState(false);
   // const [isHoverForward, setIsHoverForward] = useState(false);
@@ -29,12 +35,18 @@ const SalesCard: React.FC<SalesCardProps> = ({ today, disabled }) => {
   };
 
   return (
-    <div className="bg-white rounded-[12px] p-6 w-full h-full flex flex-col justify-between">
+    <div
+      className={`bg-white rounded-[16px] flex flex-col justify-between ${
+        isTablet ? "p-6 w-full h-full" : "p-5 w-[335px] min-h-[150px]"
+      }`}
+    >
       <div className="flex justify-between">
         <span>
-          <p className="text-title-18-bold text-navy-80">오늘 매출</p>
+          <p className="text-title-18-bold text-navy-80">
+            {showToday ? "오늘 매출" : "이전 매출"}
+          </p>
           <p className="text-13-regular text-black-60 mt-1">
-            {formatDate(today.date)}
+            {showToday ? formatDate(today.date) : formatDate(previous.date)}
           </p>
         </span>
 
@@ -67,7 +79,10 @@ const SalesCard: React.FC<SalesCardProps> = ({ today, disabled }) => {
       <div className="flex flex-col">
         <div className="flex items-baseline">
           <p className="text-headline-22-bold text-navy-80">
-            {today.amount.toLocaleString()}원
+            {showToday
+              ? today.amount.toLocaleString()
+              : previous.amount.toLocaleString()}
+            원
           </p>
 
           {!disabled && showToday && (
