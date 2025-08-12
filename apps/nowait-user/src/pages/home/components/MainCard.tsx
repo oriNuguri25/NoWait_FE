@@ -248,13 +248,11 @@ const StoreCardComponent = ({
           <div className="text-title-16-bold text-black-90 text-start truncate flex-shrink min-w-0">
             {name}
           </div>
-          <div className="flex-shrink-0">
-            {status === "open" ? (
-              <WaitingIcon waitingCount={waitingCount} />
-            ) : (
-              <NotOpenIcon />
-            )}
-          </div>
+          {status === "open" && (waitingCount || 0) > 0 ? (
+            <WaitingIcon waitingCount={waitingCount || 0} />
+          ) : status !== "open" ? (
+            <NotOpenIcon />
+          ) : null}
         </div>
         <div className="flex text-13-regular text-black-70 text-start">
           {departmentName}
@@ -316,7 +314,9 @@ const HomeCardComponent = ({
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 rounded-2xl z-10" />
       <div className="relative z-20">
         <div className="flex flex-col gap-2">
-          <WaitingCardIcon waitingCount={waitingCount} />
+          {(waitingCount || 0) > 0 && (
+            <WaitingCardIcon waitingCount={waitingCount || 0} />
+          )}
           <div className="flex flex-col">
             <div className="text-16-bold text-white-100">{storeName}</div>
             <div className="text-12-regular text-black-60">

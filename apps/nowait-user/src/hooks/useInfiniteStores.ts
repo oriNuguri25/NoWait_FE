@@ -47,7 +47,7 @@ const fetchStores = async ({
       {
         params: {
           page: pageParam,
-          size: 5,
+          size: 10,
         },
       }
     );
@@ -109,7 +109,8 @@ export const useInfiniteStores = () => {
       if (!lastPage.hasNext) {
         return undefined;
       }
-      return allPages?.length;
+      // 다음 페이지 번호 반환 (0부터 시작)
+      return allPages?.length || 0;
     },
     retry: 3, // 실패 시 3번 재시도
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),

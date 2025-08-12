@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Portal from "./Portal";
-import Search from "../../../assets/icon/search.svg?react";
+import Search_black from "../../../assets/icon/search_black_50.svg?react";
 import Cancel from "../../../assets/icon/cancel.svg?react";
 import UserApi from "../../../utils/UserApi";
 import type { SearchStore, SearchResponse } from "../../../types/search";
@@ -178,7 +178,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                 className="flex items-center gap-4 pt-4 mb-10"
               >
                 <div className="flex-1 relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 icon-s text-black-60" />
+                  <Search_black className="absolute left-4 top-1/2 transform -translate-y-1/2 icon-s text-black-50" />
                   <input
                     type="text"
                     placeholder="주점명, 메뉴, 학과 검색"
@@ -212,10 +212,8 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                       {searchResults.length > 0 && `${searchResults.length}`}
                     </div>
                     {isSearching ? (
-                      <div className="flex justify-center items-center py-8">
-                        <div className="text-16-regular text-black-50">
-                          검색 중...
-                        </div>
+                      <div className="flex justify-center text-16-regular text-black-60 mt-6">
+                        검색 중...
                       </div>
                     ) : searchResults.length > 0 ? (
                       <div className="flex flex-col">
