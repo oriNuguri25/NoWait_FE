@@ -104,6 +104,9 @@ const HomePage = () => {
     <div className="flex flex-col">
       <HomeHeader />
 
+      {/* 고정된 헤더 아래 여백 */}
+      <div className="h-20"></div>
+
       {/* 내 대기 카드 섹션 - 내 대기 목록이 있을 때만 표시 */}
       {myWaitingList.length > 0 && (
         <MyWaitingSection>{memoizedMyWaitingCard}</MyWaitingSection>
