@@ -21,12 +21,15 @@ const AdminOrders = () => {
   // API에서 주문 데이터 가져오기
   const { data: orders = [], isLoading, error, refetch } = useGetOrderList();
 
-  // 시간 포맷팅 함수 (17:30 형식)
-  const getFormattedTime = (createdAt: string) => {
+  // 날짜와 시간 포맷팅 함수 (2025년 6월 2일 08:02 형식)
+  const getFormattedDateTime = (createdAt: string) => {
     const date = new Date(createdAt);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
     const hours = date.getHours().toString().padStart(2, "0");
     const minutes = date.getMinutes().toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
+    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
   };
 
   // 상태별 데이터 필터링
@@ -176,7 +179,7 @@ const AdminOrders = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-row border border-black-25 rounded-t-2xl pl-5 py-2.5 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
+                <div className="flex flex-row border border-black-25 rounded-t-2xl pl-5 py-4 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
                   <div className="flex text-14-medium leading-[136%] text-navy-35">
                     테이블
                   </div>
@@ -202,7 +205,7 @@ const AdminOrders = () => {
                         key={payment.id}
                         orderId={payment.id}
                         tableNumber={payment.tableId}
-                        timeText={getFormattedTime(payment.createdAt)}
+                        timeText={getFormattedDateTime(payment.createdAt)}
                         depositorName={payment.depositorName}
                         totalAmount={payment.totalPrice || 0}
                         onClick={() => handlePaymentCardClick(payment)}
@@ -225,7 +228,7 @@ const AdminOrders = () => {
                       type="payment"
                       orderId={selectedPayment.id}
                       tableNumber={selectedPayment.tableId}
-                      timeText={getFormattedTime(selectedPayment.createdAt)}
+                      timeText={getFormattedDateTime(selectedPayment.createdAt)}
                       depositorName={selectedPayment.depositorName}
                       totalAmount={selectedPayment.totalPrice || 0}
                       menuDetails={selectedPayment.menuDetails}
@@ -247,7 +250,7 @@ const AdminOrders = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-row text-14-medium leading-[136%] text-navy-35 border border-black-30 rounded-t-2xl bg-[#E7ECF0] gap-2.5 py-2.5 pl-5">
+                <div className="flex flex-row text-14-medium leading-[136%] text-navy-35 border border-black-30 rounded-t-2xl bg-[#E7ECF0] gap-2.5 py-4 pl-5">
                   <div className="flex">테이블</div>
                   <div className="flex w-38.5 md:w-32 lg:w-38.5 text-start">
                     메뉴
@@ -299,7 +302,7 @@ const AdminOrders = () => {
         <>
           {mobileActiveTab === "입금 대기" && (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
-              <div className="flex flex-row px-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0">
+              <div className="flex flex-row px-5 py-4 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0">
                 <div className="flex text-14-medium leading-[136%] text-navy-35">
                   테이블
                 </div>
@@ -325,7 +328,7 @@ const AdminOrders = () => {
                       key={payment.id}
                       orderId={payment.id}
                       tableNumber={payment.tableId}
-                      timeText={getFormattedTime(payment.createdAt)}
+                      timeText={getFormattedDateTime(payment.createdAt)}
                       depositorName={payment.depositorName}
                       totalAmount={payment.totalPrice || 0}
                       onClick={() => handlePaymentCardClick(payment)}
@@ -348,7 +351,7 @@ const AdminOrders = () => {
                     type="payment"
                     orderId={selectedPayment.id}
                     tableNumber={selectedPayment.tableId}
-                    timeText={getFormattedTime(selectedPayment.createdAt)}
+                    timeText={getFormattedDateTime(selectedPayment.createdAt)}
                     depositorName={selectedPayment.depositorName}
                     totalAmount={selectedPayment.totalPrice || 0}
                     menuDetails={selectedPayment.menuDetails}
@@ -362,7 +365,7 @@ const AdminOrders = () => {
 
           {mobileActiveTab === "조리 중" && (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
-              <div className="flex flex-row px-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0 text-14-medium leading-[136%] text-navy-35">
+              <div className="flex flex-row px-5 py-4 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0 text-14-medium leading-[136%] text-navy-35">
                 <div className="flex">테이블</div>
                 <div className="flex w-38.5 max-[376px]:w-32 text-start">
                   메뉴
@@ -401,7 +404,7 @@ const AdminOrders = () => {
 
           {mobileActiveTab === "조리 완료" && (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
-              <div className="flex flex-row pl-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border border-black-25 items-center text-14-medium leading-[136%] text-navy-35 flex-shrink-0">
+              <div className="flex flex-row pl-5 py-4 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border border-black-25 items-center text-14-medium leading-[136%] text-navy-35 flex-shrink-0">
                 <div className="flex">테이블</div>
                 <div className="flex max-[376px]:w-20 w-29">금액</div>
                 <div className="flex">주문 시간</div>
@@ -428,7 +431,7 @@ const AdminOrders = () => {
                       depositorName={cooked.depositorName}
                       menuDetails={cooked.menuDetails}
                       totalAmount={cooked.totalPrice || 0}
-                      createdAt={getFormattedTime(cooked.createdAt)}
+                      createdAt={getFormattedDateTime(cooked.createdAt)}
                       onSuccess={refetch}
                       onClick={() => handleCookedCardClick(cooked)}
                     />
@@ -449,7 +452,7 @@ const AdminOrders = () => {
                     type="cooked"
                     orderId={selectedPayment.id}
                     tableNumber={selectedPayment.tableId}
-                    timeText={getFormattedTime(selectedPayment.createdAt)}
+                    timeText={getFormattedDateTime(selectedPayment.createdAt)}
                     depositorName={selectedPayment.depositorName}
                     totalAmount={selectedPayment.totalPrice || 0}
                     menuDetails={selectedPayment.menuDetails}
