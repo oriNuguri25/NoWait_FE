@@ -29,7 +29,7 @@ const AdminHome = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [activeTab, setActiveTab] = useState("전체");
-  const storeId = 1; //현재는 임시로 mockdata씀
+  const storeId = Number(localStorage.getItem("storeId"));
   const [isOn, setIsOn] = useState(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [targetReservation, setTargetReservation] =

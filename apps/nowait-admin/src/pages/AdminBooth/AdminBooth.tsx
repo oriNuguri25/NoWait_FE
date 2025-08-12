@@ -14,7 +14,9 @@ const BoothForm = () => {
   const width = useWindowWidth();
   const isTablet = width >= 768;
   // && width <= 1024
-  const storeId = 1; // TODO: 실제 storeId 받아오기
+  const storeId = Number(localStorage.getItem("storeId"));
+  console.log(storeId, "스토어 아이디");
+
   const { data: store, refetch } = useGetStore(storeId);
   const { mutate: updateStore } = useUpdateStore();
   const { mutate: uploadProfileImage } = useUploadStoreProfileImage();
@@ -54,7 +56,10 @@ const BoothForm = () => {
       {
         onSuccess: () => {
           if (profileImage && profileImage instanceof File) {
-            uploadProfileImage({ storeId, image: profileImage });
+            uploadProfileImage({
+              storeId,
+              image: profileImage,
+            });
           }
 
           // 배너 이미지 업로드 (File 타입만 필터링)

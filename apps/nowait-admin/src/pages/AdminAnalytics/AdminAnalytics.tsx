@@ -27,6 +27,7 @@ const AdminAnalytics = () => {
   console.log(sales, "판매량");
   console.log(popularMenu, "인기 메뉴");
   const disabled = boothRank?.length === 0;
+  const storeId = localStorage.getItem("storeId");
   if (typeof sales === "string") {
     return <p>매출 데이터가 없습니다.</p>;
   }
@@ -39,7 +40,7 @@ const AdminAnalytics = () => {
           department: item.departmentName, // departmentName → department
           salesCount: item.orderCount, // orderCount → salesCount
           rankChange: item.delta, // delta → rankChange
-          isCurrentBooth: 1 == item.storeId, // 필요 시 조건 넣어 true/false 처리
+          isCurrentBooth: storeId == item.storeId.toString(), // 필요 시 조건 넣어 true/false 처리
           profileImageUrl: item.profileUrl,
         }))
       : [];

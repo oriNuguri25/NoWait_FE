@@ -26,6 +26,12 @@ const AdminSidebar = () => {
   const location = useLocation();
   const pathname = location.pathname;
 
+  const handleLogout = () => {
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("storeId");
+    navigate("/");
+  };
+
   return (
     <aside
       className={`
@@ -114,7 +120,7 @@ const AdminSidebar = () => {
       </div>
 
       {/* 하단: 프로필 */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2" onClick={handleLogout}>
         <img src={logout} alt="gnb" />
         <span className="text-16-semibold text-black-55">로그아웃</span>
       </div>

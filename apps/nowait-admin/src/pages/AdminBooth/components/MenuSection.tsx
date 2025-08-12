@@ -10,6 +10,8 @@ import { useUpdateMenu } from "../../../hooks/booth/useUpdateMenu";
 import addIcon from "../../../assets/booth/add.svg";
 import MenuRemoveModal from "./Modal/MenuRemoveModal";
 import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
+import { useToggleMenuSoldOut } from "../../../hooks/booth/menu/useToggleMenuSoldOut";
+import { useUpdateMenuSort } from "../../../hooks/booth/menu/useUpadateMenuSort";
 
 // 세 자리마다 , 붙여서 가격표시
 const formatNumber = (num: number) => {
@@ -25,6 +27,7 @@ interface Menu {
   price: number;
   soldOut: boolean;
   imageUrl?: string;
+  sortOrder: number;
 }
 
 const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
@@ -33,7 +36,10 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
-  const { data: fetchedMenus = [] } = useGetAllMenus(1);
+
+  const { mutate: soldOut } = useToggleMenuSoldOut();
+  const storeId = Number(localStorage.getItem("storeId"));
+  const { data: fetchedMenus = [] } = useGetAllMenus(storeId);
 
   // 메뉴 생성 훅
   const { mutate: createMenu } = useCreateMenu();
@@ -43,6 +49,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
 
   // 메뉴 수정 훅
   const { mutate: updateMenu } = useUpdateMenu();
+  const { mutate: updateMenuSort } = useUpdateMenuSort();
 
   const openEditModal = (menu: any) => {
     setSelectedMenu(menu);
@@ -57,8 +64,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     image?: File;
   }) => {
     const payload = {
-      storeId: 1,
-      //   나중에 실제 storeId로 바꾸어야함
+      storeId,
       adminDisplayName: newMenu.adminDisplayName,
       name: newMenu.name,
       description: newMenu.description,
@@ -78,6 +84,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
           description: created.description,
           price: created.price,
           soldOut: created.isSoldOut,
+          sortOrder: created.sortOrder,
           // imageUrl은 업로드 후에 업데이트
         };
         // 일단 메뉴 배열에 추가
@@ -101,16 +108,18 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                 );
               },
               onError: () => {
-                alert("메뉴는 추가되었지만 이미지 업로드에 실패했습니다.");
+                console.log(
+                  "메뉴는 추가되었지만 이미지 업로드에 실패했습니다."
+                );
               },
             }
           );
         } else {
-          alert("메뉴가 성공적으로 추가되었습니다.");
+          console.log("메뉴가 성공적으로 추가되었습니다.");
         }
       },
       onError: () => {
-        alert("메뉴 추가에 실패했습니다.");
+        console.log("메뉴 추가에 실패했습니다.");
       },
     });
   };
@@ -137,10 +146,9 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
             menu.id === updated.id ? { ...menu, ...payload } : menu
           )
         );
-        alert("메뉴가 성공적으로 수정되었습니다.");
       },
       onError: () => {
-        alert("메뉴 수정에 실패했습니다.");
+        console.log("메뉴 수정에 실패했습니다.");
       },
     });
   };
@@ -152,18 +160,37 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
       onSuccess: () => {
         setMenus((prev) => prev.filter((menu) => menu.id !== selectedMenu.id));
         setIsRemoveModalOpen(false);
-        alert("메뉴가 삭제되었습니다.");
+        setIsEditModalOpen(false);
       },
       onError: () => {
-        alert("메뉴 삭제에 실패했습니다.");
+        console.log("메뉴 삭제에 실패했습니다.");
       },
     });
   };
 
   const toggleSoldOut = (index: number) => {
-    const updatedMenus = [...menus];
-    updatedMenus[index].soldOut = !updatedMenus[index].soldOut;
-    setMenus(updatedMenus);
+    const menu = menus[index];
+    const menuId = menu.id;
+    soldOut(
+      { menuId },
+      {
+        onSuccess: (data) => {
+          const updatedMenus = [...menus];
+          updatedMenus[index].soldOut = !updatedMenus[index].soldOut;
+          setMenus(updatedMenus);
+          console.log(data, "품절 토글");
+          console.log(menus);
+        },
+        onError: () => {
+          // 3) 실패 시 롤백
+          setMenus((prev) => {
+            const next = [...prev];
+            next[index] = { ...next[index], soldOut: !next[index].soldOut };
+            return next;
+          });
+        },
+      }
+    );
   };
 
   const handleDragEnd = (result: any) => {
@@ -173,6 +200,18 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     const [removed] = reordered.splice(result.source.index, 1);
     reordered.splice(result.destination.index, 0, removed);
     setMenus(reordered);
+    const body = reordered.map((menu, index) => ({
+      menuId: menu.id,
+      sortOrder: index,
+    }));
+    updateMenuSort(body, {
+      onSuccess: (res) => {
+        console.log("순서 저장 성공", res);
+      },
+      onError: (err) => {
+        console.log("순서 저장 에러", err);
+      },
+    });
   };
 
   useEffect(() => {
@@ -184,6 +223,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
       price: menu.price,
       soldOut: menu.isSoldOut,
       imageUrl: menu.images?.[0]?.imageUrl,
+      sortOrder: menu.sortOrder,
     }));
     setMenus(transformed);
   }, [fetchedMenus]);

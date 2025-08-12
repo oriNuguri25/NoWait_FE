@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import AdminApi from "../../../utils/AdminApi";
 
 export interface StoreResponse {
-  storeId: number;
+  storeId: number | null;
   departmentId: number;
   departmentName: string;
   name: string;

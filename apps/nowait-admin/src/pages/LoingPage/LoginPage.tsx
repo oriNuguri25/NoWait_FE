@@ -19,8 +19,10 @@ const LoginPage = () => {
       {
         onSuccess: (res) => {
           const token = res.data.response.body.accessToken;
+          const storeId = res.data.response.body.storeId;
 
           localStorage.setItem("adminToken", token);
+          localStorage.setItem("storeId", storeId);
           navigate("/admin");
         },
         onError: (err) => {
