@@ -4,15 +4,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./customSwiper.css";
+import type { BannerImages } from "../types/wait/store";
 
-interface BannerImageType {
-  id: number;
-  storeId: string;
-  imageUrl: string;
-  imageType: string;
-}
-
-const CommonSwiper = ({ slideImages }: { slideImages: BannerImageType[] }) => {
+const CommonSwiper = ({ slideImages }: { slideImages: BannerImages[] }) => {
   return (
     <section className="swiper-wrap">
       <Swiper
