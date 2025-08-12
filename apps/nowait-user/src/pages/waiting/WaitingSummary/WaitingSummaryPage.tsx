@@ -14,7 +14,7 @@ const WaitingSummaryPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { data: store } = useQuery({
     queryKey: ["store", storeId],
-    queryFn: () => getStore(storeId),
+    queryFn: () => getStore(storeId ? parseInt(storeId) : undefined),
     select: (data) => data.response,
   });
 
@@ -24,7 +24,7 @@ const WaitingSummaryPage = () => {
       const payload = {
         partySize,
       };
-      const res = await createReservation(storeId!, payload);
+      const res = await createReservation(parseInt(storeId!), payload);
       console.log(res, "예약 응답");
       navigate(`/store/${storeId}/waiting/success`);
     } catch (error) {

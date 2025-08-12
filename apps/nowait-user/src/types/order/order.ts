@@ -1,7 +1,7 @@
 //주문 생성 payload 타입
 export interface OrderType {
   depositorName: string;
-  items: { menuId: string; quantity: number }[];
+  items: { menuId: number; quantity: number }[];
 }
 
 //주문 생성 요청 성공 시 오는 응답 타입

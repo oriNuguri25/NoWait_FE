@@ -121,7 +121,7 @@ const BoothList = () => {
                         profileImage={store?.profileImage?.imageUrl}
                         name={store?.name}
                         departmentName={store?.departmentName}
-                        storeId={String(store?.storeId)}
+                        storeId={store?.storeId || 0}
                       />
                     </li>
                   );
