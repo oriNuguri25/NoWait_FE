@@ -26,7 +26,6 @@ export default defineConfig(({ mode }) => {
           target: env.VITE_SERVER_URI,
           changeOrigin: true,
         },
-
         "/api/images": {
           target:
             "https://gtablestoreimage-resize-bucket.s3.ap-northeast-2.amazonaws.com",

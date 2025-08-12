@@ -10,7 +10,6 @@
       "destination": "https://gtablestoreimage.s3.ap-northeast-2.amazonaws.com/:path*"
     }
   ],
-
   "headers": [
     {
       "source": "/api/(.*)",
