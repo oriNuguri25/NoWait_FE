@@ -4,6 +4,7 @@ import InfiniteStoreList from "./components/InfiniteStoreList";
 import WaitingListModal from "./components/WaitingListModal";
 import MyWaitingDetail from "./components/MyWaitingDetail";
 import BannerMap from "../../assets/icon/banner_img.svg?react";
+import UpIcon from "../../assets/icon/upIcon.svg?react";
 import { useMyWaitingList } from "../../hooks/useMyWaitingList";
 import { useWaitingItems } from "../../hooks/useWaitingItems";
 import SortWaitingCard from "./components/SortWaitingCard";
@@ -17,6 +18,7 @@ const HomePage = () => {
   const [sortOption, setSortOption] = useState("대기 적은 순");
   const [isWaitingDetailOpen, setIsWaitingDetailOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0); // 슬라이드 상태를 로컬로 관리
+  const [showUpButton, setShowUpButton] = useState(false); // upIcon 표시 여부
 
   // 정렬 옵션에 따른 order 설정
   const order: "asc" | "desc" = sortOption === "대기 적은 순" ? "asc" : "desc";
@@ -65,6 +67,30 @@ const HomePage = () => {
       setCurrentSlide(0);
     }
   }, [myWaitingList]);
+
+  // 스크롤 이벤트 핸들러
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPercentage = (scrollTop + windowHeight) / documentHeight;
+
+      // 스크롤이 80% 이상일 때 upIcon 표시
+      setShowUpButton(scrollPercentage > 0.8);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // 화면 최상단으로 이동하는 함수
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   // MyWaitingCard에 전달할 props를 메모이제이션
   const myWaitingCardProps = useMemo(
@@ -149,6 +175,17 @@ const HomePage = () => {
           onClose={handleWaitingDetailClose}
           waitingItems={waitingItems}
         />
+      )}
+
+      {/* UpIcon - 스크롤이 80% 이상일 때 표시 */}
+      {showUpButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-10 right-5 z-30 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center"
+          aria-label="화면 최상단으로 이동"
+        >
+          <UpIcon className="w-10 h-10" />
+        </button>
       )}
     </div>
   );
