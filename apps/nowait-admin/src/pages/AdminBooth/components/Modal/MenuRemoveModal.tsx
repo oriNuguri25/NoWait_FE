@@ -1,6 +1,7 @@
 interface MenuRemoveModalProps {
   onCancel: () => void;
   onConfirm: () => void;
+  isTablet: boolean;
 }
 
 const MenuRemoveModal = ({ onCancel, onConfirm }: MenuRemoveModalProps) => {

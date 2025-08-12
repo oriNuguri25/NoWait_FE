@@ -43,7 +43,7 @@ const StoreDetailPage = () => {
 
   return (
     <div>
-      <div className="px-5 w-full min-h-screen-dvh mb-[124px]">
+      <div className="px-5 w-full min-h-screen-dvh mb-[112px]">
         {/* 주점 배너 이미지 */}
         <CommonSwiper slideImages={store?.bannerImages || []}></CommonSwiper>
         {/* 학과 정보 섹션 */}

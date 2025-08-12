@@ -1,7 +1,7 @@
 export interface WaitingItem {
   id: number;
   number: number;
-  storeName: number;
+  storeName: string;
   waitingCount: number;
   departmentName: string;
   category: string;

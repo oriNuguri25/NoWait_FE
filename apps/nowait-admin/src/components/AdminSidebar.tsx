@@ -12,7 +12,7 @@ import waitIconActive from "../assets/waitIconActive.svg";
 import orderIconActive from "../assets/orderIconActive.svg";
 import statIconActive from "../assets/statIconActive.svg";
 import boothIconActive from "../assets/boothIconActive.svg";
-import logout from "../assets/log-out.png";
+import logout from "../assets/log-out.svg";
 
 const AdminSidebar = () => {
   const width = useWindowWidth();
@@ -25,6 +25,12 @@ const AdminSidebar = () => {
   const isCompact = width < 1024;
   const location = useLocation();
   const pathname = location.pathname;
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("storeId");
+    navigate("/");
+  };
 
   return (
     <aside
@@ -114,7 +120,7 @@ const AdminSidebar = () => {
       </div>
 
       {/* 하단: 프로필 */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2" onClick={handleLogout}>
         <img src={logout} alt="gnb" />
         <span className="text-16-semibold text-black-55">로그아웃</span>
       </div>
