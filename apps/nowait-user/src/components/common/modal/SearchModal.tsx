@@ -224,13 +224,8 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                         ))}
                       </div>
                     ) : (
-                      <div className="flex flex-col items-center justify-center py-8">
-                        <div className="text-16-regular text-black-50 mb-2">
-                          검색 결과가 없습니다
-                        </div>
-                        <div className="text-14-regular text-black-40">
-                          다른 키워드로 검색해보세요
-                        </div>
+                      <div className="flex justify-center text-16-regular text-black-60 mt-6">
+                        검색 결과가 없습니다
                       </div>
                     )}
                   </div>

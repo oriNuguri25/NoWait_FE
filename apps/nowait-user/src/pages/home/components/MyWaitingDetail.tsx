@@ -39,7 +39,7 @@ const MyWaitingDetail = ({
 
   // 대기 취소 확인 핸들러
   const handleCancelConfirm = () => {
-    const currentStoreId = Number(items[currentIndex]?.id);
+    const currentStoreId = items[currentIndex]?.id;
     if (currentStoreId) {
       cancelWaitingMutation.mutate(currentStoreId, {
         onSuccess: () => {
