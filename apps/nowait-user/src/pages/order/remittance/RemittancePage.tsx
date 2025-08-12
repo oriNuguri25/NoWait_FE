@@ -34,7 +34,7 @@ const RemittancePage = () => {
     select: (data) => data.response,
   });
   console.log(remittance, "레미텐스");
-  const [height, setHeight] = useState(window.innerHeight);
+  // const [height, setHeight] = useState(window.innerHeight);
 
   useEffect(() => {
     if (!remittance) return;
@@ -43,15 +43,6 @@ const RemittancePage = () => {
     else if (remittance.tossUrl) setRemitValue("toss");
     else if (remittance.naverPayUrl) setRemitValue("naver");
     else if (remittance.accountNumber) setRemitValue("remit");
-  }, []);
-  useEffect(() => {
-    const onResize = () => {
-      const isKeyboardOpen = window.innerHeight < screen.height * 0.6;
-      alert(isKeyboardOpen && "열림");
-    };
-
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   const orderHandleButton = () => {
@@ -67,7 +58,7 @@ const RemittancePage = () => {
   };
 
   return (
-    <div className="flex flex-col flex-grow pb-[112px]" style={{ height }}>
+    <div className="flex flex-col flex-grow pb-[112px]">
       <BackHeader title="주문하기" />
       <section className="px-5">
         <OrderSummary cart={cart} />
