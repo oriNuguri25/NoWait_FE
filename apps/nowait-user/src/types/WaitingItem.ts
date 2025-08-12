@@ -1,5 +1,5 @@
 export interface WaitingItem {
-  id: string;
+  id: number;
   number: number;
   storeName: string;
   waitingCount: number;

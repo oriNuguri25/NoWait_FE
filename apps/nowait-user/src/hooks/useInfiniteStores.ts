@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import UserApi from "../utils/UserApi";
 
@@ -109,14 +109,16 @@ export const useInfiniteStores = () => {
       if (!lastPage.hasNext) {
         return undefined;
       }
-      return allPages.length;
+      return allPages?.length;
     },
     retry: 3, // 실패 시 3번 재시도
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 
   // 모든 페이지의 stores를 하나의 배열로 합치기
-  const stores = data?.pages.flatMap((page) => page.stores) ?? [];
+  const stores = useMemo(() => {
+    return data?.pages.flatMap((page) => page.stores) ?? [];
+  }, [data?.pages]);
 
   // 에러 로깅
   useEffect(() => {

@@ -1,11 +1,6 @@
-import { useState, useRef } from "react";
-import {
-  PaymentCard,
-  PaymentDetail,
-  CookCard,
-  CookedCard,
-  CookedDetail,
-} from "./OrderCard";
+import { useState, useRef, useEffect } from "react";
+import { PaymentCard, CookCard, CookedCard } from "./OrderCard";
+import { DetailCard } from "./DetailCard";
 import RefreshIcon from "../../assets/refresh.svg?react";
 import CookedPage from "./CookedPage";
 import { useGetOrderList } from "../../hooks/useGetOrderList";
@@ -37,12 +32,15 @@ const AdminOrders = () => {
   // API에서 주문 데이터 가져오기
   const { data: orders = [], isLoading, error, refetch } = useGetOrderList();
 
-  // 시간 포맷팅 함수 (17:30 형식)
-  const getFormattedTime = (createdAt: string) => {
+  // 날짜와 시간 포맷팅 함수 (2025년 6월 2일 08:02 형식)
+  const getFormattedDateTime = (createdAt: string) => {
     const date = new Date(createdAt);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
     const hours = date.getHours().toString().padStart(2, "0");
     const minutes = date.getMinutes().toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
+    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
   };
 
   // 상태별 데이터 필터링
@@ -79,27 +77,21 @@ const AdminOrders = () => {
     }, 0);
   };
 
-  // CookedCard 클릭 핸들러 (모바일용)
-  const handleCookedCardClick = (cookedOrder: Order) => {
-    if (cookedScrollContainerRef.current) {
+  // CookedCard 클릭 핸들러
+  const handleCookedCardClick = (cooked: Order) => {
+    if (scrollContainerRef.current) {
       // 현재 스크롤 위치 저장
-      setSavedCookedScrollPosition(cookedScrollContainerRef.current.scrollTop);
+      setSavedScrollPosition(scrollContainerRef.current.scrollTop);
       // 스크롤을 맨 위로 올리기
-      cookedScrollContainerRef.current.scrollTop = 0;
+      scrollContainerRef.current.scrollTop = 0;
     }
-    setSelectedCookedOrder(cookedOrder);
+    setSelectedPayment(cooked);
   };
 
-  // CookedDetail 닫기 핸들러 (모바일용)
-  const handleCloseCookedDetail = () => {
-    setSelectedCookedOrder(null);
-    // 약간의 딜레이 후 스크롤 위치 복원
-    setTimeout(() => {
-      if (cookedScrollContainerRef.current) {
-        cookedScrollContainerRef.current.scrollTop = savedCookedScrollPosition;
-      }
-    }, 0);
-  };
+  // 탭 변경 시 Detail 닫기
+  useEffect(() => {
+    setSelectedPayment(null);
+  }, [activeTab, mobileActiveTab]);
 
   return (
     <div
@@ -198,7 +190,7 @@ const AdminOrders = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-row border border-black-25 rounded-t-2xl pl-5 py-2.5 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
+                <div className="flex flex-row border border-black-25 rounded-t-2xl pl-5 py-4 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
                   <div className="flex text-14-medium leading-[136%] text-navy-35">
                     테이블
                   </div>
@@ -224,7 +216,7 @@ const AdminOrders = () => {
                         key={payment.id}
                         orderId={payment.id}
                         tableNumber={payment.tableId}
-                        timeText={getFormattedTime(payment.createdAt)}
+                        timeText={getFormattedDateTime(payment.createdAt)}
                         depositorName={payment.depositorName}
                         totalAmount={payment.totalPrice || 0}
                         onClick={() => handlePaymentCardClick(payment)}
@@ -241,17 +233,16 @@ const AdminOrders = () => {
                     </div>
                   )}
 
-                  {/* PaymentDetail 오버레이 */}
+                  {/* DetailCard 오버레이 */}
                   {selectedPayment && (
-                    <PaymentDetail
+                    <DetailCard
+                      type="payment"
                       orderId={selectedPayment.id}
                       tableNumber={selectedPayment.tableId}
-                      timeText={getFormattedTime(selectedPayment.createdAt)}
+                      timeText={getFormattedDateTime(selectedPayment.createdAt)}
                       depositorName={selectedPayment.depositorName}
                       totalAmount={selectedPayment.totalPrice || 0}
-                      menuNamesAndQuantities={
-                        selectedPayment.menuNamesAndQuantities
-                      }
+                      menuDetails={selectedPayment.menuDetails}
                       onClose={handleClosePaymentDetail}
                       onSuccess={refetch}
                     />
@@ -270,7 +261,7 @@ const AdminOrders = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-row text-14-medium leading-[136%] text-navy-35 border border-black-30 rounded-t-2xl bg-[#E7ECF0] gap-2.5 py-2.5 pl-5">
+                <div className="flex flex-row text-14-medium leading-[136%] text-navy-35 border border-black-30 rounded-t-2xl bg-[#E7ECF0] gap-2.5 py-4 pl-5">
                   <div className="flex">테이블</div>
                   <div className="flex w-38.5 md:w-32 lg:w-38.5 text-start">
                     메뉴
@@ -290,7 +281,7 @@ const AdminOrders = () => {
                         key={cooking.id}
                         orderId={cooking.id}
                         tableNumber={cooking.tableId}
-                        menuNamesAndQuantities={cooking.menuNamesAndQuantities}
+                        menuDetails={cooking.menuDetails}
                         onSuccess={refetch}
                       />
                     ))
@@ -325,7 +316,7 @@ const AdminOrders = () => {
         <>
           {mobileActiveTab === "입금 대기" && (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
-              <div className="flex flex-row px-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0">
+              <div className="flex flex-row px-5 py-4 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0">
                 <div className="flex text-14-medium leading-[136%] text-navy-35">
                   테이블
                 </div>
@@ -351,7 +342,7 @@ const AdminOrders = () => {
                       key={payment.id}
                       orderId={payment.id}
                       tableNumber={payment.tableId}
-                      timeText={getFormattedTime(payment.createdAt)}
+                      timeText={getFormattedDateTime(payment.createdAt)}
                       depositorName={payment.depositorName}
                       totalAmount={payment.totalPrice || 0}
                       onClick={() => handlePaymentCardClick(payment)}
@@ -368,17 +359,16 @@ const AdminOrders = () => {
                   </div>
                 )}
 
-                {/* PaymentDetail 오버레이 */}
+                {/* DetailCard 오버레이 */}
                 {selectedPayment && (
-                  <PaymentDetail
+                  <DetailCard
+                    type="payment"
                     orderId={selectedPayment.id}
                     tableNumber={selectedPayment.tableId}
-                    timeText={getFormattedTime(selectedPayment.createdAt)}
+                    timeText={getFormattedDateTime(selectedPayment.createdAt)}
                     depositorName={selectedPayment.depositorName}
                     totalAmount={selectedPayment.totalPrice || 0}
-                    menuNamesAndQuantities={
-                      selectedPayment.menuNamesAndQuantities
-                    }
+                    menuDetails={selectedPayment.menuDetails}
                     onClose={handleClosePaymentDetail}
                     onSuccess={refetch}
                   />
@@ -389,7 +379,7 @@ const AdminOrders = () => {
 
           {mobileActiveTab === "조리 중" && (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
-              <div className="flex flex-row px-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0 text-14-medium leading-[136%] text-navy-35">
+              <div className="flex flex-row px-5 py-4 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0 text-14-medium leading-[136%] text-navy-35">
                 <div className="flex">테이블</div>
                 <div className="flex w-38.5 max-[376px]:w-32 text-start">
                   메뉴
@@ -409,7 +399,7 @@ const AdminOrders = () => {
                       key={cooking.id}
                       orderId={cooking.id}
                       tableNumber={cooking.tableId}
-                      menuNamesAndQuantities={cooking.menuNamesAndQuantities}
+                      menuDetails={cooking.menuDetails}
                       onSuccess={refetch}
                     />
                   ))
@@ -428,15 +418,16 @@ const AdminOrders = () => {
 
           {mobileActiveTab === "조리 완료" && (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
-              <div className="flex flex-row pl-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border border-black-25 items-center text-14-medium leading-[136%] text-navy-35 flex-shrink-0">
+              <div className="flex flex-row pl-5 py-4 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border border-black-25 items-center text-14-medium leading-[136%] text-navy-35 flex-shrink-0">
                 <div className="flex">테이블</div>
                 <div className="flex max-[376px]:w-20 w-29">금액</div>
                 <div className="flex">주문 시간</div>
               </div>
               <div
-                ref={cookedScrollContainerRef}
                 className={`flex flex-col bg-white rounded-b-2xl border-t-0 border-black-25 border flex-1 min-h-0 relative ${
-                  selectedCookedOrder ? "overflow-hidden" : "overflow-y-auto"
+                  selectedPayment && mobileActiveTab === "조리 완료"
+                    ? "overflow-hidden"
+                    : "overflow-y-auto"
                 }`}
               >
                 {isLoading ? (
@@ -452,9 +443,9 @@ const AdminOrders = () => {
                       orderId={cooked.id}
                       tableNumber={cooked.tableId}
                       depositorName={cooked.depositorName}
-                      menuNamesAndQuantities={cooked.menuNamesAndQuantities}
+                      menuDetails={cooked.menuDetails}
                       totalAmount={cooked.totalPrice || 0}
-                      createdAt={getFormattedTime(cooked.createdAt)}
+                      createdAt={getFormattedDateTime(cooked.createdAt)}
                       onSuccess={refetch}
                       onClick={() => handleCookedCardClick(cooked)}
                     />
@@ -469,18 +460,17 @@ const AdminOrders = () => {
                   </div>
                 )}
 
-                {/* CookedDetail 오버레이 (모바일용) */}
-                {selectedCookedOrder && (
-                  <CookedDetail
-                    orderId={selectedCookedOrder.id}
-                    tableNumber={selectedCookedOrder.tableId}
-                    timeText={getFormattedTime(selectedCookedOrder.createdAt)}
-                    depositorName={selectedCookedOrder.depositorName}
-                    totalAmount={selectedCookedOrder.totalPrice || 0}
-                    menuNamesAndQuantities={
-                      selectedCookedOrder.menuNamesAndQuantities
-                    }
-                    onClose={handleCloseCookedDetail}
+                {/* DetailCard 오버레이 */}
+                {selectedPayment && mobileActiveTab === "조리 완료" && (
+                  <DetailCard
+                    type="cooked"
+                    orderId={selectedPayment.id}
+                    tableNumber={selectedPayment.tableId}
+                    timeText={getFormattedDateTime(selectedPayment.createdAt)}
+                    depositorName={selectedPayment.depositorName}
+                    totalAmount={selectedPayment.totalPrice || 0}
+                    menuDetails={selectedPayment.menuDetails}
+                    onClose={handleClosePaymentDetail}
                     onSuccess={refetch}
                   />
                 )}

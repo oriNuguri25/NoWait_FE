@@ -10,11 +10,13 @@ interface RawMenuItem {
   menuId: number;
   storeId: number;
   name: string;
+  adminDisplayName: string;
   description: string;
   price: number;
   isSoldOut: boolean;
   deleted: boolean;
   images: MenuImage[];
+  sortOrder: number;
 }
 
 export const useGetAllMenus = (storeId: number) => {
@@ -24,7 +26,7 @@ export const useGetAllMenus = (storeId: number) => {
       const res = await AdminApi.get(
         `/admin/menus/all-menus/stores/${storeId}`
       );
-      return res.data.response.menuReadDto; // ✅ 여기만 추출
+      return res.data.response.menuReadDto;
     },
     enabled: !!storeId,
     staleTime: 1000 * 60,
