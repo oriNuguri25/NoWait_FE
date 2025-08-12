@@ -223,7 +223,7 @@ const AdminHome = () => {
 
       <section id="대기자 목록" className="flex flex-col w-full">
         {/* <h1 className="title-20-bold mb-5">대기자 목록</h1> */}
-        <div className="flex justify-between items-center overflow-x-auto scrollbar-hide mask-fade-right relative">
+        <div className="flex justify-between items-center overflow-x-auto scrollbar-hide relative mask-fade-right">
           <div className="flex flex-wrap whitespace-nowrap  [@media(max-width:431px)]:flex-nowrap -mr-5">
             {tabLabels.map(({ label, count }) => (
               <RoundTabButton

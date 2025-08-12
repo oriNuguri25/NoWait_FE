@@ -37,7 +37,7 @@ const MobileAdminNav = ({ onClose }: { onClose: () => void }) => {
   const { pathname } = useLocation();
   return (
     <div
-      className={`w-[250px] h-full bg-white flex flex-col px-4 py-6 fixed top-0 right-0 z-50 `}
+      className={`w-[210px] h-full bg-white flex flex-col px-4 py-6 fixed top-0 right-0 z-50 `}
     >
       {/* 상단 - 닫기 버튼 */}
       <div className="flex justify-end mb-4">

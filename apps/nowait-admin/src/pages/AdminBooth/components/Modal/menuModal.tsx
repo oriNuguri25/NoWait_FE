@@ -12,6 +12,7 @@ interface MenuModalProps {
     isRepresentative?: boolean;
     image?: File;
   };
+  isTablet: boolean;
   onClose: () => void;
   onSubmit: (data: any) => void;
   onDelete: () => void;
@@ -75,6 +76,7 @@ const PriceInput: React.FC<PriceInputProps> = ({ price, setPrice }) => {
 const MenuModal = ({
   isEdit,
   initialData,
+  isTablet,
   onClose,
   onSubmit,
   onDelete,
@@ -115,7 +117,13 @@ const MenuModal = ({
 
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-      <div className="bg-white w-[500px] h-[700px] rounded-[20px] p-[30px] relative">
+      <div
+        className={`bg-white rounded-[20px] p-[30px] relative ${
+          isTablet
+            ? "w-[500px] h-[700px] p-[30px]"
+            : "w-[343px] h-[643px] px-[22px]"
+        }`}
+      >
         <div className="flex justify-between w-full">
           <h2 className="text-title-20-bold mb-[30px]">
             {isEdit ? "메뉴 편집하기" : "새 메뉴 추가하기"}
@@ -127,103 +135,121 @@ const MenuModal = ({
             onClick={onClose}
           />
         </div>
-
-        {/* 메뉴명 */}
-        <div className="mb-[30px] flex gap-[20px]">
-          <div className="flex flex-col w-full ">
-            <label className="block text-sm font-medium mb-3">메뉴명</label>
-            <div className="relative w-full">
-              <input
-                type="text"
-                value={name}
-                // onChange={(e) => setName(filterMenuName(e.target.value))}
-                onChange={(e) => setName(e.target.value)}
-                maxLength={25}
-                className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-sm"
-                placeholder="메뉴명을 입력해주세요"
-              />
-              <p
-                className={`absolute top-1/2 -translate-y-1/2 right-4 text-13-regular text-gray-400 `}
-              >
-                <span
-                  className={`${
-                    name.length > 0 ? "text-black" : "text-gray-400"
+        <div
+          className={`${
+            !isTablet
+              ? "w-[299px] h-[452px] mb-[22px] overflow-y-auto scrollbar-hide"
+              : ""
+          }`}
+        >
+          {/* 메뉴명 */}
+          <div className={`mb-[30px] flex gap-[20px] `}>
+            <div className="flex flex-col w-full ">
+              <label className="block text-sm font-medium mb-3">메뉴명</label>
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  value={name}
+                  // onChange={(e) => setName(filterMenuName(e.target.value))}
+                  onChange={(e) => setName(e.target.value)}
+                  maxLength={25}
+                  className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-sm"
+                  placeholder="메뉴명을 입력해주세요"
+                />
+                <p
+                  className={`absolute top-1/2 -translate-y-1/2 right-4 items-center text-gray-400 ${
+                    isTablet ? "text-13-regular" : "text-12-regular"
                   }`}
                 >
-                  {name.length}
-                </span>{" "}
-                / 25
-              </p>
-              {/* 이미지 업로드 */}
+                  <span
+                    className={`${
+                      name.length > 0 ? "text-black" : "text-gray-400"
+                    }`}
+                  >
+                    {name.length}
+                  </span>{" "}
+                  / 25
+                </p>
+                {/* 이미지 업로드 */}
+              </div>
             </div>
-          </div>
-          <label className="w-[86px] aspect-square flex-shrink-0 bg-black-5 border border-[#DDDDDD] rounded-lg flex items-center justify-center cursor-pointer overflow-hidden">
-            <input
-              type="file"
-              className="hidden"
-              onChange={(e) => e.target.files && setImage(e.target.files[0])}
-            />
-            {image ? (
-              <img
-                src={URL.createObjectURL(image)}
-                alt="업로드된 이미지"
-                className="w-full h-full object-contain"
+            <label className="w-[86px] aspect-square flex-shrink-0 bg-black-5 border border-[#DDDDDD] rounded-lg flex items-center justify-center cursor-pointer overflow-hidden">
+              <input
+                type="file"
+                className="hidden"
+                onChange={(e) => e.target.files && setImage(e.target.files[0])}
               />
-            ) : (
-              <img src={placeholderIcon} alt="업로드" />
-            )}
-          </label>
-        </div>
+              {image ? (
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="업로드된 이미지"
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <img src={placeholderIcon} alt="업로드" />
+              )}
+            </label>
+          </div>
 
-        {/* 관리자용 메뉴명 */}
-        <div className="mb-[30px] relative">
-          <label className="block text-sm font-medium mb-3">
-            관리자용 메뉴명
-          </label>
-          <div className="relative">
-            <input
-              type="text"
-              value={adminDisplayName}
-              onChange={(e) => setAdminDisplayName(e.target.value)}
-              maxLength={10}
-              className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-sm"
-              placeholder="주문 확인에 용이한 메뉴명으로 설정해주세요."
-            />
-            <p className="absolute top-1/2 -translate-y-1/2 right-4 text-13-regular text-gray-400">
-              <span
-                className={` ${
-                  adminDisplayName.length > 0 ? "text-black" : "text-gray-400"
+          {/* 관리자용 메뉴명 */}
+          <div className="mb-[30px] relative">
+            <label className="block text-sm font-medium mb-3">
+              관리자용 메뉴명
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                value={adminDisplayName}
+                onChange={(e) => setAdminDisplayName(e.target.value)}
+                maxLength={10}
+                className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-sm"
+                placeholder={`${
+                  isTablet
+                    ? "주문 확인에 용이한 메뉴명으로 설정해주세요."
+                    : "주문 확인이 쉬운 이름으로 설정해주세요"
+                }
+                `}
+              />
+              <p
+                className={`absolute top-1/2 -translate-y-1/2 right-4 text-gray-400 ${
+                  isTablet ? "text-13-regular" : "text-12-regular"
                 }`}
               >
-                {adminDisplayName.length}
+                <span
+                  className={` ${
+                    adminDisplayName.length > 0 ? "text-black" : "text-gray-400"
+                  }`}
+                >
+                  {adminDisplayName.length}
+                </span>{" "}
+                / 10
+              </p>
+            </div>
+          </div>
+
+          <PriceInput price={price} setPrice={setPrice} />
+
+          {/* 메뉴 소개 */}
+          <div className="mb-[30px] relative">
+            <label className="block text-sm font-medium mb-3">메뉴 소개</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              maxLength={250}
+              className="w-full border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white h-[120px] px-4 py-2 border rounded-lg text-sm h-24"
+              placeholder="메뉴 소개를 입력해주세요."
+            />
+            <p className="absolute bottom-[12px] right-4 text-right text-xs text-gray-400">
+              <span
+                className={`${
+                  description.length > 0 ? "text-black" : "text-gray-400"
+                }`}
+              >
+                {description.length}
               </span>{" "}
-              / 10
+              / 250
             </p>
           </div>
-        </div>
-
-        <PriceInput price={price} setPrice={setPrice} />
-
-        {/* 메뉴 소개 */}
-        <div className="mb-[30px] relative">
-          <label className="block text-sm font-medium mb-3">메뉴 소개</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            maxLength={250}
-            className="w-full border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white h-[120px] px-4 py-2 border rounded-lg text-sm h-24"
-            placeholder="메뉴 소개를 입력해주세요."
-          />
-          <p className="absolute bottom-[12px] right-4 text-right text-xs text-gray-400">
-            <span
-              className={`${
-                description.length > 0 ? "text-black" : "text-gray-400"
-              }`}
-            >
-              {description.length}
-            </span>{" "}
-            / 250
-          </p>
         </div>
 
         {/* 하단 버튼 */}

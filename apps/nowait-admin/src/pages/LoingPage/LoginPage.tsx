@@ -13,16 +13,12 @@ const LoginPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(id);
-    console.log(pw);
 
     loginMutation.mutate(
       { email: id, password: pw },
       {
         onSuccess: (res) => {
           const token = res.data.response.body.accessToken;
-
-          console.log(token, "내  토큰");
 
           localStorage.setItem("adminToken", token);
           navigate("/admin");

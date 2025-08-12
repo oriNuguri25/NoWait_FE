@@ -5,6 +5,7 @@ interface TotalSalesCardProps {
   date: string; // 예: "2025. 07.18 - 07.19"
   amount: number; // 예: 1800000
   disabled: boolean;
+  isTablet: boolean;
 }
 
 const TotalSalesCard: React.FC<TotalSalesCardProps> = ({
@@ -12,9 +13,14 @@ const TotalSalesCard: React.FC<TotalSalesCardProps> = ({
   date,
   amount,
   disabled,
+  isTablet,
 }) => {
   return (
-    <div className="bg-white rounded-[12px] p-6 w-full h-full flex flex-col justify-between">
+    <div
+      className={`bg-white rounded-[16px]  flex flex-col justify-between ${
+        isTablet ? "p-6 w-full h-full" : "p-5 w-[335px] min-h-[150px]"
+      }`}
+    >
       {/* 상단 제목 + 날짜 */}
       <div>
         <p className="text-title-18-bold text-black">{title}</p>
