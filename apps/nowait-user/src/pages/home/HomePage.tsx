@@ -104,8 +104,10 @@ const HomePage = () => {
     <div className="flex flex-col">
       <HomeHeader />
 
-      {/* 내 대기 카드 섹션 - MyWaitingSection과 MyWaitingCard 분리 사용 */}
-      <MyWaitingSection>{memoizedMyWaitingCard}</MyWaitingSection>
+      {/* 내 대기 카드 섹션 - 내 대기 목록이 있을 때만 표시 */}
+      {myWaitingList.length > 0 && (
+        <MyWaitingSection>{memoizedMyWaitingCard}</MyWaitingSection>
+      )}
 
       <div className="flex flex-col px-5 gap-10">
         {/* 바로 입장 가능한 주점 - 메모이제이션된 컴포넌트 사용 */}
