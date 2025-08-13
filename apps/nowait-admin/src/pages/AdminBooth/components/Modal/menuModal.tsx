@@ -1,6 +1,8 @@
 import { useState } from "react";
 import placeholderIcon from "../../../../assets/image_placeholder.svg";
 import closeIcon from "../../../../assets/close.svg";
+import { useRemoveEmoji } from "../../../../hooks/useRemoveEmoji";
+
 interface MenuModalProps {
   isEdit: boolean;
   initialData?: {
@@ -22,20 +24,6 @@ interface PriceInputProps {
   price: string;
   setPrice: React.Dispatch<React.SetStateAction<string>>;
 }
-
-//이모지 제거 함수 (정규식 기반)
-// const removeEmoji = (text: string) => {
-//   return text.replace(
-//     /([\u2700-\u27BF]|[\uE000-\uF8FF]|\u24C2|[\uD83C-\uDBFF\uDC00-\uDFFF])/g,
-//     ""
-//   );
-// };
-
-//메뉴명용: 허용 문자만 남기기
-// const filterMenuName = (text: string) => {
-//   // 허용 문자: 한글, 영문, 숫자, 공백, 일부 특수문자
-//   return removeEmoji(text).replace(/[^ㄱ-ㅎ가-힣a-zA-Z0-9 +:/~%&*,™®[\]]/g, "");
-// };
 
 // 가격 표시 세자리 마다 , 붙여서 표시
 const formatNumber = (num: number) => {
@@ -92,6 +80,7 @@ const MenuModal = ({
   );
   const isRepresentative = useState(initialData?.isRepresentative || false);
   const [image, setImage] = useState<File | null>(initialData?.image || null);
+  const { removeEmojiAll, removeEmojiSome } = useRemoveEmoji();
 
   const isFormValid =
     name.trim() !== "" &&
@@ -150,8 +139,7 @@ const MenuModal = ({
                 <input
                   type="text"
                   value={name}
-                  // onChange={(e) => setName(filterMenuName(e.target.value))}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setName(removeEmojiSome(e.target.value))}
                   maxLength={25}
                   className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-sm"
                   placeholder="메뉴명을 입력해주세요"
@@ -200,7 +188,9 @@ const MenuModal = ({
               <input
                 type="text"
                 value={adminDisplayName}
-                onChange={(e) => setAdminDisplayName(e.target.value)}
+                onChange={(e) =>
+                  setAdminDisplayName(removeEmojiAll(e.target.value))
+                }
                 maxLength={10}
                 className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-sm"
                 placeholder={`${

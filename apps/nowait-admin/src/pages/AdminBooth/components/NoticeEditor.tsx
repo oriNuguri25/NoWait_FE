@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
+import { useRemoveEmoji } from "../../../hooks/useRemoveEmoji";
 
 const MenuBar = ({ editor }: { editor: any }) => {
   const [editorChanged, setEditorChanged] = useState(0);
@@ -72,6 +73,7 @@ const NoticeEditor = ({
     extensions: [StarterKit, Underline],
     content: notice || "",
   });
+  const { removeEmojiAll } = useRemoveEmoji();
 
   // 부모로 내용 동기화
   useEffect(() => {
@@ -105,7 +107,7 @@ const NoticeEditor = ({
         type="text"
         value={noticeTitle}
         onFocus={() => setNoticeTitle("")}
-        onChange={(e) => setNoticeTitle(e.target.value)}
+        onChange={(e) => setNoticeTitle(removeEmojiAll(e.target.value))}
         placeholder="제목을 입력해주세요"
         className="w-full px-5 py-3 text-[#666666] bg-black-20 font-semibold rounded-t-xl outline-none"
       />

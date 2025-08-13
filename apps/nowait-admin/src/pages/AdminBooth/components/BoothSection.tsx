@@ -8,6 +8,7 @@ import type { ProfileImage } from "../types/booth";
 import deletBttn from "../../../assets/booth/del.svg";
 import PreviewModal from "./Modal/PreviewModal";
 import { useDeleteBannerImage } from "../../../hooks/booth/menu/useDeleteBannerImage";
+import { useRemoveEmoji } from "../../../hooks/useRemoveEmoji";
 
 const BoothSection = ({
   departName,
@@ -64,6 +65,7 @@ const BoothSection = ({
 }) => {
   const [showPreview, setShowPreview] = useState(false);
   const { mutate: deleteBannerImage } = useDeleteBannerImage();
+  const { removeEmojiAll } = useRemoveEmoji();
   console.log(bannerImages, "배너이미지들");
 
   return (
@@ -134,7 +136,7 @@ const BoothSection = ({
                 maxLength={14}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
-                onChange={(e) => setBoothName(e.target.value)}
+                onChange={(e) => setBoothName(removeEmojiAll(e.target.value))}
                 placeholder="부스명을 입력해주세요"
                 className="w-full h-full bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-sm bg-black-5 "
               />
