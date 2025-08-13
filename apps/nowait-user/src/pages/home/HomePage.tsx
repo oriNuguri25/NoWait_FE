@@ -127,7 +127,7 @@ const HomePage = () => {
   );
 
   return (
-    <div className="flex flex-col">
+    <div className="relative">
       <HomeHeader />
 
       {/* 고정된 헤더 아래 여백 */}
