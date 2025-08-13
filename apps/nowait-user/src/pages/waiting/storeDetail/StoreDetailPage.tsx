@@ -14,6 +14,7 @@ import CommonSwiper from "../../../components/CommonSwiper";
 import SectionDivider from "../../../components/SectionDivider";
 import { formatTimeRange } from "../../../utils/formatTimeRange";
 import DepartmentImage from "../../../components/DepartmentImage";
+import NotFound from "../../NotFound/NotFound";
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
@@ -21,29 +22,34 @@ const StoreDetailPage = () => {
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
     withInvalidate: true,
   });
-  const { isBookmarked } = useBookmarkState(storeId);
+  const { isBookmarked } = useBookmarkState(Number(storeId));
 
-  const { data: store } = useQuery({
+  const {
+    data: store,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["store", storeId],
-    queryFn: () => getStore(storeId!),
-    select: (data) => data.response,
+    queryFn: () => getStore(Number(storeId!)),
+    select: (data) => data?.response,
   });
-  console.log(store,"주점ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ")
+  
   const handleBookmarkButton = async () => {
     try {
       if (!isBookmarked) {
-        await createBookmarkMutate.mutate(storeId);
+        await createBookmarkMutate.mutate(Number(storeId));
       } else {
-        await deleteBookmarkMutate.mutate(storeId);
+        await deleteBookmarkMutate.mutate(Number(storeId));
       }
     } catch (error) {
       console.log(error);
     }
   };
-
+  if(isLoading) return <div>로딩중...</div>
+  if (isError) return <NotFound />;
   return (
     <div>
-      <div className="px-5 w-full min-h-screen-dvh mb-[124px]">
+      <div className="px-5 w-full min-h-dvh mb-[112px]">
         {/* 주점 배너 이미지 */}
         <CommonSwiper slideImages={store?.bannerImages || []}></CommonSwiper>
         {/* 학과 정보 섹션 */}
