@@ -14,11 +14,15 @@ interface SalesResponse {
   success: boolean;
   response: SalesData | string;
 }
-const fetchSalesByDate = async (date: string): Promise<SalesData | string> => {
+const fetchSalesByDate = async (
+  date: string
+): Promise<SalesData | undefined> => {
   const res = await AdminApi.get<SalesResponse>(`/admin/statistics/sales`, {
     params: { date },
   });
-  return res.data.response;
+  const response = res.data.response;
+
+  return typeof response === "string" ? undefined : response;
 };
 
 export const useGetSalesByDate = (date: string) => {
