@@ -101,6 +101,7 @@ const MenuModal = ({
     onClose();
   };
   const handleDelete = () => {
+    onClose();
     onDelete();
   };
 
