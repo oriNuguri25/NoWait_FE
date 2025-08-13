@@ -9,10 +9,11 @@ interface OrderResponse {
 }
 
 // 주문 목록을 가져오는 함수
-const fetchOrders = async (): Promise<Order[]> => {
+const fetchOrders = async (storeId: number): Promise<Order[]> => {
   try {
     const token = localStorage.getItem("accessToken");
-    const res = await adminApi.get<OrderResponse>(`/admin/orders/1`, {
+
+    const res = await adminApi.get<OrderResponse>(`/admin/orders/${storeId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -33,10 +34,10 @@ const fetchOrders = async (): Promise<Order[]> => {
 };
 
 // 주문 목록을 가져오는 hook
-export const useGetOrderList = () => {
+export const useGetOrderList = (storeId: number) => {
   return useQuery({
-    queryKey: ["orders"],
-    queryFn: fetchOrders,
+    queryKey: ["orders", storeId],
+    queryFn: () => fetchOrders(storeId),
     refetchInterval: 30000, // 30초마다 자동 새로고침
   });
 };

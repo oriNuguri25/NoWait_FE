@@ -1,80 +1,58 @@
-import { useRef, useEffect } from "react";
-import { useVirtualizer } from "@tanstack/react-virtual";
+import { useEffect, memo, useMemo, useState, useCallback } from "react";
 import MainCard from "./MainCard";
 import { useInfiniteStores } from "../../../hooks/useInfiniteStores";
 
-const InfiniteStoreList = () => {
+const InfiniteStoreList = memo(() => {
   // 커스텀 훅에서 무한 스크롤 로직 가져오기
   const { stores, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteStores();
 
-  // 가상 스크롤을 위한 ref
-  const parentRef = useRef<HTMLDivElement>(null);
+  // stores 배열을 메모이제이션하여 불필요한 리렌더링 방지
+  const memoizedStores = useMemo(() => stores, [stores]);
 
-  // 가상 스크롤 설정
-  const rowVirtualizer = useVirtualizer({
-    count: stores.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 80,
-    overscan: 5,
-  });
+  // 현재 표시할 스토어 목록 (10개씩)
+  const [currentStores, setCurrentStores] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
-  // 무한 스크롤 트리거
+  // 무한 스크롤 트리거 (스크롤 이벤트 기반)
   useEffect(() => {
-    const virtualItems = rowVirtualizer.getVirtualItems();
-    const lastItem = virtualItems[virtualItems.length - 1];
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPercentage = (scrollTop + windowHeight) / documentHeight;
 
-    console.log("=== 무한 스크롤 디버깅 ===");
-    console.log("현재 stores 수:", stores.length);
-    console.log("마지막 보이는 아이템 인덱스:", lastItem?.index);
-    console.log("hasNextPage:", hasNextPage);
-    console.log("isFetchingNextPage:", isFetchingNextPage);
-    console.log("트리거 조건:", lastItem?.index >= stores.length - 5);
-
-    if (
-      lastItem &&
-      lastItem.index >= stores.length - 5 &&
-      hasNextPage &&
-      !isFetchingNextPage
-    ) {
-      console.log("🚀 fetchNextPage 호출!");
-      fetchNextPage();
-    }
-  }, [
-    rowVirtualizer.getTotalSize(),
-    stores.length,
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
-  ]);
-
-  // 추가 무한 스크롤 트리거 (스크롤 이벤트 기반)
-  useEffect(() => {
-    const handleStoreScroll = () => {
-      if (parentRef.current) {
-        const { scrollTop, scrollHeight, clientHeight } = parentRef.current;
-        const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
-
-        console.log("스크롤 비율:", scrollPercentage);
-
-        if (
-          scrollPercentage > 0.8 && // 80% 스크롤했을 때
-          hasNextPage &&
-          !isFetchingNextPage
-        ) {
-          console.log("🚀 스크롤 이벤트로 fetchNextPage 호출!");
-          fetchNextPage();
-        }
+      if (
+        scrollPercentage > 0.8 && // 80% 스크롤했을 때
+        hasNextPage &&
+        !isFetchingNextPage
+      ) {
+        fetchNextPage();
+        // 다음 페이지 로드 후 currentPage 증가
+        setCurrentPage((prev) => prev + 1);
       }
     };
 
-    const storeScrollElement = parentRef.current;
-    if (storeScrollElement) {
-      storeScrollElement.addEventListener("scroll", handleStoreScroll);
-      return () =>
-        storeScrollElement.removeEventListener("scroll", handleStoreScroll);
-    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // stores가 변경될 때마다 currentStores 업데이트
+  const updateCurrentStores = useCallback(() => {
+    if (memoizedStores.length > 0) {
+      const endIndex = currentPage * itemsPerPage;
+      const newStores = memoizedStores.slice(0, endIndex);
+      setCurrentStores(newStores);
+    } else {
+      // stores가 비어있을 때 currentStores도 비우기
+      setCurrentStores([]);
+    }
+  }, [memoizedStores, currentPage, itemsPerPage]);
+
+  useEffect(() => {
+    updateCurrentStores();
+  }, [updateCurrentStores]);
 
   return (
     <div className="flex flex-col">
@@ -82,17 +60,20 @@ const InfiniteStoreList = () => {
         모든 주점
       </div>
 
-      {/* 로딩 중일 때 */}
+      {/* 초기 로딩 중일 때 */}
       {isLoading && (
         <div className="flex justify-center py-8">
-          <div className="text-black-50 text-16-regular">
-            주점 정보를 불러오는 중...
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-6 h-6 border-2 border-black-20 border-t-black-60 rounded-full animate-spin"></div>
+            <div className="text-black-50 text-16-regular">
+              주점 정보를 불러오는 중...
+            </div>
           </div>
         </div>
       )}
 
       {/* 주점 데이터가 없을 때 */}
-      {!isLoading && stores.length === 0 && (
+      {!isLoading && currentStores.length === 0 && (
         <div className="flex flex-col items-center justify-center py-12">
           <div className="text-black-50 text-16-regular mb-2">
             주점이 아직 준비되지 않았어요.
@@ -103,66 +84,42 @@ const InfiniteStoreList = () => {
         </div>
       )}
 
-      {/* 주점 데이터가 있을 때만 가상 스크롤 컨테이너 렌더링 */}
-      {!isLoading && stores.length > 0 && (
-        <div
-          ref={parentRef}
-          style={{
-            height: "400px",
-            overflow: "auto",
-          }}
-          className="scrollbar-hide"
-        >
-          <div
-            style={{
-              height: `${rowVirtualizer.getTotalSize()}px`,
-              position: "relative",
-            }}
-          >
-            {/* 가상화된 아이템들 */}
-            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-              const store = stores[virtualRow.index];
-              if (!store) return null;
+      {/* 주점 데이터가 있을 때 10개씩 렌더링 */}
+      {!isLoading && currentStores.length > 0 && (
+        <div className="flex flex-col gap-3">
+          {currentStores.map((store) => (
+            <MainCard
+              key={store.storeId}
+              type="store"
+              storeId={store.storeId}
+              name={store.name}
+              departmentName={store.departmentName}
+              profileImageUrl={store.profileImage?.imageUrl || ""}
+              isActive={store.isActive}
+              deleted={store.deleted}
+              waitingCount={store.waitingCount}
+            />
+          ))}
 
-              return (
-                <div
-                  key={store.storeId}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: `${virtualRow.size}px`,
-                    transform: `translateY(${virtualRow.start}px)`,
-                  }}
-                >
-                  <MainCard
-                    type="store"
-                    storeId={store.storeId}
-                    name={store.name}
-                    departmentName={store.departmentName}
-                    profileImageUrl={store.profileImage?.imageUrl || ""}
-                    isActive={store.isActive}
-                    deleted={store.deleted}
-                    waitingCount={store.waitingCount}
-                  />
-                </div>
-              );
-            })}
-          </div>
-
-          {/* 로딩 표시 */}
+          {/* 다음 페이지 로딩 표시 */}
           {isFetchingNextPage && (
             <div className="flex justify-center py-4">
-              <div className="text-black-50 text-14-regular">로딩 중...</div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-black-20 border-t-black-60 rounded-full animate-spin"></div>
+                <div className="text-black-50 text-14-regular">
+                  다음 주점을 불러오는 중...
+                </div>
+              </div>
             </div>
           )}
 
           {/* 더 이상 데이터가 없을 때 */}
-          {!hasNextPage && stores.length > 0 && (
+          {!hasNextPage && currentStores.length > 0 && (
             <div className="flex justify-center py-4">
-              <div className="text-black-50 text-14-regular">
-                더 이상 주점이 없습니다
+              <div className="flex flex-col items-center gap-2">
+                <div className="text-black-50 text-14-regular">
+                  더 이상 불러올 주점이 없습니다.
+                </div>
               </div>
             </div>
           )}
@@ -170,6 +127,8 @@ const InfiniteStoreList = () => {
       )}
     </div>
   );
-};
+});
+
+InfiniteStoreList.displayName = "InfiniteStoreList";
 
 export default InfiniteStoreList;

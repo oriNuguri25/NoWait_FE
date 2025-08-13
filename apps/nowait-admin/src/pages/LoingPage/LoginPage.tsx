@@ -2,10 +2,9 @@ import loginLogo from "../../assets/login_logo.svg";
 import { useState } from "react";
 import { usePostLoginMutation } from "../../hooks/usePostAdminLogin.tsx";
 import { useNavigate } from "react-router";
+import { HalfLabelInput } from "./components/HalfLabelInput.tsx";
 
 const LoginPage = () => {
-  const [isIdFocused, setIsIdFocused] = useState(false);
-  const [isPwFocused, setIsPwFocused] = useState(false);
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
 
@@ -14,23 +13,20 @@ const LoginPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(id);
-    console.log(pw);
 
     loginMutation.mutate(
       { email: id, password: pw },
       {
         onSuccess: (res) => {
           const token = res.data.response.body.accessToken;
-
-          console.log(token, "내  토큰");
+          const storeId = res.data.response.body.storeId;
 
           localStorage.setItem("adminToken", token);
+          localStorage.setItem("storeId", storeId);
           navigate("/admin");
         },
         onError: (err) => {
           console.error("❌ 로그인 실패:", err);
-          alert("로그인 실패. 아이디/비밀번호를 확인해주세요.");
         },
       }
     );
@@ -40,6 +36,7 @@ const LoginPage = () => {
       {/* Logo */}
       <div className="mb-10 flex flex-col items-center">
         <img src={loginLogo} alt="노웨잇 로그인 로고" />
+        <span></span>
       </div>
 
       {/* Form */}
@@ -47,51 +44,20 @@ const LoginPage = () => {
         onSubmit={handleSubmit}
         className="w-full flex flex-col items-center gap-3"
       >
-        <div className="relative">
-          <input
-            type="text"
-            placeholder={isIdFocused ? "" : "아이디"}
-            onFocus={() => setIsIdFocused(true)}
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            required
-            className="peer w-[330px] h-[60px] px-4 border-[3px] border-[var(--black-35)] rounded-[12px] text-16-medium font-[500px] 
-          focus:outline-none focus:ring-0 focus:border-[var(--primary)] focus:border-[3px] focus:placeholder-shown:none py-auto
-          "
-          />
-          <label
-            htmlFor="username"
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-black-40 text-14-regular transition-all duration-200
-            peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2
-            peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-13-regular peer-focus:text-primary
-            peer-valid:top-2 peer-valid:-translate-y-0 peer-valid:text-13-regular
-          "
-          >
-            {isIdFocused ? "아이디" : ""}
-          </label>
-        </div>
-        <div className="relative">
-          <input
-            type="password"
-            value={pw}
-            onChange={(e) => setPw(e.target.value)}
-            onFocus={() => setIsPwFocused(true)}
-            required
-            placeholder={isPwFocused ? "" : "비밀번호"}
-            className="peer w-[330px] h-[60px] px-4 border-[3px] border-[var(--black-35)] rounded-[12px] text-16-medium font-[500px] 
-            focus:outline-none focus:ring-0 focus:border-[var(--primary)] focus:border-[3px] focus:placeholder-shown:none py-auto"
-          />
-          <label
-            htmlFor="username"
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-black-40 text-[16px] transition-all duration-200
-            peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2
-            peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-[14px] peer-focus:text-primary
-            peer-valid:top-2 peer-valid:-translate-y-0 peer-valid:text-[14px]
-          "
-          >
-            {isPwFocused ? "비밀번호" : ""}
-          </label>
-        </div>
+        <HalfLabelInput
+          label="아이디"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+          autoComplete="username"
+        />
+        <HalfLabelInput
+          label="비밀번호"
+          type="password"
+          value={pw}
+          onChange={(e) => setPw(e.target.value)}
+          autoComplete="current-password"
+        />
+
         {/* Login Button */}
         <button
           type="submit"

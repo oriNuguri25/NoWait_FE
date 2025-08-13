@@ -26,6 +26,17 @@ export default defineConfig(({ mode }) => {
           target: env.VITE_SERVER_URI,
           changeOrigin: true,
         },
+        "/api/images": {
+          target:
+            "https://gtablestoreimage-resize-bucket.s3.ap-northeast-2.amazonaws.com",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/images/, ""),
+        },
+        "/api/banner-images": {
+          target: "https://gtablestoreimage.s3.ap-northeast-2.amazonaws.com",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/banner-images/, ""),
+        },
       },
     },
   };

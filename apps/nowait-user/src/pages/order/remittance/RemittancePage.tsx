@@ -34,7 +34,11 @@ const RemittancePage = () => {
     select: (data) => data.response,
   });
   console.log(remittance, "레미텐스");
+<<<<<<< HEAD
   // const [height, setHeight] = useState(window.innerHeight);
+=======
+  const [height] = useState(window.innerHeight);
+>>>>>>> develop
 
   useEffect(() => {
     if (!remittance) return;

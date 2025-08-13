@@ -25,8 +25,8 @@ const StoreListItem = ({
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
     withInvalidate: false,
   });
-    // const { isBookmarked } = useBookmarkState(storeId);
-  
+  // const { isBookmarked } = useBookmarkState(storeId);
+
   const [isBookmarked, setIsBookmarked] = useState(true);
 
   const handleBookmarkButton = async () => {

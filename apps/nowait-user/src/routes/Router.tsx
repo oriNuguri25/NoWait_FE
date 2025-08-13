@@ -18,7 +18,7 @@ import OrderDetailsPage from "../pages/order/orderDetails/OrderDetailsPage";
 import RemittancePage from "../pages/order/remittance/RemittancePage";
 import BookmarkPage from "../pages/waiting/bookmark/BookmarkPage";
 import StoreNoticePage from "../pages/waiting/storeNotice/StoreNoticePage";
-import WaitingSummaryPage from "../pages/waiting/waitingSummary/WaitingSummaryPage";
+import WaitingSummaryPage from "../pages/waiting/WaitingSummary/WaitingSummaryPage";
 import MapManagePage from "../pages/waiting/boothMap/MapManagePage";
 import NotFound from "../pages/NotFound/NotFound";
 
@@ -42,30 +42,30 @@ const Router = () => {
         <Route path="/login/success" element={<KakaoRedirectHandler />} />
         <Route path="/login" element={<LoginPage />} />
 
-      {/* 보호된 라우트 - 인증 필요 (구체적인 경로 먼저) */}
-      <Route
-        path="/store/:id/reserve/success"
-        element={withAuth(WaitingSuccessPage)}
-      />
-      {/* <Route path="/store/:id/reserve" element={withAuth(StoreReservePage)} /> */}
-      <Route path="/store/:id" element={withAuth(StoreDetailPage)} />
-      <Route path="/map" element={withAuth(MapPage)} />
-      <Route path="/mapManage" element={withAuth(MapManagePage)} />
-      <Route path="/bookmark" element={withAuth(BookmarkPage)} />
-      <Route path="/store/:id/notice" element={withAuth(StoreNoticePage)} />
-      <Route
-        path="/store/:id/partysize"
-        element={withAuth(WaitingPartySizeForm)}
-      />
-      <Route
-        path="/store/:id/waiting/summary"
-        element={withAuth(WaitingSummaryPage)}
-      />
-      <Route
-        path="/store/:id/waiting/success"
-        element={withAuth(WaitingSuccessPage)}
-      />
-      <Route path="/" element={withAuth(HomePage)} />
+        {/* 보호된 라우트 - 인증 필요 (구체적인 경로 먼저) */}
+        <Route
+          path="/store/:id/reserve/success"
+          element={withAuth(WaitingSuccessPage)}
+        />
+        {/* <Route path="/store/:id/reserve" element={withAuth(StoreReservePage)} /> */}
+        <Route path="/store/:id" element={withAuth(StoreDetailPage)} />
+        <Route path="/map" element={withAuth(MapPage)} />
+        <Route path="/mapManage" element={withAuth(MapManagePage)} />
+        <Route path="/bookmark" element={withAuth(BookmarkPage)} />
+        <Route path="/store/:id/notice" element={withAuth(StoreNoticePage)} />
+        <Route
+          path="/store/:id/partysize"
+          element={withAuth(WaitingPartySizeForm)}
+        />
+        <Route
+          path="/store/:id/waiting/summary"
+          element={withAuth(WaitingSummaryPage)}
+        />
+        <Route
+          path="/store/:id/waiting/success"
+          element={withAuth(WaitingSuccessPage)}
+        />
+        <Route path="/" element={withAuth(HomePage)} />
 
         {/* QR 코드 접속 페이지 - 인증 불필요 (일반적인 경로 나중에) */}
         <Route path="/:storeId/:tableId" element={<RedirectToStorePage />} />

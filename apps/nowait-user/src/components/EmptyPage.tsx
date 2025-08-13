@@ -3,7 +3,7 @@ import { SmallActionButton } from "./SmallActionButton";
 import Add from "../assets/icon/Add.svg?react";
 
 interface PropsType {
-  mode: "default" | "orderDetails"
+  mode: "default" | "orderDetails";
   title: string;
   buttonText: string;
 }
@@ -22,8 +22,10 @@ const EmptyPage = ({ mode, title, buttonText }: PropsType) => {
         ariaLabel="메뉴 추가"
         onClick={() => navigate(`/${storeId}`)}
       >
-        {buttonText}
-        <Add className="w-4 h-4" fill="currentColor" />
+        <h1>{buttonText}</h1>
+        <span>
+          <Add className="w-4 h-4" fill="currentColor" />
+        </span>
       </SmallActionButton>
     </div>
   );

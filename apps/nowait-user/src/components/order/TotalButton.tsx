@@ -30,9 +30,11 @@ const TotalButton = ({
   return (
     <div className="flex items-center gap-2 text-[17px] font-semibold ml-1">
       {variant !== "orderPage" && (
-        <span className="text-[14px] font-extrabold rounded-[5px] px-1.5 bg-white text-black">
-          {sumQuantity(cart, "quantity")}
-        </span>
+        <p className="w-[22px] rounded-[5px] bg-white">
+          <span className="text-[14px] font-extrabold text-cool-black">
+            {sumQuantity(cart, "quantity")}
+          </span>
+        </p>
       )}
       <NumberFlow
         value={price}
