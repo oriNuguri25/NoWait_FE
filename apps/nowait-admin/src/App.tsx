@@ -21,7 +21,7 @@ function App() {
           {/* 주문현황 */}
           <Route path="booth" element={<AdminBooth />} />
           <Route path="booth/guides" element={<QrGuides />} />
-          <Route path="orders" element={<AdminOrders />} />
+          <Route path="orders/:storeId" element={<AdminOrders />} />
           {/* 관리 & 통계 페이지 */}
           <Route path="analytics" element={<AdminAnalytics />} />
           <Route path="*" element={<NotFound />} />

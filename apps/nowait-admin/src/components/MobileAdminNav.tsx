@@ -10,36 +10,54 @@ import cancelIcon from "../assets/Cancel.svg";
 import logoutIcon from "../assets/log-out.svg";
 import { useLocation, useNavigate } from "react-router";
 
-const menuItems = [
-  { label: "대기", icon: waitIcon, activeIcon: waitIconActive, path: "/admin" },
-  {
-    label: "주문",
-    icon: orderIcon,
-    activeIcon: orderIconActive,
-    path: "/admin/orders",
-  },
-  {
-    label: "통계",
-    icon: statIcon,
-    activeIcon: statIconActive,
-    path: "/admin/analytics",
-  },
-  {
-    label: "부스 관리",
-    icon: boothIcon,
-    activeIcon: boothIconActive,
-    path: "/admin/booth",
-  },
-];
-
 const MobileAdminNav = ({ onClose }: { onClose: () => void }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  // localStorage에서 storeId 가져오기
+  const storeId = localStorage.getItem("storeId");
+
+  // 주문 페이지 경로 생성
+  const getOrderPath = () => {
+    return storeId ? `/admin/orders/${storeId}` : "/admin";
+  };
+
+  // 현재 주문 페이지인지 확인
+  const isOrderPage = pathname.startsWith("/admin/orders/");
+
+  const menuItems = [
+    {
+      label: "대기",
+      icon: waitIcon,
+      activeIcon: waitIconActive,
+      path: "/admin",
+    },
+    {
+      label: "주문",
+      icon: orderIcon,
+      activeIcon: orderIconActive,
+      path: getOrderPath(),
+    },
+    {
+      label: "통계",
+      icon: statIcon,
+      activeIcon: statIconActive,
+      path: "/admin/analytics",
+    },
+    {
+      label: "부스 관리",
+      icon: boothIcon,
+      activeIcon: boothIconActive,
+      path: "/admin/booth",
+    },
+  ];
+
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
     localStorage.removeItem("storeId");
     navigate("/");
   };
+
   return (
     <div
       className={`w-[210px] h-full bg-white flex flex-col px-4 py-6 fixed top-0 right-0 z-50 `}
@@ -55,7 +73,8 @@ const MobileAdminNav = ({ onClose }: { onClose: () => void }) => {
       <div className="flex flex-col justify-between h-full">
         <ul className="flex flex-col gap-2">
           {menuItems.map(({ label, icon, activeIcon, path }) => {
-            const isActive = pathname === path;
+            const isActive =
+              pathname === path || (label === "주문" && isOrderPage);
             return (
               <li
                 key={label}
