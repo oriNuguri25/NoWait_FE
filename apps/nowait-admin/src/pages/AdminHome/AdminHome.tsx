@@ -222,29 +222,6 @@ const AdminHome = () => {
       </section>
 
       <section id="대기자 목록" className="flex flex-col w-full">
-        {/* 리프레시 아이콘 웹만 적용되던 버전 */}
-        {/* <div className="flex justify-between items-center overflow-x-auto scrollbar-hide relative mask-fade-right">
-          <div className="flex flex-wrap whitespace-nowrap  [@media(max-width:431px)]:flex-nowrap -mr-5">
-            {tabLabels.map(({ label, count }) => (
-              <RoundTabButton
-                key={label}
-                label={label}
-                active={activeTab === label}
-                onClick={() => setActiveTab(label)}
-                count={label === "전체" ? undefined : count}
-              />
-            ))}
-          </div>
-          <div
-            className="hover:rotate-90 transition-transform duration-500 cursor-pointer"
-            onClick={handleRefresh}
-          >
-            <img
-              src={refreshIcon}
-              className="[@media(max-width:431px)]:hidden"
-            />
-          </div>
-        </div> */}
         <div className="relative w-full">
           <div className="mask-fade-right">
             <div className="overflow-x-auto scrollbar-hide pr-12">
@@ -262,7 +239,6 @@ const AdminHome = () => {
             </div>
           </div>
 
-          {/* ✅ 아이콘은 마스크 바깥, 절대배치 */}
           <button
             type="button"
             aria-label="새로고침"
