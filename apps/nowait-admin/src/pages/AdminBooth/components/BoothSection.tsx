@@ -78,7 +78,7 @@ const BoothSection = ({
           {/* 우측 버튼 */}
           <button
             onClick={() => setShowPreview(true)}
-            className="px-4 py-1 rounded-lg w-[68px] text-14-semibold text-black-70 bg-black-20 px-[10px] py-[7.5px]"
+            className="px-[10px] py-[7.5px] rounded-lg flex justify-center items-center h-[34px] text-14-semibold text-black-70 bg-black-20"
           >
             미리보기
           </button>
