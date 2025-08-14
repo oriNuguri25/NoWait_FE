@@ -59,7 +59,7 @@ npx turbo build
 ```tsx
 yarn dlx @yarnpkg/sdks vscode
 ```
-10. 앱 실행
+9. 앱 실행
 ```tsx
 yarn dev:user    # 사용자용 앱 실행  
 yarn dev:admin   # 관리자용 앱 실행
