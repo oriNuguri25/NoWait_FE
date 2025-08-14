@@ -183,7 +183,7 @@ const BoothSection = ({
             .map((_, i) => (
               <label
                 key={i}
-                className="w-[150px] h-25 bg-black-5 border border-[#DDDDDD] rounded-xl flex items-center justify-center cursor-pointer"
+                className="w-[150px] h-[99px] bg-black-5 border border-[#DDDDDD] rounded-xl flex items-center justify-center cursor-pointer"
               >
                 <input
                   type="file"
