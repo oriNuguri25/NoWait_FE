@@ -1,4 +1,4 @@
-import { useEffect, memo, useMemo, useState, useCallback } from "react";
+import { useEffect, memo } from "react";
 import MainCard from "./MainCard";
 import { useInfiniteStores } from "../../../hooks/useInfiniteStores";
 
@@ -6,14 +6,6 @@ const InfiniteStoreList = memo(() => {
   // 커스텀 훅에서 무한 스크롤 로직 가져오기
   const { stores, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteStores();
-
-  // stores 배열을 메모이제이션하여 불필요한 리렌더링 방지
-  const memoizedStores = useMemo(() => stores, [stores]);
-
-  // 현재 표시할 스토어 목록 (10개씩)
-  const [currentStores, setCurrentStores] = useState<any[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
 
   // 무한 스크롤 트리거 (스크롤 이벤트 기반)
   useEffect(() => {
@@ -29,30 +21,12 @@ const InfiniteStoreList = memo(() => {
         !isFetchingNextPage
       ) {
         fetchNextPage();
-        // 다음 페이지 로드 후 currentPage 증가
-        setCurrentPage((prev) => prev + 1);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  // stores가 변경될 때마다 currentStores 업데이트
-  const updateCurrentStores = useCallback(() => {
-    if (memoizedStores.length > 0) {
-      const endIndex = currentPage * itemsPerPage;
-      const newStores = memoizedStores.slice(0, endIndex);
-      setCurrentStores(newStores);
-    } else {
-      // stores가 비어있을 때 currentStores도 비우기
-      setCurrentStores([]);
-    }
-  }, [memoizedStores, currentPage, itemsPerPage]);
-
-  useEffect(() => {
-    updateCurrentStores();
-  }, [updateCurrentStores]);
 
   return (
     <div className="flex flex-col">
@@ -73,7 +47,7 @@ const InfiniteStoreList = memo(() => {
       )}
 
       {/* 주점 데이터가 없을 때 */}
-      {!isLoading && currentStores.length === 0 && (
+      {!isLoading && stores.length === 0 && (
         <div className="flex flex-col items-center justify-center py-12">
           <div className="text-black-50 text-16-regular mb-2">
             주점이 아직 준비되지 않았어요.
@@ -84,10 +58,10 @@ const InfiniteStoreList = memo(() => {
         </div>
       )}
 
-      {/* 주점 데이터가 있을 때 10개씩 렌더링 */}
-      {!isLoading && currentStores.length > 0 && (
+      {/* 주점 데이터가 있을 때 렌더링 */}
+      {!isLoading && stores.length > 0 && (
         <div className="flex flex-col gap-3">
-          {currentStores.map((store) => (
+          {stores.map((store) => (
             <MainCard
               key={store.storeId}
               type="store"
@@ -114,7 +88,7 @@ const InfiniteStoreList = memo(() => {
           )}
 
           {/* 더 이상 데이터가 없을 때 */}
-          {!hasNextPage && currentStores.length > 0 && (
+          {!hasNextPage && stores.length > 0 && (
             <div className="flex justify-center py-4">
               <div className="flex flex-col items-center gap-2">
                 <div className="text-black-50 text-14-regular">

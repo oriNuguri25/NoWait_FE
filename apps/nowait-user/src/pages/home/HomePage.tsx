@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import HomeHeader from "../../components/Header";
 import InfiniteStoreList from "./components/InfiniteStoreList";
 import WaitingListModal from "./components/WaitingListModal";
@@ -13,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortOption, setSortOption] = useState("대기 적은 순");
   const [isWaitingDetailOpen, setIsWaitingDetailOpen] = useState(false);
@@ -20,6 +22,12 @@ const HomePage = () => {
 
   // 정렬 옵션에 따른 order 설정
   const order: "asc" | "desc" = sortOption === "대기 적은 순" ? "asc" : "desc";
+
+  // 홈페이지 마운트 시 캐시된 데이터 새로고침
+  useEffect(() => {
+    // stores 쿼리의 데이터를 백그라운드에서 새로 가져오기
+    queryClient.invalidateQueries({ queryKey: ["stores"] });
+  }, [queryClient]);
 
   // 내 대기 목록 가져오기
   const { myWaitingList, refetch: refetchMyWaitingList } = useMyWaitingList();
