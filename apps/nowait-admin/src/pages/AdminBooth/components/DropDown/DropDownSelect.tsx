@@ -6,7 +6,7 @@ export const DropdownSelect = ({
   onChange,
   options,
   placeholder,
-  className = "w-[120px]",
+  className = "w-[124.25px]",
 }: {
   value: string;
   onChange: (val: string) => void;

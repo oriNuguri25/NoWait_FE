@@ -12,7 +12,8 @@ import AccountPage from "./components/AccountPage";
 
 const BoothForm = () => {
   const width = useWindowWidth();
-  const isTablet = width >= 768;
+  const isTablet = width > 768;
+  const isMobile = !isTablet;
   // && width <= 1024
   const storeId = Number(localStorage.getItem("storeId"));
   console.log(storeId, "스토어 아이디");
@@ -110,7 +111,9 @@ const BoothForm = () => {
 
   return (
     <div
-      className={` bg-white w-full overflow-y-auto border-l border-l-[#ECECEC] ${
+      className={`${
+        isMobile ? "flex flex-col" : ""
+      } bg-white w-full overflow-y-auto border-l border-l-[#ECECEC] ${
         isTablet ? "px-[100px] py-[20px]" : "px-[20px] py-[20px]"
       }`}
     >
@@ -176,6 +179,7 @@ const BoothForm = () => {
               setEndHour={setEndHour}
               endMinute={endMinute}
               setEndMinute={setEndMinute}
+              isMobile={isMobile}
             />
             <div className="flex max-w-[614px] w-full mt-[50px]">
               <button
