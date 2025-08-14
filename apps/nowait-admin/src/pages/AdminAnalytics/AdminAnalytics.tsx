@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useGetPopularMenu } from "../../hooks/analytics/useGetPopularMenu";
 import { useGetSalesByDate } from "../../hooks/analytics/useGetSalesByDate";
 import { useGetTopSales } from "../../hooks/analytics/useGetTopSalse";
@@ -25,11 +24,12 @@ const AdminAnalytics = () => {
   const { data: sales } = useGetSalesByDate(formatted);
   const { data: popularMenu } = useGetPopularMenu();
   console.log(boothRank, "부스별 판매순위");
-  console.log(sales, "판매량");
+  console.log(sales, formatted, "판매량");
+
   console.log(popularMenu, "인기 메뉴");
   const boothDisabled = boothRank?.length === 0;
   const storeId = localStorage.getItem("storeId");
-  const saleDisabled = typeof sales === "string";
+  const saleDisabled = typeof sales === "string" || sales === undefined;
   const poupularMenuDisabled = popularMenu?.length === 0;
 
   const boothRankingData: BoothRanking[] =
