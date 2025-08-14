@@ -28,9 +28,15 @@ const AdminOrders = () => {
   const desktopCookedScrollContainerRef = useRef<HTMLDivElement>(null);
   const windowWidth = useWindowWidth();
   const isMobile = windowWidth <= 450;
+  const storeId = Number(localStorage.getItem("storeId"));
 
   // API에서 주문 데이터 가져오기
-  const { data: orders = [], isLoading, error, refetch } = useGetOrderList();
+  const {
+    data: orders = [],
+    isLoading,
+    error,
+    refetch,
+  } = useGetOrderList(storeId);
 
   // 날짜와 시간 포맷팅 함수 (2025년 6월 2일 08:02 형식)
   const getFormattedDateTime = (createdAt: string) => {

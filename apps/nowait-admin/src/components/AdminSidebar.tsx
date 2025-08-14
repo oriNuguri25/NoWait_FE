@@ -28,6 +28,7 @@ const AdminSidebar = ({
   const isCompact = width < 1024;
   const location = useLocation();
   const pathname = location.pathname;
+  const storeId = Number(localStorage.getItem("storeId"));
 
   return (
     <aside
@@ -76,10 +77,14 @@ const AdminSidebar = ({
             compact={isCompact}
           />
           <NavItem
-            to="/admin/orders"
+            to={`/admin/orders/${storeId}`}
             icon={
               <img
-                src={pathname === "/admin/orders" ? orderIconActive : orderIcon}
+                src={
+                  pathname.includes("/admin/orders")
+                    ? orderIconActive
+                    : orderIcon
+                }
                 alt="주문"
                 className="w-5 h-5"
               />

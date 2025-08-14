@@ -1,4 +1,5 @@
 import dropIcon from "../../../assets/drop_down.svg";
+import { DropdownSelect } from "./DropDown/DropDownSelect";
 
 // 오전/오후 + 시 조합 (01시~12시)
 const hours = Array.from({ length: 12 }, (_, i) =>
@@ -70,15 +71,15 @@ const OperatingTimeSelector = ({
       </p>
       <div className="flex items-center gap-2">
         <span className="text-sm text-gray-600 mr-1">시작</span>
-        <CustomSelect
+        <DropdownSelect
           value={startHour}
-          onChange={(e) => setStartHour(e.target.value)}
+          onChange={(val) => setStartHour(val)}
           options={hours}
           placeholder="시간"
         />
-        <CustomSelect
+        <DropdownSelect
           value={startMinute}
-          onChange={(e) => setStartMinute(e.target.value)}
+          onChange={(val) => setStartMinute(val)}
           options={minutes}
           placeholder="분"
         />
@@ -86,15 +87,15 @@ const OperatingTimeSelector = ({
         <span className="mx-2 text-gray-600">-</span>
 
         <span className="text-sm text-gray-600 mr-1">종료</span>
-        <CustomSelect
+        <DropdownSelect
           value={endHour}
-          onChange={(e) => setEndHour(e.target.value)}
+          onChange={(val) => setEndHour(val)}
           options={hours}
           placeholder="시간"
         />
-        <CustomSelect
+        <DropdownSelect
           value={endMinute}
-          onChange={(e) => setEndMinute(e.target.value)}
+          onChange={(val) => setEndMinute(val)}
           options={minutes}
           placeholder="분"
         />
