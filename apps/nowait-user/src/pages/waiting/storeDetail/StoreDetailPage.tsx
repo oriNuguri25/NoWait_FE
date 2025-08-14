@@ -18,9 +18,13 @@ import DepartmentImage from "../../../components/DepartmentImage";
 const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id: storeId } = useParams();
-  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
-    withInvalidate: true,
-  });
+  // const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
+  //   withInvalidate: true,
+  // });
+  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
+    { withInvalidate: true },
+    Number(storeId)
+  );
   const { isBookmarked } = useBookmarkState(Number(storeId));
 
   const { data: store } = useQuery({
@@ -28,18 +32,24 @@ const StoreDetailPage = () => {
     queryFn: () => getStore(Number(storeId!)),
     select: (data) => data.response,
   });
-  console.log(store, "주점ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
+
   const handleBookmarkButton = async () => {
     try {
       if (!isBookmarked) {
-        await createBookmarkMutate.mutate(Number(storeId));
+        await createBookmarkMutate.mutate();
       } else {
-        await deleteBookmarkMutate.mutate(Number(storeId));
+        await deleteBookmarkMutate.mutate();
       }
     } catch (error) {
       console.log(error);
     }
   };
+  // const handleBookmarkButton = () => {
+  //   toggleBookmark.mutate({
+  //     storeId,
+  //     currentStatus: isBookmarked,
+  //   });
+  // };
 
   return (
     <div>

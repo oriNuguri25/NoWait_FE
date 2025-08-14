@@ -1,21 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBookmark } from "../api/reservation";
-import type { BookmarkListType } from "../types/wait/store";
 
 export const useBookmarkState = (storeId?: number) => {
-  const { data, isLoading } = useQuery({
+  const { data: isBookmarked, isLoading } = useQuery({
     queryKey: ["bookmark", storeId],
-    queryFn: getBookmark,
-    select: (data) => data.response,
+    queryFn: async () => {
+      const res = await getBookmark();
+      return res.response.some((bookmark) => {
+        return bookmark.storeId === storeId;
+      });
+    },
   });
 
-  const isBookmarked = data?.find(
-    (bookmark: BookmarkListType) => bookmark.storeId === storeId
-  );
-
   return {
-    isBookmarked: isBookmarked !== undefined,
-    bookmarkList: data,
+    isBookmarked: Boolean(isBookmarked),
     isLoading,
   };
 };
