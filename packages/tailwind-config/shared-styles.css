@@ -302,8 +302,8 @@ pre {
     font-weight: 400;
   }
   /* 미리보기 빨간 뱃지 폰트 */
-  .text-7-bold {
-    font-size: 7.55px;
+  .text-8-bold {
+    font-size: 8px;
     line-height: 100%;
     letter-spacing: 0;
     font-weight: 700;
@@ -313,6 +313,13 @@ pre {
     font-size: 7.55px;
     line-height: 144%;
     letter-spacing: 0;
+    font-weight: 400;
+  }
+
+  .text-10-regular {
+    font-size: 10px;
+    line-height: 144%;
+    letter-spacing: -1%;
     font-weight: 400;
   }
 
