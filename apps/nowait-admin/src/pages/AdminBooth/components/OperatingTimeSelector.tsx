@@ -14,36 +14,6 @@ const minutes = Array.from(
   (_, i) => `${String(i * 5).padStart(2, "0")}분`
 );
 
-const CustomSelect = ({
-  value,
-  onChange,
-  options,
-  placeholder,
-}: {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: string[];
-  placeholder: string;
-}) => (
-  <div className="relative w-[120px]">
-    <select
-      value={value}
-      onChange={onChange}
-      className="appearance-none border border-gray-300 rounded-lg pl-3 pr-8 py-2 text-sm w-full bg-white"
-    >
-      <option value="">{placeholder}</option>
-      {options.map((opt) => (
-        <option key={opt} value={opt}>
-          {opt}
-        </option>
-      ))}
-    </select>
-    <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2">
-      <img src={dropIcon} alt="dropdown" className="w-3 h-3" />
-    </div>
-  </div>
-);
-
 const OperatingTimeSelector = ({
   startHour,
   setStartHour,
