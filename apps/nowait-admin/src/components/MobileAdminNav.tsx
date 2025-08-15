@@ -9,7 +9,6 @@ import boothIconActive from "../assets/boothIconActive.svg";
 import cancelIcon from "../assets/Cancel.svg";
 import logoutIcon from "../assets/log-out.svg";
 import { useLocation, useNavigate } from "react-router";
-
 const menuItems = [
   { label: "대기", icon: waitIcon, activeIcon: waitIconActive, path: "/admin" },
   {
@@ -41,6 +40,7 @@ const MobileAdminNav = ({
 }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const storeId = Number(localStorage.getItem("storeId"));
 
   return (
     <div
@@ -58,6 +58,9 @@ const MobileAdminNav = ({
         <ul className="flex flex-col gap-2">
           {menuItems.map(({ label, icon, activeIcon, path }) => {
             const isActive = pathname === path;
+            if (label === "주문") {
+              path = `/admin/orders/${storeId}`;
+            }
             return (
               <li
                 key={label}
