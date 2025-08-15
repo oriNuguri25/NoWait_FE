@@ -50,12 +50,14 @@ const HomeHeader = () => {
   return (
     <>
       <div className="fixed top-0 left-0 right-0 z-40 flex justify-between items-center py-4 px-5 bg-white/80 backdrop-blur-[100px]">
-        <Logo className="w-14.5 h-6" />
+        <button onClick={() => navigate("/")}>
+          <Logo className="w-14.5 h-6" />
+        </button>
         <div className="flex flex-row gap-3">
-          <button onClick={openSearch} className="cursor-pointer">
+          <button onClick={openSearch}>
             <Search className="icon-m" />
           </button>
-          <button onClick={toggleMenu} className="cursor-pointer">
+          <button onClick={toggleMenu}>
             <Menu className="icon-m" />
           </button>
         </div>
@@ -75,8 +77,15 @@ const HomeHeader = () => {
               <div className="max-w-[430px] min-w-[360px] w-full h-screen bg-white mx-auto flex flex-col">
                 {/* 고정된 헤더 */}
                 <div className="flex justify-between items-center pt-4 px-5 flex-shrink-0">
-                  <Logo className="w-14.5 h-6" />
-                  <button onClick={closeMenu} className="cursor-pointer">
+                  <button
+                    onClick={() => {
+                      closeMenu();
+                      navigate("/");
+                    }}
+                  >
+                    <Logo className="w-14.5 h-6" />
+                  </button>
+                  <button onClick={closeMenu}>
                     <Cancel className="icon-m" />
                   </button>
                 </div>
