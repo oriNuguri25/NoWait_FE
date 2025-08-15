@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.svg?react";
@@ -46,6 +46,27 @@ const HomeHeader = () => {
     // 새로고침하여 로그인 상태 변경을 즉시 반영
     window.location.reload();
   };
+
+  // 메뉴가 열릴 때 스크롤 방지
+  useEffect(() => {
+    if (isMenuOpen) {
+      // 현재 스크롤 위치 저장
+      const scrollY = window.scrollY;
+
+      // body 스크롤 방지
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+
+      return () => {
+        // 스크롤 복원
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [isMenuOpen]);
 
   return (
     <>

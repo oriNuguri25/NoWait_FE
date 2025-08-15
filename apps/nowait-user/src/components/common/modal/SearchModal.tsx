@@ -132,19 +132,19 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
       </div>
       <div className="flex flex-col flex-1 min-w-0">
         <div className="flex flex-row gap-2 items-center min-w-0">
-          <div className="text-title-16-bold text-black-90 text-start truncate flex-shrink min-w-0">
+          <div className="text-title-16-semibold text-black-90 text-start truncate flex-shrink min-w-0">
             {store.name}
           </div>
           <div className="flex-shrink-0">
             {store.isActive ? (
               <div className="px-1.5 py-1.25 rounded-md bg-[#FFF0EB]">
-                <div className="font-bold text-[10px] text-[#FF5E07]">
+                <div className="font-bold text-[10px] leading-[100%] tracking-normal text-[#FF5E07]">
                   대기 {store.waitingCount}팀
                 </div>
               </div>
             ) : (
               <div className="px-1.5 py-1.25 rounded-md bg-[#F7F7F7]">
-                <div className="font-bold text-[10px] text-[#AAAAAA]">
+                <div className="font-bold text-[10px] leading-[100%] tracking-normal text-[#AAAAAA]">
                   오픈 전
                 </div>
               </div>
@@ -210,7 +210,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                 {searchQuery.trim() ? (
                   // 검색 결과 표시
                   <div className="flex flex-col">
-                    <div className="flex text-16-bold leading-[144%] tracking-[-0.01em] text-black-90 mb-4">
+                    <div className="flex text-[16px] font-bold leading-[144%] tracking-[-0.01em] text-black-90 mb-4">
                       검색 결과{" "}
                       {searchResults.length > 0 && `${searchResults.length}`}
                     </div>
