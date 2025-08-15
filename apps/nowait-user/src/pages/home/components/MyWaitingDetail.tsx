@@ -190,7 +190,7 @@ const MyWaitingDetail = ({
             <div className="text-16-medium text-black-100 mb-0.75">
               입장 대기 중
             </div>
-            <div className="text-22-bold text-black-90 flex items-baseline justify-center gap-1">
+            <div className="text-headline-22-bold text-black-90 flex items-baseline justify-center gap-1">
               <span>내 앞 대기</span>
               <span className="text-primary flex items-baseline">
                 <span
@@ -277,7 +277,7 @@ const MyWaitingDetail = ({
               className="flex w-full rounded-xl bg-white-100 border border-black-25 py-5 justify-center items-center"
               onClick={handleCancelWaitingClick}
             >
-              <div className="flex text-17-semibold text-black-60">
+              <div className="flex text-[17px] font-semibold tracking-normal text-black-60">
                 대기 취소
               </div>
             </button>

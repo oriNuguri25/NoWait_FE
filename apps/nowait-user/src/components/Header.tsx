@@ -83,42 +83,54 @@ const HomeHeader = () => {
 
                 {/* 슬라이드되는 메뉴 내용 */}
                 <motion.div
-                  initial={{ y: "-100%" }}
-                  animate={{ y: 0 }}
-                  exit={{ y: "-100%" }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  initial={{ y: "-30px", opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: "-30px", opacity: 0 }}
+                  transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
                   onClick={(e) => e.stopPropagation()}
                   className="flex flex-col justify-between flex-1 mt-16.5 px-5 pb-5 overflow-y-auto"
                 >
                   {/* 메뉴 항목들 */}
                   <nav className="flex flex-col gap-5.5 w-full">
                     <motion.button
-                      initial={{ y: -20, opacity: 0 }}
+                      initial={{ y: -8, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -20, opacity: 0 }}
-                      transition={{ duration: 0.4, delay: 0.15 }}
+                      exit={{ y: -8, opacity: 0 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 0.15,
+                        ease: [0.25, 0.46, 0.45, 0.94],
+                      }}
                       onClick={handleHomeClick}
-                      className="block w-full text-left text-title-20-semibold leading-[136%] tracking-[-0.01em] text-black-100"
+                      className="block w-full text-left text-title-20-semibold text-black-100"
                     >
                       홈
                     </motion.button>
                     <motion.button
-                      initial={{ y: -20, opacity: 0 }}
+                      initial={{ y: -8, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -20, opacity: 0 }}
-                      transition={{ duration: 0.4, delay: 0.3 }}
+                      exit={{ y: -8, opacity: 0 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 0.25,
+                        ease: [0.25, 0.46, 0.45, 0.94],
+                      }}
                       onClick={closeMenu}
-                      className="block w-full text-left text-title-20-semibold leading-[136%] tracking-[-0.01em] text-black-100"
+                      className="block w-full text-left text-title-20-semibold text-black-100"
                     >
                       축제 맵
                     </motion.button>
                     <motion.button
-                      initial={{ y: -20, opacity: 0 }}
+                      initial={{ y: -8, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -20, opacity: 0 }}
-                      transition={{ duration: 0.4, delay: 0.45 }}
+                      exit={{ y: -8, opacity: 0 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 0.35,
+                        ease: [0.25, 0.46, 0.45, 0.94],
+                      }}
                       onClick={handleBookmarkClick}
-                      className="block w-full text-left text-title-20-semibold leading-[136%] tracking-[-0.01em] text-black-100"
+                      className="block w-full text-left text-title-20-semibold text-black-100"
                     >
                       북마크
                     </motion.button>
@@ -126,12 +138,16 @@ const HomeHeader = () => {
 
                   {/* 로그아웃 버튼 - 맨 하단에 배치 */}
                   <motion.button
-                    initial={{ y: -20, opacity: 0 }}
+                    initial={{ y: -8, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -20, opacity: 0 }}
-                    transition={{ duration: 0.4, delay: 0.6 }}
+                    exit={{ y: -8, opacity: 0 }}
+                    transition={{
+                      duration: 0.6,
+                      delay: 0.45,
+                      ease: [0.25, 0.46, 0.45, 0.94],
+                    }}
                     onClick={handleLogout}
-                    className="block w-full text-left text-title-20-semibold leading-[136%] tracking-[-0.01em] text-red-500 hover:text-red-600 transition-colors"
+                    className="block w-full text-left text-title-20-semibold text-primary"
                   >
                     로그아웃
                   </motion.button>

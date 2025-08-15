@@ -25,7 +25,7 @@ const CancelWaitingModal = ({
             <div className="flex text-title-20-bold text-black-85">
               대기를 취소할까요?
             </div>
-            <div className="flex text-14-regular text-black-60">
+            <div className="flex text-[14px] font-[400] leading-[144%] tracking-normal text-black-60">
               삭제 후에는 대기 정보가 복구되지 않아요.
             </div>
           </div>
@@ -35,7 +35,7 @@ const CancelWaitingModal = ({
             {/* 취소 버튼 */}
             <button
               onClick={onClose}
-              className="flex-1 px-3 py-2.5 rounded-[10px] bg-black-20 text-16-semibold text-black-65 items-center justify-center"
+              className="flex-1 px-3 py-2.5 rounded-[10px] bg-black-20 text-[16px] font-semibold leading-[136%] tracking-normal text-black-65 items-center justify-center"
             >
               취소
             </button>
@@ -43,7 +43,7 @@ const CancelWaitingModal = ({
             {/* 확인 버튼 */}
             <button
               onClick={onConfirm}
-              className="flex-1 px-3 py-2.5 rounded-[10px] bg-primary text-16-semibold text-white-100 items-center justify-center"
+              className="flex-1 py-2.5 rounded-[10px] bg-primary text-[16px] font-semibold leading-[136%] tracking-normal text-white-100 items-center justify-center"
             >
               {isLoading ? "취소 중..." : "확인"}
             </button>
