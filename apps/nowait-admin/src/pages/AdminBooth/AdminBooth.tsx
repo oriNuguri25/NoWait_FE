@@ -9,10 +9,12 @@ import type { BannerImage } from "./types/booth";
 import type { ProfileImage } from "./types/booth";
 import BoothSection from "./components/BoothSection";
 import AccountPage from "./components/AccountPage";
+import PreviewModal from "./components/Modal/PreviewModal";
 
 const BoothForm = () => {
   const width = useWindowWidth();
-  const isTablet = width >= 768;
+  const isTablet = width > 768;
+  const isMobile = !isTablet;
   // && width <= 1024
   const storeId = Number(localStorage.getItem("storeId"));
   console.log(storeId, "스토어 아이디");
@@ -39,6 +41,8 @@ const BoothForm = () => {
   const [isTextareaFocused, setIsTextareaFocused] = useState(false);
   const [bannerImages, setBannerImages] = useState<BannerImage[]>([]);
   const [profileImage, setProfileImage] = useState<ProfileImage>(null);
+
+  const [showPreview, setShowPreview] = useState(false);
 
   console.log(store, "store 정보");
 
@@ -110,7 +114,9 @@ const BoothForm = () => {
 
   return (
     <div
-      className={` bg-white w-full overflow-y-auto border-l border-l-[#ECECEC] ${
+      className={`${
+        isMobile ? "flex flex-col" : ""
+      } bg-white w-full overflow-y-auto border-l border-l-[#ECECEC] ${
         isTablet ? "px-[100px] py-[20px]" : "px-[20px] py-[20px]"
       }`}
     >
@@ -176,14 +182,61 @@ const BoothForm = () => {
               setEndHour={setEndHour}
               endMinute={endMinute}
               setEndMinute={setEndMinute}
+              isMobile={isMobile}
             />
             <div className="flex max-w-[614px] w-full mt-[50px]">
+              {isMobile && (
+                <button
+                  className="w-full h-[60px] p-5 rounded-xl bg-black-20 text-black-70 text-17-semibold mr-2"
+                  onClick={() => setShowPreview(true)}
+                >
+                  미리보기
+                </button>
+              )}
               <button
-                className="w-full h-[51px] py-4 rounded-lg bg-[#111114] text-white text-14-regular"
+                className={`w-full bg-[#111114] text-white ${
+                  isMobile
+                    ? "h-[60px] p-5 rounded-xl text-17-semibold"
+                    : "text-14-regular h-[51px] py-4 rounded-lg"
+                }`}
                 onClick={handleSave}
               >
                 저장하기
               </button>
+              {showPreview && isMobile && (
+                <PreviewModal
+                  onClose={() => setShowPreview(false)}
+                  boothName={boothName}
+                  departName={departName}
+                  boothIntro={boothIntro}
+                  noticeTitle={noticeTitle}
+                  boothNotice={boothNotice}
+                  startHour={startHour}
+                  startMinute={startMinute}
+                  endHour={endHour}
+                  endMinute={endMinute}
+                  profileImage={
+                    profileImage
+                      ? profileImage instanceof File
+                        ? {
+                            id: 0,
+                            imageUrl: URL.createObjectURL(profileImage),
+                            imageType: "PROFILE",
+                          }
+                        : profileImage
+                      : null
+                  }
+                  bannerImages={bannerImages.map((img, i) =>
+                    img instanceof File
+                      ? {
+                          id: i,
+                          imageUrl: URL.createObjectURL(img),
+                          imageType: "BANNER",
+                        }
+                      : { ...img, imageType: "BANNER" }
+                  )}
+                />
+              )}
             </div>
           </>
         ) : activeTab === "menu" ? (
