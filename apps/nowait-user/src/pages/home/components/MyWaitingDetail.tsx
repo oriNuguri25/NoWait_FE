@@ -70,7 +70,7 @@ const MyWaitingDetail = ({
       // 애니메이션 완료 후 방향 리셋
       const timer = setTimeout(() => {
         setAnimationDirection(null);
-      }, 300);
+      }, 600);
 
       prevIndexRef.current = currentIndex;
 
@@ -193,17 +193,19 @@ const MyWaitingDetail = ({
             <div className="text-headline-22-bold text-black-90 flex items-baseline justify-center gap-1">
               <span>내 앞 대기</span>
               <span className="text-primary flex items-baseline">
-                <span
-                  key={animationKey}
-                  className={`text-22-bold ${
-                    animationDirection === "up"
-                      ? "animate-number-slide-up"
-                      : animationDirection === "down"
-                      ? "animate-number-slide-down"
-                      : ""
-                  }`}
-                >
-                  {items[currentIndex]?.waitingCount || 0}
+                <span className="relative inline-block overflow-hidden">
+                  <span
+                    key={animationKey}
+                    className={`text-22-bold inline-block ${
+                      animationDirection === "up"
+                        ? "animate-number-slide-up"
+                        : animationDirection === "down"
+                        ? "animate-number-slide-down"
+                        : ""
+                    }`}
+                  >
+                    {items[currentIndex]?.waitingCount || 0}
+                  </span>
                 </span>
                 <span>팀</span>
               </span>
