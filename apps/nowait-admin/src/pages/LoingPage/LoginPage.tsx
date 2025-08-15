@@ -3,17 +3,18 @@ import { useState } from "react";
 import { usePostLoginMutation } from "../../hooks/usePostAdminLogin.tsx";
 import { useNavigate } from "react-router";
 import { HalfLabelInput } from "./components/HalfLabelInput.tsx";
+import { isAxiosError } from "axios";
 
 const LoginPage = () => {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
+  const [error, setError] = useState("");
 
   const loginMutation = usePostLoginMutation();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     loginMutation.mutate(
       { email: id, password: pw },
       {
@@ -26,11 +27,35 @@ const LoginPage = () => {
           navigate("/admin");
         },
         onError: (err) => {
-          console.error("❌ 로그인 실패:", err);
+          console.log("인증에러");
+          if (isAxiosError(err)) {
+            console.log(err, "로그인 에러 객체");
+
+            if (err.response?.status === 400) {
+              const data = err.response?.data.errors;
+              const message = data.message;
+              const emailErr = data.email;
+              const pwErr = data.password;
+              if (emailErr) setError(emailErr);
+              else if (pwErr) setError(pwErr);
+              else setError(message);
+            } else {
+              if (err.response?.status === 500) {
+                setError("서버 오류가 발생했어요. 잠시 후 다시 시도해주세요.");
+              }
+              setError("아이디 또는 비밀번호를 다시 확인해주세요.");
+            }
+            return;
+          } else {
+            setError("아이디 또는 비밀번호를 다시 확인해주세요.");
+            return;
+          }
         },
       }
     );
   };
+  console.log(error, "에러메세지");
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center px-4 bg-white">
       {/* Logo */}
@@ -71,6 +96,9 @@ const LoginPage = () => {
           로그인
         </button>
       </form>
+      {error.length > 0 && (
+        <span className="mt-[10px] text-primary text-14-regular">{error}</span>
+      )}
     </div>
   );
 };

@@ -33,15 +33,11 @@ const BoothProfileImage = ({
             className="object-cover w-full h-full"
           />
         ) : (
-          <img
-            src={booth_thumbnail}
-            alt="썸네일"
-            className="object-cover w-full h-full"
-          />
+          <img src={booth_thumbnail} alt="썸네일" />
         )}
       </div>
-      <label className="absolute bottom-0 right-0 bg-white w-[38px] h-[38px] rounded-full p-1 border border-[#ECECEC] cursor-pointer">
-        <img src={editIcon} className="w-full h-full" alt="편집" />
+      <label className="absolute flex items-center justify-center bottom-0 right-0 bg-white w-[38px] h-[38px] rounded-full p-1 border border-[#ECECEC] cursor-pointer">
+        <img src={editIcon} alt="편집" />
         <input
           type="file"
           accept="image/*"

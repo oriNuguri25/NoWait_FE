@@ -131,6 +131,11 @@ textarea {
   resize: none;
 }
 
+/* italic(글꼴 기우기 적용 위함 ==> pretendard는 italic체 없어서 강제로 적용) */
+.editor-root {
+  font-synthesis: style weight; /* style 합성 허용 */
+}
+
 .swipeable-list-item__content {
   transform: translateX(0) !important; /* 초기화 */
   transition: transform 0.3s ease;

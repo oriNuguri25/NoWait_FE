@@ -1,22 +1,40 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import AdminSidebar from "../components/AdminSidebar";
 import MobileMenuBar from "../components/MobileMenuBar";
 import { useWindowWidth } from "../hooks/useWindowWidth";
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
+import ConfirmRemoveModal from "../components/ConfirmRemoveModal";
 
 const AdminLayout = () => {
   const width = useWindowWidth();
-
+  const navigate = useNavigate();
   const isCompact = width < 1024;
   const isMobile = width <= 767;
 
   const { pathname } = useLocation();
   const isBoothPage =
     pathname === "/admin/booth" || pathname === "/admin/booth/guides";
+  const [logoutOpen, setLogoutOpen] = useState(false);
+  const handleLogout = () => {
+    setLogoutOpen(false);
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("storeId");
+    navigate("/");
+  };
+
+  // 로그아웃 버튼 클릭시 모달창 띄우기
+  const handleClickLogout = () => {
+    setLogoutOpen(true);
+  };
 
   return (
     <div className={`${isMobile ? "flex flex-col" : "flex"} w-screen`}>
-      {isMobile ? <MobileMenuBar /> : <AdminSidebar />}
+      {isMobile ? (
+        <MobileMenuBar handleClickLogout={handleClickLogout} />
+      ) : (
+        <AdminSidebar handleClickLogout={handleClickLogout} />
+      )}
       <main
         className={`
         flex bg-[#F2F6F9] min-h-screen
@@ -32,6 +50,13 @@ const AdminLayout = () => {
       >
         <Outlet />
       </main>
+      {logoutOpen && (
+        <ConfirmRemoveModal
+          mode="logout"
+          onCancel={() => setLogoutOpen(false)}
+          onConfirm={handleLogout}
+        />
+      )}
     </div>
   );
 };

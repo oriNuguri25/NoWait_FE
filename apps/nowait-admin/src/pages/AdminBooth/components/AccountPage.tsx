@@ -29,7 +29,7 @@ const AccountPage = () => {
       accountNumber: bank + " " + accountName + " " + accountNumber,
     };
 
-    if (!storePayment) {
+    if (!storePayment || typeof storePayment.response === "string") {
       // 결제 정보 없음 → 생성
       createPayment(payload, {
         onSuccess: () => alert("결제 정보가 생성되었습니다."),
@@ -140,48 +140,30 @@ const AccountPage = () => {
   };
 
   useEffect(() => {
-    if (storePayment) {
-      console.log(storePayment, "결제 정보");
+    const res = storePayment?.response;
 
-      setUrls({
-        kakao: storePayment.response.kakaoPayUrl || "",
-        toss: storePayment.response.tossUrl || "",
-        naver: storePayment.response.naverPayUrl || "",
-      });
-
-      const accountInfo = storePayment.response.accountNumber.split(" ");
-      const bank = accountInfo[0];
-      const name = accountInfo[1];
-      const number = accountInfo[2];
-      setBank(bank);
-      setAccountName(name || "");
-      setAccountNumber(number || "");
+    if (!res || typeof res === "string") {
+      setUrls({ kakao: "", toss: "", naver: "" });
+      setBank("IBK 기업");
+      setAccountName("");
+      setAccountNumber("");
+      return;
     }
-  }, [storePayment]);
 
-  useEffect(() => {
-    // URL 패턴 기반 QR 여부 판별
-    setSources({
-      kakao: urls.kakao.startsWith("https://qr.kakaopay.com/")
-        ? "image"
-        : urls.kakao
-        ? "text"
-        : null,
-      toss: urls.toss.startsWith("supertoss://send")
-        ? "image"
-        : urls.toss
-        ? "text"
-        : null,
-      naver: urls.naver.startsWith("https://new-m.pay.naver.com/")
-        ? "image"
-        : urls.naver
-        ? "text"
-        : null,
+    setUrls({
+      kakao: res.kakaoPayUrl ?? "",
+      toss: res.tossUrl ?? "",
+      naver: res.naverPayUrl ?? "",
     });
-  }, [urls]);
-  console.log(storePayment, "결제정보");
 
-  console.log(sources, "url type");
+    // 공백 포함 가능성 고려(예금주에 공백 들어갈 수 있음)
+    const accountInfo = res.accountNumber ?? "";
+    const [bank = "IBK 기업", name = "", ...rest] = accountInfo.split(" ");
+    const number = rest.join(" ");
+    setBank(bank);
+    setAccountName(name);
+    setAccountNumber(number);
+  }, [storePayment]);
 
   return (
     <div>
