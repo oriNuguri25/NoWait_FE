@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import UserApi from "../utils/UserApi";
+import { useApiErrorHandler } from "./useApiErrorHandler";
 
 interface Store {
   storeId: number;
@@ -93,6 +94,8 @@ const fetchStores = async ({
 };
 
 export const useInfiniteStores = () => {
+  const { handleApiError } = useApiErrorHandler();
+
   const {
     data,
     fetchNextPage,
@@ -121,12 +124,13 @@ export const useInfiniteStores = () => {
     return data?.pages.flatMap((page) => page.stores) ?? [];
   }, [data?.pages]);
 
-  // 에러 로깅
+  // 에러 로깅 및 토스트 표시
   useEffect(() => {
     if (error) {
       console.error("주점 데이터 로딩 에러:", error);
+      handleApiError(error);
     }
-  }, [error]);
+  }, [error, handleApiError]);
 
   return {
     stores,
