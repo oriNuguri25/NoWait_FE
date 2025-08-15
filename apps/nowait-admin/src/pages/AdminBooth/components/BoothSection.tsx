@@ -136,9 +136,7 @@ const BoothSection = ({
               isMobile ? "m-0" : "ml-[50px]"
             } h-[115px]`}
           >
-            <span
-              className={`text-title-18-bold text-navy-80 mb-[14px] flex mb-[6px]`}
-            >
+            <span className={`text-title-18-bold text-black-80 flex mb-[6px]`}>
               부스명
             </span>
             {!isMobile && (
@@ -146,7 +144,7 @@ const BoothSection = ({
                 컴퓨터공학과
               </span>
             )}
-            <div className="flex w-full h-full relative">
+            <div className="flex w-full relative">
               <input
                 type="text"
                 value={boothName}
@@ -155,7 +153,7 @@ const BoothSection = ({
                 onBlur={() => setIsFocused(false)}
                 onChange={(e) => setBoothName(removeEmojiAll(e.target.value))}
                 placeholder="부스명을 입력해주세요"
-                className="w-full h-full bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-sm bg-black-5 "
+                className="w-full h-[52px] bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-sm bg-black-5 "
               />
               <span className="absolute right-[20px] top-1/2 -translate-y-1/2 text-13-regular text-black-60">
                 <span className={isFocused ? "text-black" : "text-black-60"}>
