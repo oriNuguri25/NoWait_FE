@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import Toast from "./components/common/toast/Toast";
 import ErrorToast from "./components/common/toast/ErrorToast";
 import { Suspense } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function App() {
   const queryClient = new QueryClient({
@@ -20,6 +21,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <SpeedInsights />
       <BrowserRouter>
         <Suspense fallback={<div>로당중</div>}>
           <Router />
