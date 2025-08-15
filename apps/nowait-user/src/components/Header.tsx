@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.svg?react";
@@ -47,30 +47,9 @@ const HomeHeader = () => {
     window.location.reload();
   };
 
-  // 메뉴가 열릴 때 스크롤 방지
-  useEffect(() => {
-    if (isMenuOpen) {
-      // 현재 스크롤 위치 저장
-      const scrollY = window.scrollY;
-
-      // body 스크롤 방지
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = "100%";
-
-      return () => {
-        // 스크롤 복원
-        document.body.style.position = "";
-        document.body.style.top = "";
-        document.body.style.width = "";
-        window.scrollTo(0, scrollY);
-      };
-    }
-  }, [isMenuOpen]);
-
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-40 flex justify-between items-center py-4 px-5 bg-white/80 backdrop-blur-[100px]">
+      <div className="fixed max-w-[430px] min-w-[360px] w-full top-0 left-1/2 transform -translate-x-1/2 z-40 flex justify-between items-center py-4 px-5 bg-white/80 backdrop-blur-[100px]">
         <button onClick={() => navigate("/")}>
           <Logo className="w-14.5 h-6" />
         </button>
@@ -95,7 +74,7 @@ const HomeHeader = () => {
               onClick={closeMenu}
               className="fixed inset-0 z-50 bg-[#222] flex items-center justify-center"
             >
-              <div className="max-w-[430px] min-w-[360px] w-full h-screen bg-white mx-auto flex flex-col">
+              <div className="max-w-[430px] min-w-[360px] w-full h-svh bg-white mx-auto flex flex-col">
                 {/* 고정된 헤더 */}
                 <div className="flex justify-between items-center pt-4 px-5 flex-shrink-0">
                   <button
