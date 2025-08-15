@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.svg?react";
@@ -46,6 +46,20 @@ const HomeHeader = () => {
     // 새로고침하여 로그인 상태 변경을 즉시 반영
     window.location.reload();
   };
+
+  // 메뉴가 열릴 때 스크롤 방지
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    // 컴포넌트 언마운트 시 스타일 복원
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMenuOpen]);
 
   return (
     <>
