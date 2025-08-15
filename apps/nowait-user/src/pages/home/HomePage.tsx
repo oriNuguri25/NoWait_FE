@@ -156,10 +156,10 @@ const HomePage = () => {
           className="flex flex-row rounded-2xl bg-black-15 gap-3.75 justify-between pl-5 items-center"
         >
           <div className="flex flex-col py-5 gap-1.5">
-            <div className="flex text-18-bold text-black-90">
+            <div className="flex text-title-18-bold text-black-90 leading-[130%]">
               축제 부스 한눈에 찾기
             </div>
-            <div className="flex text-13-regular text-black-80 leading-[130%]">
+            <div className="flex text-sm font-[400] tracking-normal text-[#343434] leading-[130%]">
               지도로 부스의 위치를 확인해 보세요!
             </div>
           </div>
