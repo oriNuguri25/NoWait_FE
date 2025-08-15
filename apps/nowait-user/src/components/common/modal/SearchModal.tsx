@@ -168,14 +168,17 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 bg-white px-5"
           >
-            <div className="max-w-[430px] min-w-[360px] w-full h-full bg-white mx-auto">
+            <div
+              className="max-w-[430px] min-w-[360px] w-full bg-white mx-auto overflow-y-auto"
+              style={{ height: "100vh" }}
+            >
               {/* 검색 헤더 */}
               <motion.div
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -20, opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="flex items-center gap-4 pt-4 mb-10"
+                className="flex items-center gap-4 pt-4 mb-10 sticky top-0 bg-white z-10"
               >
                 <div className="flex-1 relative">
                   <Search_black className="absolute left-4 top-1/2 transform -translate-y-1/2 icon-s text-black-50" />
@@ -184,7 +187,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                     placeholder="주점명, 메뉴, 학과 검색"
                     value={searchQuery}
                     onChange={handleSearchInput}
-                    className="w-full h-12 pl-12 pr-4 bg-black-15 rounded-2xl text-16-regular text-black-60 placeholder:text-16-regular placeholder:text-black-50 focus:outline-none focus:border-primary"
+                    className="w-full h-12 pl-12 pr-4 bg-black-15 rounded-2xl text-16-regular text-black-90 placeholder:text-16-regular placeholder:text-black-50 focus:outline-none focus:border-primary"
                     autoFocus
                   />
                 </div>
@@ -202,7 +205,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 20, opacity: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
-                className="flex-1 overflow-y-auto"
+                className="pb-5"
               >
                 {searchQuery.trim() ? (
                   // 검색 결과 표시
@@ -229,32 +232,36 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                   </div>
                 ) : (
                   // 최근 검색 표시
-                  <div className="flex flex-col gap-4">
-                    <div className="flex text-16-bold leading-[144%] tracking-[-0.01em] text-black-90">
+                  <div className="flex flex-col">
+                    <div className="flex text-16-bold leading-[144%] tracking-[-0.01em] text-black-90 mb-4">
                       최근 검색
                     </div>
                     {recentSearches.length > 0 ? (
-                      recentSearches.map((searchTerm, index) => (
-                        <div
-                          key={index}
-                          className="flex flex-row justify-between"
-                        >
-                          <button
-                            className="flex text-16-regular text-black-90 cursor-pointer"
-                            onClick={() => handleRecentSearchClick(searchTerm)}
+                      <div className="flex flex-col gap-4">
+                        {recentSearches.map((searchTerm, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-row justify-between"
                           >
-                            {searchTerm}
-                          </button>
-                          <div className="flex">
                             <button
-                              className="flex"
-                              onClick={() => removeRecentSearch(searchTerm)}
+                              className="flex text-16-regular text-black-90 cursor-pointer"
+                              onClick={() =>
+                                handleRecentSearchClick(searchTerm)
+                              }
                             >
-                              <Cancel className="icon-xs text-black-60" />
+                              {searchTerm}
                             </button>
+                            <div className="flex">
+                              <button
+                                className="flex"
+                                onClick={() => removeRecentSearch(searchTerm)}
+                              >
+                                <Cancel className="icon-xs text-black-60" />
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      ))
+                        ))}
+                      </div>
                     ) : (
                       <div className="flex justify-center text-16-regular text-black-60 mt-6">
                         최근 검색어가 없습니다

@@ -153,7 +153,7 @@ const WaitingCard = ({ item }: { item: WaitingItem }) => {
         </div>
 
         {/* 상단 번호 */}
-        <div className="absolute top-6 left-6 text-30-semibold text-white-100 z-10">
+        <div className="absolute top-6 left-6 text-[30px] font-semibold tracking-normal text-white-100 z-10">
           #{item.number}
         </div>
 
@@ -161,35 +161,33 @@ const WaitingCard = ({ item }: { item: WaitingItem }) => {
         <div className="absolute bottom-0 left-0 right-0 px-7.5 pt-9 pb-7.5">
           <div className="text-white-100">
             <div className="mb-4">
-              <div className="text-22-bold leading-[150%]">
-                {item.storeName}
-              </div>
+              <div className="text-headline-22-bold">{item.storeName}</div>
               <div className="text-16-regular text-[#DBDBDB]">
                 {item.category}
               </div>
             </div>
             <div className="space-y-1">
               <div className="flex flex-row items-center gap-2">
-                <div className="flex text-bold-16 leading-[150%] text-[#FFFFFF]/60">
+                <div className="flex text-[16px] font-bold leading-[150%] tracking-normal text-[#FFFFFF]/60">
                   인원
                 </div>
-                <div className="flex text-16-regular text-white-100">
+                <div className="flex text-16-regular tracking-normal text-white-100">
                   {item.people}명
                 </div>
               </div>
               <div className="flex flex-row items-center gap-2">
-                <div className="flex text-bold-16 leading-[150%] text-[#FFFFFF]/60">
+                <div className="flex text-[16px] font-bold leading-[150%] tracking-normal text-[#FFFFFF]/60">
                   일시
                 </div>
-                <div className="flex text-16-regular text-white-100">
+                <div className="flex text-16-regular tracking-normal text-white-100">
                   {item.date}
                 </div>
               </div>
               <div className="flex flex-row items-center gap-2">
-                <div className="flex text-bold-16 leading-[150%] text-[#FFFFFF]/60">
+                <div className="flex text-[16px] font-bold leading-[150%] tracking-normal text-[#FFFFFF]/60">
                   위치
                 </div>
-                <div className="flex text-16-regular text-white-100">
+                <div className="flex text-16-regular tracking-normal text-white-100">
                   {item.location}
                 </div>
               </div>
@@ -245,7 +243,7 @@ const StoreCardComponent = ({
       </div>
       <div className="flex flex-col flex-1 min-w-0">
         <div className="flex flex-row gap-2 items-center min-w-0">
-          <div className="text-title-16-bold text-black-90 text-start truncate flex-shrink min-w-0">
+          <div className="text-title-16-semibold text-black-90 text-start truncate flex-shrink min-w-0">
             {name}
           </div>
           {status === "open" && (waitingCount || 0) > 0 ? (
@@ -318,8 +316,10 @@ const HomeCardComponent = ({
             <WaitingCardIcon waitingCount={waitingCount || 0} />
           )}
           <div className="flex flex-col">
-            <div className="text-16-bold text-white-100">{storeName}</div>
-            <div className="text-12-regular text-black-60">
+            <div className="text-title-16-semibold text-white-100">
+              {storeName}
+            </div>
+            <div className="text-13-regular text-black-60">
               {departmentName}
             </div>
           </div>
