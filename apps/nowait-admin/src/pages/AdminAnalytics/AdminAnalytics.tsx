@@ -24,13 +24,13 @@ const AdminAnalytics = () => {
   const { data: sales } = useGetSalesByDate(formatted);
   const { data: popularMenu } = useGetPopularMenu();
   console.log(boothRank, "부스별 판매순위");
-  console.log(sales, "판매량");
+  console.log(sales, formatted, "판매량");
+
   console.log(popularMenu, "인기 메뉴");
-  const disabled = boothRank?.length === 0;
+  const boothDisabled = boothRank?.length === 0;
   const storeId = localStorage.getItem("storeId");
-  if (typeof sales === "string") {
-    return <p>매출 데이터가 없습니다.</p>;
-  }
+  const saleDisabled = typeof sales === "string" || sales === undefined;
+  const poupularMenuDisabled = popularMenu?.length === 0;
 
   const boothRankingData: BoothRanking[] =
     boothRank && boothRank.length > 0
@@ -51,13 +51,14 @@ const AdminAnalytics = () => {
         isTablet={isTablet}
         sales={sales}
         popularMenu={popularMenu}
-        disabled={disabled}
+        saleDisabled={saleDisabled}
+        poupularMenuDisabled={poupularMenuDisabled}
       />
       <BoothSalesRankingCard
         isTablet={isTablet}
         date={formatted}
         data={boothRankingData}
-        disabled={disabled}
+        disabled={boothDisabled}
       />
     </div>
   );

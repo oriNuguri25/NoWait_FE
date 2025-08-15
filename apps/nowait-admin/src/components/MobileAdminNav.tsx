@@ -9,7 +9,6 @@ import boothIconActive from "../assets/boothIconActive.svg";
 import cancelIcon from "../assets/Cancel.svg";
 import logoutIcon from "../assets/log-out.svg";
 import { useLocation, useNavigate } from "react-router";
-
 const menuItems = [
   { label: "대기", icon: waitIcon, activeIcon: waitIconActive, path: "/admin" },
   {
@@ -32,14 +31,17 @@ const menuItems = [
   },
 ];
 
-const MobileAdminNav = ({ onClose }: { onClose: () => void }) => {
+const MobileAdminNav = ({
+  onClose,
+  handleClickLogout,
+}: {
+  onClose: () => void;
+  handleClickLogout: () => void;
+}) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("storeId");
-    navigate("/");
-  };
+  const storeId = Number(localStorage.getItem("storeId"));
+
   return (
     <div
       className={`w-[210px] h-full bg-white flex flex-col px-4 py-6 fixed top-0 right-0 z-50 `}
@@ -56,6 +58,9 @@ const MobileAdminNav = ({ onClose }: { onClose: () => void }) => {
         <ul className="flex flex-col gap-2">
           {menuItems.map(({ label, icon, activeIcon, path }) => {
             const isActive = pathname === path;
+            if (label === "주문") {
+              path = `/admin/orders/${storeId}`;
+            }
             return (
               <li
                 key={label}
@@ -79,7 +84,7 @@ const MobileAdminNav = ({ onClose }: { onClose: () => void }) => {
         {/* 하단 - 로그아웃 */}
         <div
           className="flex justify-start items-center text-[#999999] text-16-semibold gap-[2.5px] px-3 mt-8"
-          onClick={handleLogout}
+          onClick={handleClickLogout}
         >
           <img src={logoutIcon} />
           {"로그아웃"}

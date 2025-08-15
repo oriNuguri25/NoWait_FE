@@ -14,23 +14,21 @@ import statIconActive from "../assets/statIconActive.svg";
 import boothIconActive from "../assets/boothIconActive.svg";
 import logout from "../assets/log-out.svg";
 
-const AdminSidebar = () => {
+const AdminSidebar = ({
+  handleClickLogout,
+}: {
+  handleClickLogout: () => void;
+}) => {
   const width = useWindowWidth();
   const navigate = useNavigate();
 
-  // 375px 이하에서는 사이드바 완전히 숨김
-  if (width <= 375) return null;
+  // 768px 이하에서는 사이드바 완전히 숨김
   if (width < 768) return null;
 
   const isCompact = width < 1024;
   const location = useLocation();
   const pathname = location.pathname;
-
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("storeId");
-    navigate("/");
-  };
+  const storeId = Number(localStorage.getItem("storeId"));
 
   return (
     <aside
@@ -79,10 +77,14 @@ const AdminSidebar = () => {
             compact={isCompact}
           />
           <NavItem
-            to="/admin/orders"
+            to={`/admin/orders/${storeId}`}
             icon={
               <img
-                src={pathname === "/admin/orders" ? orderIconActive : orderIcon}
+                src={
+                  pathname.includes("/admin/orders")
+                    ? orderIconActive
+                    : orderIcon
+                }
                 alt="주문"
                 className="w-5 h-5"
               />
@@ -120,9 +122,11 @@ const AdminSidebar = () => {
       </div>
 
       {/* 하단: 프로필 */}
-      <div className="flex items-center gap-2" onClick={handleLogout}>
+      <div className="flex items-center gap-2" onClick={handleClickLogout}>
         <img src={logout} alt="gnb" />
-        <span className="text-16-semibold text-black-55">로그아웃</span>
+        {!isCompact && (
+          <span className="text-16-semibold text-black-55">로그아웃</span>
+        )}
       </div>
     </aside>
   );

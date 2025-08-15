@@ -1,9 +1,11 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import HomeHeader from "../../components/Header";
 import InfiniteStoreList from "./components/InfiniteStoreList";
 import WaitingListModal from "./components/WaitingListModal";
 import MyWaitingDetail from "./components/MyWaitingDetail";
 import BannerMap from "../../assets/icon/banner_img.svg?react";
+import UpIcon from "../../assets/icon/upIcon.svg?react";
 import { useMyWaitingList } from "../../hooks/useMyWaitingList";
 import { useWaitingItems } from "../../hooks/useWaitingItems";
 import SortWaitingCard from "./components/SortWaitingCard";
@@ -13,13 +15,21 @@ import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortOption, setSortOption] = useState("대기 적은 순");
   const [isWaitingDetailOpen, setIsWaitingDetailOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0); // 슬라이드 상태를 로컬로 관리
+  const [showUpButton, setShowUpButton] = useState(false); // upIcon 표시 여부
 
   // 정렬 옵션에 따른 order 설정
   const order: "asc" | "desc" = sortOption === "대기 적은 순" ? "asc" : "desc";
+
+  // 홈페이지 마운트 시 캐시된 데이터 새로고침
+  useEffect(() => {
+    // stores 쿼리의 데이터를 백그라운드에서 새로 가져오기
+    queryClient.invalidateQueries({ queryKey: ["stores"] });
+  }, [queryClient]);
 
   // 내 대기 목록 가져오기
   const { myWaitingList, refetch: refetchMyWaitingList } = useMyWaitingList();
@@ -66,6 +76,30 @@ const HomePage = () => {
     }
   }, [myWaitingList]);
 
+  // 스크롤 이벤트 핸들러
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPercentage = (scrollTop + windowHeight) / documentHeight;
+
+      // 스크롤이 80% 이상일 때 upIcon 표시
+      setShowUpButton(scrollPercentage > 0.8);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // 화면 최상단으로 이동하는 함수
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
+
   // MyWaitingCard에 전달할 props를 메모이제이션
   const myWaitingCardProps = useMemo(
     () => ({
@@ -101,8 +135,11 @@ const HomePage = () => {
   );
 
   return (
-    <div className="flex flex-col">
+    <div className="relative">
       <HomeHeader />
+
+      {/* 고정된 헤더 아래 여백 */}
+      <div className="h-20"></div>
 
       {/* 내 대기 카드 섹션 - 내 대기 목록이 있을 때만 표시 */}
       {myWaitingList.length > 0 && (
@@ -146,6 +183,17 @@ const HomePage = () => {
           onClose={handleWaitingDetailClose}
           waitingItems={waitingItems}
         />
+      )}
+
+      {/* UpIcon - 스크롤이 80% 이상일 때 표시 */}
+      {showUpButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-10 right-5 z-30 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center"
+          aria-label="화면 최상단으로 이동"
+        >
+          <UpIcon className="w-10 h-10" />
+        </button>
       )}
     </div>
   );
