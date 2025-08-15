@@ -117,6 +117,9 @@ export const useInfiniteStores = () => {
     },
     retry: 3, // 실패 시 3번 재시도
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    staleTime: 1000 * 60 * 5, // 5분간 데이터를 fresh로 유지
+    gcTime: 1000 * 60 * 10, // 10분간 캐시 유지
+    refetchOnWindowFocus: false, // 윈도우 포커스 시 자동 refetch 비활성화
   });
 
   // 모든 페이지의 stores를 하나의 배열로 합치기
