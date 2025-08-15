@@ -1,4 +1,3 @@
-import dropIcon from "../../../assets/drop_down.svg";
 import { DropdownSelect } from "./DropDown/DropDownSelect";
 
 // 오전/오후 + 시 조합 (01시~12시)
