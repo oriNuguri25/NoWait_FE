@@ -8,6 +8,7 @@ import type { ProfileImage } from "../types/booth";
 import deletBttn from "../../../assets/booth/del.svg";
 import PreviewModal from "./Modal/PreviewModal";
 import { useDeleteBannerImage } from "../../../hooks/booth/menu/useDeleteBannerImage";
+import { useRemoveEmoji } from "../../../hooks/useRemoveEmoji";
 
 const BoothSection = ({
   departName,
@@ -35,6 +36,7 @@ const BoothSection = ({
   setEndHour,
   endMinute,
   setEndMinute,
+  isMobile,
 }: {
   departName: string;
   boothName: string;
@@ -61,9 +63,11 @@ const BoothSection = ({
   setEndHour: (val: string) => void;
   endMinute: string;
   setEndMinute: (val: string) => void;
+  isMobile: boolean;
 }) => {
   const [showPreview, setShowPreview] = useState(false);
   const { mutate: deleteBannerImage } = useDeleteBannerImage();
+  const { removeEmojiAll } = useRemoveEmoji();
   console.log(bannerImages, "배너이미지들");
 
   return (
@@ -71,15 +75,17 @@ const BoothSection = ({
       <div className="flex flex-col items-center pb-[50px] max-w-[614px]">
         <div className="flex justify-between items-center w-full my-[40px]">
           {/* 좌측 타이틀 */}
-          <h2 className="text-headline-22-bold text-black-80">부스 프로필</h2>
+          <h2 className="text-title-18-bold text-black-80">부스 프로필</h2>
 
           {/* 우측 버튼 */}
-          <button
-            onClick={() => setShowPreview(true)}
-            className="px-4 py-1 rounded-lg w-[68px] text-14-semibold text-black-70 bg-black-20 px-[10px] py-[7.5px]"
-          >
-            미리보기
-          </button>
+          {!isMobile && (
+            <button
+              onClick={() => setShowPreview(true)}
+              className="px-[10px] py-[7.5px] rounded-lg flex justify-center items-center h-[34px] text-14-semibold text-black-70 bg-black-20"
+            >
+              미리보기
+            </button>
+          )}
           {showPreview && (
             <PreviewModal
               onClose={() => setShowPreview(false)}
@@ -115,31 +121,42 @@ const BoothSection = ({
             />
           )}
         </div>
-        <div className="flex w-full">
+        <div
+          className={` w-full ${
+            isMobile ? "flex flex-col items-center" : "flex"
+          }`}
+        >
           <BoothProfileImage
             profileImage={profileImage}
             setProfileImage={setProfileImage}
+            isMobile={isMobile}
           />
-          <div className="flex flex-col w-full ml-[50px] h-[115px]">
-            <span className="text-title-18-bold text-gray-500 mb-[6px] flex">
+          <div
+            className={`flex flex-col w-full ${
+              isMobile ? "m-0" : "ml-[50px]"
+            } h-[115px]`}
+          >
+            <span className={`text-title-18-bold text-black-80 flex mb-[6px]`}>
               부스명
             </span>
-            <span className="text-sm text-gray-500 mb-[14px] flex">
-              컴퓨터공학과
-            </span>
-            <div className="flex w-full h-full relative">
+            {!isMobile && (
+              <span className="text-14-regular text-black-70 mb-[14px] flex">
+                컴퓨터공학과
+              </span>
+            )}
+            <div className="flex w-full relative">
               <input
                 type="text"
                 value={boothName}
                 maxLength={14}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
-                onChange={(e) => setBoothName(e.target.value)}
+                onChange={(e) => setBoothName(removeEmojiAll(e.target.value))}
                 placeholder="부스명을 입력해주세요"
-                className="w-full h-full bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-sm bg-black-5 "
+                className="w-full h-[52px] bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-14-regular text-black-90 bg-black-5 "
               />
-              <span className="absolute right-[20px] top-1/2 -translate-y-1/2 text-xs text-gray-400">
-                <span className={isFocused ? "text-black" : "text-gray-400"}>
+              <span className="absolute right-[20px] top-1/2 -translate-y-1/2 text-13-regular text-black-60">
+                <span className={isFocused ? "text-black" : "text-black-60"}>
                   {boothName.length}
                 </span>{" "}
                 / 14
@@ -151,28 +168,42 @@ const BoothSection = ({
 
       {/* 부스 소개 */}
       <div className="flex flex-col mb-[50px] relative max-w-[614px]">
-        <label className="block font-semibold">부스 소개</label>
-        <p className="mt-[6px] mb-[14px] text-14-regular text-black-60">
-          부스를 자유롭게 소개해주세요
-        </p>
+        <label
+          className={`block text-title-18-bold text-black-80 ${
+            isMobile ? "mb-[14px]" : ""
+          }`}
+        >
+          부스 소개
+        </label>
+        {!isMobile && (
+          <p className="mt-[6px] mb-[14px] text-14-regular text-black-70">
+            부스를 자유롭게 소개해주세요
+          </p>
+        )}
         <textarea
           maxLength={250}
-          className="w-full h-32 border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white rounded-lg text-sm px-[20px] pt-[16px] pr-[147px] pb-[33px]"
+          className="w-full h-32 border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white rounded-lg text-14-regular text-black-90 px-[20px] pt-[16px] pr-[147px] pb-[33px]"
           onFocus={() => setIsTextareaFocused(true)}
           onBlur={() => setIsTextareaFocused(false)}
           placeholder={isTextareaFocused ? "" : "부스 소개를 입력해주세요"}
           value={boothIntro}
           onChange={(e) => setBoothIntro(e.target.value)}
         />
-        <div className="absolute bottom-[12px] right-[20px] text-right text-xs text-gray-400">
+        <div className="absolute bottom-[12px] right-[20px] text-right text-13-regular text-black-60">
           {boothIntro.length} / 250
         </div>
       </div>
 
       {/* 배너 이미지 */}
       <div className="flex flex-col mb-[50px] max-w-[614px]">
-        <label className="block font-semibold">배너 이미지</label>
-        <p className="text-14-regular text-black-60 mb-[14px]">
+        <label
+          className={`block text-title-18-bold text-black-80 ${
+            isMobile ? "mb-[6px]" : ""
+          }`}
+        >
+          배너 이미지
+        </label>
+        <p className="text-14-regular text-black-70 mt-[6px] mb-[14px]">
           첫번째 이미지는 우리 부스를 대표하는 이미지로 설정돼요
         </p>
         <div className="flex gap-[10px]">
@@ -181,7 +212,7 @@ const BoothSection = ({
             .map((_, i) => (
               <label
                 key={i}
-                className="w-[150px] h-25 bg-black-5 border border-[#DDDDDD] rounded-xl flex items-center justify-center cursor-pointer"
+                className="w-[150px] h-[99px] bg-black-5 border border-[#DDDDDD] rounded-xl flex items-center justify-center cursor-pointer"
               >
                 <input
                   type="file"
@@ -280,8 +311,18 @@ const BoothSection = ({
         setEndHour={setEndHour}
         endMinute={endMinute}
         setEndMinute={setEndMinute}
+        isMobile={isMobile}
       />
-
+      <label
+        className={`block text-title-18-bold text-black-80 ${
+          isMobile ? "mb-[6px]" : ""
+        }`}
+      >
+        공지 사항
+      </label>
+      <p className="text-14-regular text-black-70 mt-[6px] mb-[14px]">
+        방문자에게 보여질 공지사항을 작성해주세요 (선택)
+      </p>
       {/* 공지사항 */}
       <NoticeEditor
         noticeTitle={noticeTitle}

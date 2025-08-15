@@ -290,7 +290,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                           className="flex items-center w-full gap-4"
                           onClick={() => !editMode && openEditModal(menu)}
                         >
-                          <div className="w-[48px] h-[48px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
+                          <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
                             <img
                               src={menu.imageUrl}
                               className="w-full h-full object-cover"

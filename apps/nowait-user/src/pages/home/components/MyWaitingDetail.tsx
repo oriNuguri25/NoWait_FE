@@ -78,6 +78,76 @@ const MyWaitingDetail = ({
     }
   }, [currentIndex]);
 
+  // 상하 스크롤만 방지 (좌우 스크롤은 허용)
+  useEffect(() => {
+    // 터치 시작 위치를 저장할 변수
+    let touchStartY = 0;
+    let touchStartX = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        touchStartY = e.touches[0].clientY;
+        touchStartX = e.touches[0].clientX;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        const touchY = e.touches[0].clientY;
+        const touchX = e.touches[0].clientX;
+
+        const deltaY = Math.abs(touchY - touchStartY);
+        const deltaX = Math.abs(touchX - touchStartX);
+
+        // 상하 움직임이 좌우 움직임보다 클 때만 스크롤 방지
+        if (deltaY > deltaX && deltaY > 10) {
+          e.preventDefault();
+        }
+      }
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      // 상하 스크롤만 방지 (deltaY가 0이 아닌 경우)
+      if (Math.abs(e.deltaY) > 0) {
+        e.preventDefault();
+      }
+    };
+
+    // 터치 이벤트 리스너
+    document.addEventListener("touchstart", handleTouchStart, {
+      passive: true,
+    });
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    // 휠 이벤트 리스너
+    document.addEventListener("wheel", handleWheel, { passive: false });
+
+    // 키보드 이벤트로 인한 상하 스크롤 방지
+    document.addEventListener("keydown", (e) => {
+      if (
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "PageUp" ||
+        e.key === "PageDown" ||
+        e.key === "Home" ||
+        e.key === "End"
+      ) {
+        e.preventDefault();
+      }
+    });
+
+    // body 스크롤 방지
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("wheel", handleWheel);
+      document.body.style.overflow = originalStyle;
+    };
+  }, []);
+
   // 스크롤 이벤트 핸들러
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -125,17 +195,13 @@ const MyWaitingDetail = ({
               <span className="text-primary flex items-baseline">
                 <span
                   key={animationKey}
-                  className={`text-22-bold transform-style-preserve-3d ${
+                  className={`text-22-bold ${
                     animationDirection === "up"
                       ? "animate-number-slide-up"
                       : animationDirection === "down"
                       ? "animate-number-slide-down"
                       : ""
                   }`}
-                  style={{
-                    transformStyle: "preserve-3d",
-                    perspective: "1000px",
-                  }}
                 >
                   {items[currentIndex]?.waitingCount || 0}
                 </span>

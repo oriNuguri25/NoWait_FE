@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useToastStore } from "../../../stores/toastStore";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Toast = () => {
   const { message, isOpen, clearToastTimeout } = useToastStore();
@@ -10,8 +10,6 @@ const Toast = () => {
       clearToastTimeout();
     };
   }, [clearToastTimeout]);
-
-  if (!isOpen) return null;
 
   return (
     <div className="fixed left-1/2 bottom-[118px] -translate-x-1/2 z-50">

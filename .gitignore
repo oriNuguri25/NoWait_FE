@@ -1,16 +1,33 @@
-// gitignore
+# OS & logs
 .DS_Store
-node_modules
-.turbo
 *.log
-dist-ssr
 *.local
 .env
-.cache
+
+# Build outputs
+dist-ssr
 server/dist
 public/dist
-.yarn/install-state.gz
+.turbo
+.cache
 
-.pnp
-.pnp.js
-.yarn/install-state.gz 
+# Node
+node_modules
+
+# Yarn Berry (Zero-Install)
+# 기본적으로 .yarn 아래는 무시하되, zero-install에 필요한 것들은 예외 처리해 커밋합니다.
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+!.yarn/install-state.gz   # 브랜치 전환 시 재설치 방지에 도움
+
+# PnP 런타임 파일은 커밋 (zero-install에 필요)
+!.pnp.cjs
+!.pnp.loader.mjs
+
+# 생성되더라도 굳이 커밋할 필요 없는 PnP 바이너리 데이터
+.pnp.data.mdb

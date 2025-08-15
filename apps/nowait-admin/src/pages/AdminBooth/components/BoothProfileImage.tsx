@@ -6,9 +6,11 @@ import type { ProfileImage } from "../types/booth";
 const BoothProfileImage = ({
   profileImage,
   setProfileImage,
+  isMobile,
 }: {
   profileImage: ProfileImage;
   setProfileImage: React.Dispatch<React.SetStateAction<ProfileImage>>;
+  isMobile: boolean;
 }) => {
   const getImageSrc = (): string => {
     if (profileImage instanceof File) {
@@ -24,7 +26,11 @@ const BoothProfileImage = ({
     return booth_thumbnail;
   };
   return (
-    <div className="relative self-start">
+    <div
+      className={`relative self-start ${
+        isMobile ? "left-1/2 -translate-x-1/2" : ""
+      }`}
+    >
       <div className="h-25 w-25 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
         {profileImage ? (
           <img
@@ -33,15 +39,11 @@ const BoothProfileImage = ({
             className="object-cover w-full h-full"
           />
         ) : (
-          <img
-            src={booth_thumbnail}
-            alt="썸네일"
-            className="object-cover w-full h-full"
-          />
+          <img src={booth_thumbnail} alt="썸네일" />
         )}
       </div>
-      <label className="absolute bottom-0 right-0 bg-white w-[38px] h-[38px] rounded-full p-1 border border-[#ECECEC] cursor-pointer">
-        <img src={editIcon} className="w-full h-full" alt="편집" />
+      <label className="absolute flex items-center justify-center bottom-0 right-0 bg-white w-[38px] h-[38px] rounded-full p-1 border border-[#ECECEC] cursor-pointer">
+        <img src={editIcon} alt="편집" />
         <input
           type="file"
           accept="image/*"

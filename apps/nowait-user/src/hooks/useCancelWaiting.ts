@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import UserApi from "../utils/UserApi";
+import { useApiErrorHandler } from "./useApiErrorHandler";
 
 // 대기 취소 API 호출 함수
 const cancelWaiting = async (storeId: number): Promise<void> => {
@@ -25,6 +26,7 @@ const cancelWaiting = async (storeId: number): Promise<void> => {
 
 export const useCancelWaiting = () => {
   const queryClient = useQueryClient();
+  const { handleApiError } = useApiErrorHandler();
 
   return useMutation({
     mutationFn: cancelWaiting,
@@ -35,6 +37,7 @@ export const useCancelWaiting = () => {
     },
     onError: (error) => {
       console.error("대기 취소 중 오류 발생:", error);
+      handleApiError(error);
     },
   });
 };

@@ -222,28 +222,33 @@ const AdminHome = () => {
       </section>
 
       <section id="대기자 목록" className="flex flex-col w-full">
-        {/* <h1 className="title-20-bold mb-5">대기자 목록</h1> */}
-        <div className="flex justify-between items-center overflow-x-auto scrollbar-hide relative mask-fade-right">
-          <div className="flex flex-wrap whitespace-nowrap  [@media(max-width:431px)]:flex-nowrap -mr-5">
-            {tabLabels.map(({ label, count }) => (
-              <RoundTabButton
-                key={label}
-                label={label}
-                active={activeTab === label}
-                onClick={() => setActiveTab(label)}
-                count={label === "전체" ? undefined : count}
-              />
-            ))}
+        <div className="relative w-full">
+          <div className="mask-fade-right">
+            <div className="overflow-x-auto scrollbar-hide pr-12">
+              <div className="flex flex-wrap whitespace-nowrap [@media(max-width:431px)]:flex-nowrap -mr-5">
+                {tabLabels.map(({ label, count }) => (
+                  <RoundTabButton
+                    key={label}
+                    label={label}
+                    active={activeTab === label}
+                    onClick={() => setActiveTab(label)}
+                    count={label === "전체" ? undefined : count}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
-          <div
-            className="hover:rotate-90 transition-transform duration-500 cursor-pointer"
+
+          <button
+            type="button"
+            aria-label="새로고침"
             onClick={handleRefresh}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10
+                 hover:rotate-90 active:rotate-90 transition-transform duration-500
+                 cursor-pointer [@media(max-width:431px)]:hidden"
           >
-            <img
-              src={refreshIcon}
-              className="[@media(max-width:431px)]:hidden"
-            />
-          </div>
+            <img src={refreshIcon} alt="" className="block" />
+          </button>
         </div>
       </section>
 
@@ -284,6 +289,7 @@ const AdminHome = () => {
       </div>
       {showModal && targetReservation && (
         <ConfirmRemoveModal
+          mode={null}
           onCancel={() => setShowModal(false)}
           onConfirm={() => {
             handleClose(targetReservation.id, targetReservation.userId);
