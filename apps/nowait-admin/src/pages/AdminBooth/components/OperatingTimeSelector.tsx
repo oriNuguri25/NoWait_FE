@@ -35,9 +35,11 @@ const OperatingTimeSelector = ({
   isMobile: boolean;
 }) => {
   return (
-    <div className="mb-8 max-w-[614px]">
-      <label className="block text-title-18-bold mb-1">운영 시간</label>
-      <p className="text-14-regular text-gray-400 mb-3">
+    <div className="mb-[50px] max-w-[614px]">
+      <label className="block text-title-18-bold text-black-80 mb-1">
+        운영 시간
+      </label>
+      <p className="text-14-regular text-black-70 mb-3">
         부스의 운영 시간을 설정해 주세요
       </p>
       <div

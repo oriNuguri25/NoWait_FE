@@ -153,7 +153,7 @@ const BoothSection = ({
                 onBlur={() => setIsFocused(false)}
                 onChange={(e) => setBoothName(removeEmojiAll(e.target.value))}
                 placeholder="부스명을 입력해주세요"
-                className="w-full h-[52px] bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-sm bg-black-5 "
+                className="w-full h-[52px] bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-14-regular text-black-90 bg-black-5 "
               />
               <span className="absolute right-[20px] top-1/2 -translate-y-1/2 text-13-regular text-black-60">
                 <span className={isFocused ? "text-black" : "text-black-60"}>
@@ -169,20 +169,20 @@ const BoothSection = ({
       {/* 부스 소개 */}
       <div className="flex flex-col mb-[50px] relative max-w-[614px]">
         <label
-          className={`block text-title-18-bold text-navy-80 ${
+          className={`block text-title-18-bold text-black-80 ${
             isMobile ? "mb-[14px]" : ""
           }`}
         >
           부스 소개
         </label>
         {!isMobile && (
-          <p className="mt-[6px] mb-[14px] text-14-regular text-black-60">
+          <p className="mt-[6px] mb-[14px] text-14-regular text-black-70">
             부스를 자유롭게 소개해주세요
           </p>
         )}
         <textarea
           maxLength={250}
-          className="w-full h-32 border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white rounded-lg text-14-regular px-[20px] pt-[16px] pr-[147px] pb-[33px]"
+          className="w-full h-32 border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white rounded-lg text-14-regular text-black-90 px-[20px] pt-[16px] pr-[147px] pb-[33px]"
           onFocus={() => setIsTextareaFocused(true)}
           onBlur={() => setIsTextareaFocused(false)}
           placeholder={isTextareaFocused ? "" : "부스 소개를 입력해주세요"}
@@ -197,11 +197,13 @@ const BoothSection = ({
       {/* 배너 이미지 */}
       <div className="flex flex-col mb-[50px] max-w-[614px]">
         <label
-          className={`block text-title-18-bold ${isMobile ? "mb-[6px]" : ""}`}
+          className={`block text-title-18-bold text-black-80 ${
+            isMobile ? "mb-[6px]" : ""
+          }`}
         >
           배너 이미지
         </label>
-        <p className="text-14-regular text-black-60 mb-[14px]">
+        <p className="text-14-regular text-black-70 mt-[6px] mb-[14px]">
           첫번째 이미지는 우리 부스를 대표하는 이미지로 설정돼요
         </p>
         <div className="flex gap-[10px]">
@@ -311,7 +313,16 @@ const BoothSection = ({
         setEndMinute={setEndMinute}
         isMobile={isMobile}
       />
-
+      <label
+        className={`block text-title-18-bold text-black-80 ${
+          isMobile ? "mb-[6px]" : ""
+        }`}
+      >
+        공지 사항
+      </label>
+      <p className="text-14-regular text-black-70 mt-[6px] mb-[14px]">
+        방문자에게 보여질 공지사항을 작성해주세요 (선택)
+      </p>
       {/* 공지사항 */}
       <NoticeEditor
         noticeTitle={noticeTitle}
