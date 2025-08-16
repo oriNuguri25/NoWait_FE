@@ -31,10 +31,10 @@ jobs:
       - name: Completion Summary
         if: success()
         env:
-          GH_TOKEN: ${{ github.token }}   # ← 추가
+          GH_TOKEN: ${{ github.token }}   # gh가 자동으로 사용
         run: |
           # 전체 소요 시간 계산 (워크플로 런 시작 시각 → 현재)
-          RUN_START_ISO=$(gh api -H "Authorization: Bearer $GITHUB_TOKEN" repos/${{ github.repository }}/actions/runs/${{ github.run_id }} --jq .run_started_at)
+          RUN_START_ISO=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }} --jq .run_started_at)
           RUN_START_S=$(date -u -d "$RUN_START_ISO" +%s)
           NOW_S=$(date -u +%s)
           ELAPSED=$((NOW_S - RUN_START_S))
