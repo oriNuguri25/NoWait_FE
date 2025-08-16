@@ -7,6 +7,7 @@ import CookedPage from "./CookedPage";
 import { useGetOrderList } from "../../hooks/useGetOrderList";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
 import type { Order } from "../../types/order";
+import { DropdownLoader } from "@repo/ui";
 
 const AdminOrders = () => {
   const { storeId: storeIdParam } = useParams<{ storeId: string }>();
@@ -216,9 +217,7 @@ const AdminOrders = () => {
                 >
                   {isLoading ? (
                     <div className="flex flex-col items-center justify-center h-full text-center">
-                      <div className="text-16-medium text-black-60">
-                        로딩 중...
-                      </div>
+                      <DropdownLoader />
                     </div>
                   ) : paymentWaitingData.length > 0 ? (
                     paymentWaitingData.map((payment) => (
@@ -281,9 +280,7 @@ const AdminOrders = () => {
                 <div className="flex flex-col gap-7.5 rounded-b-2xl border border-t-0 border-black-30 flex-1 bg-white px-5.5 py-4 overflow-y-auto min-h-0">
                   {isLoading ? (
                     <div className="flex flex-col items-center justify-center h-full text-center">
-                      <div className="text-16-medium text-black-60">
-                        로딩 중...
-                      </div>
+                      <DropdownLoader />
                     </div>
                   ) : cookingData.length > 0 ? (
                     cookingData.map((cooking) => (
@@ -399,9 +396,7 @@ const AdminOrders = () => {
               <div className="flex flex-col px-5.5 py-4 gap-7.5 bg-white rounded-b-2xl border-t-0 border-black-25 border flex-1 min-h-0 overflow-y-auto">
                 {isLoading ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
-                    <div className="text-16-medium text-black-60">
-                      로딩 중...
-                    </div>
+                    <DropdownLoader />
                   </div>
                 ) : cookingData.length > 0 ? (
                   cookingData.map((cooking) => (
@@ -442,9 +437,7 @@ const AdminOrders = () => {
               >
                 {isLoading ? (
                   <div className="flex flex-col items-center justify-center h-full text-center px-5 py-4">
-                    <div className="text-16-medium text-black-60">
-                      로딩 중...
-                    </div>
+                    <DropdownLoader />
                   </div>
                 ) : cookedData.length > 0 ? (
                   cookedData.map((cooked) => (

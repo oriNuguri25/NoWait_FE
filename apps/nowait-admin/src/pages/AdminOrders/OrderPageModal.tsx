@@ -1,20 +1,6 @@
 import { useUpdateOrderStatus } from "../../hooks/useUpdateOrderStatus";
 import { getTableBackgroundColor } from "../../utils/tableColors";
-
-// CSS 애니메이션 스타일
-const dropDownAnimation = `
-  @keyframes dropDown {
-    0%, 20% {
-      transform: translateY(0);
-    }
-    40% {
-      transform: translateY(-6px);
-    }
-    60%, 100% {
-      transform: translateY(0);
-    }
-  }
-`;
+import { DropdownLoader } from "@repo/ui";
 
 // Payment Check Modal
 interface PaymentCheckModalProps {
@@ -105,38 +91,7 @@ const PaymentCheckModal = ({
           }`}
           onClick={updateOrderStatus.isPending ? undefined : handleConfirm}
         >
-          {updateOrderStatus.isPending ? (
-            <>
-              <style>{dropDownAnimation}</style>
-              <div className="flex items-center justify-center">
-                <div className="flex space-x-1">
-                  <div
-                    className="w-1 h-1 bg-white rounded-full"
-                    style={{
-                      animation: "dropDown 1.4s infinite",
-                      animationDelay: "0s",
-                    }}
-                  ></div>
-                  <div
-                    className="w-1 h-1 bg-white rounded-full"
-                    style={{
-                      animation: "dropDown 1.4s infinite",
-                      animationDelay: "0.2s",
-                    }}
-                  ></div>
-                  <div
-                    className="w-1 h-1 bg-white rounded-full"
-                    style={{
-                      animation: "dropDown 1.4s infinite",
-                      animationDelay: "0.4s",
-                    }}
-                  ></div>
-                </div>
-              </div>
-            </>
-          ) : (
-            "확인"
-          )}
+          {updateOrderStatus.isPending ? <DropdownLoader /> : "확인"}
         </div>
       </div>
     </div>
@@ -202,38 +157,7 @@ const OrderStatusModal = ({
           }`}
           onClick={updateOrderStatus.isPending ? undefined : handleConfirm}
         >
-          {updateOrderStatus.isPending ? (
-            <>
-              <style>{dropDownAnimation}</style>
-              <div className="flex items-center justify-center">
-                <div className="flex space-x-1">
-                  <div
-                    className="w-1 h-1 bg-white rounded-full"
-                    style={{
-                      animation: "dropDown 1.4s infinite",
-                      animationDelay: "0s",
-                    }}
-                  ></div>
-                  <div
-                    className="w-1 h-1 bg-white rounded-full"
-                    style={{
-                      animation: "dropDown 1.4s infinite",
-                      animationDelay: "0.2s",
-                    }}
-                  ></div>
-                  <div
-                    className="w-1 h-1 bg-white rounded-full"
-                    style={{
-                      animation: "dropDown 1.4s infinite",
-                      animationDelay: "0.4s",
-                    }}
-                  ></div>
-                </div>
-              </div>
-            </>
-          ) : (
-            "확인"
-          )}
+          {updateOrderStatus.isPending ? <DropdownLoader /> : "확인"}
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useEffect, memo } from "react";
 import MainCard from "./MainCard";
 import { useInfiniteStores } from "../../../hooks/useInfiniteStores";
+import { DropdownLoader } from "@repo/ui";
 
 const InfiniteStoreList = memo(() => {
   // 커스텀 훅에서 무한 스크롤 로직 가져오기
@@ -78,23 +79,7 @@ const InfiniteStoreList = memo(() => {
           {/* 다음 페이지 로딩 표시 */}
           {isFetchingNextPage && (
             <div className="flex justify-center py-4">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 border-2 border-black-20 border-t-black-60 rounded-full animate-spin"></div>
-                <div className="text-black-50 text-14-regular">
-                  다음 주점을 불러오는 중...
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* 더 이상 데이터가 없을 때 */}
-          {!hasNextPage && stores.length > 0 && (
-            <div className="flex justify-center py-4">
-              <div className="flex flex-col items-center gap-2">
-                <div className="text-black-50 text-14-regular">
-                  더 이상 불러올 주점이 없습니다.
-                </div>
-              </div>
+              <DropdownLoader />
             </div>
           )}
         </div>

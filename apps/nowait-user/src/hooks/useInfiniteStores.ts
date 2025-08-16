@@ -48,7 +48,7 @@ const fetchStores = async ({
       {
         params: {
           page: pageParam,
-          size: 10,
+          size: 5,
         },
       }
     );
