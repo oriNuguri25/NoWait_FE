@@ -42,7 +42,7 @@ const PriceInput: React.FC<PriceInputProps> = ({ price, setPrice }) => {
 
   return (
     <div className="mb-[30px]">
-      <label className="block text-sm font-medium mb-3">가격</label>
+      <label className="block text-title-16-bold mb-3">가격</label>
       <div className="relative w-full">
         <input
           type="text"
@@ -135,7 +135,7 @@ const MenuModal = ({
           {/* 메뉴명 */}
           <div className={`mb-[30px] flex gap-[20px] `}>
             <div className="flex flex-col w-full ">
-              <label className="block text-sm font-medium mb-3">메뉴명</label>
+              <label className="block text-title-16-bold mb-3">메뉴명</label>
               <div className="relative w-full">
                 <input
                   type="text"
@@ -182,7 +182,7 @@ const MenuModal = ({
 
           {/* 관리자용 메뉴명 */}
           <div className="mb-[30px] relative">
-            <label className="block text-sm font-medium mb-3">
+            <label className="block text-title-16-bold mb-3">
               관리자용 메뉴명
             </label>
             <div className="relative">
@@ -222,7 +222,7 @@ const MenuModal = ({
 
           {/* 메뉴 소개 */}
           <div className="mb-[30px] relative">
-            <label className="block text-sm font-medium mb-3">메뉴 소개</label>
+            <label className="block text-title-16-bold mb-3">메뉴 소개</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}

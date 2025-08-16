@@ -179,6 +179,13 @@ pre {
     font-weight: 600;
   }
 
+  .text-title-16-bold {
+    font-size: 16px;
+    line-height: 136%;
+    letter-spacing: 0em;
+    font-weight: 700;
+  }
+
   .text-title-16-semibold {
     font-size: 16px;
     line-height: 144%;
