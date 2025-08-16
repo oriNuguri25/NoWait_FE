@@ -1,4 +1,4 @@
-name: Synchronize to forked repo
+name: auto-fork(nowait-admin)
 on:
   push:
     branches:
