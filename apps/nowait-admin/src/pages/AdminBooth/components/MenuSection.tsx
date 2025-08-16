@@ -246,7 +246,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
             {editMode ? "편집 완료" : "순서 편집"}
           </button>
           <button
-            className="flex text-14-semibold px-[10px] py-[7.5px] bg-black-5 text-black-70 rounded-[8px]"
+            className="flex itens-center stext-14-semibold px-[10px] py-[7.5px] bg-black-5 text-black-70 rounded-[8px]"
             onClick={() => setIsAddModalOpen(true)}
           >
             메뉴 추가 <img src={addIcon} />
@@ -348,7 +348,10 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
       {isEditModalOpen && selectedMenu && (
         <MenuModal
           isEdit={true}
-          initialData={selectedMenu}
+          initialData={{
+            ...selectedMenu,
+            price: String(selectedMenu.price),
+          }}
           onClose={() => {
             setIsEditModalOpen(false);
           }}
