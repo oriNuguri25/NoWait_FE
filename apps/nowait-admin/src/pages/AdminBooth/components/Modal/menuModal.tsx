@@ -1,7 +1,7 @@
 import { useState } from "react";
 import placeholderIcon from "../../../../assets/image_placeholder.svg";
 import closeIcon from "../../../../assets/close.svg";
-import { useRemoveEmoji } from "../../../../hooks/useRemoveEmoji";
+import { useRemoveEmoji } from "../../../../hooks/useRemoveEmoji"; //자동화
 
 interface MenuModalProps {
   isEdit: boolean;
