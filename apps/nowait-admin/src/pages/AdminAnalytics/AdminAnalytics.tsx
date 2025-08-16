@@ -29,7 +29,10 @@ const AdminAnalytics = () => {
   console.log(popularMenu, "인기 메뉴");
   const boothDisabled = boothRank?.length === 0;
   const storeId = localStorage.getItem("storeId");
-  const saleDisabled = typeof sales === "string" || sales === undefined;
+  const saleDisabled =
+    typeof sales === "string" ||
+    sales === undefined ||
+    (sales?.todaySalesSum === 0 && sales?.yesterdaySalesSum === 0);
   const poupularMenuDisabled = popularMenu?.length === 0;
 
   const boothRankingData: BoothRanking[] =
