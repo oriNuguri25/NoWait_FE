@@ -8,6 +8,7 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
+import { DropdownLoader } from "@repo/ui";
 
 interface CookedPageProps {
   cookedOrders: Order[];
@@ -122,7 +123,7 @@ const CookedPage = ({
           >
             {isLoading ? (
               <div className="flex flex-col items-center justify-center h-full py-20 text-center">
-                <div className="text-16-medium text-black-60">로딩 중...</div>
+                <DropdownLoader />
               </div>
             ) : cookedOrders.length > 0 ? (
               cookedOrders.map((order) => (

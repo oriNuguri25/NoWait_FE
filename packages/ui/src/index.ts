@@ -5,3 +5,5 @@ export {
   type WaitingButtonProps,
   type IconButtonProps,
 } from "./button";
+
+export { DropdownLoader, type DropdownLoaderProps } from "./dropdown-loader";
