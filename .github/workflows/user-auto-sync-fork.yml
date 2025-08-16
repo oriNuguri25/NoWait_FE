@@ -31,12 +31,18 @@ jobs:
       - name: Completion Summary
         if: success()
         run: |
+          # 전체 소요 시간 계산 (워크플로 런 시작 시각 → 현재)
+          RUN_START_ISO=$(gh api -H "Authorization: Bearer $GITHUB_TOKEN" repos/${{ github.repository }}/actions/runs/${{ github.run_id }} --jq .run_started_at)
+          RUN_START_S=$(date -u -d "$RUN_START_ISO" +%s)
+          NOW_S=$(date -u +%s)
+          ELAPSED=$((NOW_S - RUN_START_S))
+
           echo "🎉 자동화 완료!"
           echo "📊 처리된 작업:"
           echo "   ✅ 업스트림 → 포크 동기화"
           echo "   ⏳ Vercel 자동 배포 (진행 중)"
           echo ""
-          echo "⚡ 전체 소요 시간: 약 10-15초"
+          echo "⚡ 전체 소요 시간: ${ELAPSED}초"
           
       - name: Handle Sync Failure
         if: failure()
