@@ -29,18 +29,21 @@ const AdminAnalytics = () => {
   console.log(popularMenu, "인기 메뉴");
   const boothDisabled = boothRank?.length === 0;
   const storeId = localStorage.getItem("storeId");
-  const saleDisabled = typeof sales === "string" || sales === undefined;
+  const saleDisabled =
+    typeof sales === "string" ||
+    sales === undefined ||
+    (sales?.todaySalesSum === 0 && sales?.yesterdaySalesSum === 0);
   const poupularMenuDisabled = popularMenu?.length === 0;
 
   const boothRankingData: BoothRanking[] =
     boothRank && boothRank.length > 0
       ? boothRank.map((item) => ({
-          rank: item.currentRank, // currentRank → rank
-          name: item.storeName, // storeName → name
-          department: item.departmentName, // departmentName → department
-          salesCount: item.orderCount, // orderCount → salesCount
-          rankChange: item.delta, // delta → rankChange
-          isCurrentBooth: storeId == item.storeId.toString(), // 필요 시 조건 넣어 true/false 처리
+          rank: item.currentRank,
+          name: item.storeName,
+          department: item.departmentName,
+          salesCount: item.orderCount,
+          rankChange: item.delta,
+          isCurrentBooth: storeId == item.storeId.toString(),
           profileImageUrl: item.profileUrl,
         }))
       : [];

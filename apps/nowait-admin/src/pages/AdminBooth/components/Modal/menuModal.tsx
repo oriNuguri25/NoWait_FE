@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import placeholderIcon from "../../../../assets/image_placeholder.svg";
 import closeIcon from "../../../../assets/close.svg";
-import { useRemoveEmoji } from "../../../../hooks/useRemoveEmoji";
+import { useRemoveEmoji } from "../../../../hooks/useRemoveEmoji"; //자동화
 
 interface MenuModalProps {
   isEdit: boolean;
@@ -11,7 +11,6 @@ interface MenuModalProps {
     adminDisplayName?: string;
     price: string;
     description: string;
-    isRepresentative?: boolean;
     image?: File;
   };
   isTablet: boolean;
@@ -42,7 +41,7 @@ const PriceInput: React.FC<PriceInputProps> = ({ price, setPrice }) => {
 
   return (
     <div className="mb-[30px]">
-      <label className="block text-sm font-medium mb-3">가격</label>
+      <label className="block text-title-16-bold mb-3">가격</label>
       <div className="relative w-full">
         <input
           type="text"
@@ -61,6 +60,7 @@ const PriceInput: React.FC<PriceInputProps> = ({ price, setPrice }) => {
   );
 };
 
+const normalizePrice = (v: string) => v.replace(/[^0-9]/g, "");
 const MenuModal = ({
   isEdit,
   initialData,
@@ -78,7 +78,7 @@ const MenuModal = ({
   const [description, setDescription] = useState(
     initialData?.description || ""
   );
-  const isRepresentative = useState(initialData?.isRepresentative || false);
+
   const [image, setImage] = useState<File | null>(initialData?.image || null);
   const { removeEmojiAll, removeEmojiSome } = useRemoveEmoji();
 
@@ -88,14 +88,35 @@ const MenuModal = ({
     String(price).trim() !== "" &&
     description.trim() !== "";
 
+  // 초기 스냅샷 (모달 열리는 동안 변하지 않음)
+  const initialRef = useRef({
+    name: initialData?.name ?? "",
+    adminDisplayName: initialData?.adminDisplayName ?? "",
+    description: initialData?.description ?? "",
+    price: normalizePrice(initialData?.price ?? ""),
+    // 편의를 위해 초기 이미지는 늘 "없음"으로 가정 (URL 기반이면 File이 아님)
+    imageExists: !!initialData?.image,
+  });
+
+  // 수정 여부
+  const isDirty = useMemo(() => {
+    const changed =
+      name !== initialRef.current.name ||
+      adminDisplayName !== initialRef.current.adminDisplayName ||
+      description !== initialRef.current.description ||
+      normalizePrice(price) !== initialRef.current.price ||
+      !!image !== initialRef.current.imageExists; // 이미지 추가/삭제
+    return changed;
+  }, [name, adminDisplayName, description, price, image]);
+
   const handleSubmit = () => {
+    if (!isFormValid || (isEdit && !isDirty)) return;
     onSubmit({
       id: initialData?.id,
       name,
       adminDisplayName,
       price,
       description,
-      isRepresentative,
       image,
     });
     onClose();
@@ -135,7 +156,7 @@ const MenuModal = ({
           {/* 메뉴명 */}
           <div className={`mb-[30px] flex gap-[20px] `}>
             <div className="flex flex-col w-full ">
-              <label className="block text-sm font-medium mb-3">메뉴명</label>
+              <label className="block text-title-16-bold mb-3">메뉴명</label>
               <div className="relative w-full">
                 <input
                   type="text"
@@ -182,7 +203,7 @@ const MenuModal = ({
 
           {/* 관리자용 메뉴명 */}
           <div className="mb-[30px] relative">
-            <label className="block text-sm font-medium mb-3">
+            <label className="block text-title-16-bold mb-3">
               관리자용 메뉴명
             </label>
             <div className="relative">
@@ -222,7 +243,7 @@ const MenuModal = ({
 
           {/* 메뉴 소개 */}
           <div className="mb-[30px] relative">
-            <label className="block text-sm font-medium mb-3">메뉴 소개</label>
+            <label className="block text-title-16-bold mb-3">메뉴 소개</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -256,7 +277,7 @@ const MenuModal = ({
               <button
                 onClick={handleSubmit}
                 className={`w-full h-[48px] px-3 py-[10px] rounded-[10px] bg-black-15 text-black-50 text-16-semibold  ${
-                  isFormValid
+                  isDirty
                     ? "bg-[#16191E] text-white cursor-pointer"
                     : "bg-black-15 text-black-50 cursor-not-allowed"
                 }`}
