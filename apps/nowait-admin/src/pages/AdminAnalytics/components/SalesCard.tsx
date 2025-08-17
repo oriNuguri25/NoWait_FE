@@ -52,35 +52,27 @@ const SalesCard: React.FC<SalesCardProps> = ({
 
         <span className="flex">
           {/* 이전 버튼 */}
-          <button
+          <img
+            src={showToday ? (disabled ? backIcon : activeBackIcon) : backIcon}
             className={`h-5 w-5 ${
               disabled ? "cursor-not-allowed" : "cursor-pointer"
             }`}
             onClick={() => showToday && setShowToday(false)}
-          >
-            <img
-              src={
-                showToday ? (disabled ? backIcon : activeBackIcon) : backIcon
-              }
-            />
-          </button>
+          />
           {/* 다음 버튼 */}
-          <button
+          <img
+            src={
+              !showToday
+                ? disabled
+                  ? forwardIcon
+                  : activeForwardIcon
+                : forwardIcon
+            }
             className={`h-5 w-5 ${
               disabled ? "cursor-not-allowed" : "cursor-pointer"
             }`}
             onClick={() => !showToday && setShowToday(true)}
-          >
-            <img
-              src={
-                !showToday
-                  ? disabled
-                    ? forwardIcon
-                    : activeForwardIcon
-                  : forwardIcon
-              }
-            />
-          </button>
+          />
         </span>
       </div>
 

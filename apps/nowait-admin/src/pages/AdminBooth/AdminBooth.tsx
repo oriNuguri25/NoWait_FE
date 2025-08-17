@@ -66,9 +66,9 @@ const BoothForm = () => {
             });
           }
 
-          // 배너 이미지 업로드 (File 타입만 필터링),삭제한 이미지 필터링
+          // 배너 이미지 업로드 (File 타입만 필터링)
           const newBannerFiles = bannerImages.filter(
-            (img): img is File => img instanceof File && img !== null
+            (img): img is File => img instanceof File
           );
 
           if (newBannerFiles.length > 0) {

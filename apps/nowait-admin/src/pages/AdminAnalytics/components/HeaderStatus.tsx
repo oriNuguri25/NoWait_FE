@@ -55,7 +55,7 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
   const todayDate = formatDate(today);
   const yesterdayDate = formatDate(yesterday);
 
-  console.log(popularMenu, "인기 메뉴");
+  // const disabled = true; //테스트 용 코드 (축제 시작전)
 
   return (
     <div

@@ -10,10 +10,10 @@ export const useDeleteBannerImage = () => {
       return response.data;
     },
     onSuccess: () => {
-      console.log("이미지가 성공적으로 삭제되었습니다.");
+      alert("이미지가 성공적으로 삭제되었습니다.");
     },
     onError: (error: any) => {
-      console.log(`이미지 삭제 실패!${error}`);
+      alert(`이미지 삭제 실패!${error}`);
     },
   });
 };
