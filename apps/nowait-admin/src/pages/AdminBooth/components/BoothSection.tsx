@@ -68,7 +68,6 @@ const BoothSection = ({
   const [showPreview, setShowPreview] = useState(false);
   const { mutate: deleteBannerImage } = useDeleteBannerImage();
   const { removeEmojiAll } = useRemoveEmoji();
-  console.log(bannerImages, "배너이미지들");
 
   return (
     <>
@@ -141,7 +140,7 @@ const BoothSection = ({
             </span>
             {!isMobile && (
               <span className="text-14-regular text-black-70 mb-[14px] flex">
-                컴퓨터공학과
+                {departName}
               </span>
             )}
             <div className="flex w-full relative">
@@ -151,7 +150,9 @@ const BoothSection = ({
                 maxLength={14}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
-                onChange={(e) => setBoothName(removeEmojiAll(e.target.value))}
+                onChange={(e) => {
+                  setBoothName(removeEmojiAll(e.target.value));
+                }}
                 placeholder="부스명을 입력해주세요"
                 className="w-full h-[52px] bg-black-5 border border-[#DDDDDD] rounded-xl px-4 py-2 text-14-regular text-black-90 bg-black-5 "
               />
@@ -187,7 +188,9 @@ const BoothSection = ({
           onBlur={() => setIsTextareaFocused(false)}
           placeholder={isTextareaFocused ? "" : "부스 소개를 입력해주세요"}
           value={boothIntro}
-          onChange={(e) => setBoothIntro(e.target.value)}
+          onChange={(e) => {
+            setBoothIntro(e.target.value);
+          }}
         />
         <div className="absolute bottom-[12px] right-[20px] text-right text-13-regular text-black-60">
           {boothIntro.length} / 250

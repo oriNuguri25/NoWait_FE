@@ -44,37 +44,45 @@ const OperatingTimeSelector = ({
       </p>
       <div
         className={`w-full ${
-          isMobile ? "flex flex-col gap-[14px]" : "flex items-center"
+          isMobile ? "flex flex-col gap-[14px]" : "flex flex-row items-center"
         }`}
       >
-        <div className="flex items-center gap-2">
-          <span className="text-14-semibold text-gray-600 mr-1">시작</span>
+        <div className="flex items-center gap-[10px]">
+          <span className="w-[28px] text-14-semibold text-black-90">시작</span>
           <DropdownSelect
             value={startHour}
-            onChange={(val) => setStartHour(val)}
+            onChange={(val) => {
+              setStartHour(val);
+            }}
             options={hours}
             placeholder="시간"
           />
           <DropdownSelect
             value={startMinute}
-            onChange={(val) => setStartMinute(val)}
+            onChange={(val) => {
+              setStartMinute(val);
+            }}
             options={minutes}
             placeholder="분"
           />
         </div>
 
         {!isMobile && <span className="mx-[10px] text-gray-600">-</span>}
-        <div className="flex gap-2 items-center">
-          <span className="text-14-semibold text-gray-600 mr-1">종료</span>
+        <div className="flex gap-[10px] items-center">
+          <span className="w-[28px] text-14-semibold text-black-90">종료</span>
           <DropdownSelect
             value={endHour}
-            onChange={(val) => setEndHour(val)}
+            onChange={(val) => {
+              setEndHour(val);
+            }}
             options={hours}
             placeholder="시간"
           />
           <DropdownSelect
             value={endMinute}
-            onChange={(val) => setEndMinute(val)}
+            onChange={(val) => {
+              setEndMinute(val);
+            }}
             options={minutes}
             placeholder="분"
           />
