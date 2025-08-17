@@ -215,7 +215,7 @@ const BoothSection = ({
             .map((_, i) => (
               <label
                 key={i}
-                className="w-[150px] h-[99px] bg-black-5 border border-[#DDDDDD] rounded-xl flex items-center justify-center cursor-pointer"
+                className="w-[150px] h-[99px] bg-black-5 border border-[#DDDDDD] rounded-xl flex items-center justify-center cursor-pointer relative"
               >
                 <input
                   type="file"
@@ -231,75 +231,60 @@ const BoothSection = ({
                   }}
                 />
 
-                {/* 업로드 파일 / 서버 이미지 / placeholder 구분 */}
-                {(() => {
-                  const img = bannerImages[i];
-                  if (img instanceof File) {
-                    return (
-                      <img
-                        src={URL.createObjectURL(img)}
-                        alt={`배너 ${i + 1}`}
-                        className="object-cover w-full h-full rounded-lg"
-                      />
-                    );
-                  }
-                  if (img && typeof (img as any).imageUrl === "string") {
-                    return (
-                      <div className="relative w-full h-full">
-                        {img ? (
-                          <img
-                            src={
-                              img instanceof File
-                                ? URL.createObjectURL(img)
-                                : (img as any).imageUrl
-                            }
-                            alt={`배너 ${i + 1}`}
-                            className="object-cover w-full h-full rounded-lg"
-                          />
-                        ) : (
-                          <img
-                            src={placeholderIcon}
-                            alt="업로드"
-                            className="object-cover w-full h-full rounded-lg"
-                          />
-                        )}
+                {/* 이미지 미리보기 */}
+                {bannerImages[i] ? (
+                  <div className="relative w-full h-full">
+                    <img
+                      src={
+                        bannerImages[i] instanceof File
+                          ? URL.createObjectURL(bannerImages[i] as File)
+                          : (bannerImages[i] as any).imageUrl
+                      }
+                      alt={`배너 ${i + 1}`}
+                      className="object-cover w-full h-full rounded-lg"
+                    />
 
-                        {/* 대표 사진 라벨 */}
-                        {i === 0 && img && (
-                          <span className="absolute bottom-0 left-0 bg-black bg-opacity-80 h-[22px] text-white text-[10px] font-bold px-6 py-1 w-full text-center rounded-b-xl">
-                            대표 사진
-                          </span>
-                        )}
+                    {/* 대표 사진 라벨 */}
+                    {i === 0 && (
+                      <span className="absolute bottom-0 left-0 bg-black bg-opacity-80 h-[22px] text-white text-[10px] font-bold px-6 py-1 w-full text-center rounded-b-xl">
+                        대표 사진
+                      </span>
+                    )}
 
-                        {/* 삭제 버튼 */}
-                        {img && (
-                          <button
-                            type="button"
-                            className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              deleteBannerImage(img.id, {
-                                onSuccess: () => {
-                                  // 성공 시에만 이미지 목록에서 해당 인덱스를 제거
-                                  const newImages = [...bannerImages];
-                                  newImages[i] = null as any; // 또는 undefined
-                                  setBannerImages(newImages);
-                                },
-                                onError: () => {
-                                  alert("이미지 삭제에 실패했습니다.");
-                                },
-                              });
-                            }}
-                          >
-                            <img src={deletBttn} alt="삭제" />
-                          </button>
-                        )}
-                      </div>
-                    );
-                  }
-                  return <img src={placeholderIcon} alt="업로드" />;
-                })()}
+                    {/* 삭제 버튼 */}
+                    <button
+                      type="button"
+                      className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 z-10"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        const target = bannerImages[i];
+                        const newImages = bannerImages.filter(
+                          (_, idx) => idx !== i
+                        );
+                        if (target && !(target instanceof File)) {
+                          // 서버 이미지일 경우
+                          deleteBannerImage(target.id, {
+                            onSuccess: () => {
+                              setBannerImages(newImages);
+                            },
+                            onError: () => {
+                              console.log("이미지 삭제에 실패했습니다.");
+                            },
+                          });
+                        } else {
+                          // File 타입만 있을 경우는 로컬에서만 제거
+                          setBannerImages(newImages);
+                        }
+                      }}
+                    >
+                      <img src={deletBttn} alt="삭제" />
+                    </button>
+                  </div>
+                ) : (
+                  <img src={placeholderIcon} alt="업로드" />
+                )}
               </label>
             ))}
         </div>
