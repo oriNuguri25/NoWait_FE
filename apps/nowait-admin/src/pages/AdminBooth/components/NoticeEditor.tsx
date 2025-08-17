@@ -128,7 +128,9 @@ const NoticeEditor = ({
         type="text"
         value={noticeTitle}
         onFocus={() => setNoticeTitle("")}
-        onChange={(e) => setNoticeTitle(removeEmojiAll(e.target.value))}
+        onChange={(e) => {
+          setNoticeTitle(removeEmojiAll(e.target.value));
+        }}
         placeholder="제목을 입력해주세요"
         className="w-full px-5 py-3 text-14-regular text-black-90 placeholder:text-[#aaaaaa] bg-black-20 rounded-t-xl outline-none"
       />
