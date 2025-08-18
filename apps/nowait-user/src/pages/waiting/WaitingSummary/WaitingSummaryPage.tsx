@@ -1,9 +1,4 @@
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Button } from "@repo/ui";
 import { createReservation, getStore } from "../../../api/reservation";
 import PageFooterButton from "../../../components/order/PageFooterButton";
@@ -12,6 +7,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
 import { WAITING_GUIDE } from "../../../constants/guides";
+import LoadingPage from "../../../components/LoadingPage";
 
 const WaitingSummaryPage = () => {
   const navigate = useNavigate();
@@ -40,7 +36,9 @@ const WaitingSummaryPage = () => {
       setReservationIsLoading(false);
     }
   }, 3000);
-  if (isLoading) return <div></div>;
+
+  if (isLoading) return <LoadingPage />;
+
   return (
     <div className="flex flex-col min-h-screen">
       <BackOnlyHeader />
@@ -69,9 +67,12 @@ const WaitingSummaryPage = () => {
             대기 등록 전 꼭 확인해주세요
           </h1>
           <ul>
-            {WAITING_GUIDE.map((guide) => {
+            {WAITING_GUIDE.map((guide, i) => {
               return (
-                <li className="text-[14px] text-regular text-black-60 mb-[12px] whitespace-pre-line break-keep list-disc ml-[24px]">
+                <li
+                  key={i}
+                  className="text-[14px] text-regular text-black-60 mb-[12px] whitespace-pre-line break-keep list-disc ml-[24px]"
+                >
                   {guide.description}
                 </li>
               );
