@@ -138,7 +138,7 @@ const HomeHeader = () => {
                         delay: 0.25,
                         ease: [0.25, 0.46, 0.45, 0.94],
                       }}
-                      onClick={closeMenu}
+                      onClick={() => navigate("/map")}
                       className="block w-full text-left text-title-20-semibold text-black-100"
                     >
                       축제 맵

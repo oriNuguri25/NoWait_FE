@@ -1,4 +1,9 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { Button } from "@repo/ui";
 import { createReservation, getStore } from "../../../api/reservation";
 import PageFooterButton from "../../../components/order/PageFooterButton";
@@ -6,14 +11,15 @@ import useThrottle from "../../../hooks/useThrottle";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
-import { WAITING_GUIDE } from "../../../components/constants/guides";
+import { WAITING_GUIDE } from "../../../constants/guides";
 
 const WaitingSummaryPage = () => {
   const navigate = useNavigate();
   const { id: storeId } = useParams();
-  const partySize = useLocation().state as number;
-  const [isLoading, setIsLoading] = useState(false);
-  const { data: store } = useQuery({
+  const [searchParams] = useSearchParams();
+  const partySize = Number(searchParams.get("partySize"));
+  const [reservationIsLoading, setReservationIsLoading] = useState(false);
+  const { data: store, isLoading } = useQuery({
     queryKey: ["store", storeId],
     queryFn: () => getStore(storeId ? parseInt(storeId) : undefined),
     select: (data) => data.response,
@@ -21,19 +27,20 @@ const WaitingSummaryPage = () => {
 
   const handleSubmitReservation = useThrottle(async () => {
     try {
-      setIsLoading(true);
+      setReservationIsLoading(true);
       const payload = {
         partySize,
       };
       const res = await createReservation(parseInt(storeId!), payload);
       console.log(res, "예약 응답");
-      navigate(`/store/${storeId}/waiting/success`);
+      navigate(`/store/${storeId}/waiting/success`, { replace: true });
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(true);
+      setReservationIsLoading(false);
     }
   }, 3000);
+  if (isLoading) return <div></div>;
   return (
     <div className="flex flex-col min-h-screen">
       <BackOnlyHeader />
@@ -74,7 +81,7 @@ const WaitingSummaryPage = () => {
       </div>
       <PageFooterButton background="transparent">
         <Button onClick={handleSubmitReservation}>
-          {isLoading ? "등록중...." : "등록하기"}
+          {reservationIsLoading ? "등록중...." : "등록하기"}
         </Button>
       </PageFooterButton>
     </div>
