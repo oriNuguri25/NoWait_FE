@@ -70,13 +70,83 @@ const MyWaitingDetail = ({
       // 애니메이션 완료 후 방향 리셋
       const timer = setTimeout(() => {
         setAnimationDirection(null);
-      }, 300);
+      }, 600);
 
       prevIndexRef.current = currentIndex;
 
       return () => clearTimeout(timer);
     }
   }, [currentIndex]);
+
+  // 상하 스크롤만 방지 (좌우 스크롤은 허용)
+  useEffect(() => {
+    // 터치 시작 위치를 저장할 변수
+    let touchStartY = 0;
+    let touchStartX = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        touchStartY = e.touches[0].clientY;
+        touchStartX = e.touches[0].clientX;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        const touchY = e.touches[0].clientY;
+        const touchX = e.touches[0].clientX;
+
+        const deltaY = Math.abs(touchY - touchStartY);
+        const deltaX = Math.abs(touchX - touchStartX);
+
+        // 상하 움직임이 좌우 움직임보다 클 때만 스크롤 방지
+        if (deltaY > deltaX && deltaY > 10) {
+          e.preventDefault();
+        }
+      }
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      // 상하 스크롤만 방지 (deltaY가 0이 아닌 경우)
+      if (Math.abs(e.deltaY) > 0) {
+        e.preventDefault();
+      }
+    };
+
+    // 터치 이벤트 리스너
+    document.addEventListener("touchstart", handleTouchStart, {
+      passive: true,
+    });
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    // 휠 이벤트 리스너
+    document.addEventListener("wheel", handleWheel, { passive: false });
+
+    // 키보드 이벤트로 인한 상하 스크롤 방지
+    document.addEventListener("keydown", (e) => {
+      if (
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "PageUp" ||
+        e.key === "PageDown" ||
+        e.key === "Home" ||
+        e.key === "End"
+      ) {
+        e.preventDefault();
+      }
+    });
+
+    // body 스크롤 방지
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("wheel", handleWheel);
+      document.body.style.overflow = originalStyle;
+    };
+  }, []);
 
   // 스크롤 이벤트 핸들러
   useEffect(() => {
@@ -120,24 +190,22 @@ const MyWaitingDetail = ({
             <div className="text-16-medium text-black-100 mb-0.75">
               입장 대기 중
             </div>
-            <div className="text-22-bold text-black-90 flex items-baseline justify-center gap-1">
+            <div className="text-headline-22-bold text-black-90 flex items-baseline justify-center gap-1">
               <span>내 앞 대기</span>
               <span className="text-primary flex items-baseline">
-                <span
-                  key={animationKey}
-                  className={`text-22-bold transform-style-preserve-3d ${
-                    animationDirection === "up"
-                      ? "animate-number-slide-up"
-                      : animationDirection === "down"
-                      ? "animate-number-slide-down"
-                      : ""
-                  }`}
-                  style={{
-                    transformStyle: "preserve-3d",
-                    perspective: "1000px",
-                  }}
-                >
-                  {items[currentIndex]?.waitingCount || 0}
+                <span className="relative inline-block overflow-hidden">
+                  <span
+                    key={animationKey}
+                    className={`text-22-bold inline-block ${
+                      animationDirection === "up"
+                        ? "animate-number-slide-up"
+                        : animationDirection === "down"
+                        ? "animate-number-slide-down"
+                        : ""
+                    }`}
+                  >
+                    {items[currentIndex]?.waitingCount || 0}
+                  </span>
                 </span>
                 <span>팀</span>
               </span>
@@ -211,7 +279,7 @@ const MyWaitingDetail = ({
               className="flex w-full rounded-xl bg-white-100 border border-black-25 py-5 justify-center items-center"
               onClick={handleCancelWaitingClick}
             >
-              <div className="flex text-17-semibold text-black-60">
+              <div className="flex text-[17px] font-semibold tracking-normal text-black-60">
                 대기 취소
               </div>
             </button>

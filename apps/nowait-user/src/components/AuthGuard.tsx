@@ -15,6 +15,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     const token = localStorage.getItem("accessToken");
     if (!token && !isAuthenticated) {
       navigate("/login", { replace: true });
+      window.scrollTo(0, 0); // 화면을 맨 위로 스크롤
     }
   }, [isAuthenticated, navigate]);
 

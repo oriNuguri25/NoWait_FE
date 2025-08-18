@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router";
 import { PaymentCard, CookCard, CookedCard } from "./OrderCard";
 import { DetailCard } from "./DetailCard";
 import RefreshIcon from "../../assets/refresh.svg?react";
@@ -6,33 +7,43 @@ import CookedPage from "./CookedPage";
 import { useGetOrderList } from "../../hooks/useGetOrderList";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
 import type { Order } from "../../types/order";
+import { DropdownLoader } from "@repo/ui";
 
 const AdminOrders = () => {
+  const { storeId: storeIdParam } = useParams<{ storeId: string }>();
   const [activeTab, setActiveTab] = useState<"전체" | "조리 완료">("전체");
   const [mobileActiveTab, setMobileActiveTab] = useState<
     "입금 대기" | "조리 중" | "조리 완료"
   >("입금 대기");
   const [selectedPayment, setSelectedPayment] = useState<Order | null>(null);
-  const [selectedCookedOrder, setSelectedCookedOrder] = useState<Order | null>(
-    null
-  );
   const [savedScrollPosition, setSavedScrollPosition] = useState<number>(0);
-  const [savedCookedScrollPosition, setSavedCookedScrollPosition] =
-    useState<number>(0);
   const [
     savedDesktopCookedScrollPosition,
     setSavedDesktopCookedScrollPosition,
   ] = useState<number>(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const cookedScrollContainerRef = useRef<HTMLDivElement>(null);
   const desktopCookedScrollContainerRef = useRef<HTMLDivElement>(null);
   const windowWidth = useWindowWidth();
   const isMobile = windowWidth <= 450;
+  const storeId = Number(storeIdParam);
 
   // API에서 주문 데이터 가져오기
-  const { data: orders = [], isLoading, error, refetch } = useGetOrderList();
+  const {
+    data: orders = [],
+    isLoading,
+    error,
+    refetch,
+  } = useGetOrderList(storeId);
 
-  // 날짜와 시간 포맷팅 함수 (2025년 6월 2일 08:02 형식)
+  // 시간만 포맷팅 함수 (10:15 형식)
+  const getFormattedTime = (createdAt: string) => {
+    const date = new Date(createdAt);
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
+
+  // 날짜와 시간 포맷팅 함수 (2025년 6월 2일 08:02 형식) - Detail에서만 사용
   const getFormattedDateTime = (createdAt: string) => {
     const date = new Date(createdAt);
     const year = date.getFullYear();
@@ -144,7 +155,7 @@ const AdminOrders = () => {
               입금 대기 {paymentWaitingData.length}
             </div>
             <div
-              className={`rounded-full px-3.5 py-1.75 cursor-pointerer ${
+              className={`rounded-full px-3.5 py-1.75 cursor-pointer ${
                 mobileActiveTab === "조리 중"
                   ? "bg-navy-80 text-14-semibold tracking-[0em] text-white"
                   : "border-[#ECECEC] border bg-white text-14-semibold tracking-[0em] text-navy-30"
@@ -154,7 +165,7 @@ const AdminOrders = () => {
               조리 중 {cookingData.length}
             </div>
             <div
-              className={`rounded-full px-3.5 py-1.75 cursor-pointerer ${
+              className={`rounded-full px-3.5 py-1.75 cursor-pointer ${
                 mobileActiveTab === "조리 완료"
                   ? "bg-navy-80 text-14-semibold tracking-[0em] text-white"
                   : "border-[#ECECEC] border bg-white text-14-semibold tracking-[0em] text-navy-30"
@@ -190,7 +201,7 @@ const AdminOrders = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-row border border-black-25 rounded-t-2xl pl-5 py-4 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
+                <div className="flex flex-row border border-black-25 rounded-t-2xl pl-5 py-2.5 gap-2.5 bg-[#E7ECF0] flex-shrink-0">
                   <div className="flex text-14-medium leading-[136%] text-navy-35">
                     테이블
                   </div>
@@ -206,9 +217,7 @@ const AdminOrders = () => {
                 >
                   {isLoading ? (
                     <div className="flex flex-col items-center justify-center h-full text-center">
-                      <div className="text-16-medium text-black-60">
-                        로딩 중...
-                      </div>
+                      <DropdownLoader />
                     </div>
                   ) : paymentWaitingData.length > 0 ? (
                     paymentWaitingData.map((payment) => (
@@ -216,7 +225,7 @@ const AdminOrders = () => {
                         key={payment.id}
                         orderId={payment.id}
                         tableNumber={payment.tableId}
-                        timeText={getFormattedDateTime(payment.createdAt)}
+                        timeText={getFormattedTime(payment.createdAt)}
                         depositorName={payment.depositorName}
                         totalAmount={payment.totalPrice || 0}
                         onClick={() => handlePaymentCardClick(payment)}
@@ -261,7 +270,7 @@ const AdminOrders = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-row text-14-medium leading-[136%] text-navy-35 border border-black-30 rounded-t-2xl bg-[#E7ECF0] gap-2.5 py-4 pl-5">
+                <div className="flex flex-row text-14-medium leading-[136%] text-navy-35 border border-black-30 rounded-t-2xl bg-[#E7ECF0] gap-2.5 py-2.5 pl-5">
                   <div className="flex">테이블</div>
                   <div className="flex w-38.5 md:w-32 lg:w-38.5 text-start">
                     메뉴
@@ -271,9 +280,7 @@ const AdminOrders = () => {
                 <div className="flex flex-col gap-7.5 rounded-b-2xl border border-t-0 border-black-30 flex-1 bg-white px-5.5 py-4 overflow-y-auto min-h-0">
                   {isLoading ? (
                     <div className="flex flex-col items-center justify-center h-full text-center">
-                      <div className="text-16-medium text-black-60">
-                        로딩 중...
-                      </div>
+                      <DropdownLoader />
                     </div>
                   ) : cookingData.length > 0 ? (
                     cookingData.map((cooking) => (
@@ -316,7 +323,7 @@ const AdminOrders = () => {
         <>
           {mobileActiveTab === "입금 대기" && (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
-              <div className="flex flex-row px-5 py-4 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0">
+              <div className="flex flex-row px-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0">
                 <div className="flex text-14-medium leading-[136%] text-navy-35">
                   테이블
                 </div>
@@ -342,7 +349,7 @@ const AdminOrders = () => {
                       key={payment.id}
                       orderId={payment.id}
                       tableNumber={payment.tableId}
-                      timeText={getFormattedDateTime(payment.createdAt)}
+                      timeText={getFormattedTime(payment.createdAt)}
                       depositorName={payment.depositorName}
                       totalAmount={payment.totalPrice || 0}
                       onClick={() => handlePaymentCardClick(payment)}
@@ -379,19 +386,17 @@ const AdminOrders = () => {
 
           {mobileActiveTab === "조리 중" && (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
-              <div className="flex flex-row px-5 py-4 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0 text-14-medium leading-[136%] text-navy-35">
+              <div className="flex flex-row px-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border-black-25 border flex-shrink-0 text-14-medium leading-[136%] text-navy-35">
                 <div className="flex">테이블</div>
                 <div className="flex w-38.5 max-[376px]:w-32 text-start">
                   메뉴
                 </div>
                 <div className="flex">수량</div>
               </div>
-              <div className="flex flex-col px-5.5 py-4.25 gap-7.5 bg-white rounded-b-2xl border-t-0 border-black-25 border flex-1 min-h-0 overflow-y-auto">
+              <div className="flex flex-col px-5.5 py-4 gap-7.5 bg-white rounded-b-2xl border-t-0 border-black-25 border flex-1 min-h-0 overflow-y-auto">
                 {isLoading ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
-                    <div className="text-16-medium text-black-60">
-                      로딩 중...
-                    </div>
+                    <DropdownLoader />
                   </div>
                 ) : cookingData.length > 0 ? (
                   cookingData.map((cooking) => (
@@ -418,7 +423,7 @@ const AdminOrders = () => {
 
           {mobileActiveTab === "조리 완료" && (
             <div className="flex flex-col flex-1 min-h-0 overflow-hidden w-full">
-              <div className="flex flex-row pl-5 py-4 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border border-black-25 items-center text-14-medium leading-[136%] text-navy-35 flex-shrink-0">
+              <div className="flex flex-row pl-5 py-2.5 gap-2.5 bg-[#E7ECF0] rounded-t-2xl border border-black-25 items-center text-14-medium leading-[136%] text-navy-35 flex-shrink-0">
                 <div className="flex">테이블</div>
                 <div className="flex max-[376px]:w-20 w-29">금액</div>
                 <div className="flex">주문 시간</div>
@@ -432,9 +437,7 @@ const AdminOrders = () => {
               >
                 {isLoading ? (
                   <div className="flex flex-col items-center justify-center h-full text-center px-5 py-4">
-                    <div className="text-16-medium text-black-60">
-                      로딩 중...
-                    </div>
+                    <DropdownLoader />
                   </div>
                 ) : cookedData.length > 0 ? (
                   cookedData.map((cooked) => (
@@ -445,7 +448,7 @@ const AdminOrders = () => {
                       depositorName={cooked.depositorName}
                       menuDetails={cooked.menuDetails}
                       totalAmount={cooked.totalPrice || 0}
-                      createdAt={getFormattedDateTime(cooked.createdAt)}
+                      createdAt={getFormattedTime(cooked.createdAt)}
                       onSuccess={refetch}
                       onClick={() => handleCookedCardClick(cooked)}
                     />

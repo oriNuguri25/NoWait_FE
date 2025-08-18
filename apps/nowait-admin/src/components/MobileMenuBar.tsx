@@ -4,7 +4,11 @@ import menuIcon from "../assets/Menu.svg";
 import MobileAdminNav from "./MobileAdminNav";
 import { useEffect, useState } from "react";
 
-const MobileMenuBar = () => {
+const MobileMenuBar = ({
+  handleClickLogout,
+}: {
+  handleClickLogout: () => void;
+}) => {
   const [showNav, setShowNav] = useState(false);
   useEffect(() => {
     if (!showNav) return;
@@ -54,7 +58,10 @@ const MobileMenuBar = () => {
           showNav ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <MobileAdminNav onClose={() => setShowNav(false)} />
+        <MobileAdminNav
+          onClose={() => setShowNav(false)}
+          handleClickLogout={handleClickLogout}
+        />
       </div>
       {/* dim 영역 */}
       {showNav && (

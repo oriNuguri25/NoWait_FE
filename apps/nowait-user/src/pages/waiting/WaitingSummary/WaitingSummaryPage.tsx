@@ -6,6 +6,7 @@ import useThrottle from "../../../hooks/useThrottle";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
+import { WAITING_GUIDE } from "../../../components/constants/guides";
 
 const WaitingSummaryPage = () => {
   const navigate = useNavigate();
@@ -34,28 +35,44 @@ const WaitingSummaryPage = () => {
     }
   }, 3000);
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <BackOnlyHeader />
-      <div className="px-5 mt-[30px]">
-        <h1 className="text-headline-24-bold mb-[40px]">
-          현재 <span className="text-primary">{store?.waitingCount}</span>팀이
-          <br />
-          대기하고 있어요
-        </h1>
-        <div className="p-5.5 rounded-[16px] bg-black-10">
-          <div className="flex justify-between items-center mb-2.5">
-            <p className="text-16-semibold text-black-50">부스</p>
-            <p className="text-16-medium text-black-90">
-              {store?.name} / {store?.waitingCount}
-            </p>
-          </div>
-          <div className="flex justify-between items-center">
-            <p className="text-16-semibold text-black-50">입장 인원</p>
-            <p className="text-16-medium text-black-90">{partySize}명</p>
+      <div className="flex flex-col flex-1">
+        <div className="px-5 mt-[74px]">
+          <h1 className="text-headline-24-bold mb-[40px]">
+            현재 <span className="text-primary">{store?.waitingCount}</span>팀이
+            <br />
+            대기하고 있어요
+          </h1>
+          <div className="p-5.5 rounded-[16px] bg-black-10 mb-[30px]">
+            <div className="flex justify-between items-center mb-2.5">
+              <p className="text-16-semibold text-black-50">부스</p>
+              <p className="text-16-medium text-black-90">
+                {store?.name} / {store?.departmentName}
+              </p>
+            </div>
+            <div className="flex justify-between items-center">
+              <p className="text-16-semibold text-black-50">입장 인원</p>
+              <p className="text-16-medium text-black-90">{partySize}명</p>
+            </div>
           </div>
         </div>
+        <div className="bg-black-10 px-5 py-[30px] flex-grow">
+          <h1 className="text-title-14-semibold text-black-80 mb-[12px]">
+            대기 등록 전 꼭 확인해주세요
+          </h1>
+          <ul>
+            {WAITING_GUIDE.map((guide) => {
+              return (
+                <li className="text-[14px] text-regular text-black-60 mb-[12px] whitespace-pre-line break-keep list-disc ml-[24px]">
+                  {guide.description}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
-      <PageFooterButton>
+      <PageFooterButton background="transparent">
         <Button onClick={handleSubmitReservation}>
           {isLoading ? "등록중...." : "등록하기"}
         </Button>

@@ -77,7 +77,7 @@ const RAW_RUNTIME_STATE =
           ["react-quill", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:2.0.0"],\
           ["react-swipeable-list", "npm:1.10.0"],\
           ["react-toastify", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:11.0.5"],\
-          ["turbo", "npm:2.5.5"],\
+          ["turbo", "npm:2.5.6"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"],\
           ["zustand", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:5.0.7"]\
         ],\
@@ -3481,6 +3481,48 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@vercel/speed-insights", [\
+      ["npm:1.2.0", {\
+        "packageLocation": "./.yarn/unplugged/@vercel-speed-insights-virtual-8db52b6f33/node_modules/@vercel/speed-insights/",\
+        "packageDependencies": [\
+          ["@vercel/speed-insights", "npm:1.2.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:2fb7e13bcbc24e77d357ed68b75b19744e934ae2d614ddea7b43a10b4e02ae8e0572e27e2c3a0691906d2d7f03ee876b6fcb59bf03c28692b4236510131025d6#npm:1.2.0", {\
+        "packageLocation": "./.yarn/unplugged/@vercel-speed-insights-virtual-8db52b6f33/node_modules/@vercel/speed-insights/",\
+        "packageDependencies": [\
+          ["@sveltejs/kit", null],\
+          ["@types/next", null],\
+          ["@types/react", "npm:19.1.10"],\
+          ["@types/svelte", null],\
+          ["@types/sveltejs__kit", null],\
+          ["@types/vue", null],\
+          ["@types/vue-router", null],\
+          ["@vercel/speed-insights", "virtual:2fb7e13bcbc24e77d357ed68b75b19744e934ae2d614ddea7b43a10b4e02ae8e0572e27e2c3a0691906d2d7f03ee876b6fcb59bf03c28692b4236510131025d6#npm:1.2.0"],\
+          ["next", null],\
+          ["react", "npm:19.1.1"],\
+          ["svelte", null],\
+          ["vue", null],\
+          ["vue-router", null]\
+        ],\
+        "packagePeers": [\
+          "@sveltejs/kit",\
+          "@types/next",\
+          "@types/react",\
+          "@types/svelte",\
+          "@types/sveltejs__kit",\
+          "@types/vue-router",\
+          "@types/vue",\
+          "next",\
+          "react",\
+          "svelte",\
+          "vue-router",\
+          "vue"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@vitejs/plugin-react", [\
       ["npm:4.7.0", {\
         "packageLocation": "./.yarn/cache/@vitejs-plugin-react-npm-4.7.0-650e714693-692f239609.zip/node_modules/@vitejs/plugin-react/",\
@@ -6520,7 +6562,7 @@ const RAW_RUNTIME_STATE =
           ["react-quill", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:2.0.0"],\
           ["react-swipeable-list", "npm:1.10.0"],\
           ["react-toastify", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:11.0.5"],\
-          ["turbo", "npm:2.5.5"],\
+          ["turbo", "npm:2.5.6"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"],\
           ["zustand", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:5.0.7"]\
         ],\
@@ -6771,6 +6813,7 @@ const RAW_RUNTIME_STATE =
           ["@types/react", "npm:19.1.10"],\
           ["@types/react-dom", "virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:19.1.7"],\
           ["@types/react-transition-group", "virtual:2fb7e13bcbc24e77d357ed68b75b19744e934ae2d614ddea7b43a10b4e02ae8e0572e27e2c3a0691906d2d7f03ee876b6fcb59bf03c28692b4236510131025d6#npm:4.4.12"],\
+          ["@vercel/speed-insights", "virtual:2fb7e13bcbc24e77d357ed68b75b19744e934ae2d614ddea7b43a10b4e02ae8e0572e27e2c3a0691906d2d7f03ee876b6fcb59bf03c28692b4236510131025d6#npm:1.2.0"],\
           ["@vitejs/plugin-react", "virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:4.7.0"],\
           ["autoprefixer", "virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:10.4.21"],\
           ["axios", "npm:1.11.0"],\
@@ -8611,70 +8654,70 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["turbo", [\
-      ["npm:2.5.5", {\
-        "packageLocation": "./.yarn/cache/turbo-npm-2.5.5-8b364ceb83-f51ec29528.zip/node_modules/turbo/",\
+      ["npm:2.5.6", {\
+        "packageLocation": "./.yarn/cache/turbo-npm-2.5.6-e1feb0b914-b9657bf211.zip/node_modules/turbo/",\
         "packageDependencies": [\
-          ["turbo", "npm:2.5.5"],\
-          ["turbo-darwin-64", "npm:2.5.5"],\
-          ["turbo-darwin-arm64", "npm:2.5.5"],\
-          ["turbo-linux-64", "npm:2.5.5"],\
-          ["turbo-linux-arm64", "npm:2.5.5"],\
-          ["turbo-windows-64", "npm:2.5.5"],\
-          ["turbo-windows-arm64", "npm:2.5.5"]\
+          ["turbo", "npm:2.5.6"],\
+          ["turbo-darwin-64", "npm:2.5.6"],\
+          ["turbo-darwin-arm64", "npm:2.5.6"],\
+          ["turbo-linux-64", "npm:2.5.6"],\
+          ["turbo-linux-arm64", "npm:2.5.6"],\
+          ["turbo-windows-64", "npm:2.5.6"],\
+          ["turbo-windows-arm64", "npm:2.5.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["turbo-darwin-64", [\
-      ["npm:2.5.5", {\
-        "packageLocation": "./.yarn/unplugged/turbo-darwin-64-npm-2.5.5-dc9dcd3f5b/node_modules/turbo-darwin-64/",\
+      ["npm:2.5.6", {\
+        "packageLocation": "./.yarn/unplugged/turbo-darwin-64-npm-2.5.6-4d77e50292/node_modules/turbo-darwin-64/",\
         "packageDependencies": [\
-          ["turbo-darwin-64", "npm:2.5.5"]\
+          ["turbo-darwin-64", "npm:2.5.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["turbo-darwin-arm64", [\
-      ["npm:2.5.5", {\
-        "packageLocation": "./.yarn/unplugged/turbo-darwin-arm64-npm-2.5.5-1cf8d6b986/node_modules/turbo-darwin-arm64/",\
+      ["npm:2.5.6", {\
+        "packageLocation": "./.yarn/unplugged/turbo-darwin-arm64-npm-2.5.6-9d889b055e/node_modules/turbo-darwin-arm64/",\
         "packageDependencies": [\
-          ["turbo-darwin-arm64", "npm:2.5.5"]\
+          ["turbo-darwin-arm64", "npm:2.5.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["turbo-linux-64", [\
-      ["npm:2.5.5", {\
-        "packageLocation": "./.yarn/unplugged/turbo-linux-64-npm-2.5.5-0ebcb58505/node_modules/turbo-linux-64/",\
+      ["npm:2.5.6", {\
+        "packageLocation": "./.yarn/unplugged/turbo-linux-64-npm-2.5.6-8d58484498/node_modules/turbo-linux-64/",\
         "packageDependencies": [\
-          ["turbo-linux-64", "npm:2.5.5"]\
+          ["turbo-linux-64", "npm:2.5.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["turbo-linux-arm64", [\
-      ["npm:2.5.5", {\
-        "packageLocation": "./.yarn/unplugged/turbo-linux-arm64-npm-2.5.5-639b344034/node_modules/turbo-linux-arm64/",\
+      ["npm:2.5.6", {\
+        "packageLocation": "./.yarn/unplugged/turbo-linux-arm64-npm-2.5.6-e6138bc4d2/node_modules/turbo-linux-arm64/",\
         "packageDependencies": [\
-          ["turbo-linux-arm64", "npm:2.5.5"]\
+          ["turbo-linux-arm64", "npm:2.5.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["turbo-windows-64", [\
-      ["npm:2.5.5", {\
-        "packageLocation": "./.yarn/unplugged/turbo-windows-64-npm-2.5.5-996d83a7c5/node_modules/turbo-windows-64/",\
+      ["npm:2.5.6", {\
+        "packageLocation": "./.yarn/unplugged/turbo-windows-64-npm-2.5.6-b19e284eea/node_modules/turbo-windows-64/",\
         "packageDependencies": [\
-          ["turbo-windows-64", "npm:2.5.5"]\
+          ["turbo-windows-64", "npm:2.5.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["turbo-windows-arm64", [\
-      ["npm:2.5.5", {\
-        "packageLocation": "./.yarn/unplugged/turbo-windows-arm64-npm-2.5.5-fadc7c5472/node_modules/turbo-windows-arm64/",\
+      ["npm:2.5.6", {\
+        "packageLocation": "./.yarn/unplugged/turbo-windows-arm64-npm-2.5.6-6921a98518/node_modules/turbo-windows-arm64/",\
         "packageDependencies": [\
-          ["turbo-windows-arm64", "npm:2.5.5"]\
+          ["turbo-windows-arm64", "npm:2.5.6"]\
         ],\
         "linkType": "HARD"\
       }]\
