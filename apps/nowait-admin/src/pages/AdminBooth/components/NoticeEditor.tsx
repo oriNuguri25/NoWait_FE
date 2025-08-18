@@ -11,6 +11,14 @@ import underlineIcon from "../../../assets/editorToolBar/underline.svg";
 const MenuBar = ({ editor }: { editor: any }) => {
   const [editorChanged, setEditorChanged] = useState(0);
   const exclusive = (tool: "bold" | "italic" | "underline" | "strike") => {
+    if (!editor) return;
+
+    const isActiveNow =
+      (tool === "bold" && editor.isActive("bold")) ||
+      (tool === "italic" && editor.isActive("italic")) ||
+      (tool === "underline" && editor.isActive("underline")) ||
+      (tool === "strike" && editor.isActive("strike"));
+    // 전부해제
     const c = editor
       .chain()
       .focus()
@@ -19,6 +27,13 @@ const MenuBar = ({ editor }: { editor: any }) => {
       .unsetUnderline()
       .unsetStrike();
 
+    //이미 활성 상태였다면 툴 바 전체 해제 --> 즉 기본 글꼴
+    if (isActiveNow) {
+      c.run();
+      return;
+    }
+
+    //활성 상태였던게 없다면 클릭한 툴 버튼 기능만 활성화
     if (tool === "bold") c.setBold();
     if (tool === "italic") c.setItalic();
     if (tool === "underline") c.setUnderline();
@@ -104,30 +119,19 @@ const NoticeEditor = ({
     });
   }, [editor, setNotice]);
 
-  const [hasCleared, setHasCleared] = useState(false);
-  // 텍스터 에디터 focusing시 clear
   useEffect(() => {
     if (!editor) return;
-
-    const handleFocus = () => {
-      if (!hasCleared) {
-        editor.commands.clearContent();
-        setHasCleared(true);
-      }
-    };
-
-    editor.on("focus", handleFocus);
-    return () => {
-      editor.off("focus", handleFocus);
-    };
-  }, [editor, hasCleared]);
+    const current = editor.getHTML();
+    if (notice && notice !== current) {
+      editor.commands.setContent(notice, { emitUpdate: false });
+    }
+  }, [notice, editor]);
 
   return (
     <div className="w-full bg-white border border-[#DDDDDD] rounded-xl max-w-[614px]">
       <input
         type="text"
         value={noticeTitle}
-        onFocus={() => setNoticeTitle("")}
         onChange={(e) => {
           setNoticeTitle(removeEmojiAll(e.target.value));
         }}
