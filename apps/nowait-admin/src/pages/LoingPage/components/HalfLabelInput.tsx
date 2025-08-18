@@ -1,4 +1,6 @@
 import { useState } from "react";
+import eye from "../../../assets/eye.svg";
+import eyeOff from "../../../assets/eye-off.svg";
 
 export const HalfLabelInput = ({
   label,
@@ -14,7 +16,11 @@ export const HalfLabelInput = ({
   autoComplete?: string;
 }) => {
   const [focused, setFocused] = useState(false);
+  const [showPw, setShowPw] = useState(false);
+  const isPassword = type === "password";
+  const inputType = isPassword && showPw ? "text" : type;
   const floating = focused || value.length > 0; // 포커스되었거나 값이 있으면 라벨/텍스트 분할
+  const showToggle = isPassword && focused && value.length > 0;
 
   return (
     <div
@@ -37,7 +43,7 @@ export const HalfLabelInput = ({
 
       {/* 같은 input 노드를 계속 유지 */}
       <input
-        type={type}
+        type={inputType}
         value={value}
         onChange={onChange}
         autoComplete={autoComplete}
@@ -52,6 +58,21 @@ export const HalfLabelInput = ({
         }                
       `}
       />
+      {showToggle && (
+        <button
+          type="button"
+          aria-label={showPw ? "비밀번호 숨기기" : "비밀번호 보기"}
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => setShowPw((v) => !v)}
+        >
+          <img
+            src={showPw ? eye : eyeOff}
+            alt=""
+            className="w-5 h-5 opacity-80 hover:opacity-100 transition-opacity"
+          />
+        </button>
+      )}
     </div>
   );
 };
