@@ -26,7 +26,6 @@ const BoothForm = () => {
   const width = useWindowWidth();
   const isTablet = width > 768;
   const isMobile = !isTablet;
-  // && width <= 1024
   const storeId = Number(localStorage.getItem("storeId"));
   console.log(storeId, "스토어 아이디");
 
@@ -109,7 +108,6 @@ const BoothForm = () => {
   ]);
   const blocker = useBlocker(hasChanges);
   const [showUnsaved, setShowUnsaved] = useState(false);
-  const [saving, setSaving] = useState(false);
 
   type PendingNav =
     | { type: "tab"; tab: "booth" | "menu" | "account" }
