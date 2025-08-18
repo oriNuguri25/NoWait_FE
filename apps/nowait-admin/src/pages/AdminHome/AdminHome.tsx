@@ -257,8 +257,9 @@ const AdminHome = () => {
             <img
               src={refreshIcon}
               alt=""
-              className={`block ${isRefreshing ? "animate-spin" : ""}`}
-              style={isRefreshing ? { animationDuration: "1000ms" } : undefined}
+              className={`block ${
+                isRefreshing ? "animate-[spin_0.6s_linear_1]" : ""
+              }`}
             />
           </button>
         </div>
