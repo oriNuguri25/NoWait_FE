@@ -78,7 +78,11 @@ export const createBookmark = async (
   storeId: number | undefined,
   signal: AbortSignal
 ) => {
-  await UserApi.post(`/bookmarks/${storeId}`, null, { signal });
+  try {
+    await UserApi.post(`/bookmarks/${storeId}`, null, { signal });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // 북마크 삭제

@@ -21,35 +21,35 @@ const StoreDetailPage = () => {
   // const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
   //   withInvalidate: true,
   // });
+  console.log(storeId, "----------스토어아이디");
   const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
     { withInvalidate: true },
     Number(storeId)
   );
   const { isBookmarked } = useBookmarkState(Number(storeId));
-
+  console.log(
+    isBookmarked,
+    "--------------------북마크 현황-----------------------"
+  );
   const { data: store } = useQuery({
     queryKey: ["store", storeId],
     queryFn: () => getStore(Number(storeId!)),
     select: (data) => data.response,
   });
-
+  console.log(store, "---------스토어------------");
   const handleBookmarkButton = async () => {
     try {
       if (!isBookmarked) {
         await createBookmarkMutate.mutate();
+        console.log("북마크 API 생성", Date.now());
       } else {
         await deleteBookmarkMutate.mutate();
+        console.log("북마크 API 삭제", Date.now());
       }
     } catch (error) {
       console.log(error);
     }
   };
-  // const handleBookmarkButton = () => {
-  //   toggleBookmark.mutate({
-  //     storeId,
-  //     currentStatus: isBookmarked,
-  //   });
-  // };
 
   return (
     <div>
@@ -136,6 +136,9 @@ const StoreDetailPage = () => {
           borderColor="#ececec"
           buttonType="icon"
           onClick={handleBookmarkButton}
+          disabled={
+            createBookmarkMutate.isPending || deleteBookmarkMutate.isPending
+          }
         >
           <BookmarkIcon isBookmarked={isBookmarked} />
         </Button>

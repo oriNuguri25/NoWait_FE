@@ -6,7 +6,7 @@ import { Button } from "@repo/ui";
 import type { CartType } from "../../../types/order/cart";
 import { useCartStore } from "../../../stores/cartStore";
 import NumberFlow from "@number-flow/react";
-import defaultMenuImageLg from "../../../assets/default-menu-image-lg.png";
+import defaultMenuImageLg from "../../../assets/default-image-lg.png";
 import { useQuery } from "@tanstack/react-query";
 import { getStoreMenu } from "../../../api/menu";
 import LoadingSpinner from "../../../assets/loading2_black.gif";
