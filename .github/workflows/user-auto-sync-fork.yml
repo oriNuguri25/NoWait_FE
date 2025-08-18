@@ -31,7 +31,7 @@ jobs:
       - name: Completion Summary
         if: success()
         env:
-          GH_TOKEN: ${{ github.token }}   # gh가 자동으로 사용
+          GH_TOKEN: ${{ secrets.FORK_PAT }}
         run: |
           # 전체 소요 시간 계산 (워크플로 런 시작 시각 → 현재)
           RUN_START_ISO=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }} --jq .run_started_at)
