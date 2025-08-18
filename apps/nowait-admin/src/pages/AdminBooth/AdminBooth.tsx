@@ -13,6 +13,7 @@ import PreviewModal from "./components/Modal/PreviewModal";
 import SaveButton from "./components/Button/saveBttn";
 import { useBlocker } from "react-router-dom";
 import { UnsavedChangesModal } from "./components/Modal/UnsavedChangesModal";
+import { cropCenterToSize } from "../../utils/imageCrop";
 
 function norm(s?: string | null): string {
   return (s ?? "").trim();
@@ -156,47 +157,73 @@ const BoothForm = () => {
     }
   };
 
-  const handleSave = (after?: () => void) => {
-    updateStore(
-      {
-        storeId,
-        name: boothName,
-        location: "제2학관 앞마당", // 입력받는 필드 필요
-        description: boothIntro,
-        noticeTitle: noticeTitle,
-        noticeContent: boothNotice,
-        openTime: `${startHour}${startMinute}${endHour}${endMinute}`,
-      },
-      {
-        onSuccess: () => {
-          if (profileImage && profileImage instanceof File) {
-            uploadProfileImage({
-              storeId,
-              image: profileImage,
-            });
+  const handleSave = async (after?: () => void) => {
+    try {
+      // 1) 텍스트/시간 먼저 저장
+      await new Promise<void>((resolve, reject) => {
+        updateStore(
+          {
+            storeId,
+            name: boothName,
+            location: "제2학관 앞마당",
+            description: boothIntro,
+            noticeTitle,
+            noticeContent: boothNotice,
+            openTime: `${startHour}${startMinute}${endHour}${endMinute}`,
+          },
+          {
+            onSuccess: () => resolve(),
+            onError: () => reject(new Error("부스 정보 수정 실패")),
           }
+        );
+      });
 
-          // 배너 이미지 업로드 (File 타입만 필터링),삭제한 이미지 필터링
-          const newBannerFiles = bannerImages.filter(
-            (img): img is File => img instanceof File && img !== null
+      // 2) 프로필(옵션) 100×100 크롭 후 업로드
+      if (profileImage && profileImage instanceof File) {
+        const avatar100 = await cropCenterToSize(
+          profileImage,
+          100,
+          100,
+          "image/png",
+          0.92
+        );
+        await new Promise<void>((resolve, reject) => {
+          uploadProfileImage(
+            { storeId, image: avatar100 },
+            { onSuccess: () => resolve(), onError: () => reject(new Error()) }
           );
-
-          if (newBannerFiles.length > 0) {
-            uploadBannerImages({
-              storeId,
-              images: newBannerFiles,
-            });
-          }
-
-          console.log("부스 정보가 성공적으로 저장되었습니다!");
-          refetch();
-          after?.();
-        },
-        onError: () => console.log("부스 정보 수정에 실패했습니다."),
+        });
       }
-    );
-  };
 
+      // 3) 배너: 새로 추가된 File만 375×246으로 일괄 크롭 후 업로드
+      const newBannerFiles = bannerImages.filter(
+        (img): img is File => img instanceof File && img !== null
+      );
+
+      if (newBannerFiles.length > 0) {
+        const croppedBanners = await Promise.all(
+          newBannerFiles.map((file) =>
+            cropCenterToSize(file, 375, 246, "image/jpeg", 0.9)
+          )
+        );
+
+        await new Promise<void>((resolve, reject) => {
+          uploadBannerImages(
+            { storeId, images: croppedBanners },
+            { onSuccess: () => resolve(), onError: () => reject(new Error()) }
+          );
+        });
+      }
+
+      // 4) 후처리
+      console.log("부스 정보가 성공적으로 저장되었습니다!");
+      refetch();
+      after?.();
+    } catch (e) {
+      console.error(e);
+      alert("저장 중 오류가 발생했어요. 다시 시도해주세요.");
+    }
+  };
   // 닫기/새로고침 가드
   useEffect(() => {
     const onBeforeUnload = (e: BeforeUnloadEvent) => {
