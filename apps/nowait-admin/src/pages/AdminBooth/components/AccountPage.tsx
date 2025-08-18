@@ -10,11 +10,18 @@ import { useCreateStorePayment } from "../../../hooks/booth/payment/useCreateSto
 import { useUpdateStorePayment } from "../../../hooks/booth/payment/useUpdateStorePayment";
 import { useNavigate } from "react-router";
 import SaveButton from "./Button/saveBttn";
+import { REQUIRED_PREFIX, validateUrlPrefix } from "./Rule/payUrlRule";
 
 const AccountPage = () => {
   const [bank, setBank] = useState("IBK기업");
   const [accountName, setAccountName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
+  const [errors, setErrors] = useState<Record<PaymentId, string | null>>({
+    kakao: null,
+    toss: null,
+    naver: null,
+  });
+  const [saving, setSaving] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,31 +29,13 @@ const AccountPage = () => {
   const { mutate: createPayment } = useCreateStorePayment();
   const { mutate: updatePayment } = useUpdateStorePayment();
 
-  const handleSave = () => {
-    const payload = {
-      tossUrl: urls.toss,
-      kakaoPayUrl: urls.kakao,
-      naverPayUrl: urls.naver,
-      accountNumber: bank + " " + accountName + " " + accountNumber,
-    };
-
-    if (!storePayment || typeof storePayment.response === "string") {
-      // 결제 정보 없음 → 생성
-      createPayment(payload, {
-        onSuccess: () => console.log("결제 정보가 생성되었습니다."),
-        onError: () => console.log("결제 정보 생성 실패"),
-      });
-    } else {
-      // 이미 있음 → 수정
-      updatePayment(payload, {
-        onSuccess: () => console.log("결제 정보가 수정되었습니다."),
-        onError: () => console.log("결제 정보 수정 실패"),
-      });
-    }
-  };
-
   // 각 결제수단별 입력값 관리
-  const [urls, setUrls] = useState<{ [key: string]: string }>({
+  const [urls, setUrls] = useState<Record<PaymentId, string>>({
+    kakao: "",
+    toss: "",
+    naver: "",
+  });
+  const [inputs, setInputs] = useState<Record<PaymentId, string>>({
     kakao: "",
     toss: "",
     naver: "",
@@ -97,7 +86,6 @@ const AccountPage = () => {
     toss: useRef<HTMLInputElement | null>(null),
     naver: useRef<HTMLInputElement | null>(null),
   };
-  const [loading, setLoading] = useState(false);
 
   const handleButtonClick = (id: PaymentId) => {
     fileInputs[id].current?.click();
@@ -110,7 +98,6 @@ const AccountPage = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    setLoading(true);
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
@@ -125,17 +112,24 @@ const AccountPage = () => {
         const code = jsQR(imageData.data, img.width, img.height);
 
         if (code) {
-          setUrls((prev) => ({ ...prev, [id]: code.data }));
-          setSources((prev) => ({ ...prev, [id]: "image" })); //이미지 업로드는 source type: image로 설정
+          const raw = (code.data || "").trim();
+          const res = validateUrlPrefix(id, raw);
+          if (res.ok) {
+            setUrls((prev) => ({ ...prev, [id]: res.value }));
+            setInputs((prev) => ({ ...prev, [id]: res.value }));
+            setSources((prev) => ({ ...prev, [id]: "image" }));
+            setErrors((prev) => ({ ...prev, [id]: null }));
+          } else {
+            setInputs((prev) => ({ ...prev, [id]: res.value }));
+            setErrors((prev) => ({ ...prev, [id]: res.error }));
+            console.log(res.error!);
+          }
         } else {
-          alert("QR 코드를 인식할 수 없습니다.");
+          console.log("QR 코드를 인식할 수 없습니다.");
         }
-        setLoading(false);
         event.target.value = "";
       };
-      if (e.target?.result) {
-        img.src = e.target.result as string;
-      }
+      if (e.target?.result) img.src = e.target.result as string;
     };
     reader.readAsDataURL(file);
   };
@@ -143,10 +137,10 @@ const AccountPage = () => {
   const paymentFilled = paymentOptions.some(
     (opt) => urls[opt.id]?.trim().length > 0
   );
-  const accountFilled =
-    bank.trim().length > 0 &&
-    accountName.trim().length > 0 &&
-    accountNumber.trim().length > 0;
+  // const accountFilled =
+  //   bank.trim().length > 0 &&
+  //   accountName.trim().length > 0 &&
+  //   accountNumber.trim().length > 0;
 
   const serverKakao = storePayment?.response.kakaoPayUrl;
   const serverToss = storePayment?.response.tossUrl;
@@ -154,9 +148,9 @@ const AccountPage = () => {
   const serverAccount = storePayment?.response.accountNumber;
 
   // 현재 입력값
-  const curKakao = urls.kakao;
-  const curToss = urls.toss;
-  const curNaver = urls.naver;
+  const curKakao = inputs.kakao;
+  const curToss = inputs.toss;
+  const curNaver = inputs.naver;
   const curAccount = `${bank} ${accountName} ${accountNumber}`;
 
   // 각각 동일 여부
@@ -166,28 +160,96 @@ const AccountPage = () => {
     curNaver === serverNaver;
 
   const sameAccount = curAccount === serverAccount;
+  console.log("계좌정보", curAccount, storePayment, sameAccount);
+  const hasError = !(
+    errors.kakao === null &&
+    errors.toss === null &&
+    errors.naver === null
+  );
 
-  console.log(serverKakao, curKakao, paymentFilled);
   // 입력된 정보가 없거나 변경된 사항이 없을 경우
-  const saveDisabled =
-    (sameUrls && sameAccount) || !accountFilled || !paymentFilled;
+  const saveDisabled = (sameUrls && sameAccount) || !paymentFilled || hasError;
+
+  const handleSave = () => {
+    // 1) 입력값 검증
+    const nextUrls: Record<PaymentId, string> = { ...urls };
+    const nextErrors: Record<PaymentId, string | null> = { ...errors };
+
+    (["kakao", "toss", "naver"] as PaymentId[]).forEach((id) => {
+      const val = inputs[id]?.trim() || ""; // inputs에서 가져오기
+      if (!val) {
+        nextUrls[id] = "";
+        nextErrors[id] = null;
+        return;
+      }
+
+      const res = validateUrlPrefix(id, val);
+      if (res.ok) {
+        nextUrls[id] = res.value;
+        nextErrors[id] = null;
+      } else {
+        nextErrors[id] = res.error;
+      }
+    });
+
+    setUrls(nextUrls);
+    setErrors(nextErrors);
+
+    // 2) 에러 있으면 저장 중단
+    const hasErr = Object.values(nextErrors).some((e) => e !== null);
+    if (hasErr) {
+      console.log("유효하지 않은 URL이 있어 저장할 수 없습니다.");
+      return;
+    }
+
+    // 3) 서버 전송용 payload 구성
+    const payload = {
+      tossUrl: nextUrls.toss,
+      kakaoPayUrl: nextUrls.kakao,
+      naverPayUrl: nextUrls.naver,
+      accountNumber: bank + " " + accountName + " " + accountNumber,
+    };
+    console.log(payload, "전송 데이터");
+
+    setSaving(true);
+
+    // 4) 생성 or 수정
+    if (!storePayment || typeof storePayment.response === "string") {
+      createPayment(payload, {
+        onSuccess: () => {
+          console.log("결제 정보가 생성되었습니다.");
+          setSaving(false);
+        },
+        onError: () => console.log("결제 정보 생성 실패"),
+      });
+    } else {
+      updatePayment(payload, {
+        onSuccess: () => console.log("결제 정보가 수정되었습니다."),
+        onError: () => console.log("결제 정보 수정 실패"),
+      });
+    }
+  };
 
   useEffect(() => {
     const res = storePayment?.response;
 
     if (!res || typeof res === "string") {
       setUrls({ kakao: "", toss: "", naver: "" });
+      setInputs({ kakao: "", toss: "", naver: "" });
       setBank("IBK 기업");
       setAccountName("");
       setAccountNumber("");
       return;
     }
 
-    setUrls({
+    const next = {
       kakao: res.kakaoPayUrl ?? "",
       toss: res.tossUrl ?? "",
       naver: res.naverPayUrl ?? "",
-    });
+    };
+
+    setUrls(next);
+    setInputs(next);
 
     // 공백 포함 가능성 고려(예금주에 공백 들어갈 수 있음)
     const accountInfo = res.accountNumber ?? "";
@@ -229,21 +291,34 @@ const AccountPage = () => {
                 />
                 <span className="text-14-semibold">{option.name}</span>
               </div>
-              <div className="flex h-[52px] w-[474px] items-center bg-black-5 rounded-xl border border-[#dddddd] pl-4 pr-[10px] py-4">
-                <input
-                  type="text"
-                  value={urls[option.id]}
-                  onChange={(e) => {
-                    setUrls((prev) => ({
-                      ...prev,
-                      [option.id]: e.target.value,
-                    }));
-                    setSources((prev) => ({ ...prev, [option.id]: "text" })); // 직접 입력으로 설정
-                  }}
-                  placeholder={option.placeholder}
-                  className="flex-1 bg-transparent outline-none text-sm text-gray-700"
-                  readOnly={sources[option.id] === "image"}
-                />
+              <div className="flex justify-between h-[52px] w-[474px] items-center bg-black-5 rounded-xl border border-[#dddddd] pl-4 pr-[10px] py-4">
+                <div className="flex flex-col w-[79%] w-overflow-scroll">
+                  <input
+                    type="text"
+                    value={inputs[option.id]}
+                    onChange={(e) => {
+                      setInputs((prev) => ({
+                        ...prev,
+                        [option.id]: e.target.value,
+                      }));
+                      setSources((prev) => ({ ...prev, [option.id]: "text" }));
+                    }}
+                    onPaste={(e) => {
+                      e.preventDefault();
+                      const pasted = e.clipboardData.getData("text");
+                      setInputs((prev) => ({ ...prev, [option.id]: pasted }));
+                      setSources((prev) => ({ ...prev, [option.id]: "text" }));
+                    }}
+                    placeholder={REQUIRED_PREFIX[option.id]}
+                    className="flex-1 bg-transparent outline-none text-sm text-gray-700"
+                    readOnly={sources[option.id] === "image"}
+                  />
+                  {errors[option.id] && (
+                    <span className="text-[12px] text-red-600">
+                      {errors[option.id]}
+                    </span>
+                  )}
+                </div>
                 <input
                   type="file"
                   accept="image/*"
@@ -251,29 +326,42 @@ const AccountPage = () => {
                   className="hidden"
                   onChange={(e) => handleQrUpload(e, option.id)}
                 />
-                {sources[option.id] === "image" ? (
+
+                {urls[option.id].length > 0 ? (
                   <button
-                    className="bg-[#FFF0EB] text-primary text-12-bold rounded-[6px] p-[10px] hover:bg-red-300"
+                    className="bg-[#FFF0EB] text-primary text-12-bold rounded-[6px] p-[10px] hover:scale-[105%]"
                     onClick={() => {
+                      setInputs((prev) => ({ ...prev, [option.id]: "" }));
                       setUrls((prev) => ({ ...prev, [option.id]: "" }));
-                      setSources((prev) => ({ ...prev, [option.id]: null })); // 초기화
+                      setSources((prev) => ({ ...prev, [option.id]: null }));
+                      setErrors((prev) => ({ ...prev, [option.id]: null }));
                     }}
                   >
                     삭제하기
                   </button>
+                ) : errors[option.id] ? (
+                  <button
+                    className={`text-black-80 text-12-bold rounded-[6px] p-[10px] 
+                        bg-black-30 hover:bg-gray-300
+                    `}
+                    onClick={() => {
+                      setInputs((prev) => ({ ...prev, [option.id]: "" }));
+                      setUrls((prev) => ({ ...prev, [option.id]: "" }));
+                      setErrors((prev) => ({ ...prev, [option.id]: null }));
+                    }}
+                  >
+                    {"초기화"}
+                  </button>
                 ) : (
                   <button
-                    disabled={loading}
-                    className={`text-black-80 text-12-bold rounded-[6px] p-[10px] ${
-                      loading
-                        ? "bg-gray-300 cursor-not-allowed"
-                        : "bg-black-30 hover:bg-gray-300"
-                    }`}
+                    className={`text-black-80 text-12-bold rounded-[6px] p-[10px] 
+                        bg-black-30 w-[96px] h-[32px]
+                    `}
                     onClick={() => {
                       handleButtonClick(option.id);
                     }}
                   >
-                    {loading ? "인식 중..." : "이미지로 업로드"}
+                    {"이미지로 업로드"}
                   </button>
                 )}
               </div>
@@ -313,7 +401,7 @@ const AccountPage = () => {
         </div>
       </section>
 
-      <SaveButton disabled={saveDisabled} onClick={handleSave} />
+      <SaveButton disabled={saveDisabled || saving} onClick={handleSave} />
     </div>
   );
 };
