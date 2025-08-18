@@ -9,9 +9,10 @@ import { useGetStorePayment } from "../../../hooks/booth/payment/useGetStorePaym
 import { useCreateStorePayment } from "../../../hooks/booth/payment/useCreateStorePayment";
 import { useUpdateStorePayment } from "../../../hooks/booth/payment/useUpdateStorePayment";
 import { useNavigate } from "react-router";
+import SaveButton from "./Button/saveBttn";
 
 const AccountPage = () => {
-  const [bank, setBank] = useState("IBK 기업");
+  const [bank, setBank] = useState("IBK기업");
   const [accountName, setAccountName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
 
@@ -32,14 +33,14 @@ const AccountPage = () => {
     if (!storePayment || typeof storePayment.response === "string") {
       // 결제 정보 없음 → 생성
       createPayment(payload, {
-        onSuccess: () => alert("결제 정보가 생성되었습니다."),
-        onError: () => alert("결제 정보 생성 실패"),
+        onSuccess: () => console.log("결제 정보가 생성되었습니다."),
+        onError: () => console.log("결제 정보 생성 실패"),
       });
     } else {
       // 이미 있음 → 수정
       updatePayment(payload, {
-        onSuccess: () => alert("결제 정보가 수정되었습니다."),
-        onError: () => alert("결제 정보 수정 실패"),
+        onSuccess: () => console.log("결제 정보가 수정되었습니다."),
+        onError: () => console.log("결제 정보 수정 실패"),
       });
     }
   };
@@ -138,6 +139,38 @@ const AccountPage = () => {
     };
     reader.readAsDataURL(file);
   };
+
+  const paymentFilled = paymentOptions.some(
+    (opt) => urls[opt.id]?.trim().length > 0
+  );
+  const accountFilled =
+    bank.trim().length > 0 &&
+    accountName.trim().length > 0 &&
+    accountNumber.trim().length > 0;
+
+  const serverKakao = storePayment?.response.kakaoPayUrl;
+  const serverToss = storePayment?.response.tossUrl;
+  const serverNaver = storePayment?.response.naverPayUrl;
+  const serverAccount = storePayment?.response.accountNumber;
+
+  // 현재 입력값
+  const curKakao = urls.kakao;
+  const curToss = urls.toss;
+  const curNaver = urls.naver;
+  const curAccount = `${bank} ${accountName} ${accountNumber}`;
+
+  // 각각 동일 여부
+  const sameUrls =
+    curKakao === serverKakao &&
+    curToss === serverToss &&
+    curNaver === serverNaver;
+
+  const sameAccount = curAccount === serverAccount;
+
+  console.log(serverKakao, curKakao, paymentFilled);
+  // 입력된 정보가 없거나 변경된 사항이 없을 경우
+  const saveDisabled =
+    (sameUrls && sameAccount) || !accountFilled || !paymentFilled;
 
   useEffect(() => {
     const res = storePayment?.response;
@@ -280,12 +313,7 @@ const AccountPage = () => {
         </div>
       </section>
 
-      <button
-        onClick={handleSave}
-        className="w-full py-4 bg-black-25 text-black-55 rounded-[8px] text-14-semibold"
-      >
-        저장하기
-      </button>
+      <SaveButton disabled={saveDisabled} onClick={handleSave} />
     </div>
   );
 };
