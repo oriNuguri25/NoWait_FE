@@ -3,7 +3,6 @@ import DepartmentImage from "../DepartmentImage";
 import defaultMenuImageLg from "../../assets/default-image-lg.png";
 import { useState } from "react";
 import { useBookmarkMutation } from "../../hooks/mutate/useBookmark";
-import { useBookmarkState } from "../../hooks/useBookmarkState";
 
 interface PropsType {
   bookmarkId?: number;
@@ -29,7 +28,6 @@ const StoreListItem = ({
     },
     Number(storeId)
   );
-  // const { isBookmarked } = useBookmarkState(storeId);
 
   const [isBookmarked, setIsBookmarked] = useState(true);
 

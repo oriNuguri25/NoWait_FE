@@ -14,24 +14,21 @@ export const useBookmarkMutation = (
       console.log(controller);
       return createBookmark(storeId!, controller.signal);
     },
+    // mutation 전에 작업 실행(UI 먼저 업데이트하기)
     onMutate: async () => {
-      console.log("onMutate 실행", Date.now());
       await queryClient.cancelQueries({ queryKey: bookmarkKey });
-
       const prevData = queryClient.getQueryData<boolean>(bookmarkKey);
-
-      // 낙관적 업데이트: true (북마크됨)
       queryClient.setQueryData(bookmarkKey, true);
 
       return { prevData };
     },
+    // 실패 시 이전 값으로 롤백
     onError: (_err, _vars, context) => {
-      // 실패 시 이전 값으로 롤백
-      console.log("onError 발생, 롤백!", context?.prevData);
       if (context?.prevData !== undefined) {
         queryClient.setQueryData(bookmarkKey, context.prevData);
       }
     },
+    // mutation의 성공, 실패 여부와 관계없이 mutation 무효화
     onSettled: () => {
       if (withInvalidate) {
         queryClient.invalidateQueries({ queryKey: bookmarkKey });
@@ -44,23 +41,22 @@ export const useBookmarkMutation = (
       const controller = new AbortController();
       return deleteBookmark(storeId!, controller.signal);
     },
+    // mutation 전에 작업 실행(UI 먼저 업데이트하기)
     onMutate: async () => {
-      console.log("onMutate 삭제", Date.now());
       await queryClient.cancelQueries({ queryKey: bookmarkKey });
-
       const prevData = queryClient.getQueryData<boolean>(bookmarkKey);
-
-      // 낙관적 업데이트: false (북마크 해제)
       queryClient.setQueryData(bookmarkKey, false);
 
       return { prevData };
     },
+    // 실패 시 이전 값으로 롤백
     onError: (_err, _vars, context) => {
       console.log("onError 발생, 롤백!", context?.prevData);
       if (context?.prevData !== undefined) {
         queryClient.setQueryData(bookmarkKey, context.prevData);
       }
     },
+    // mutation의 성공, 실패 여부와 관계없이 mutation 무효화
     onSettled: () => {
       if (withInvalidate) {
         queryClient.invalidateQueries({ queryKey: bookmarkKey });
