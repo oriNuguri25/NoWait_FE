@@ -11,6 +11,16 @@ import BoothSection from "./components/BoothSection";
 import AccountPage from "./components/AccountPage";
 import PreviewModal from "./components/Modal/PreviewModal";
 import SaveButton from "./components/Button/saveBttn";
+import { useBlocker } from "react-router-dom";
+import { UnsavedChangesModal } from "./components/Modal/UnsavedChangesModal";
+
+function norm(s?: string | null): string {
+  return (s ?? "").trim();
+}
+
+function arrEq<T>(a: T[], b: T[]): boolean {
+  return a.length === b.length && a.every((v, i) => v === b[i]);
+}
 
 const BoothForm = () => {
   const width = useWindowWidth();
@@ -44,6 +54,7 @@ const BoothForm = () => {
   const [profileImage, setProfileImage] = useState<ProfileImage>(null);
 
   const [showPreview, setShowPreview] = useState(false);
+  const currentOpenTime = `${startHour}${startMinute}${endHour}${endMinute}`;
 
   const [baseline, setBaseline] = useState<{
     name: string;
@@ -55,11 +66,99 @@ const BoothForm = () => {
     bannerIds: Array<number | null>; // 첫 3개 슬롯 기준
   } | null>(null);
 
-  const norm = (s?: string | null) => (s ?? "").trim();
-  const arrEq = (a: any[], b: any[]) =>
-    a.length === b.length && a.every((v, i) => v === b[i]);
+  const currentProfileSig = useMemo(() => {
+    if (!profileImage) return null;
+    return profileImage instanceof File
+      ? "file"
+      : (profileImage as any).id ?? null;
+  }, [profileImage]);
 
-  const handleSave = () => {
+  const currentBannerSig = useMemo<(string | number | null)[]>(() => {
+    // UI가 3 슬롯이라 가정
+    const slots = [bannerImages[0], bannerImages[1], bannerImages[2]];
+    return slots.map((img) => {
+      if (!img) return null;
+      return img instanceof File ? "file" : (img as any).id ?? null;
+    });
+  }, [bannerImages]);
+  const hasChanges = useMemo(() => {
+    if (!baseline) return false; // 아직 로딩 중이면 비활성화
+
+    const textChanged =
+      norm(boothName) !== norm(baseline.name) ||
+      norm(boothIntro) !== norm(baseline.description) ||
+      norm(noticeTitle) !== norm(baseline.noticeTitle) ||
+      norm(boothNotice) !== norm(baseline.noticeContent);
+
+    const timeChanged = norm(currentOpenTime) !== norm(baseline.openTime);
+
+    const profileChanged = currentProfileSig !== baseline.profileId;
+
+    const bannerChanged = !arrEq(currentBannerSig, baseline.bannerIds);
+
+    return textChanged || timeChanged || profileChanged || bannerChanged;
+  }, [
+    baseline,
+    boothName,
+    boothIntro,
+    noticeTitle,
+    boothNotice,
+    currentOpenTime,
+    currentProfileSig,
+    currentBannerSig,
+  ]);
+  const blocker = useBlocker(hasChanges);
+  const [showUnsaved, setShowUnsaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  type PendingNav =
+    | { type: "tab"; tab: "booth" | "menu" | "account" }
+    | { type: "route"; blocker: any }
+    | null;
+
+  const [pendingNav, setPendingNav] = useState<PendingNav>(null);
+
+  const resetToBaseline = () => {
+    if (!baseline || !store) return;
+    setBoothName(baseline.name);
+    setBoothIntro(baseline.description);
+    setNoticeTitle(baseline.noticeTitle);
+    setBoothNotice(baseline.noticeContent);
+
+    const ot = baseline.openTime ?? "";
+    setStartHour(ot.slice(0, 2) || "");
+    setStartMinute(ot.slice(2, 4) || "");
+    setEndHour(ot.slice(4, 6) || "");
+    setEndMinute(ot.slice(6, 8) || "");
+
+    // 이미지도 서버 상태로 되돌림
+    const formatted = (store.bannerImages ?? []).map((img: any) => ({
+      ...img,
+      imageType: img.imageType ?? "BANNER",
+    }));
+    setBannerImages(formatted.slice(0, 3));
+    setProfileImage(
+      store.profileImage
+        ? {
+            id: store.profileImage.id,
+            imageUrl: store.profileImage.imageUrl,
+            imageType: "PROFILE",
+          }
+        : null
+    );
+  };
+
+  const onTabClick = (tab: "booth" | "menu" | "account") => {
+    if (tab === activeTab) return;
+    if (hasChanges) {
+      setPendingNav({ type: "tab", tab });
+      setShowUnsaved(true);
+    } else {
+      setActiveTab(tab);
+    }
+  };
+
+  const handleSave = (after?: () => void) => {
     updateStore(
       {
         storeId,
@@ -93,11 +192,32 @@ const BoothForm = () => {
 
           console.log("부스 정보가 성공적으로 저장되었습니다!");
           refetch();
+          after?.();
         },
         onError: () => console.log("부스 정보 수정에 실패했습니다."),
       }
     );
   };
+
+  // 닫기/새로고침 가드
+  useEffect(() => {
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasChanges) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [hasChanges]);
+
+  //  페이지 이동 가드
+  useEffect(() => {
+    if (blocker.state === "blocked") {
+      setPendingNav({ type: "route", blocker });
+      setShowUnsaved(true);
+    }
+  }, [blocker.state]);
 
   useEffect(() => {
     if (!store) return;
@@ -155,51 +275,6 @@ const BoothForm = () => {
     });
   }, [store]);
 
-  const currentOpenTime = `${startHour}${startMinute}${endHour}${endMinute}`;
-
-  const currentProfileSig = useMemo(() => {
-    if (!profileImage) return null;
-    return profileImage instanceof File
-      ? "file"
-      : (profileImage as any).id ?? null;
-  }, [profileImage]);
-
-  const currentBannerSig = useMemo<(string | number | null)[]>(() => {
-    // UI가 3 슬롯이라 가정
-    const slots = [bannerImages[0], bannerImages[1], bannerImages[2]];
-    return slots.map((img) => {
-      if (!img) return null;
-      return img instanceof File ? "file" : (img as any).id ?? null;
-    });
-  }, [bannerImages]);
-
-  // 5) 변경 여부 계산
-  const hasChanges = useMemo(() => {
-    if (!baseline) return false; // 아직 로딩 중이면 비활성화
-
-    const textChanged =
-      norm(boothName) !== norm(baseline.name) ||
-      norm(boothIntro) !== norm(baseline.description) ||
-      norm(noticeTitle) !== norm(baseline.noticeTitle) ||
-      norm(boothNotice) !== norm(baseline.noticeContent);
-
-    const timeChanged = norm(currentOpenTime) !== norm(baseline.openTime);
-
-    const profileChanged = currentProfileSig !== baseline.profileId;
-
-    const bannerChanged = !arrEq(currentBannerSig, baseline.bannerIds);
-
-    return textChanged || timeChanged || profileChanged || bannerChanged;
-  }, [
-    baseline,
-    boothName,
-    boothIntro,
-    noticeTitle,
-    boothNotice,
-    currentOpenTime,
-    currentProfileSig,
-    currentBannerSig,
-  ]);
   return (
     <div
       className={`${
@@ -217,7 +292,7 @@ const BoothForm = () => {
                 ? "bg-black text-white"
                 : "bg-white text-black-60"
             }`}
-            onClick={() => setActiveTab("menu")}
+            onClick={() => onTabClick("menu")}
           >
             메뉴 관리
           </button>
@@ -227,7 +302,7 @@ const BoothForm = () => {
                 ? "bg-black text-white"
                 : "bg-white text-black-60 "
             }`}
-            onClick={() => setActiveTab("booth")}
+            onClick={() => onTabClick("booth")}
           >
             부스 관리
           </button>
@@ -237,7 +312,7 @@ const BoothForm = () => {
                 ? "bg-black text-white"
                 : "bg-white text-black-60 "
             }`}
-            onClick={() => setActiveTab("account")}
+            onClick={() => onTabClick("account")}
           >
             계좌 관리
           </button>
@@ -314,6 +389,31 @@ const BoothForm = () => {
                         }
                       : { ...img, imageType: "BANNER" }
                   )}
+                />
+              )}
+              {showUnsaved && (
+                <UnsavedChangesModal
+                  onReset={() => {
+                    resetToBaseline();
+                    setShowUnsaved(false);
+                    if (pendingNav?.type === "route") {
+                      pendingNav.blocker.reset();
+                    }
+                    setPendingNav(null);
+                  }}
+                  onSave={() => {
+                    if (!pendingNav) return;
+                    handleSave(() => {
+                      setShowUnsaved(false);
+
+                      if (pendingNav.type === "tab") {
+                        setActiveTab(pendingNav.tab);
+                      } else if (pendingNav.type === "route") {
+                        pendingNav.blocker.proceed();
+                      }
+                      setPendingNav(null);
+                    });
+                  }}
                 />
               )}
             </div>

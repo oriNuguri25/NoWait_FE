@@ -6,27 +6,29 @@ export const UnsavedChangesModal = ({
   onSave: () => void;
 }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-xl p-6 max-w-[400px] w-full">
-        <h3 className="text-lg font-bold mb-2">
-          저장하지 않은 변경사항이 있어요
-        </h3>
-        <p className="text-sm text-gray-500 mb-6">
-          이 페이지를 나가면 변경사항이 저장되지 않아요.
-        </p>
-        <div className="flex gap-2 justify-end">
-          <button
-            className="px-4 py-2 rounded-lg bg-gray-100 text-gray-700"
-            onClick={onReset}
-          >
-            재설정
-          </button>
-          <button
-            className="px-4 py-2 rounded-lg bg-black text-white"
-            onClick={onSave}
-          >
-            변경사항 저장
-          </button>
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+      <div className="flex items-center bg-white rounded-[20px] p-[30px] w-[324px] h-[185px]">
+        <div className="flex flex-col justify-center items-center w-full">
+          <h3 className="text-title-20-bold">
+            저장하지 않은 변경사항이 있어요
+          </h3>
+          <p className="text-13-regular text-black-60 mb-[20px] mt-[10px]">
+            이 페이지를 나가면 변경사항이 저장되지 않아요.
+          </p>
+          <div className="flex justify-between h-[48px] w-full">
+            <button
+              className="px-[20px] py-[13px] w-[128px] rounded-[10px] bg-black-20 text-black-80"
+              onClick={onReset}
+            >
+              재설정
+            </button>
+            <button
+              className="px-[20px] py-[13px] w-[128px] rounded-[10px] bg-black text-white"
+              onClick={onSave}
+            >
+              변경사항 저장
+            </button>
+          </div>
         </div>
       </div>
     </div>
