@@ -4,8 +4,10 @@ import HomeHeader from "../../components/Header";
 import InfiniteStoreList from "./components/InfiniteStoreList";
 import WaitingListModal from "./components/WaitingListModal";
 import MyWaitingDetail from "./components/MyWaitingDetail";
-import BannerMap from "../../assets/icon/banner_img.svg?react";
-import UpIcon from "../../assets/icon/upIcon.svg?react";
+import {
+  MemoizedBannerMap,
+  MemoizedUpIcon,
+} from "../../components/icons/MemoizedIcons";
 import { useMyWaitingList } from "../../hooks/useMyWaitingList";
 import { useWaitingItems } from "../../hooks/useWaitingItems";
 import SortWaitingCard from "./components/SortWaitingCard";
@@ -163,7 +165,7 @@ const HomePage = () => {
               지도로 부스의 위치를 확인해 보세요!
             </div>
           </div>
-          <BannerMap className="w-25 h-25" />
+          <MemoizedBannerMap className="w-25 h-25" />
         </div>
 
         {/* 무한 스크롤 주점 목록 */}
@@ -192,7 +194,7 @@ const HomePage = () => {
           className="fixed bottom-10 right-5 z-30 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center"
           aria-label="화면 최상단으로 이동"
         >
-          <UpIcon className="w-10 h-10" />
+          <MemoizedUpIcon className="w-10 h-10" />
         </button>
       )}
     </div>
