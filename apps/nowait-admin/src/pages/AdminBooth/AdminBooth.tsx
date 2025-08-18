@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
 import MenuSection from "./components/MenuSection";
 import { useGetStore } from "../../hooks/booth/store/useGetStore";
@@ -10,6 +10,7 @@ import type { ProfileImage } from "./types/booth";
 import BoothSection from "./components/BoothSection";
 import AccountPage from "./components/AccountPage";
 import PreviewModal from "./components/Modal/PreviewModal";
+import SaveButton from "./components/Button/saveBttn";
 
 const BoothForm = () => {
   const width = useWindowWidth();
@@ -44,7 +45,19 @@ const BoothForm = () => {
 
   const [showPreview, setShowPreview] = useState(false);
 
-  console.log(store, "store 정보");
+  const [baseline, setBaseline] = useState<{
+    name: string;
+    description: string;
+    noticeTitle: string;
+    noticeContent: string;
+    openTime: string; // "HHmmHHmm"
+    profileId: number | null;
+    bannerIds: Array<number | null>; // 첫 3개 슬롯 기준
+  } | null>(null);
+
+  const norm = (s?: string | null) => (s ?? "").trim();
+  const arrEq = (a: any[], b: any[]) =>
+    a.length === b.length && a.every((v, i) => v === b[i]);
 
   const handleSave = () => {
     updateStore(
@@ -87,31 +100,106 @@ const BoothForm = () => {
   };
 
   useEffect(() => {
-    if (store) {
-      setBoothName(store.name);
-      setBoothIntro(store.description);
-      setDepartName(store.departmentName);
-      if (store.noticeTitle) setNoticeTitle(store.noticeTitle);
-      if (store.noticeContent) setBoothNotice(store.noticeContent);
-      console.log(store.bannerImages, "bannerImages");
+    if (!store) return;
 
-      if (store.bannerImages) {
-        const formatted = store.bannerImages.map((img: any) => ({
-          ...img,
-          imageType: img.imageType ?? "BANNER", // 기본값
-        }));
-        setBannerImages(formatted);
-      }
-      if (store?.profileImage) {
-        setProfileImage({
-          id: store.profileImage.id,
-          imageUrl: store.profileImage.imageUrl,
-          imageType: "PROFILE",
-        });
-      }
+    setBoothName(store.name ?? "");
+    setBoothIntro(store.description ?? "");
+    setDepartName(store.departmentName ?? "");
+    setNoticeTitle(store.noticeTitle ?? "");
+    setBoothNotice(store.noticeContent ?? "");
+
+    // 운영시간 분해 (예: "09001800")
+    const ot = store.openTime ?? "";
+    if (ot.length === 8) {
+      setStartHour(ot.slice(0, 2));
+      setStartMinute(ot.slice(2, 4));
+      setEndHour(ot.slice(4, 6));
+      setEndMinute(ot.slice(6, 8));
     }
+
+    // 배너/프로필 상태 세팅
+    if (store.bannerImages) {
+      const formatted = store.bannerImages.map((img: any) => ({
+        ...img,
+        imageType: img.imageType ?? "BANNER",
+      }));
+      setBannerImages(formatted);
+    } else {
+      setBannerImages([]);
+    }
+
+    if (store?.profileImage) {
+      setProfileImage({
+        id: store.profileImage.id,
+        imageUrl: store.profileImage.imageUrl,
+        imageType: "PROFILE",
+      });
+    } else {
+      setProfileImage(null);
+    }
+
+    // baseline 스냅샷 구성 (첫 3개 슬롯 기준)
+    const first3 = (store.bannerImages ?? []).slice(0, 3);
+    setBaseline({
+      name: store.name ?? "",
+      description: store.description ?? "",
+      noticeTitle: store.noticeTitle ?? "",
+      noticeContent: store.noticeContent ?? "",
+      openTime: store.openTime ?? "",
+      profileId: store.profileImage?.id ?? null,
+      bannerIds: [
+        first3[0]?.id ?? null,
+        first3[1]?.id ?? null,
+        first3[2]?.id ?? null,
+      ],
+    });
   }, [store]);
 
+  const currentOpenTime = `${startHour}${startMinute}${endHour}${endMinute}`;
+
+  const currentProfileSig = useMemo(() => {
+    if (!profileImage) return null;
+    return profileImage instanceof File
+      ? "file"
+      : (profileImage as any).id ?? null;
+  }, [profileImage]);
+
+  const currentBannerSig = useMemo<(string | number | null)[]>(() => {
+    // UI가 3 슬롯이라 가정
+    const slots = [bannerImages[0], bannerImages[1], bannerImages[2]];
+    return slots.map((img) => {
+      if (!img) return null;
+      return img instanceof File ? "file" : (img as any).id ?? null;
+    });
+  }, [bannerImages]);
+
+  // 5) 변경 여부 계산
+  const hasChanges = useMemo(() => {
+    if (!baseline) return false; // 아직 로딩 중이면 비활성화
+
+    const textChanged =
+      norm(boothName) !== norm(baseline.name) ||
+      norm(boothIntro) !== norm(baseline.description) ||
+      norm(noticeTitle) !== norm(baseline.noticeTitle) ||
+      norm(boothNotice) !== norm(baseline.noticeContent);
+
+    const timeChanged = norm(currentOpenTime) !== norm(baseline.openTime);
+
+    const profileChanged = currentProfileSig !== baseline.profileId;
+
+    const bannerChanged = !arrEq(currentBannerSig, baseline.bannerIds);
+
+    return textChanged || timeChanged || profileChanged || bannerChanged;
+  }, [
+    baseline,
+    boothName,
+    boothIntro,
+    noticeTitle,
+    boothNotice,
+    currentOpenTime,
+    currentProfileSig,
+    currentBannerSig,
+  ]);
   return (
     <div
       className={`${
@@ -193,16 +281,7 @@ const BoothForm = () => {
                   미리보기
                 </button>
               )}
-              <button
-                className={`w-full bg-[#111114] text-white ${
-                  isMobile
-                    ? "h-[60px] p-5 rounded-xl text-17-semibold"
-                    : "text-14-regular h-[51px] py-4 rounded-lg"
-                }`}
-                onClick={handleSave}
-              >
-                저장하기
-              </button>
+              <SaveButton disabled={!hasChanges} onClick={handleSave} />
               {showPreview && isMobile && (
                 <PreviewModal
                   onClose={() => setShowPreview(false)}
