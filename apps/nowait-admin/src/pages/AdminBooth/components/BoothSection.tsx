@@ -5,7 +5,7 @@ import OperatingTimeSelector from "./OperatingTimeSelector";
 import placeholderIcon from "../../../assets/image_placeholder.svg";
 import type { BannerImage } from "../types/booth";
 import type { ProfileImage } from "../types/booth";
-import deletBttn from "../../../assets/booth/del.svg";
+import deleteBttn from "../../../assets/booth/del.svg";
 import PreviewModal from "./Modal/PreviewModal";
 import { useDeleteBannerImage } from "../../../hooks/booth/menu/useDeleteBannerImage";
 import { useRemoveEmoji } from "../../../hooks/useRemoveEmoji";
@@ -279,7 +279,7 @@ const BoothSection = ({
                         }
                       }}
                     >
-                      <img src={deletBttn} alt="삭제" />
+                      <img src={deleteBttn} alt="삭제" />
                     </button>
                   </div>
                 ) : (
