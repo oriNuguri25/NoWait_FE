@@ -11,6 +11,9 @@ import { useUpdateStorePayment } from "../../../hooks/booth/payment/useUpdateSto
 import { useNavigate } from "react-router";
 import SaveButton from "./Button/saveBttn";
 import { REQUIRED_PREFIX, validateUrlPrefix } from "./Rule/payUrlRule";
+import { useWindowWidth } from "../../../hooks/useWindowWidth";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { FaFileUpload } from "react-icons/fa";
 
 const AccountPage = () => {
   const [bank, setBank] = useState("IBK기업");
@@ -28,6 +31,9 @@ const AccountPage = () => {
   const { data: storePayment } = useGetStorePayment();
   const { mutate: createPayment } = useCreateStorePayment();
   const { mutate: updatePayment } = useUpdateStorePayment();
+
+  const width = useWindowWidth();
+  const isMobile = width < 768;
 
   // 각 결제수단별 입력값 관리
   const [urls, setUrls] = useState<Record<PaymentId, string>>({
@@ -137,10 +143,6 @@ const AccountPage = () => {
   const paymentFilled = paymentOptions.some(
     (opt) => urls[opt.id]?.trim().length > 0
   );
-  // const accountFilled =
-  //   bank.trim().length > 0 &&
-  //   accountName.trim().length > 0 &&
-  //   accountNumber.trim().length > 0;
 
   const serverKakao = storePayment?.response.kakaoPayUrl;
   const serverToss = storePayment?.response.tossUrl;
@@ -281,18 +283,26 @@ const AccountPage = () => {
           {paymentOptions.map((option) => (
             <div
               key={option.id}
-              className="flex w-full items-center gap-[10px]"
+              className={`flex w-full items-center ${
+                isMobile ? "gap-[2px]" : "gap-[10px]"
+              }`}
             >
-              <div className="flex items-center gap-[8px] w-[130px]">
+              <div
+                className={`flex items-center gap-[8px] ${
+                  isMobile ? "w-[80px]" : " w-[130px]"
+                }`}
+              >
                 <img
                   src={option.logo}
                   alt={option.name}
-                  className="w-[38px] h-[38px] rounded-full"
+                  className="w-[38px] h-[38px] rounded-full object-cover"
                 />
-                <span className="text-14-semibold">{option.name}</span>
+                {!isMobile && (
+                  <span className="text-14-semibold">{option.name}</span>
+                )}
               </div>
-              <div className="flex justify-between h-[52px] w-[474px] items-center bg-black-5 rounded-xl border border-[#dddddd] pl-4 pr-[10px] py-4">
-                <div className="flex flex-col w-[79%] w-overflow-scroll">
+              <div className="flex justify-between h-[52px] w-[474px] min-w-[236px] items-center bg-black-5 rounded-xl border border-[#dddddd] pl-4 pr-[10px] py-4">
+                <div className={`flex flex-col w-[79%] w-overflow-scroll`}>
                   <input
                     type="text"
                     value={inputs[option.id]}
@@ -337,7 +347,7 @@ const AccountPage = () => {
                       setErrors((prev) => ({ ...prev, [option.id]: null }));
                     }}
                   >
-                    삭제하기
+                    {isMobile ? <FaRegTrashAlt /> : "삭제하기"}
                   </button>
                 ) : errors[option.id] ? (
                   <button
@@ -355,13 +365,15 @@ const AccountPage = () => {
                 ) : (
                   <button
                     className={`text-black-80 text-12-bold rounded-[6px] p-[10px] 
-                        bg-black-30 w-[96px] h-[32px]
+                        bg-black-30 h-[32px] ${
+                          isMobile ? "w-[32px]" : "w-[96px]"
+                        }
                     `}
                     onClick={() => {
                       handleButtonClick(option.id);
                     }}
                   >
-                    {"이미지로 업로드"}
+                    {isMobile ? <FaFileUpload /> : "이미지로 업로드"}
                   </button>
                 )}
               </div>

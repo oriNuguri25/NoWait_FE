@@ -147,7 +147,7 @@ const NavItem = ({ to, icon, label, compact }: NavItemProps) => {
       to={to}
       end
       className={({ isActive }) =>
-        `flex items-center rounded-lg text-sm font-semibold ${
+        `flex items-center rounded-lg text-16-semibold ${
           isActive ? "bg-gray-100 text-black" : "text-gray-400"
         } ${
           compact
