@@ -1,7 +1,7 @@
 import EmptyOrderDetails from "./components/EmptyOrderDetails";
 import { useQuery } from "@tanstack/react-query";
 import { getOrderDetails } from "../../../api/order";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { formatDate } from "../../../utils/formatDate";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
 
