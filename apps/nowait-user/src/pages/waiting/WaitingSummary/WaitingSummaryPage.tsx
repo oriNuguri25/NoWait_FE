@@ -18,7 +18,7 @@ const WaitingSummaryPage = () => {
   const { data: store, isLoading } = useQuery({
     queryKey: ["store", storeId],
     queryFn: () => getStore(storeId ? parseInt(storeId) : undefined),
-    select: (data) => data.response,
+    select: (data) => data?.response,
   });
 
   const handleSubmitReservation = useThrottle(async () => {
