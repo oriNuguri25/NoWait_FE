@@ -1,6 +1,6 @@
 import BookmarkIcon from "./BookmarkIcon";
 import DepartmentImage from "../DepartmentImage";
-import defaultMenuImageLg from "../../assets/default-menu-image-lg.png";
+import defaultMenuImageLg from "../../assets/default-image-lg.png";
 import { useState } from "react";
 import { useBookmarkMutation } from "../../hooks/mutate/useBookmark";
 
@@ -22,20 +22,22 @@ const StoreListItem = ({
   departmentName,
   storeId,
 }: PropsType) => {
-  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
-    withInvalidate: false,
-  });
-  // const { isBookmarked } = useBookmarkState(storeId);
+  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
+    {
+      withInvalidate: false,
+    },
+    Number(storeId)
+  );
 
   const [isBookmarked, setIsBookmarked] = useState(true);
 
   const handleBookmarkButton = async () => {
     try {
       if (isBookmarked) {
-        await deleteBookmarkMutate.mutate(storeId);
+        await deleteBookmarkMutate.mutate();
         setIsBookmarked(false);
       } else {
-        await createBookmarkMutate.mutate(storeId);
+        await createBookmarkMutate.mutate();
         setIsBookmarked(true);
       }
     } catch (error) {

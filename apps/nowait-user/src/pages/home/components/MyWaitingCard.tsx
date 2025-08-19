@@ -1,5 +1,5 @@
 import { useState, useEffect, memo, useCallback, useMemo } from "react";
-import Refresh from "../../../assets/icon/refresh.svg?react";
+import { MemoizedRefresh } from "../../../components/icons/MemoizedIcons";
 
 // 대기 중인 주점 데이터 타입
 interface WaitingStoreData {
@@ -163,7 +163,7 @@ const MyWaitingCard = memo(
                 onRefresh?.();
               }}
             >
-              <Refresh className="icon-s" />
+              <MemoizedRefresh className="icon-s" />
             </div>
           </div>
 

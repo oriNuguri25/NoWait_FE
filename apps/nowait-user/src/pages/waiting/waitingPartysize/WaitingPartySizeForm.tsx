@@ -13,7 +13,7 @@ const WaitingPartySizeForm = () => {
   return (
     <div>
       <BackOnlyHeader />
-      <div className="px-5 mt-[30px]">
+      <div className="px-5 mt-[38px]">
         <h1 className="text-headline-24-bold mb-[50px]">
           대기 등록을 위해
           <br />
@@ -31,7 +31,9 @@ const WaitingPartySizeForm = () => {
       <PageFooterButton>
         <Button
           onClick={() =>
-            navigate(`/store/${id}/waiting/summary`, { state: partySize })
+            navigate(`/store/${id}/waiting/summary?partySize=${partySize}`, {
+              replace: true,
+            })
           }
         >
           다음

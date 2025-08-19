@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assets/logo.svg?react";
-import Menu from "../assets/icon/menu.svg?react";
-import Search from "../assets/icon/search.svg?react";
-import Cancel from "../assets/icon/cancel.svg?react";
+import {
+  MemoizedLogo,
+  MemoizedMenu,
+  MemoizedSearch,
+  MemoizedCancel,
+} from "./icons/MemoizedIcons";
 import Portal from "./common/modal/Portal";
 import SearchModal from "./common/modal/SearchModal";
 
@@ -65,14 +67,14 @@ const HomeHeader = () => {
     <>
       <div className="fixed max-w-[430px] min-w-[360px] w-full top-0 left-1/2 transform -translate-x-1/2 z-40 flex justify-between items-center py-4 px-5 bg-white/80 backdrop-blur-[100px]">
         <button onClick={() => navigate("/")}>
-          <Logo className="w-14.5 h-6" />
+          <MemoizedLogo className="w-14.5 h-6" />
         </button>
         <div className="flex flex-row gap-3">
           <button onClick={openSearch}>
-            <Search className="icon-m" />
+            <MemoizedSearch className="icon-m" />
           </button>
           <button onClick={toggleMenu}>
-            <Menu className="icon-m" />
+            <MemoizedMenu className="icon-m" />
           </button>
         </div>
       </div>
@@ -97,10 +99,10 @@ const HomeHeader = () => {
                       navigate("/");
                     }}
                   >
-                    <Logo className="w-14.5 h-6" />
+                    <MemoizedLogo className="w-14.5 h-6" />
                   </button>
                   <button onClick={closeMenu}>
-                    <Cancel className="icon-m" />
+                    <MemoizedCancel className="icon-m" />
                   </button>
                 </div>
 
@@ -138,7 +140,7 @@ const HomeHeader = () => {
                         delay: 0.25,
                         ease: [0.25, 0.46, 0.45, 0.94],
                       }}
-                      onClick={closeMenu}
+                      onClick={() => navigate("/map")}
                       className="block w-full text-left text-title-20-semibold text-black-100"
                     >
                       축제 맵

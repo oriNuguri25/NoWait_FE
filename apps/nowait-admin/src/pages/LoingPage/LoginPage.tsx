@@ -31,20 +31,7 @@ const LoginPage = () => {
           if (isAxiosError(err)) {
             console.log(err, "로그인 에러 객체");
 
-            if (err.response?.status === 400) {
-              const data = err.response?.data.errors;
-              const message = data.message;
-              const emailErr = data.email;
-              const pwErr = data.password;
-              if (emailErr) setError(emailErr);
-              else if (pwErr) setError(pwErr);
-              else setError(message);
-            } else {
-              if (err.response?.status === 500) {
-                setError("서버 오류가 발생했어요. 잠시 후 다시 시도해주세요.");
-              }
-              setError("아이디 또는 비밀번호를 다시 확인해주세요.");
-            }
+            setError("아이디 또는 비밀번호를 다시 확인해주세요.");
             return;
           } else {
             setError("아이디 또는 비밀번호를 다시 확인해주세요.");
@@ -82,7 +69,13 @@ const LoginPage = () => {
           onChange={(e) => setPw(e.target.value)}
           autoComplete="current-password"
         />
-
+        {error.length > 0 && (
+          <div className="w-[330px]">
+            <span className="pl-5 self-start mt-[10px] text-primary text-14-regular">
+              {error}
+            </span>
+          </div>
+        )}
         {/* Login Button */}
         <button
           type="submit"
@@ -96,9 +89,6 @@ const LoginPage = () => {
           로그인
         </button>
       </form>
-      {error.length > 0 && (
-        <span className="mt-[10px] text-primary text-14-regular">{error}</span>
-      )}
     </div>
   );
 };

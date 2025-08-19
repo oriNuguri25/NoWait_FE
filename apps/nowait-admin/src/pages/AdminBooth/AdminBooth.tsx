@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
 import MenuSection from "./components/MenuSection";
 import { useGetStore } from "../../hooks/booth/store/useGetStore";
@@ -10,12 +10,23 @@ import type { ProfileImage } from "./types/booth";
 import BoothSection from "./components/BoothSection";
 import AccountPage from "./components/AccountPage";
 import PreviewModal from "./components/Modal/PreviewModal";
+import SaveButton from "./components/Button/saveBttn";
+import { useBlocker } from "react-router-dom";
+import { UnsavedChangesModal } from "./components/Modal/UnsavedChangesModal";
+import { cropCenterToSize } from "../../utils/imageCrop";
+
+function norm(s?: string | null): string {
+  return (s ?? "").trim();
+}
+
+function arrEq<T>(a: T[], b: T[]): boolean {
+  return a.length === b.length && a.every((v, i) => v === b[i]);
+}
 
 const BoothForm = () => {
   const width = useWindowWidth();
   const isTablet = width > 768;
   const isMobile = !isTablet;
-  // && width <= 1024
   const storeId = Number(localStorage.getItem("storeId"));
   console.log(storeId, "스토어 아이디");
 
@@ -43,73 +54,250 @@ const BoothForm = () => {
   const [profileImage, setProfileImage] = useState<ProfileImage>(null);
 
   const [showPreview, setShowPreview] = useState(false);
+  const currentOpenTime = `${startHour}${startMinute}${endHour}${endMinute}`;
 
-  console.log(store, "store 정보");
+  const [baseline, setBaseline] = useState<{
+    name: string;
+    description: string;
+    noticeTitle: string;
+    noticeContent: string;
+    openTime: string; // "HHmmHHmm"
+    profileId: number | null;
+    bannerIds: Array<number | null>; // 첫 3개 슬롯 기준
+  } | null>(null);
 
-  const handleSave = () => {
-    updateStore(
-      {
-        storeId,
-        name: boothName,
-        location: "제2학관 앞마당", // 입력받는 필드 필요
-        description: boothIntro,
-        noticeTitle: noticeTitle,
-        noticeContent: boothNotice,
-        openTime: `${startHour}${startMinute}${endHour}${endMinute}`,
-      },
-      {
-        onSuccess: () => {
-          if (profileImage && profileImage instanceof File) {
-            uploadProfileImage({
-              storeId,
-              image: profileImage,
-            });
+  const currentProfileSig = useMemo(() => {
+    if (!profileImage) return null;
+    return profileImage instanceof File
+      ? "file"
+      : (profileImage as any).id ?? null;
+  }, [profileImage]);
+
+  const currentBannerSig = useMemo<(string | number | null)[]>(() => {
+    // UI가 3 슬롯이라 가정
+    const slots = [bannerImages[0], bannerImages[1], bannerImages[2]];
+    return slots.map((img) => {
+      if (!img) return null;
+      return img instanceof File ? "file" : (img as any).id ?? null;
+    });
+  }, [bannerImages]);
+  const hasChanges = useMemo(() => {
+    if (!baseline) return false; // 아직 로딩 중이면 비활성화
+
+    const textChanged =
+      norm(boothName) !== norm(baseline.name) ||
+      norm(boothIntro) !== norm(baseline.description) ||
+      norm(noticeTitle) !== norm(baseline.noticeTitle) ||
+      norm(boothNotice) !== norm(baseline.noticeContent);
+
+    const timeChanged = norm(currentOpenTime) !== norm(baseline.openTime);
+
+    const profileChanged = currentProfileSig !== baseline.profileId;
+
+    const bannerChanged = !arrEq(currentBannerSig, baseline.bannerIds);
+
+    return textChanged || timeChanged || profileChanged || bannerChanged;
+  }, [
+    baseline,
+    boothName,
+    boothIntro,
+    noticeTitle,
+    boothNotice,
+    currentOpenTime,
+    currentProfileSig,
+    currentBannerSig,
+  ]);
+  const blocker = useBlocker(hasChanges);
+  const [showUnsaved, setShowUnsaved] = useState(false);
+
+  type PendingNav =
+    | { type: "tab"; tab: "booth" | "menu" | "account" }
+    | { type: "route"; blocker: any }
+    | null;
+
+  const [pendingNav, setPendingNav] = useState<PendingNav>(null);
+
+  const resetToBaseline = () => {
+    if (!baseline || !store) return;
+    setBoothName(baseline.name);
+    setBoothIntro(baseline.description);
+    setNoticeTitle(baseline.noticeTitle);
+    setBoothNotice(baseline.noticeContent);
+
+    const ot = baseline.openTime ?? "";
+    setStartHour(ot.slice(0, 2) || "");
+    setStartMinute(ot.slice(2, 4) || "");
+    setEndHour(ot.slice(4, 6) || "");
+    setEndMinute(ot.slice(6, 8) || "");
+
+    // 이미지도 서버 상태로 되돌림
+    const formatted = (store.bannerImages ?? []).map((img: any) => ({
+      ...img,
+      imageType: img.imageType ?? "BANNER",
+    }));
+    setBannerImages(formatted.slice(0, 3));
+    setProfileImage(
+      store.profileImage
+        ? {
+            id: store.profileImage.id,
+            imageUrl: store.profileImage.imageUrl,
+            imageType: "PROFILE",
           }
-
-          // 배너 이미지 업로드 (File 타입만 필터링)
-          const newBannerFiles = bannerImages.filter(
-            (img): img is File => img instanceof File
-          );
-
-          if (newBannerFiles.length > 0) {
-            uploadBannerImages({
-              storeId,
-              images: newBannerFiles,
-            });
-          }
-
-          console.log("부스 정보가 성공적으로 저장되었습니다!");
-          refetch();
-        },
-        onError: () => console.log("부스 정보 수정에 실패했습니다."),
-      }
+        : null
     );
   };
 
-  useEffect(() => {
-    if (store) {
-      setBoothName(store.name);
-      setBoothIntro(store.description);
-      setDepartName(store.departmentName);
-      if (store.noticeTitle) setNoticeTitle(store.noticeTitle);
-      if (store.noticeContent) setBoothNotice(store.noticeContent);
-      console.log(store.bannerImages, "bannerImages");
+  const onTabClick = (tab: "booth" | "menu" | "account") => {
+    if (tab === activeTab) return;
+    if (hasChanges) {
+      setPendingNav({ type: "tab", tab });
+      setShowUnsaved(true);
+    } else {
+      setActiveTab(tab);
+    }
+  };
 
-      if (store.bannerImages) {
-        const formatted = store.bannerImages.map((img: any) => ({
-          ...img,
-          imageType: img.imageType ?? "BANNER", // 기본값
-        }));
-        setBannerImages(formatted);
-      }
-      if (store?.profileImage) {
-        setProfileImage({
-          id: store.profileImage.id,
-          imageUrl: store.profileImage.imageUrl,
-          imageType: "PROFILE",
+  const handleSave = async (after?: () => void) => {
+    try {
+      // 1) 텍스트/시간 먼저 저장
+      await new Promise<void>((resolve, reject) => {
+        updateStore(
+          {
+            storeId,
+            name: boothName,
+            location: "제2학관 앞마당",
+            description: boothIntro,
+            noticeTitle,
+            noticeContent: boothNotice,
+            openTime: `${startHour}${startMinute}${endHour}${endMinute}`,
+          },
+          {
+            onSuccess: () => resolve(),
+            onError: () => reject(new Error("부스 정보 수정 실패")),
+          }
+        );
+      });
+
+      // 2) 프로필(옵션) 100×100 크롭 후 업로드
+      if (profileImage && profileImage instanceof File) {
+        const avatar100 = await cropCenterToSize(
+          profileImage,
+          100,
+          100,
+          "image/png",
+          0.92
+        );
+        await new Promise<void>((resolve, reject) => {
+          uploadProfileImage(
+            { storeId, image: avatar100 },
+            { onSuccess: () => resolve(), onError: () => reject(new Error()) }
+          );
         });
       }
+
+      // 3) 배너: 새로 추가된 File만 375×246으로 일괄 크롭 후 업로드
+      const newBannerFiles = bannerImages.filter(
+        (img): img is File => img instanceof File && img !== null
+      );
+
+      if (newBannerFiles.length > 0) {
+        const croppedBanners = await Promise.all(
+          newBannerFiles.map((file) =>
+            cropCenterToSize(file, 375, 246, "image/jpeg", 0.9)
+          )
+        );
+
+        await new Promise<void>((resolve, reject) => {
+          uploadBannerImages(
+            { storeId, images: croppedBanners },
+            { onSuccess: () => resolve(), onError: () => reject(new Error()) }
+          );
+        });
+      }
+
+      // 4) 후처리
+      console.log("부스 정보가 성공적으로 저장되었습니다!");
+      refetch();
+      after?.();
+    } catch (e) {
+      console.error(e);
+      alert("저장 중 오류가 발생했어요. 다시 시도해주세요.");
     }
+  };
+  // 닫기/새로고침 가드
+  useEffect(() => {
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasChanges) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [hasChanges]);
+
+  //  페이지 이동 가드
+  useEffect(() => {
+    if (blocker.state === "blocked") {
+      setPendingNav({ type: "route", blocker });
+      setShowUnsaved(true);
+    }
+  }, [blocker.state]);
+
+  useEffect(() => {
+    if (!store) return;
+
+    setBoothName(store.name ?? "");
+    setBoothIntro(store.description ?? "");
+    setDepartName(store.departmentName ?? "");
+    setNoticeTitle(store.noticeTitle ?? "");
+    setBoothNotice(store.noticeContent ?? "");
+
+    // 운영시간 분해 (예: "09001800")
+    const ot = store.openTime ?? "";
+    if (ot.length === 8) {
+      setStartHour(ot.slice(0, 2));
+      setStartMinute(ot.slice(2, 4));
+      setEndHour(ot.slice(4, 6));
+      setEndMinute(ot.slice(6, 8));
+    }
+
+    // 배너/프로필 상태 세팅
+    if (store.bannerImages) {
+      const formatted = store.bannerImages.map((img: any) => ({
+        ...img,
+        imageType: img.imageType ?? "BANNER",
+      }));
+      setBannerImages(formatted);
+    } else {
+      setBannerImages([]);
+    }
+
+    if (store?.profileImage) {
+      setProfileImage({
+        id: store.profileImage.id,
+        imageUrl: store.profileImage.imageUrl,
+        imageType: "PROFILE",
+      });
+    } else {
+      setProfileImage(null);
+    }
+
+    // baseline 스냅샷 구성 (첫 3개 슬롯 기준)
+    const first3 = (store.bannerImages ?? []).slice(0, 3);
+    setBaseline({
+      name: store.name ?? "",
+      description: store.description ?? "",
+      noticeTitle: store.noticeTitle ?? "",
+      noticeContent: store.noticeContent ?? "",
+      openTime: store.openTime ?? "",
+      profileId: store.profileImage?.id ?? null,
+      bannerIds: [
+        first3[0]?.id ?? null,
+        first3[1]?.id ?? null,
+        first3[2]?.id ?? null,
+      ],
+    });
   }, [store]);
 
   return (
@@ -129,7 +317,7 @@ const BoothForm = () => {
                 ? "bg-black text-white"
                 : "bg-white text-black-60"
             }`}
-            onClick={() => setActiveTab("menu")}
+            onClick={() => onTabClick("menu")}
           >
             메뉴 관리
           </button>
@@ -139,7 +327,7 @@ const BoothForm = () => {
                 ? "bg-black text-white"
                 : "bg-white text-black-60 "
             }`}
-            onClick={() => setActiveTab("booth")}
+            onClick={() => onTabClick("booth")}
           >
             부스 관리
           </button>
@@ -149,7 +337,7 @@ const BoothForm = () => {
                 ? "bg-black text-white"
                 : "bg-white text-black-60 "
             }`}
-            onClick={() => setActiveTab("account")}
+            onClick={() => onTabClick("account")}
           >
             계좌 관리
           </button>
@@ -193,16 +381,7 @@ const BoothForm = () => {
                   미리보기
                 </button>
               )}
-              <button
-                className={`w-full bg-[#111114] text-white ${
-                  isMobile
-                    ? "h-[60px] p-5 rounded-xl text-17-semibold"
-                    : "text-14-regular h-[51px] py-4 rounded-lg"
-                }`}
-                onClick={handleSave}
-              >
-                저장하기
-              </button>
+              <SaveButton disabled={!hasChanges} onClick={handleSave} />
               {showPreview && isMobile && (
                 <PreviewModal
                   onClose={() => setShowPreview(false)}
@@ -235,6 +414,31 @@ const BoothForm = () => {
                         }
                       : { ...img, imageType: "BANNER" }
                   )}
+                />
+              )}
+              {showUnsaved && (
+                <UnsavedChangesModal
+                  onReset={() => {
+                    resetToBaseline();
+                    setShowUnsaved(false);
+                    if (pendingNav?.type === "route") {
+                      pendingNav.blocker.reset();
+                    }
+                    setPendingNav(null);
+                  }}
+                  onSave={() => {
+                    if (!pendingNav) return;
+                    handleSave(() => {
+                      setShowUnsaved(false);
+
+                      if (pendingNav.type === "tab") {
+                        setActiveTab(pendingNav.tab);
+                      } else if (pendingNav.type === "route") {
+                        pendingNav.blocker.proceed();
+                      }
+                      setPendingNav(null);
+                    });
+                  }}
                 />
               )}
             </div>
