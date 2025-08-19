@@ -125,7 +125,7 @@ const StoreDetailPage = () => {
         </section>
         <SectionDivider />
         {/* 주점 메뉴 리스트 */}
-        <MenuList storeId={storeId} mode="store" />
+        <MenuList isLoading={isLoading} mode="store" />
       </div>
       <PageFooterButton className="gap-2">
         <Button
