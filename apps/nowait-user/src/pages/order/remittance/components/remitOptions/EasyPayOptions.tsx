@@ -1,34 +1,23 @@
-import KakaoPay from "../../../../../assets/kakaoPay.svg?react";
-import TossPay from "../../../../../assets/tossPay.svg?react";
-import NaverPay from "../../../../../assets/naverPay.svg?react";
+import TossPay from "../../../../../assets/tossPay.png";
+import KakaoPay from "../../../../../assets/kakaoPay.png";
+import NaverPay from "../../../../../assets/naverPay.png";
 import RadioGroup from "../RadioGroup";
 import Radio from "../Radio";
-import RemitOptionsSkeleton from "../RemitOptionsSkeleton";
 
 interface PropsType {
   kakao?: string;
   toss?: string;
   naver?: string;
   setRemitValue: React.Dispatch<React.SetStateAction<string>>;
-  isLoading: boolean;
 }
 
-const EasyPayOptions = ({
-  kakao,
-  toss,
-  naver,
-  setRemitValue,
-  isLoading,
-}: PropsType) => {
-
-  if (isLoading) return <RemitOptionsSkeleton />;
-
+const EasyPayOptions = ({ kakao, toss, naver, setRemitValue }: PropsType) => {
   return (
     <div className="flex flex-col gap-3 rounded-2xl bg-[#F9F9F9] px-5 py-5">
       <RadioGroup label="간편 송금">
         {kakao && (
           <Radio
-            logo={<KakaoPay />}
+            logo={<img src={KakaoPay} width="42px" height="18px" alt="카카오 이미지"/>}
             name="remit"
             value="kakao"
             defaultChecked
@@ -39,7 +28,7 @@ const EasyPayOptions = ({
         )}
         {toss && (
           <Radio
-            logo={<TossPay />}
+            logo={<img src={TossPay} width="46px" height="16px" alt="토스 이미지"/>}
             name="remit"
             value="toss"
             onChange={(e) => setRemitValue(e.target.value)}
@@ -49,7 +38,7 @@ const EasyPayOptions = ({
         )}
         {naver && (
           <Radio
-            logo={<NaverPay />}
+            logo={<img src={NaverPay} width="43px" height="15px" alt="네이버 이미지"/>}
             name="remit"
             value="naver"
             onChange={(e) => setRemitValue(e.target.value)}
