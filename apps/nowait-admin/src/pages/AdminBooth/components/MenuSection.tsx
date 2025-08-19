@@ -246,7 +246,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
             {editMode ? "편집 완료" : "순서 편집"}
           </button>
           <button
-            className="flex itens-center stext-14-semibold px-[10px] py-[7.5px] bg-black-5 text-black-70 rounded-[8px]"
+            className="flex itens-center text-14-semibold px-[10px] py-[7.5px] bg-black-5 text-black-70 rounded-[8px]"
             onClick={() => setIsAddModalOpen(true)}
           >
             메뉴 추가 <img src={addIcon} />
@@ -255,9 +255,11 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
       </div>
 
       <div className="flex justify-between mb-[10px]">
-        <p className="text-sm text-black-70 mb-2">{menus.length}개의 메뉴</p>
+        <p className="text-14-regular text-black-70 mb-2">
+          {menus.length}개의 메뉴
+        </p>
         {
-          <p className="text-sm text-black-70 mb-2">
+          <p className="text-14-regular text-black-70 mb-2">
             {editMode ? "순서 표시" : "품절 표시"}
           </p>
         }
@@ -298,7 +300,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                             />
                           </div>
                           <div className="flex flex-col">
-                            <span className="text-sm font-semibold">
+                            <span className="text-16-bold font-semibold">
                               {menu.name}
                             </span>
                             <span className="text-16-regular text-black-60">
@@ -307,7 +309,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                           </div>
                         </div>
 
-                        <div className="text-sm text-black-60">
+                        <div className="text-black-60">
                           {editMode ? (
                             <img
                               src={editOrderIcon}
