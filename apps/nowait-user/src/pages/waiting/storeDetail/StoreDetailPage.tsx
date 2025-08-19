@@ -94,7 +94,7 @@ const StoreDetailPage = () => {
               {formatTimeRange(store?.openTime)}
             </p>
           </div>
-          <h2 className="mb-10 text-16-regular text-black-80 break-keep">
+          <h2 className="mb-10 text-16-regular text-black-80 whitespace-pre-line break-keep">
             {store?.description}
           </h2>
           {/* 공지사항(데이터 변경 예정) */}

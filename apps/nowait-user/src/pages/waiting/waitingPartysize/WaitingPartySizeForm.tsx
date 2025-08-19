@@ -31,7 +31,9 @@ const WaitingPartySizeForm = () => {
       <PageFooterButton>
         <Button
           onClick={() =>
-            navigate(`/store/${id}/waiting/summary`, { state: partySize })
+            navigate(`/store/${id}/waiting/summary?partySize=${partySize}`, {
+              replace: true,
+            })
           }
         >
           다음
