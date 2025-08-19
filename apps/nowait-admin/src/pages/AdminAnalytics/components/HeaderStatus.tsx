@@ -15,14 +15,16 @@ interface HeaderStatusProps {
     menuName: string;
     soldCount: number;
   }[];
-  disabled: boolean;
+  saleDisabled: boolean;
+  poupularMenuDisabled: boolean;
   isTablet: boolean;
 }
 
 const HeaderStatus: React.FC<HeaderStatusProps> = ({
   sales,
   popularMenu,
-  disabled,
+  saleDisabled,
+  poupularMenuDisabled,
   isTablet,
 }) => {
   const todayAmount = sales?.todaySalesSum ?? 0;
@@ -53,7 +55,7 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
   const todayDate = formatDate(today);
   const yesterdayDate = formatDate(yesterday);
 
-  // const disabled = true; //테스트 용 코드 (축제 시작전)
+  console.log(popularMenu, "인기 메뉴");
 
   return (
     <div
@@ -75,7 +77,7 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
             date: yesterdayDate,
             amount: yesterdayAmount,
           }}
-          disabled={disabled}
+          disabled={saleDisabled}
           isTablet={isTablet}
         />
 
@@ -83,28 +85,28 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
           title="누적매출"
           date={`${todayDate} 기준`}
           amount={totalAmount}
-          disabled={disabled}
+          disabled={saleDisabled}
           isTablet={isTablet}
         />
       </div>
 
       <div
         className={`flex flex-col bg-white rounded-[16px] ${
-          disabled ? "justify-center items-center relative" : ""
+          poupularMenuDisabled ? "justify-center items-center relative" : ""
         } ${isTablet ? "p-6" : "p-[22px] w-[335px] h-[227px]"}`}
       >
         <div className={`flex flex-col `}>
           <p
             className={`text-title-18-bold text-navy-80 ${
-              disabled ? "absolute top-6 left-6" : ""
+              poupularMenuDisabled ? "absolute top-6 left-6" : ""
             }`}
           >
             인기 메뉴 TOP 5
           </p>
           <span className="text-13-regular text-black-60">
-            {disabled ? "" : todayDate}
+            {poupularMenuDisabled ? "" : todayDate}
           </span>
-          {disabled ? (
+          {poupularMenuDisabled ? (
             <div className="flex flex-col justify-center items-center text-center text-black-60 text-13-regular">
               <p>집계된 데이터가 없어요</p>
               <p>아직 매출이 집계되지 않았을 수 있어요</p>
@@ -115,7 +117,7 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
         </div>
 
         <ul>
-          {!disabled &&
+          {!poupularMenuDisabled &&
             (popularMenu ?? []).slice(0, 5).map((menu, i) => (
               <li key={menu.menuId} className="flex justify-between h-[52px]">
                 <span className="flex text-16-bold gap-[10px]">

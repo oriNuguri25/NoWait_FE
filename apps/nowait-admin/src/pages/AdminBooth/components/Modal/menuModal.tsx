@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import placeholderIcon from "../../../../assets/image_placeholder.svg";
 import closeIcon from "../../../../assets/close.svg";
+import { useRemoveEmoji } from "../../../../hooks/useRemoveEmoji"; //자동화
+
 interface MenuModalProps {
   isEdit: boolean;
   initialData?: {
@@ -9,7 +11,6 @@ interface MenuModalProps {
     adminDisplayName?: string;
     price: string;
     description: string;
-    isRepresentative?: boolean;
     image?: File;
   };
   isTablet: boolean;
@@ -22,20 +23,6 @@ interface PriceInputProps {
   price: string;
   setPrice: React.Dispatch<React.SetStateAction<string>>;
 }
-
-//이모지 제거 함수 (정규식 기반)
-// const removeEmoji = (text: string) => {
-//   return text.replace(
-//     /([\u2700-\u27BF]|[\uE000-\uF8FF]|\u24C2|[\uD83C-\uDBFF\uDC00-\uDFFF])/g,
-//     ""
-//   );
-// };
-
-//메뉴명용: 허용 문자만 남기기
-// const filterMenuName = (text: string) => {
-//   // 허용 문자: 한글, 영문, 숫자, 공백, 일부 특수문자
-//   return removeEmoji(text).replace(/[^ㄱ-ㅎ가-힣a-zA-Z0-9 +:/~%&*,™®[\]]/g, "");
-// };
 
 // 가격 표시 세자리 마다 , 붙여서 표시
 const formatNumber = (num: number) => {
@@ -54,7 +41,7 @@ const PriceInput: React.FC<PriceInputProps> = ({ price, setPrice }) => {
 
   return (
     <div className="mb-[30px]">
-      <label className="block text-sm font-medium mb-3">가격</label>
+      <label className="block text-title-16-bold mb-3">가격</label>
       <div className="relative w-full">
         <input
           type="text"
@@ -73,6 +60,7 @@ const PriceInput: React.FC<PriceInputProps> = ({ price, setPrice }) => {
   );
 };
 
+const normalizePrice = (v: string) => v.replace(/[^0-9]/g, "");
 const MenuModal = ({
   isEdit,
   initialData,
@@ -90,8 +78,9 @@ const MenuModal = ({
   const [description, setDescription] = useState(
     initialData?.description || ""
   );
-  const isRepresentative = useState(initialData?.isRepresentative || false);
+
   const [image, setImage] = useState<File | null>(initialData?.image || null);
+  const { removeEmojiAll, removeEmojiSome } = useRemoveEmoji();
 
   const isFormValid =
     name.trim() !== "" &&
@@ -99,19 +88,41 @@ const MenuModal = ({
     String(price).trim() !== "" &&
     description.trim() !== "";
 
+  // 초기 스냅샷 (모달 열리는 동안 변하지 않음)
+  const initialRef = useRef({
+    name: initialData?.name ?? "",
+    adminDisplayName: initialData?.adminDisplayName ?? "",
+    description: initialData?.description ?? "",
+    price: normalizePrice(initialData?.price ?? ""),
+    // 편의를 위해 초기 이미지는 늘 "없음"으로 가정 (URL 기반이면 File이 아님)
+    imageExists: !!initialData?.image,
+  });
+
+  // 수정 여부
+  const isDirty = useMemo(() => {
+    const changed =
+      name !== initialRef.current.name ||
+      adminDisplayName !== initialRef.current.adminDisplayName ||
+      description !== initialRef.current.description ||
+      normalizePrice(price) !== initialRef.current.price ||
+      !!image !== initialRef.current.imageExists; // 이미지 추가/삭제
+    return changed;
+  }, [name, adminDisplayName, description, price, image]);
+
   const handleSubmit = () => {
+    if (!isFormValid || (isEdit && !isDirty)) return;
     onSubmit({
       id: initialData?.id,
       name,
       adminDisplayName,
       price,
       description,
-      isRepresentative,
       image,
     });
     onClose();
   };
   const handleDelete = () => {
+    onClose();
     onDelete();
   };
 
@@ -145,13 +156,12 @@ const MenuModal = ({
           {/* 메뉴명 */}
           <div className={`mb-[30px] flex gap-[20px] `}>
             <div className="flex flex-col w-full ">
-              <label className="block text-sm font-medium mb-3">메뉴명</label>
+              <label className="block text-title-16-bold mb-3">메뉴명</label>
               <div className="relative w-full">
                 <input
                   type="text"
                   value={name}
-                  // onChange={(e) => setName(filterMenuName(e.target.value))}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setName(removeEmojiSome(e.target.value))}
                   maxLength={25}
                   className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-sm"
                   placeholder="메뉴명을 입력해주세요"
@@ -193,14 +203,16 @@ const MenuModal = ({
 
           {/* 관리자용 메뉴명 */}
           <div className="mb-[30px] relative">
-            <label className="block text-sm font-medium mb-3">
+            <label className="block text-title-16-bold mb-3">
               관리자용 메뉴명
             </label>
             <div className="relative">
               <input
                 type="text"
                 value={adminDisplayName}
-                onChange={(e) => setAdminDisplayName(e.target.value)}
+                onChange={(e) =>
+                  setAdminDisplayName(removeEmojiAll(e.target.value))
+                }
                 maxLength={10}
                 className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-sm"
                 placeholder={`${
@@ -231,7 +243,7 @@ const MenuModal = ({
 
           {/* 메뉴 소개 */}
           <div className="mb-[30px] relative">
-            <label className="block text-sm font-medium mb-3">메뉴 소개</label>
+            <label className="block text-title-16-bold mb-3">메뉴 소개</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -265,7 +277,7 @@ const MenuModal = ({
               <button
                 onClick={handleSubmit}
                 className={`w-full h-[48px] px-3 py-[10px] rounded-[10px] bg-black-15 text-black-50 text-16-semibold  ${
-                  isFormValid
+                  isDirty
                     ? "bg-[#16191E] text-white cursor-pointer"
                     : "bg-black-15 text-black-50 cursor-not-allowed"
                 }`}

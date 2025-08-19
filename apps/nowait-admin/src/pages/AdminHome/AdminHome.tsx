@@ -34,6 +34,7 @@ const AdminHome = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [targetReservation, setTargetReservation] =
     useState<Reservation | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { data: waitingList, refetch: refetchWaiting } =
     useGetReservationList(storeId); //calling, wating
@@ -150,10 +151,15 @@ const AdminHome = () => {
     });
   };
 
-  const handleRefresh = () => {
-    Promise.all([refetchWaiting(), refetchCompleted()]).then(() => {
-      console.log("데이터 새로고침 완료");
-    });
+  const handleRefresh = async () => {
+    if (isRefreshing) return; // 중복 클릭 방지
+    setIsRefreshing(true);
+    try {
+      await Promise.all([refetchWaiting(), refetchCompleted()]);
+    } finally {
+      // 살짝 딜레이를 주면 회전이 끊기지 않고 보여짐 (선택)
+      setTimeout(() => setIsRefreshing(false), 300);
+    }
   };
 
   useEffect(() => {
@@ -222,28 +228,40 @@ const AdminHome = () => {
       </section>
 
       <section id="대기자 목록" className="flex flex-col w-full">
-        {/* <h1 className="title-20-bold mb-5">대기자 목록</h1> */}
-        <div className="flex justify-between items-center overflow-x-auto scrollbar-hide relative mask-fade-right">
-          <div className="flex flex-wrap whitespace-nowrap  [@media(max-width:431px)]:flex-nowrap -mr-5">
-            {tabLabels.map(({ label, count }) => (
-              <RoundTabButton
-                key={label}
-                label={label}
-                active={activeTab === label}
-                onClick={() => setActiveTab(label)}
-                count={label === "전체" ? undefined : count}
-              />
-            ))}
+        <div className="relative w-full">
+          <div className="mask-fade-right">
+            <div className="overflow-x-auto scrollbar-hide pr-12">
+              <div className="flex flex-wrap whitespace-nowrap [@media(max-width:431px)]:flex-nowrap -mr-5">
+                {tabLabels.map(({ label, count }) => (
+                  <RoundTabButton
+                    key={label}
+                    label={label}
+                    active={activeTab === label}
+                    onClick={() => setActiveTab(label)}
+                    count={label === "전체" ? undefined : count}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
-          <div
-            className="hover:rotate-90 transition-transform duration-500 cursor-pointer"
+
+          <button
+            type="button"
+            aria-label="새로고침"
             onClick={handleRefresh}
+            disabled={isRefreshing}
+            aria-busy={isRefreshing}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10
+                 cursor-pointer [@media(max-width:431px)]:hidden"
           >
             <img
               src={refreshIcon}
-              className="[@media(max-width:431px)]:hidden"
+              alt=""
+              className={`block ${
+                isRefreshing ? "animate-[spin_0.6s_linear_1]" : ""
+              }`}
             />
-          </div>
+          </button>
         </div>
       </section>
 
@@ -284,6 +302,7 @@ const AdminHome = () => {
       </div>
       {showModal && targetReservation && (
         <ConfirmRemoveModal
+          mode={null}
           onCancel={() => setShowModal(false)}
           onConfirm={() => {
             handleClose(targetReservation.id, targetReservation.userId);

@@ -22,7 +22,7 @@ const RedBadge: React.FC<RedBadgeProps> = ({ label, small }) => {
           small
             ? label == "필수"
               ? "text-12-bold"
-              : "text-7-bold"
+              : "text-8-bold"
             : "text-16-medium py-[5px] px-[10px]"
         } text-[#ff4103]`}
       >

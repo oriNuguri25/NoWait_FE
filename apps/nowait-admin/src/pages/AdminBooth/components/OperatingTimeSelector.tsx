@@ -1,46 +1,42 @@
-import dropIcon from "../../../assets/drop_down.svg";
+import { DropdownSelect } from "./DropDown/DropDownSelect";
 
-// 오전/오후 + 시 조합 (01시~12시)
-const hours = Array.from({ length: 12 }, (_, i) =>
-  [`오전`, `오후`].flatMap(
-    (period) => `${period} ${String(i + 1).padStart(2, "0")}시`
-  )
-).flat();
+// 24시간값(HH) ↔ 표시라벨(오전/오후 hh시) 매핑
+const HHToLabel = (HH: string) => {
+  if (!HH) return "";
+  const h = Number(HH);
+  if (Number.isNaN(h)) return "";
+  if (h === 0) return "오전 12시";
+  if (h < 12) return `오전 ${String(h).padStart(2, "0")}시`;
+  if (h === 12) return "오후 12시";
+  return `오후 ${String(h - 12).padStart(2, "0")}시`;
+};
 
-// 분: 00 ~ 55 (5분 단위)
-const minutes = Array.from(
+const labelToHH = (label: string) => {
+  const m = label.match(/(오전|오후)\s(\d{1,2})시/);
+  if (!m) return "";
+  const period = m[1];
+  let hour = Number(m[2]) % 12; // 12 → 0 으로 맞춘 뒤
+  if (period === "오후") hour += 12;
+  return String(hour).padStart(2, "0"); // "00"~"23"
+};
+
+// 분(mm) ↔ "mm분" 매핑
+const mmToLabel = (mm: string) =>
+  mm ? `${String(Number(mm)).padStart(2, "0")}분` : "";
+
+const labelToMM = (label: string) => {
+  const m = label.match(/(\d{1,2})분/);
+  if (!m) return "";
+  return String(Number(m[1])).padStart(2, "0"); // "00"~"59"
+};
+
+// 표시용 옵션
+const hourLabels = Array.from({ length: 24 }, (_, h) =>
+  HHToLabel(String(h).padStart(2, "0"))
+);
+const minuteLabels = Array.from(
   { length: 12 },
   (_, i) => `${String(i * 5).padStart(2, "0")}분`
-);
-
-const CustomSelect = ({
-  value,
-  onChange,
-  options,
-  placeholder,
-}: {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: string[];
-  placeholder: string;
-}) => (
-  <div className="relative w-[120px]">
-    <select
-      value={value}
-      onChange={onChange}
-      className="appearance-none border border-gray-300 rounded-lg pl-3 pr-8 py-2 text-sm w-full bg-white"
-    >
-      <option value="">{placeholder}</option>
-      {options.map((opt) => (
-        <option key={opt} value={opt}>
-          {opt}
-        </option>
-      ))}
-    </select>
-    <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2">
-      <img src={dropIcon} alt="dropdown" className="w-3 h-3" />
-    </div>
-  </div>
 );
 
 const OperatingTimeSelector = ({
@@ -52,52 +48,67 @@ const OperatingTimeSelector = ({
   setEndHour,
   endMinute,
   setEndMinute,
+  isMobile,
 }: {
-  startHour: string;
+  startHour: string; // 내부값: "HH" (예: "15")
   setStartHour: (val: string) => void;
-  startMinute: string;
+  startMinute: string; // 내부값: "mm"
   setStartMinute: (val: string) => void;
   endHour: string;
   setEndHour: (val: string) => void;
   endMinute: string;
   setEndMinute: (val: string) => void;
+  isMobile: boolean;
 }) => {
   return (
-    <div className="mb-8 max-w-[614px]">
-      <label className="block text-title-16-bold mb-1">운영 시간</label>
-      <p className="text-sm text-gray-400 mb-3">
+    <div className="mb-[50px] max-w-[614px]">
+      <label className="block text-title-18-bold text-black-80 mb-1">
+        운영 시간
+      </label>
+      <p className="text-14-regular text-black-70 mb-3">
         부스의 운영 시간을 설정해 주세요
       </p>
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-gray-600 mr-1">시작</span>
-        <CustomSelect
-          value={startHour}
-          onChange={(e) => setStartHour(e.target.value)}
-          options={hours}
-          placeholder="시간"
-        />
-        <CustomSelect
-          value={startMinute}
-          onChange={(e) => setStartMinute(e.target.value)}
-          options={minutes}
-          placeholder="분"
-        />
 
-        <span className="mx-2 text-gray-600">-</span>
+      <div
+        className={`w-full ${
+          isMobile ? "flex flex-col gap-[14px]" : "flex flex-row items-center"
+        }`}
+      >
+        {/* 시작 */}
+        <div className="flex items-center gap-[10px]">
+          <span className="w-[28px] text-14-semibold text-black-90">시작</span>
+          <DropdownSelect
+            value={HHToLabel(startHour)}
+            onChange={(label) => setStartHour(labelToHH(label))}
+            options={hourLabels}
+            placeholder="시간"
+          />
+          <DropdownSelect
+            value={mmToLabel(startMinute)}
+            onChange={(label) => setStartMinute(labelToMM(label))}
+            options={minuteLabels}
+            placeholder="분"
+          />
+        </div>
 
-        <span className="text-sm text-gray-600 mr-1">종료</span>
-        <CustomSelect
-          value={endHour}
-          onChange={(e) => setEndHour(e.target.value)}
-          options={hours}
-          placeholder="시간"
-        />
-        <CustomSelect
-          value={endMinute}
-          onChange={(e) => setEndMinute(e.target.value)}
-          options={minutes}
-          placeholder="분"
-        />
+        {!isMobile && <span className="mx-[10px] text-gray-600">-</span>}
+
+        {/* 종료 */}
+        <div className="flex gap-[10px] items-center">
+          <span className="w-[28px] text-14-semibold text-black-90">종료</span>
+          <DropdownSelect
+            value={HHToLabel(endHour)}
+            onChange={(label) => setEndHour(labelToHH(label))}
+            options={hourLabels}
+            placeholder="시간"
+          />
+          <DropdownSelect
+            value={mmToLabel(endMinute)}
+            onChange={(label) => setEndMinute(labelToMM(label))}
+            options={minuteLabels}
+            placeholder="분"
+          />
+        </div>
       </div>
     </div>
   );

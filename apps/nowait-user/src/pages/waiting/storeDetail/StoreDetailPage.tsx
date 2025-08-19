@@ -14,6 +14,7 @@ import CommonSwiper from "../../../components/CommonSwiper";
 import SectionDivider from "../../../components/SectionDivider";
 import { formatTimeRange } from "../../../utils/formatTimeRange";
 import DepartmentImage from "../../../components/DepartmentImage";
+import NotFound from "../../NotFound/NotFound";
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
@@ -25,10 +26,14 @@ const StoreDetailPage = () => {
   );
   const { isBookmarked } = useBookmarkState(Number(storeId));
 
-  const { data: store } = useQuery({
+  const {
+    data: store,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["store", storeId],
     queryFn: () => getStore(Number(storeId!)),
-    select: (data) => data.response,
+    select: (data) => data?.response,
   });
 
   const handleBookmarkButton = async () => {
@@ -42,10 +47,11 @@ const StoreDetailPage = () => {
       console.log(error);
     }
   };
-
+  if(isLoading) return <div>로딩중...</div>
+  if (isError) return <NotFound />;
   return (
     <div>
-      <div className="px-5 w-full min-h-screen-dvh mb-[112px]">
+      <div className="px-5 w-full min-h-dvh mb-[112px]">
         {/* 주점 배너 이미지 */}
         <CommonSwiper slideImages={store?.bannerImages || []}></CommonSwiper>
         {/* 학과 정보 섹션 */}

@@ -9,54 +9,38 @@ import boothIconActive from "../assets/boothIconActive.svg";
 import cancelIcon from "../assets/Cancel.svg";
 import logoutIcon from "../assets/log-out.svg";
 import { useLocation, useNavigate } from "react-router";
+const menuItems = [
+  { label: "대기", icon: waitIcon, activeIcon: waitIconActive, path: "/admin" },
+  {
+    label: "주문",
+    icon: orderIcon,
+    activeIcon: orderIconActive,
+    path: "/admin/orders",
+  },
+  {
+    label: "통계",
+    icon: statIcon,
+    activeIcon: statIconActive,
+    path: "/admin/analytics",
+  },
+  {
+    label: "부스 관리",
+    icon: boothIcon,
+    activeIcon: boothIconActive,
+    path: "/admin/booth",
+  },
+];
 
-const MobileAdminNav = ({ onClose }: { onClose: () => void }) => {
+const MobileAdminNav = ({
+  onClose,
+  handleClickLogout,
+}: {
+  onClose: () => void;
+  handleClickLogout: () => void;
+}) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
-  // localStorage에서 storeId 가져오기
-  const storeId = localStorage.getItem("storeId");
-
-  // 주문 페이지 경로 생성
-  const getOrderPath = () => {
-    return storeId ? `/admin/orders/${storeId}` : "/admin";
-  };
-
-  // 현재 주문 페이지인지 확인
-  const isOrderPage = pathname.startsWith("/admin/orders/");
-
-  const menuItems = [
-    {
-      label: "대기",
-      icon: waitIcon,
-      activeIcon: waitIconActive,
-      path: "/admin",
-    },
-    {
-      label: "주문",
-      icon: orderIcon,
-      activeIcon: orderIconActive,
-      path: getOrderPath(),
-    },
-    {
-      label: "통계",
-      icon: statIcon,
-      activeIcon: statIconActive,
-      path: "/admin/analytics",
-    },
-    {
-      label: "부스 관리",
-      icon: boothIcon,
-      activeIcon: boothIconActive,
-      path: "/admin/booth",
-    },
-  ];
-
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("storeId");
-    navigate("/");
-  };
+  const storeId = Number(localStorage.getItem("storeId"));
 
   return (
     <div
@@ -73,8 +57,10 @@ const MobileAdminNav = ({ onClose }: { onClose: () => void }) => {
       <div className="flex flex-col justify-between h-full">
         <ul className="flex flex-col gap-2">
           {menuItems.map(({ label, icon, activeIcon, path }) => {
-            const isActive =
-              pathname === path || (label === "주문" && isOrderPage);
+            const isActive = pathname === path;
+            if (label === "주문") {
+              path = `/admin/orders/${storeId}`;
+            }
             return (
               <li
                 key={label}
@@ -98,7 +84,7 @@ const MobileAdminNav = ({ onClose }: { onClose: () => void }) => {
         {/* 하단 - 로그아웃 */}
         <div
           className="flex justify-start items-center text-[#999999] text-16-semibold gap-[2.5px] px-3 mt-8"
-          onClick={handleLogout}
+          onClick={handleClickLogout}
         >
           <img src={logoutIcon} />
           {"로그아웃"}

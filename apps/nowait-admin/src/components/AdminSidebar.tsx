@@ -14,34 +14,21 @@ import statIconActive from "../assets/statIconActive.svg";
 import boothIconActive from "../assets/boothIconActive.svg";
 import logout from "../assets/log-out.svg";
 
-const AdminSidebar = () => {
+const AdminSidebar = ({
+  handleClickLogout,
+}: {
+  handleClickLogout: () => void;
+}) => {
   const width = useWindowWidth();
   const navigate = useNavigate();
 
-  // 375px 이하에서는 사이드바 완전히 숨김
-  if (width <= 375) return null;
+  // 768px 이하에서는 사이드바 완전히 숨김
   if (width < 768) return null;
 
   const isCompact = width < 1024;
   const location = useLocation();
   const pathname = location.pathname;
-
-  // localStorage에서 storeId 가져오기
-  const storeId = localStorage.getItem("storeId");
-
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("storeId");
-    navigate("/");
-  };
-
-  // 주문 페이지 경로 생성
-  const getOrderPath = () => {
-    return storeId ? `/admin/orders/${storeId}` : "/admin";
-  };
-
-  // 현재 주문 페이지인지 확인
-  const isOrderPage = pathname.startsWith("/admin/orders/");
+  const storeId = Number(localStorage.getItem("storeId"));
 
   return (
     <aside
@@ -90,10 +77,14 @@ const AdminSidebar = () => {
             compact={isCompact}
           />
           <NavItem
-            to={getOrderPath()}
+            to={`/admin/orders/${storeId}`}
             icon={
               <img
-                src={isOrderPage ? orderIconActive : orderIcon}
+                src={
+                  pathname.includes("/admin/orders")
+                    ? orderIconActive
+                    : orderIcon
+                }
                 alt="주문"
                 className="w-5 h-5"
               />
@@ -112,33 +103,30 @@ const AdminSidebar = () => {
                 className="w-5 h-5"
               />
             }
-            label="관리 및 통계"
+            label="통계"
             compact={isCompact}
           />
           <NavItem
             to="/admin/booth"
             icon={
               <img
-                src={
-                  pathname === "/admin/booth" ||
-                  pathname === "/admin/booth/guides"
-                    ? boothIconActive
-                    : boothIcon
-                }
-                alt="부스"
+                src={pathname === "/admin/booth" ? boothIconActive : boothIcon}
+                alt="부스 관리"
                 className="w-5 h-5"
               />
             }
-            label="부스"
+            label="부스 관리"
             compact={isCompact}
           />
         </nav>
       </div>
 
       {/* 하단: 프로필 */}
-      <div className="flex items-center gap-2" onClick={handleLogout}>
+      <div className="flex items-center gap-2" onClick={handleClickLogout}>
         <img src={logout} alt="gnb" />
-        <span className="text-16-semibold text-black-55">로그아웃</span>
+        {!isCompact && (
+          <span className="text-16-semibold text-black-55">로그아웃</span>
+        )}
       </div>
     </aside>
   );
@@ -159,7 +147,7 @@ const NavItem = ({ to, icon, label, compact }: NavItemProps) => {
       to={to}
       end
       className={({ isActive }) =>
-        `flex items-center rounded-lg text-sm font-semibold ${
+        `flex items-center rounded-lg text-16-semibold ${
           isActive ? "bg-gray-100 text-black" : "text-gray-400"
         } ${
           compact
