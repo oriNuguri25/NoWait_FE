@@ -209,13 +209,12 @@ const AccountPage = () => {
       tossUrl: nextUrls.toss,
       kakaoPayUrl: nextUrls.kakao,
       naverPayUrl: nextUrls.naver,
-      accountNumber: bank + " " + accountName + " " + accountNumber,
+      accountNumber: accountNumber + " " + bank + " " + accountName,
     };
     console.log(payload, "전송 데이터");
 
     setSaving(true);
 
-    // 4) 생성 or 수정
     if (!storePayment || typeof storePayment.response === "string") {
       createPayment(payload, {
         onSuccess: () => {
