@@ -1,7 +1,7 @@
 import BookmarkIcon from "../../../../components/common/BookmarkIcon";
 import DepartmentImage from "../../../../components/DepartmentImage";
 import { useBookmarkState } from "../../../../hooks/useBookmarkState";
-import defaultMenuImageLg from "../../../../assets/default-menu-image-lg.png";
+import defaultMenuImageLg from "../../../../assets/default-image-lg.png";
 import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
 
 interface PropsType {
@@ -22,17 +22,20 @@ const BoothItem = ({
   departmentName,
   storeId,
 }: PropsType) => {
-  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
-    withInvalidate: true,
-  });
-  const { isBookmarked } = useBookmarkState(storeId);
+  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
+    {
+      withInvalidate: true,
+    },
+    Number(storeId)
+  );
+  const { isBookmarked } = useBookmarkState(Number(storeId));
 
   const handleBookmarkButton = async () => {
     try {
       if (isBookmarked) {
-        await deleteBookmarkMutate.mutate(storeId);
+        await deleteBookmarkMutate.mutate();
       } else {
-        await createBookmarkMutate.mutate(storeId);
+        await createBookmarkMutate.mutate();
       }
     } catch (error) {
       console.log(error);
@@ -60,7 +63,13 @@ const BoothItem = ({
             <h2 className="text-14-regular text-black-70">{departmentName}</h2>
           </div>
         </div>
-        <button className="mr-[5px]" onClick={handleBookmarkButton}>
+        <button
+          className="!opacity-100 !cursor-pointer mr-[5px]"
+          onClick={handleBookmarkButton}
+          disabled={
+            createBookmarkMutate.isPending || deleteBookmarkMutate.isPending
+          }
+        >
           <BookmarkIcon isBookmarked={isBookmarked} />
         </button>
       </div>

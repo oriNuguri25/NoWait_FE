@@ -65,12 +65,18 @@ export const getBookmark = async (): Promise<BookmarkResponse> => {
 };
 
 // 북마크 생성
-export const createBookmark = async (storeId: number | undefined) => {
-  await UserApi.post(`/bookmarks/${storeId}`);
+export const createBookmark = async (
+  storeId: number | undefined,
+  signal: AbortSignal
+) => {
+  await UserApi.post(`/bookmarks/${storeId}`, null, { signal });
 };
 
 // 북마크 삭제
-export const deleteBookmark = async (storeId: number | undefined) => {
-  const res = await UserApi.delete(`/bookmarks/${storeId}`);
+export const deleteBookmark = async (
+  storeId: number | undefined,
+  signal: AbortSignal
+) => {
+  const res = await UserApi.delete(`/bookmarks/${storeId}`, { signal });
   return res.data;
 };

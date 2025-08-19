@@ -1,12 +1,19 @@
 import HomeHeader from "../../../components/Header";
-import { useBookmarkState } from "../../../hooks/useBookmarkState";
 import type { BookmarkListType } from "../../../types/wait/store";
 import BookmarkEmptyPage from "./components/BookmarkEmptyPage";
 import StoreListItem from "../../../components/common/StoreListItem";
+import { getBookmark } from "../../../api/reservation";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 const BookmarkPage = () => {
-  const { bookmarkList } = useBookmarkState();
-
+  const { id: storeId } = useParams();
+  const { data: bookmarkList, isLoading } = useQuery({
+    queryKey: ["bookmark", storeId],
+    queryFn: getBookmark,
+    select: (data) => data.response,
+  });
+  if(isLoading) return <div>로딩중....</div>
   return (
     <div>
       <HomeHeader />
