@@ -25,13 +25,13 @@ const ConfirmModal = ({
   const handleClose = () => {
     setIsVisible(false);
   };
-  
+
   // 모달 오픈 시 뒤 컨텐츠 스크롤 막기
   useEffect(() => {
     // fixed로 스크롤한 만큼의 상태로 뒤 컨텐츠 고정
     const scrollY = window.scrollY;
     document.body.style.position = "fixed";
-    document.body.style.top = `${scrollY}px`;
+    document.body.style.top = `-${scrollY}px`;
 
     // 원래 위치 복원
     return () => {
