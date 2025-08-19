@@ -28,16 +28,18 @@ const MenuItem = ({ data, mode }: PropsType) => {
       >
         <div className="max-w-[224px]">
           <div className="mb-1">
-            <h2 className="inline mr-1.5 text-title-18-semibold text-black-90 text-ellipsis line-clamp-2 break-keep">
+            <h2 className="inline mr-1.5 text-title-18-semibold text-black-90 break-words align-middle">
               {data.name}
             </h2>
             {data.isSoldOut && (
-              <span className="text-[12px] font-bold text-primary bg-[#FFF0EB] rounded-[6px] px-2 py-1.5">
+              <span className="text-[12px] font-bold text-primary bg-[#FFF0EB] rounded-[6px] px-2 py-1.5 align-middle">
                 품절
               </span>
             )}
           </div>
-          <h2 className="text-[18px] font-regular text-black-70">{data.price.toLocaleString()}원</h2>
+          <h2 className="text-[18px] font-regular text-black-70">
+            {data.price.toLocaleString()}원
+          </h2>
         </div>
         <img
           className={`w-[80px] h-[80px] bg-black-25 rounded-[12px] object-cover ${

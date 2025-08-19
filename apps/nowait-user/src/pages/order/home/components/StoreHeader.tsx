@@ -8,7 +8,7 @@ const StoreHeader = ({storeName}:{storeName:string | undefined}) => {
     <section className="flex justify-between items-start mb-7">
       <div className="max-w-[250px]">
         <h1 className="text-headline-24-bold mb-1.5">{storeName}일이삼사오육칠팔구십십일십이십삼</h1>
-        <h2 className="text-text-16-medium">{tableId}번 테이블</h2>
+        <h2 className="text-16-medium text-black-70">{tableId}번 테이블</h2>
       </div>
       <button
         onClick={() => navigate(`/${storeId}/orderDetails`)}
