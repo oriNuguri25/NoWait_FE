@@ -11,6 +11,7 @@ import SectionDivider from "../../../components/SectionDivider";
 import { getStoreMenus } from "../../../api/menu";
 import { useQuery } from "@tanstack/react-query";
 import NotFound from "../../NotFound/NotFound";
+import { getStore } from "../../../api/reservation";
 
 const StorePage = () => {
   const navigate = useNavigate();
@@ -22,6 +23,15 @@ const StorePage = () => {
   const { cart } = useCartStore();
   const { showToast } = useToastStore();
 
+    const {
+    data: storeName,
+    // isLoading,
+    // isError,
+  } = useQuery({
+    queryKey: ["store", storeId],
+    queryFn: () => getStore(Number(storeId!)),
+    select: (data) => data?.response?.name
+  });
   const {
     data: menus,
     isLoading,
@@ -38,14 +48,13 @@ const StorePage = () => {
     navigate(location.pathname, { replace: true });
   }, [added]);
 
-  // if (isLoading) return <h1>로딩중...</h1>;
   if (!isLoading && (!menus || isError)) return <NotFound />;
 
   return (
     <div>
       <div className="flex flex-col flex-grow pb-[112px] min-h-dvh pt-7.5 px-5">
         <div className="flex-grow">
-          <StoreHeader />
+          <StoreHeader storeName={storeName}/>
           <SectionDivider />
           <MenuList menus={menus} mode="order" isLoading={isLoading} />
         </div>
