@@ -70,7 +70,7 @@ const AdminSidebar = ({
               <img
                 src={pathname === "/admin" ? waitIconActive : waitIcon}
                 alt="웨이팅"
-                className="w-5 h-5"
+                className="w-6 h-6"
               />
             }
             label="대기"
@@ -86,7 +86,7 @@ const AdminSidebar = ({
                     : orderIcon
                 }
                 alt="주문"
-                className="w-5 h-5"
+                className="w-6 h-6"
               />
             }
             label="주문"
@@ -100,7 +100,7 @@ const AdminSidebar = ({
                   pathname === "/admin/analytics" ? statIconActive : statIcon
                 }
                 alt="관리 및 통계"
-                className="w-5 h-5"
+                className="w-6 h-6"
               />
             }
             label="통계"
@@ -112,7 +112,7 @@ const AdminSidebar = ({
               <img
                 src={pathname === "/admin/booth" ? boothIconActive : boothIcon}
                 alt="부스 관리"
-                className="w-5 h-5"
+                className="w-6 h-6"
               />
             }
             label="부스 관리"
@@ -122,10 +122,10 @@ const AdminSidebar = ({
       </div>
 
       {/* 하단: 프로필 */}
-      <div className="flex items-center gap-2" onClick={handleClickLogout}>
+      <div className="px-4 flex items-center gap-2" onClick={handleClickLogout}>
         <img src={logout} alt="gnb" />
         {!isCompact && (
-          <span className="text-16-semibold text-black-55">로그아웃</span>
+          <span className=" text-16-semibold text-black-55">로그아웃</span>
         )}
       </div>
     </aside>
@@ -147,7 +147,7 @@ const NavItem = ({ to, icon, label, compact }: NavItemProps) => {
       to={to}
       end
       className={({ isActive }) =>
-        `flex items-center rounded-lg text-sm font-semibold ${
+        `flex items-center rounded-lg text-16-semibold ${
           isActive ? "bg-gray-100 text-black" : "text-gray-400"
         } ${
           compact

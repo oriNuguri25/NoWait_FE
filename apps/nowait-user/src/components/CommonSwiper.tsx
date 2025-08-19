@@ -5,6 +5,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./customSwiper.css";
 import type { BannerImages } from "../types/wait/store";
+import DefaultImage from "../assets/default-image-lg.png";
 
 const CommonSwiper = ({ slideImages }: { slideImages: BannerImages[] }) => {
   return (
@@ -15,13 +16,22 @@ const CommonSwiper = ({ slideImages }: { slideImages: BannerImages[] }) => {
         slidesPerView={1}
         pagination
       >
-        {slideImages?.map((slideImage) => {
-          return (
-            <SwiperSlide className="swiper-slide">
-              <img src={slideImage.imageUrl} alt="학과 주점 대표 이미지" />
-            </SwiperSlide>
-          );
-        })}
+        {slideImages && slideImages.length > 0 ? (
+          slideImages?.map((slideImage) => {
+            return (
+              <SwiperSlide className="swiper-slide">
+                <img
+                  src={slideImage.imageUrl || DefaultImage}
+                  alt="학과 주점 대표 이미지"
+                />
+              </SwiperSlide>
+            );
+          })
+        ) : (
+          <SwiperSlide className="swiper-slide">
+            <img src={DefaultImage} alt="학과 주점 기본 이미지" />
+          </SwiperSlide>
+        )}
       </Swiper>
     </section>
   );

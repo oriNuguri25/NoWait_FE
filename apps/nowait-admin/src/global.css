@@ -183,3 +183,8 @@ textarea {
 .dropdown-scroll::-webkit-scrollbar-thumb:hover {
   background: var(--sb-thumb-hover);
 }
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}

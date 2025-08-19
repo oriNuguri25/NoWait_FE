@@ -301,7 +301,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                             <span className="text-sm font-semibold">
                               {menu.name}
                             </span>
-                            <span className="text-sm text-black-60">
+                            <span className="text-16-regular text-black-60">
                               {formatNumber(menu.price)}원
                             </span>
                           </div>
