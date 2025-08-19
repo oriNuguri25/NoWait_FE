@@ -255,9 +255,11 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
       </div>
 
       <div className="flex justify-between mb-[10px]">
-        <p className="text-sm text-black-70 mb-2">{menus.length}개의 메뉴</p>
+        <p className="text-14-regular text-black-70 mb-2">
+          {menus.length}개의 메뉴
+        </p>
         {
-          <p className="text-sm text-black-70 mb-2">
+          <p className="text-14-regular text-black-70 mb-2">
             {editMode ? "순서 표시" : "품절 표시"}
           </p>
         }
