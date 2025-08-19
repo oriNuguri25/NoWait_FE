@@ -1,7 +1,14 @@
 import { CookedCard } from "./OrderCard";
 import { DetailCard } from "./DetailCard";
 import type { Order } from "../../types/order";
-import { useState, useRef } from "react";
+import {
+  useState,
+  useRef,
+  type RefObject,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
+import { DropdownLoader } from "@repo/ui";
 
 interface CookedPageProps {
   cookedOrders: Order[];
@@ -23,14 +30,34 @@ const CookedPage = ({
   setSavedScrollPosition: externalSetSavedScrollPosition,
 }: CookedPageProps) => {
   const [selectedCooked, setSelectedCooked] = useState<Order | null>(null);
-  const [savedScrollPosition, setSavedScrollPosition] = useState<number>(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [localSavedScrollPosition, setLocalSavedScrollPosition] =
+    useState<number>(0);
+  const localScrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // 외부에서 전달된 ref와 상태를 우선 사용, 없으면 로컬 사용
+  const scrollContainerRef =
+    externalScrollContainerRef || localScrollContainerRef;
+  const savedScrollPosition =
+    externalSavedScrollPosition ?? localSavedScrollPosition;
+  const setSavedScrollPosition =
+    externalSetSavedScrollPosition || setLocalSavedScrollPosition;
   // 시간 포맷팅 함수 (17:30 형식)
   const getFormattedTime = (createdAt: string) => {
     const date = new Date(createdAt);
     const hours = date.getHours().toString().padStart(2, "0");
     const minutes = date.getMinutes().toString().padStart(2, "0");
     return `${hours}:${minutes}`;
+  };
+
+  // 날짜와 시간 포맷팅 함수 (2025년 6월 2일 08:02 형식) - Detail에서만 사용
+  const getFormattedDateTime = (createdAt: string) => {
+    const date = new Date(createdAt);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
   };
 
   // CookedCard 클릭 핸들러
@@ -68,7 +95,7 @@ const CookedPage = ({
 
         <div className="flex flex-col rounded-2xl border border-black-30 flex-1 bg-white min-h-0 overflow-hidden">
           {/* 조리 완료 헤더 */}
-          <div className="flex flex-row gap-2.5 px-5 py-4 bg-[#E8EDF1] rounded-t-2xl items-center flex-shrink-0">
+          <div className="flex flex-row gap-2.5 px-5 py-2.5 bg-[#E8EDF1] rounded-t-2xl items-center flex-shrink-0">
             <div className="flex flex-[0.7] text-14-medium text-navy-35">
               테이블
             </div>
@@ -96,7 +123,7 @@ const CookedPage = ({
           >
             {isLoading ? (
               <div className="flex flex-col items-center justify-center h-full py-20 text-center">
-                <div className="text-16-medium text-black-60">로딩 중...</div>
+                <DropdownLoader />
               </div>
             ) : cookedOrders.length > 0 ? (
               cookedOrders.map((order) => (
@@ -128,7 +155,7 @@ const CookedPage = ({
                 type="cooked"
                 orderId={selectedCooked.id}
                 tableNumber={selectedCooked.tableId}
-                timeText={getFormattedTime(selectedCooked.createdAt)}
+                timeText={getFormattedDateTime(selectedCooked.createdAt)}
                 depositorName={selectedCooked.depositorName}
                 totalAmount={selectedCooked.totalPrice || 0}
                 menuDetails={selectedCooked.menuDetails}

@@ -38,7 +38,7 @@ const OrderDetailsPage = () => {
     <div>
       <BackOnlyHeader />
       <div className="bg-black-15 min-h-screen py-[30px] px-5">
-        <h1 className="text-headline-24-bold mb-[23px] text-black-90">
+        <h1 className="text-headline-22-bold mb-[23px] text-black-90">
           주문내역 <span className="text-primary">{data.length}건</span>
         </h1>
         <ul>
@@ -52,7 +52,7 @@ const OrderDetailsPage = () => {
               >
                 <div className="mb-7.5">
                   <h1
-                    className={`text-title-20-bold mb-2 ${statusData.color}
+                    className={`text-title-18-bold mb-2 ${statusData.color}
                     `}
                   >
                     {statusData.label}

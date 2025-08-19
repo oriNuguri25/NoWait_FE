@@ -236,11 +236,11 @@ const MyWaitingCard = memo(
         </div>
         {currentStore?.status === "CALLING" && (
           <div className="flex flex-row justify-between items-center bg-[#F8F7F7] rounded-2xl px-4 py-4 h-15">
-            <div className="flex text-14-medium text-[#474D57] leading-[130%]">
+            <div className="flex text-[14px] font-[400] leading-[144%] tracking-normal text-black-70">
               10분 안에 입장해주세요!
             </div>
 
-            <div className="flex text-14-bold text-[#1A3149]">
+            <div className="flex text-title-14-semibold text-black-80">
               {formatTime(timeLeft)}
             </div>
           </div>

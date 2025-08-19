@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import UserApi from "../utils/UserApi";
+import { useApiErrorHandler } from "./useApiErrorHandler";
+import { useEffect } from "react";
 
 // 내 대기 목록 데이터 타입
 interface MyWaitingStore {
@@ -49,6 +51,8 @@ const fetchMyWaitingList = async (): Promise<MyWaitingStore[]> => {
 };
 
 export const useMyWaitingList = () => {
+  const { handleApiError } = useApiErrorHandler();
+
   const {
     data: myWaitingList = [],
     isLoading,
@@ -60,6 +64,14 @@ export const useMyWaitingList = () => {
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
+
+  // 에러 로깅 및 토스트 표시
+  useEffect(() => {
+    if (error) {
+      console.error("내 대기 목록 데이터 로딩 에러:", error);
+      handleApiError(error);
+    }
+  }, [error, handleApiError]);
 
   return {
     myWaitingList,
