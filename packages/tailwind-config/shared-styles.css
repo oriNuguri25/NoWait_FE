@@ -250,6 +250,13 @@ pre {
     font-weight: 500;
   }
 
+  .text-14-semibold {
+    font-size: 14px;
+    line-height: 136%;
+    letter-spacing: -2%;
+    font-weight: 500;
+  }
+
   .text-13-regular {
     font-size: 13px;
     line-height: 144%;
