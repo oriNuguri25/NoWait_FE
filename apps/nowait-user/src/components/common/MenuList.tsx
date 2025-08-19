@@ -15,7 +15,7 @@ const MenuList = ({
       <div className="py-[30px]">
         <h1 className="text-title-20-semibold mb-3">메뉴</h1>
         <ul>
-          {Array.from({ length: 5 }).map((_,i) => {
+          {Array.from({ length: 5 }).map((_, i) => {
             return (
               <li key={i} className="mb-5 last:mb-0">
                 <div className="w-full flex justify-between text-left">
