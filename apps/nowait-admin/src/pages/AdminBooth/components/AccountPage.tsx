@@ -214,7 +214,7 @@ const AccountPage = () => {
       tossUrl: nextUrls.toss,
       kakaoPayUrl: nextUrls.kakao,
       naverPayUrl: nextUrls.naver,
-      accountNumber: accountNumber + " " + accountName + " " + bank,
+      accountNumber: accountNumber + " " + bank + " " + accountName,
     };
 
     setSaving(true);
