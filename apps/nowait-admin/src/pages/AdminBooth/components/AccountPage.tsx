@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import jsQR from "jsqr";
 import banner from "../../../assets/booth/banner.svg";
 import RedBadge from "../../../components/RedBadge";
@@ -28,7 +28,7 @@ const AccountPage = () => {
 
   const navigate = useNavigate();
 
-  const { data: storePayment } = useGetStorePayment();
+  const { data: storePayment, refetch } = useGetStorePayment();
   const { mutate: createPayment } = useCreateStorePayment();
   const { mutate: updatePayment } = useUpdateStorePayment();
 
@@ -153,7 +153,7 @@ const AccountPage = () => {
   const curKakao = inputs.kakao;
   const curToss = inputs.toss;
   const curNaver = inputs.naver;
-  const curAccount = `${bank} ${accountName} ${accountNumber}`;
+  const curAccount = `${accountNumber} ${accountName} ${bank}`;
 
   // 각각 동일 여부
   const sameUrls =
@@ -162,7 +162,9 @@ const AccountPage = () => {
     curNaver === serverNaver;
 
   const sameAccount = curAccount === serverAccount;
-  console.log("계좌정보", curAccount, storePayment, sameAccount);
+
+  console.log(curAccount, "즉각 반영", sameAccount);
+
   const hasError = !(
     errors.kakao === null &&
     errors.toss === null &&
@@ -170,7 +172,10 @@ const AccountPage = () => {
   );
 
   // 입력된 정보가 없거나 변경된 사항이 없을 경우
-  const saveDisabled = (sameUrls && sameAccount) || !paymentFilled || hasError;
+
+  const saveDisabled = useMemo(() => {
+    return saving || (sameUrls && sameAccount) || !paymentFilled || hasError;
+  }, [saving, sameUrls, sameAccount, paymentFilled, hasError]);
 
   const handleSave = () => {
     // 1) 입력값 검증
@@ -209,9 +214,8 @@ const AccountPage = () => {
       tossUrl: nextUrls.toss,
       kakaoPayUrl: nextUrls.kakao,
       naverPayUrl: nextUrls.naver,
-      accountNumber: bank + " " + accountName + " " + accountNumber,
+      accountNumber: accountNumber + " " + accountName + " " + bank,
     };
-    console.log(payload, "전송 데이터");
 
     setSaving(true);
 
@@ -226,7 +230,11 @@ const AccountPage = () => {
       });
     } else {
       updatePayment(payload, {
-        onSuccess: () => console.log("결제 정보가 수정되었습니다."),
+        onSuccess: () => {
+          console.log("결제 정보가 수정되었습니다.");
+          refetch();
+          setSaving(false);
+        },
         onError: () => console.log("결제 정보 수정 실패"),
       });
     }
@@ -252,14 +260,16 @@ const AccountPage = () => {
 
     setUrls(next);
     setInputs(next);
-
-    // 공백 포함 가능성 고려(예금주에 공백 들어갈 수 있음)
-    const accountInfo = res.accountNumber ?? "";
-    const [bank = "IBK 기업", name = "", ...rest] = accountInfo.split(" ");
-    const number = rest.join(" ");
-    setBank(bank);
-    setAccountName(name);
-    setAccountNumber(number);
+    const accountInfo = res.accountNumber.split(" ");
+    let bankInfo = accountInfo[2];
+    let nameInfo = accountInfo[1];
+    let numberInfo = accountInfo[0];
+    if (accountInfo.length === 4) {
+      bankInfo = accountInfo[2] + " " + accountInfo[3];
+    }
+    setBank(bankInfo);
+    setAccountName(nameInfo);
+    setAccountNumber(numberInfo);
   }, [storePayment]);
 
   return (
@@ -404,7 +414,7 @@ const AccountPage = () => {
             className="w-1/4 border border-[#dddddd] bg-black-5 text-black-90 rounded-xl p-4"
           />
           <input
-            type="text"
+            type="number"
             placeholder="계좌번호"
             value={accountNumber}
             onChange={(e) => setAccountNumber(e.target.value)}
@@ -413,7 +423,11 @@ const AccountPage = () => {
         </div>
       </section>
 
-      <SaveButton disabled={saveDisabled || saving} onClick={handleSave} />
+      <SaveButton
+        disabled={saveDisabled}
+        loading={saving}
+        onClick={handleSave}
+      />
     </div>
   );
 };
