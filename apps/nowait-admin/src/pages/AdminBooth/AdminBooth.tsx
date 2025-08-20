@@ -381,7 +381,11 @@ const BoothForm = () => {
                   미리보기
                 </button>
               )}
-              <SaveButton disabled={!hasChanges} onClick={handleSave} />
+              <SaveButton
+                disabled={!hasChanges}
+                loading={false}
+                onClick={handleSave}
+              />
               {showPreview && isMobile && (
                 <PreviewModal
                   onClose={() => setShowPreview(false)}

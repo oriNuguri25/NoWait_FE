@@ -75,7 +75,7 @@ export function WaitingCard({
     <div className="[@media(max-width:431px)]:w-[335px] [@media(min-width:768px)_and_(max-width:821px)]:w-[329px] relative lg:w-[372px] h-[200px] bg-white rounded-[16px] px-6 py-[18px]">
       {/* 헤더 */}
       <div className="flex justify-between items-start mb-4">
-        <p className="text-title-20-bold text-black-80">
+        <p className="text-20-bold text-black-80">
           #{number < 10 ? `0${number}` : number}번
         </p>
         <div className="flex items-center text-13-medium text-black-50">
@@ -93,15 +93,13 @@ export function WaitingCard({
         {/* 입장인원 */}
         <div className="flex flex-col py-2 w-[15%]">
           <div className="text-14-medium text-black-60 mb-1">인원</div>
-          <div className="text-title-17-bold text-black-80">
-            {peopleCount}명
-          </div>
+          <div className="text-17-bold text-black-80">{peopleCount}명</div>
         </div>
         <div className="w-px bg-black-10 mr-[5%]" />
         {/* 이름 */}
         <div className="flex flex-col py-2 w-[25%]">
           <div className="text-14-medium text-black-60 mb-1">이름</div>
-          <div className="text-title-17-bold text-black-80">
+          <div className="text-17-semibold text-black-80">
             {truncateName(name)}
           </div>
         </div>
@@ -109,7 +107,7 @@ export function WaitingCard({
         {/* 전화번호 */}
         <div className="flex flex-col py-2 w-[50%]">
           <div className="text-14-medium text-black-60 mb-1">전화번호</div>
-          <div className="text-title-17-bold text-black-80">{phone}</div>
+          <div className="text-17-semibold text-black-80">{phone}</div>
         </div>
       </div>
 
