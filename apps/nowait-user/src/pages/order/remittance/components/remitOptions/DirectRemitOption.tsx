@@ -2,6 +2,7 @@ import Radio from "../Radio";
 import SlideToggle from "../SlideToggle";
 import useThrottle from "../../../../../hooks/useThrottle";
 import { useToastStore } from "../../../../../stores/toastStore";
+import { accountFormat } from "../../../../../utils/accountFormat";
 
 interface PropsType {
   remitValue: string;
@@ -19,7 +20,7 @@ const DirectRemitOption = ({
   const clipBoardDelay = 2000;
   //은행,예금주,계좌번호 따로 사용을 위해 split
   const splitedAccount = account?.split(" ");
-  const [accountNumber, bank, accountHolder] = splitedAccount ?? "";
+  const [accountNumber, accountHolder, bank] = splitedAccount ?? "";
 
   const handleCopyClipBoard = useThrottle(async () => {
     try {
@@ -64,7 +65,7 @@ const DirectRemitOption = ({
                 {accountHolder}
               </h1>
               <h2 className="text-[12px] font-regular text-black-60">
-                {bank} {accountNumber}
+                {bank} {accountFormat(bank, accountNumber)}
               </h2>
             </div>
           </div>

@@ -33,14 +33,15 @@ const RemittancePage = () => {
     enabled: !!storeId,
     select: (data) => data.response,
   });
-
+  
+  // 기본 선택 값 지정하기
   useEffect(() => {
     if (!remittance) return;
 
-    if (remittance.kakaoPayUrl) setRemitValue("kakao");
-    else if (remittance.tossUrl) setRemitValue("toss");
-    else if (remittance.naverPayUrl) setRemitValue("naver");
-    else if (remittance.accountNumber) setRemitValue("remit");
+    if (!(remittance.kakaoPayUrl === "")) setRemitValue("kakao");
+    else if (!(remittance.tossUrl === "")) setRemitValue("toss");
+    else if (!(remittance.naverPayUrl === "")) setRemitValue("naver");
+    else if (!(remittance.accountNumber === "")) setRemitValue("remit");
   }, []);
 
   const orderHandleButton = () => {
@@ -54,7 +55,7 @@ const RemittancePage = () => {
     setPayerError(false);
     modal.open();
   };
-
+  console.log(remittance);
   return (
     <div className="flex flex-col flex-grow pb-[112px]">
       <BackHeader title="주문하기" />
