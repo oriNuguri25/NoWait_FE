@@ -37,11 +37,13 @@ export const getInfiniteAllStores = async (
 };
 
 // 주점 상세 정보 가져오기
-export const getStore = async (
-  storeId: number | undefined
-): Promise<StoreResponse> => {
-  const res = await UserApi.get(`/v1/stores/${storeId}`);
-  return res.data;
+export const getStore = async (storeId: number | undefined) => {
+  try {
+    const res = await UserApi.get<StoreResponse>(`/v1/stores/${storeId}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // 주점 예약하기
@@ -63,12 +65,18 @@ export const getBookmark = async (): Promise<BookmarkResponse> => {
 };
 
 // 북마크 생성
-export const createBookmark = async (storeId: number | undefined) => {
-  await UserApi.post(`/bookmarks/${storeId}`);
+export const createBookmark = async (
+  storeId: number | undefined,
+  signal: AbortSignal
+) => {
+  await UserApi.post(`/bookmarks/${storeId}`, null, { signal });
 };
 
 // 북마크 삭제
-export const deleteBookmark = async (storeId: number | undefined) => {
-  const res = await UserApi.delete(`/bookmarks/${storeId}`);
+export const deleteBookmark = async (
+  storeId: number | undefined,
+  signal: AbortSignal
+) => {
+  const res = await UserApi.delete(`/bookmarks/${storeId}`, { signal });
   return res.data;
 };

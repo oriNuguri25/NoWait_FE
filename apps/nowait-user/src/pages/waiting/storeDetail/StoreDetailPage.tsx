@@ -14,36 +14,44 @@ import CommonSwiper from "../../../components/CommonSwiper";
 import SectionDivider from "../../../components/SectionDivider";
 import { formatTimeRange } from "../../../utils/formatTimeRange";
 import DepartmentImage from "../../../components/DepartmentImage";
+import NotFound from "../../NotFound/NotFound";
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id: storeId } = useParams();
-  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation({
-    withInvalidate: true,
-  });
+
+  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
+    { withInvalidate: true },
+    Number(storeId)
+  );
   const { isBookmarked } = useBookmarkState(Number(storeId));
 
-  const { data: store } = useQuery({
+  const {
+    data: store,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["store", storeId],
     queryFn: () => getStore(Number(storeId!)),
-    select: (data) => data.response,
+    select: (data) => data?.response,
   });
-  console.log(store, "주점ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
+
   const handleBookmarkButton = async () => {
     try {
       if (!isBookmarked) {
-        await createBookmarkMutate.mutate(Number(storeId));
+        await createBookmarkMutate.mutate();
       } else {
-        await deleteBookmarkMutate.mutate(Number(storeId));
+        await deleteBookmarkMutate.mutate();
       }
     } catch (error) {
       console.log(error);
     }
   };
-
+  if(isLoading) return <div>로딩중...</div>
+  if (isError) return <NotFound />;
   return (
     <div>
-      <div className="px-5 w-full min-h-screen-dvh mb-[112px]">
+      <div className="px-5 w-full min-h-dvh mb-[112px]">
         {/* 주점 배너 이미지 */}
         <CommonSwiper slideImages={store?.bannerImages || []}></CommonSwiper>
         {/* 학과 정보 섹션 */}
@@ -86,7 +94,7 @@ const StoreDetailPage = () => {
               {formatTimeRange(store?.openTime)}
             </p>
           </div>
-          <h2 className="mb-10 text-16-regular text-black-80 break-keep">
+          <h2 className="mb-10 text-16-regular text-black-80 whitespace-pre-line break-keep">
             {store?.description}
           </h2>
           {/* 공지사항(데이터 변경 예정) */}
@@ -117,7 +125,7 @@ const StoreDetailPage = () => {
         </section>
         <SectionDivider />
         {/* 주점 메뉴 리스트 */}
-        <MenuList storeId={storeId} mode="store" />
+        <MenuList isLoading={isLoading} mode="store" />
       </div>
       <PageFooterButton className="gap-2">
         <Button
@@ -126,6 +134,9 @@ const StoreDetailPage = () => {
           borderColor="#ececec"
           buttonType="icon"
           onClick={handleBookmarkButton}
+          disabled={
+            createBookmarkMutate.isPending || deleteBookmarkMutate.isPending
+          }
         >
           <BookmarkIcon isBookmarked={isBookmarked} />
         </Button>

@@ -6,14 +6,13 @@ interface PropsType {
   src?: string;
 }
 const DepartmentImage = ({ width, height, src }: PropsType) => {
-  
   return (
-      <img
+    <img
       style={{ width, height }}
-        className={`object-cover rounded-full`}
-        src={src || DefaultDepartmentImage}
-        alt="학과 대표 이미지"
-      />
+      className={`object-cover rounded-full`}
+      src={src || DefaultDepartmentImage}
+      alt="학과 대표 이미지"
+    />
   );
 };
 

@@ -312,7 +312,7 @@ const BoothForm = () => {
         {/* 탭 */}
         <div className="flex gap-2">
           <button
-            className={`px-4 py-2 rounded-full text-sm font-semibold ${
+            className={`px-4 py-2 rounded-full text-14-semibold ${
               activeTab === "menu"
                 ? "bg-black text-white"
                 : "bg-white text-black-60"
@@ -322,7 +322,7 @@ const BoothForm = () => {
             메뉴 관리
           </button>
           <button
-            className={`px-4 py-2 rounded-full text-sm font-semibold ${
+            className={`px-4 py-2 rounded-full text-14-semibold ${
               activeTab === "booth"
                 ? "bg-black text-white"
                 : "bg-white text-black-60 "
@@ -332,7 +332,7 @@ const BoothForm = () => {
             부스 관리
           </button>
           <button
-            className={`px-4 py-2 rounded-full text-sm font-semibold ${
+            className={`px-4 py-2 rounded-full text-14-semibold ${
               activeTab === "account"
                 ? "bg-black text-white"
                 : "bg-white text-black-60 "

@@ -219,7 +219,6 @@ const AccountPage = () => {
 
     setSaving(true);
 
-    // 4) 생성 or 수정
     if (!storePayment || typeof storePayment.response === "string") {
       createPayment(payload, {
         onSuccess: () => {
