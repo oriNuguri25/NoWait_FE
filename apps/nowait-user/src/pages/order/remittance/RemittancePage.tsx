@@ -22,7 +22,7 @@ const RemittancePage = () => {
   const modal = useModal();
   const { cart } = useCartStore();
   const [payer, setPayer] = useState("");
-  const [payerError, setPayerError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>("");
   const [remitValue, setRemitValue] = useState("");
   const totalPrice = sumTotalPrice(cart);
   const payerFocus = useRef<HTMLInputElement>(null);
@@ -33,7 +33,7 @@ const RemittancePage = () => {
     enabled: !!storeId,
     select: (data) => data.response,
   });
-  
+
   // 기본 선택 값 지정하기
   useEffect(() => {
     if (!remittance) return;
@@ -48,11 +48,15 @@ const RemittancePage = () => {
     //입금자명을 입력하지 않고 이체 버튼 클릭 시 입금자명 input으로 포커스
     if (payer.trim() === "") {
       payerFocus?.current?.focus();
-      //에러 메세지 띄우기
-      setPayerError(true);
+      setErrorMessage("입금자명을 입력해주세요");
       return;
     }
-    setPayerError(false);
+    if (payer.length > 10) {
+      payerFocus?.current?.focus();
+      setErrorMessage("입금자명은 10자 이하로 입력해주세요");
+      return;
+    }
+    setErrorMessage(null);
     modal.open();
   };
   console.log(remittance);
@@ -65,7 +69,7 @@ const RemittancePage = () => {
         <PayerInput
           value={payer}
           setValue={setPayer}
-          payerError={payerError}
+          errorMessage={errorMessage}
           payerFocus={payerFocus}
         />
         <SectionDivider />
