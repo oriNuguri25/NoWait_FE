@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router";
 import { PaymentCard, CookCard, CookedCard } from "./OrderCard";
 import { DetailCard } from "./DetailCard";
-import RefreshIcon from "../../assets/refresh.svg?react";
+import refreshIcon from "../../assets/refresh.svg";
 import CookedPage from "./CookedPage";
 import { useGetOrderList } from "../../hooks/useGetOrderList";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
@@ -21,6 +21,7 @@ const AdminOrders = () => {
     savedDesktopCookedScrollPosition,
     setSavedDesktopCookedScrollPosition,
   ] = useState<number>(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const desktopCookedScrollContainerRef = useRef<HTMLDivElement>(null);
   const windowWidth = useWindowWidth();
@@ -63,7 +64,14 @@ const AdminOrders = () => {
 
   // 새로고침 핸들러
   const handleRefresh = () => {
-    refetch();
+    if (isRefreshing) return; // 중복 클릭 방지
+    setIsRefreshing(true);
+    try {
+      refetch();
+    } finally {
+      // 살짝 딜레이를 주면 회전이 끊기지 않고 보여짐 (선택)
+      setTimeout(() => setIsRefreshing(false), 300);
+    }
   };
 
   // PaymentCard 클릭 핸들러
@@ -111,7 +119,7 @@ const AdminOrders = () => {
     >
       {/* 헤더 영역 - 고정 높이 */}
       <div
-        className={`flex flex-row w-full justify-between items-center flex-shrink-0 ${
+        className={`flex flex-row relative w-full justify-between items-center flex-shrink-0 ${
           isMobile ? "mb-5" : "mb-7.5"
         }`}
       >
@@ -177,12 +185,26 @@ const AdminOrders = () => {
           </div>
         )}
 
-        <div
+        {/* <div
           className="flex icon-m items-center justify-center cursor-pointer"
           onClick={handleRefresh}
+        > */}
+        <button
+          type="button"
+          aria-label="새로고침"
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          aria-busy={isRefreshing}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10
+                 cursor-pointer [@media(max-width:431px)]:hidden"
         >
-          <RefreshIcon />
-        </div>
+          <img
+            src={refreshIcon}
+            alt=""
+            className={`${isRefreshing ? "animate-[spin_0.6s_linear_1]" : ""}`}
+          />
+        </button>
+        {/* </div> */}
       </div>
 
       {/* 데스크톱 버전 */}
