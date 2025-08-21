@@ -106,7 +106,7 @@ export const DropdownSelect = ({
                   onChange(opt);
                   setOpen(false);
                 }}
-                className={`block w-full text-left px-4 py-[10.5px] text-13-regular
+                className={`block w-[124.25px] text-left px-[10px] py-[10px] text-13-regular
                             ${selected ? "text-black-90" : "text-black-90"}
                             ${active ? "bg-[#FAFAFA]" : "bg-white"}`}
               >

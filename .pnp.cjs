@@ -66,6 +66,7 @@ const RAW_RUNTIME_STATE =
           ["clsx", "npm:2.1.1"],\
           ["dompurify", "npm:3.2.6"],\
           ["framer-motion", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:12.23.12"],\
+          ["heic2any", "npm:0.0.4"],\
           ["jsqr", "npm:1.4.0"],\
           ["lottie-react", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:2.4.1"],\
           ["monorepo-nowaitFE", "workspace:."],\
@@ -5939,6 +5940,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["heic2any", [\
+      ["npm:0.0.4", {\
+        "packageLocation": "./.yarn/cache/heic2any-npm-0.0.4-aa104e4dd4-36a22e1df0.zip/node_modules/heic2any/",\
+        "packageDependencies": [\
+          ["heic2any", "npm:0.0.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["hoist-non-react-statics", [\
       ["npm:3.3.2", {\
         "packageLocation": "./.yarn/cache/hoist-non-react-statics-npm-3.3.2-e7b709e6c1-fe0889169e.zip/node_modules/hoist-non-react-statics/",\
@@ -6976,6 +6986,7 @@ const RAW_RUNTIME_STATE =
           ["clsx", "npm:2.1.1"],\
           ["dompurify", "npm:3.2.6"],\
           ["framer-motion", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:12.23.12"],\
+          ["heic2any", "npm:0.0.4"],\
           ["jsqr", "npm:1.4.0"],\
           ["lottie-react", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:2.4.1"],\
           ["monorepo-nowaitFE", "workspace:."],\
@@ -7198,6 +7209,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-react-hooks", "virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:5.2.0"],\
           ["eslint-plugin-react-refresh", "virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:0.4.20"],\
           ["globals", "npm:16.3.0"],\
+          ["heic2any", "npm:0.0.4"],\
           ["jsqr", "npm:1.4.0"],\
           ["lucide-react", "virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:0.522.0"],\
           ["nowait-admin", "workspace:apps/nowait-admin"],\

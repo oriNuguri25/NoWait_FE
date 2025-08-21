@@ -47,6 +47,7 @@ const BoothForm = () => {
   const [endHour, setEndHour] = useState("");
   const [endMinute, setEndMinute] = useState("");
   const [noticeTitle, setNoticeTitle] = useState("");
+  const [location, setLocation] = useState("");
 
   const [isFocused, setIsFocused] = useState(false);
   const [isTextareaFocused, setIsTextareaFocused] = useState(false);
@@ -165,7 +166,7 @@ const BoothForm = () => {
           {
             storeId,
             name: boothName,
-            location: "제2학관 앞마당",
+            location: location,
             description: boothIntro,
             noticeTitle,
             noticeContent: boothNotice,
@@ -178,7 +179,7 @@ const BoothForm = () => {
         );
       });
 
-      // 2) 프로필(옵션) 100×100 크롭 후 업로드
+      //  프로필 이미지 100×100 크롭 후 업로드
       if (profileImage && profileImage instanceof File) {
         const avatar100 = await cropCenterToSize(
           profileImage,
@@ -252,6 +253,7 @@ const BoothForm = () => {
     setDepartName(store.departmentName ?? "");
     setNoticeTitle(store.noticeTitle ?? "");
     setBoothNotice(store.noticeContent ?? "");
+    setLocation(store.location ?? "");
 
     // 운영시간 분해 (예: "09001800")
     const ot = store.openTime ?? "";
@@ -339,12 +341,13 @@ const BoothForm = () => {
             }`}
             onClick={() => onTabClick("account")}
           >
-            계좌 관리
+            입금계좌 설정
           </button>
         </div>
         {activeTab === "booth" ? (
           <>
             <BoothSection
+              location={location}
               departName={departName}
               boothName={boothName}
               setBoothName={setBoothName}
@@ -381,10 +384,15 @@ const BoothForm = () => {
                   미리보기
                 </button>
               )}
-              <SaveButton disabled={!hasChanges} onClick={handleSave} />
+              <SaveButton
+                disabled={!hasChanges}
+                loading={false}
+                onClick={handleSave}
+              />
               {showPreview && isMobile && (
                 <PreviewModal
                   onClose={() => setShowPreview(false)}
+                  location={location}
                   boothName={boothName}
                   departName={departName}
                   boothIntro={boothIntro}
