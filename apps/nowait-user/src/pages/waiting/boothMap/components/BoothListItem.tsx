@@ -3,6 +3,7 @@ import DepartmentImage from "../../../../components/DepartmentImage";
 import { useBookmarkState } from "../../../../hooks/useBookmarkState";
 import defaultMenuImageLg from "../../../../assets/default-image-lg.png";
 import { useBookmarkMutation } from "../../../../hooks/mutate/useBookmark";
+import { Link } from "react-router-dom";
 
 interface PropsType {
   bookmarkId?: number;
@@ -14,7 +15,7 @@ interface PropsType {
   storeId: number;
 }
 
-const BoothItem = ({
+const BoothListItem = ({
   bannerImages,
   waitingCount,
   profileImage,
@@ -43,25 +44,31 @@ const BoothItem = ({
   };
   return (
     <div className="mb-6">
-      <div className="relative top-0 right-0">
-        <img
-          className="w-full h-[195px] rounded-[14px] overflow-hidden object-cover"
-          src={bannerImages || defaultMenuImageLg}
-          alt="북마크한 주점 메인 이미지"
-        />
-        {waitingCount !== 0 && (
-          <p className="absolute top-[12px] right-[12px] text-primary bg-[#ffe9df] px-2 py-[7px] font-bold text-[12px] rounded-[6px]">
-            {waitingCount}
-          </p>
-        )}
-      </div>
+      <Link to={`/store/${storeId}`}>
+        <div className="relative top-0 right-0">
+          <img
+            className="w-full h-[195px] rounded-[14px] overflow-hidden object-cover"
+            src={bannerImages || defaultMenuImageLg}
+            alt="북마크한 주점 메인 이미지"
+          />
+          {waitingCount !== 0 && (
+            <p className="absolute top-[12px] right-[12px] text-primary bg-[#ffe9df] px-2 py-[7px] font-bold text-[12px] rounded-[6px]">
+              {waitingCount}
+            </p>
+          )}
+        </div>
+      </Link>
       <div className="flex items-start justify-between py-3">
-        <div className="flex items-center gap-2.5">
-          <DepartmentImage width="40px" height="40px" src={profileImage} />
-          <div className="flex flex-col justify-between">
-            <h1 className="text-title-16-bold text-black-90">{name}</h1>
-            <h2 className="text-14-regular text-black-70">{departmentName}</h2>
-          </div>
+        <div>
+          <Link to={`/store/${storeId}`} className="flex items-center gap-2.5">
+            <DepartmentImage width="40px" height="40px" src={profileImage} />
+            <div className="flex flex-col justify-between">
+              <h1 className="text-title-16-bold text-black-90">{name}</h1>
+              <h2 className="text-14-regular text-black-70">
+                {departmentName}
+              </h2>
+            </div>
+          </Link>
         </div>
         <button
           className="!opacity-100 !cursor-pointer mr-[5px]"
@@ -77,4 +84,4 @@ const BoothItem = ({
   );
 };
 
-export default BoothItem;
+export default BoothListItem;

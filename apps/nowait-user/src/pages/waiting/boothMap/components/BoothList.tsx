@@ -1,5 +1,5 @@
 import { motion, useMotionValue, animate } from "framer-motion";
-import BoothItem from "./BoothItem";
+import BoothListItem from "./BoothListItem";
 import { useEffect, useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -115,7 +115,7 @@ const BoothList = () => {
                         transform: `translateY(${virtualRow.start}px)`,
                       }}
                     >
-                      <BoothItem
+                      <BoothListItem
                         bannerImages={store?.bannerImages[0]?.imageUrl}
                         waitingCount={store?.waitingCount}
                         profileImage={store?.profileImage?.imageUrl}
