@@ -101,8 +101,8 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
     // 학과명을 최근 검색어에 저장
     saveRecentSearch(store.departmentName);
 
-    // 학과별 주점 목록 페이지로 이동 (departmentId를 query parameter로 전달)
-    navigate(`/store/${store.departmentId}`);
+    // 학과별 주점 목록 페이지로 이동 (storeId를 query parameter로 전달)
+    navigate(`/store/${store.storeId}`);
     onClose();
   };
 

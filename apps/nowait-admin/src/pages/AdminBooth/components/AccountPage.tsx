@@ -174,7 +174,7 @@ const AccountPage = () => {
   // 입력된 정보가 없거나 변경된 사항이 없을 경우
 
   const saveDisabled = useMemo(() => {
-    return saving || (sameUrls && sameAccount) || !paymentFilled || hasError;
+    return saving || (sameUrls && sameAccount) || !paymentFilled;
   }, [saving, sameUrls, sameAccount, paymentFilled, hasError]);
 
   const handleSave = () => {
@@ -195,6 +195,8 @@ const AccountPage = () => {
         nextUrls[id] = res.value;
         nextErrors[id] = null;
       } else {
+        nextUrls[id] = "";
+        setInputs((prev) => ({ ...prev, [id]: "" }));
         nextErrors[id] = res.error;
       }
     });
@@ -214,7 +216,7 @@ const AccountPage = () => {
       tossUrl: nextUrls.toss,
       kakaoPayUrl: nextUrls.kakao,
       naverPayUrl: nextUrls.naver,
-      accountNumber: accountNumber + " " + accountName + " " + bank,
+      accountNumber: accountNumber + " " + bank + " " + accountName,
     };
 
     setSaving(true);
@@ -312,31 +314,52 @@ const AccountPage = () => {
               </div>
               <div className="flex justify-between h-[52px] w-[474px] min-w-[236px] items-center bg-black-5 rounded-xl border border-[#dddddd] pl-4 pr-[10px] py-4">
                 <div className={`flex flex-col w-[79%] w-overflow-scroll`}>
-                  <input
-                    type="text"
-                    value={inputs[option.id]}
-                    onChange={(e) => {
-                      setInputs((prev) => ({
-                        ...prev,
-                        [option.id]: e.target.value,
-                      }));
-                      setSources((prev) => ({ ...prev, [option.id]: "text" }));
-                    }}
-                    onPaste={(e) => {
-                      e.preventDefault();
-                      const pasted = e.clipboardData.getData("text");
-                      setInputs((prev) => ({ ...prev, [option.id]: pasted }));
-                      setSources((prev) => ({ ...prev, [option.id]: "text" }));
-                    }}
-                    placeholder={REQUIRED_PREFIX[option.id]}
-                    className="flex-1 bg-transparent outline-none text-sm text-gray-700"
-                    readOnly={sources[option.id] === "image"}
-                  />
-                  {errors[option.id] && (
-                    <span className="text-[12px] text-red-600">
-                      {errors[option.id]}
-                    </span>
-                  )}
+                  <div className="relative w-full">
+                    <input
+                      type="text"
+                      value={inputs[option.id]}
+                      onFocus={() => {
+                        if (errors[option.id]) {
+                          // 에러 상태일 때만 초기화
+                          setInputs((prev) => ({ ...prev, [option.id]: "" }));
+                          setErrors((prev) => ({ ...prev, [option.id]: null }));
+                        }
+                        setSources((prev) => ({
+                          ...prev,
+                          [option.id]: "text",
+                        }));
+                      }}
+                      onChange={(e) => {
+                        setInputs((prev) => ({
+                          ...prev,
+                          [option.id]: e.target.value,
+                        }));
+                        setSources((prev) => ({
+                          ...prev,
+                          [option.id]: "text",
+                        }));
+                      }}
+                      onPaste={(e) => {
+                        e.preventDefault();
+                        const pasted = e.clipboardData.getData("text");
+                        setInputs((prev) => ({ ...prev, [option.id]: pasted }));
+                        setSources((prev) => ({
+                          ...prev,
+                          [option.id]: "text",
+                        }));
+                      }}
+                      placeholder={
+                        errors[option.id] ? "" : REQUIRED_PREFIX[option.id]
+                      }
+                      className="flex-1 w-full bg-transparent outline-none text-14-regular text-black-90"
+                      readOnly={sources[option.id] === "image"}
+                    />
+                    {errors[option.id] && (
+                      <span className="absolute flex items-center top-1/2 -translate-y-1/2 pl-[4px] text-14-regular text-red-600 pointer-events-none whitespace-nowrap overflow-x-auto max-w-[calc(100%-4px)] scrollbar-hide">
+                        {errors[option.id]}
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <input
                   type="file"
@@ -357,19 +380,6 @@ const AccountPage = () => {
                     }}
                   >
                     {isMobile ? <FaRegTrashAlt /> : "삭제하기"}
-                  </button>
-                ) : errors[option.id] ? (
-                  <button
-                    className={`text-black-80 text-12-bold rounded-[6px] p-[10px] 
-                        bg-black-30 hover:bg-gray-300
-                    `}
-                    onClick={() => {
-                      setInputs((prev) => ({ ...prev, [option.id]: "" }));
-                      setUrls((prev) => ({ ...prev, [option.id]: "" }));
-                      setErrors((prev) => ({ ...prev, [option.id]: null }));
-                    }}
-                  >
-                    {"초기화"}
                   </button>
                 ) : (
                   <button
@@ -410,14 +420,14 @@ const AccountPage = () => {
             placeholder="예금주 이름"
             value={accountName}
             onChange={(e) => setAccountName(e.target.value)}
-            className="w-1/4 border border-[#dddddd] bg-black-5 text-black-90 rounded-xl p-4"
+            className="w-1/4 border border-[#dddddd] bg-black-5 text-14-regular text-black-90 rounded-xl p-4"
           />
           <input
             type="number"
             placeholder="계좌번호"
             value={accountNumber}
             onChange={(e) => setAccountNumber(e.target.value)}
-            className="w-1/2 border border-[#dddddd] bg-black-5 text-black-90 rounded-xl p-4"
+            className="w-1/2 border border-[#dddddd] bg-black-5 text-14-regular text-black-90 rounded-xl p-4"
           />
         </div>
       </section>

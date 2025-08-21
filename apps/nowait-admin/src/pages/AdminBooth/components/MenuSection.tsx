@@ -228,8 +228,6 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     setMenus(transformed);
   }, [fetchedMenus]);
 
-  console.log(fetchedMenus);
-
   return (
     <div className="mt-[40px] mb-[20px] max-w-[614px]">
       <div className="flex justify-between items-center mb-[20px]">
@@ -300,7 +298,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                             />
                           </div>
                           <div className="flex flex-col">
-                            <span className="text-16-bold font-semibold">
+                            <span className="text-16-semibold">
                               {menu.name}
                             </span>
                             <span className="text-16-regular text-black-60">

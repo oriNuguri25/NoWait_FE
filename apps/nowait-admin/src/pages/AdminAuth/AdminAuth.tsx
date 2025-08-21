@@ -2,6 +2,10 @@ import { Button } from "@repo/ui/button";
 import RedBadge from "../../components/RedBadge";
 import redLogo from "../../assets/redLogo.svg";
 import { useNavigate } from "react-router";
+import bg_festival from "../../assets/startPage/bg_festival.svg";
+import bg_order from "../../assets/startPage/bg_order.svg";
+import bg_status from "../../assets/startPage/bg_status.svg";
+import bg_waiting from "../../assets/startPage/bg_waiting.svg";
 
 const AdminAuth = () => {
   const navigate = useNavigate();
@@ -15,7 +19,9 @@ const AdminAuth = () => {
         <h2 className="text-3xl font-bold leading-snug mt-4">
           기다림 없는 <br /> 우리의 즐거운 축제
         </h2>
-        <div className="my-20 aspect-square w-60 mx-auto bg-gray-100 rounded-lg [@media(max-width:431px)]:w-[325px]" />
+        <div className="mt-[44px] mb-[118.44px] flex justify-center items-center max-w-[498.91px] max-h-[394.56px] bg-transparent rounded-lg [@media(max-width:431px)]:w-[325px] [@media(max-width:431px)]:h-[325px]">
+          <img src={bg_festival} className="w-full h-full object-cover" />
+        </div>
       </section>
 
       {/* 2. Feature Section 1 */}
@@ -31,7 +37,9 @@ const AdminAuth = () => {
           <br />
           간편하게 입장 처리를 할 수 있어요.
         </p>
-        <div className="mt-[38px] mb-20 aspect-square w-60 bg-gray-100 rounded-lg [@media(max-width:431px)]:w-[325px]" />
+        <div className="mt-[38px] mb-[83px] w-[325px] h-[210px] w-60 bg-transparent rounded-lg [@media(max-width:431px)]:w-[325px]">
+          <img src={bg_waiting} className="w-full h-full object-cover" />
+        </div>
       </section>
 
       {/* 3. Feature Section 2 */}
@@ -47,7 +55,9 @@ const AdminAuth = () => {
           <br />
           입금 여부만 확인하면 주문 처리가 끝나요.
         </p>
-        <div className="mt-[38px] mb-20 aspect-square w-60 ml-auto bg-gray-100 rounded-lg [@media(max-width:431px)]:w-[325px]" />
+        <div className="mt-[38px] mb-[96px] ml-auto w-[325px] h-[210px] bg-transparent rounded-lg [@media(max-width:431px)]:w-[325px]">
+          <img src={bg_order} className="h-full w-full object-cover" />
+        </div>
       </section>
 
       {/* 4. Feature Section 3 */}
@@ -63,7 +73,9 @@ const AdminAuth = () => {
           <br />
           현재 진행 상황을 실시간 확인할 수 있어요.
         </p>
-        <div className="mt-[38px] aspect-square w-60 bg-gray-100 rounded-lg [@media(max-width:431px)]:w-[325px]" />
+        <div className="mt-[38px] mb-[75px] w-[325px] h-[210px] bg-transparent rounded-lg [@media(max-width:431px)]:w-[325px]">
+          <img src={bg_status} className="w-full h-full object-cover" />
+        </div>
       </section>
 
       <div

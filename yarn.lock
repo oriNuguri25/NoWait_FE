@@ -4249,6 +4249,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"heic2any@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "heic2any@npm:0.0.4"
+  checksum: 10c0/36a22e1df08de088322ac018d8e5de24911f93d6c2d8b3bd2ea9baeeb8630c031bc1eb9eaa10d4c6c3b4780ed3410e7eb0283ffd3dfb441e370bec8634003c43
+  languageName: node
+  linkType: hard
+
 "hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.2":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
@@ -5127,6 +5134,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     dompurify: "npm:^3.2.6"
     framer-motion: "npm:^12.20.1"
+    heic2any: "npm:^0.0.4"
     jsqr: "npm:^1.4.0"
     prop-types: "npm:^15.8.1"
     prosemirror-model: "npm:^1.25.2"
@@ -5325,6 +5333,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^5.2.0"
     eslint-plugin-react-refresh: "npm:^0.4.19"
     globals: "npm:^16.0.0"
+    heic2any: "npm:^0.0.4"
     jsqr: "npm:^1.4.0"
     lucide-react: "npm:^0.522.0"
     postcss: "npm:^8.5.3"
