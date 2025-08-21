@@ -54,6 +54,7 @@ const fetchStores = async ({
     );
 
     console.log("서버 응답 전체:", response.data);
+    console.log("페이지 파라미터:", pageParam);
 
     // 서버 응답 구조에 맞게 데이터 추출
     if (
@@ -65,6 +66,7 @@ const fetchStores = async ({
 
       console.log("추출된 주점 배열:", storeArray);
       console.log("hasNext:", hasNext);
+      console.log("현재 페이지:", pageParam, "| 주점 수:", storeArray.length);
 
       // 삭제된 주점 필터링하고 실제 서버 데이터 그대로 반환
       const stores: Store[] = storeArray
