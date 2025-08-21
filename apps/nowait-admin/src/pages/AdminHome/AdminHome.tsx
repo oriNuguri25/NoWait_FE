@@ -7,6 +7,9 @@ import { useUpdateReservationStatus } from "../../hooks/Reservation/useUpdateRes
 import ConfirmRemoveModal from "../../components/ConfirmRemoveModal";
 import ToggleSwitch from "./components/ToggleSwitch";
 import { useGetCompletedList } from "../../hooks/Reservation/useGetCompletedList";
+import { useToggleStoreActive } from "../../hooks/useToggleActive";
+import { useGetStore } from "../../hooks/booth/store/useGetStore";
+
 type WaitingStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 
 interface Reservation {
@@ -30,20 +33,32 @@ const AdminHome = () => {
 
   const [activeTab, setActiveTab] = useState("전체");
   const storeId = Number(localStorage.getItem("storeId"));
-  const [isOn, setIsOn] = useState(true);
+  const [isOn, setIsOn] = useState<boolean | null>(null);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [targetReservation, setTargetReservation] =
     useState<Reservation | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
+  const { data: store } = useGetStore(storeId);
   const { data: waitingList, refetch: refetchWaiting } =
     useGetReservationList(storeId); //calling, wating
   const { data: completedList, refetch: refetchCompleted } =
     useGetCompletedList(storeId); //canceled, conformed
+  const { mutate: toggleActive } = useToggleStoreActive();
 
   console.log(waitingList, "대기/호출");
   console.log(completedList, "완료/취소");
-  const toggle = () => setIsOn((prev) => !prev);
+  console.log(store, "Store정보");
+
+  const toggle = () => {
+    toggleActive(storeId, {
+      onSuccess: (newStatus: boolean) => {
+        setIsOn(newStatus); // API 응답 값으로 업데이트
+      },
+      onError: () => {
+        alert("활성화 상태 변경 실패");
+      },
+    });
+  };
   //대기 중 카드 개수
   const waitingCount = reservations.filter(
     (res) => res.status === "WAITING"
@@ -202,6 +217,13 @@ const AdminHome = () => {
 
     setReservations(unique);
   }, [waitingList, completedList]);
+  useEffect(() => {
+    if (store) {
+      setIsOn(store.isActive);
+    }
+  }, [store]);
+  console.log("대기 활성화 on", isOn);
+
   return (
     <div
       className={`w-full md:w-[752px] max-w-[804px] flex flex-col items-center mx-auto space-y-6`}
@@ -222,7 +244,7 @@ const AdminHome = () => {
                 {isOn ? "on" : "off"}
               </span>
             </div>
-            <ToggleSwitch isOn={isOn} toggle={toggle} />
+            <ToggleSwitch isOn={!!isOn} toggle={toggle} />
           </div>
         </div>
       </section>

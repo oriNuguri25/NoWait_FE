@@ -11,6 +11,7 @@ import { useDeleteBannerImage } from "../../../hooks/booth/menu/useDeleteBannerI
 import { useRemoveEmoji } from "../../../hooks/useRemoveEmoji";
 
 const BoothSection = ({
+  location,
   departName,
   boothName,
   setBoothName,
@@ -38,6 +39,7 @@ const BoothSection = ({
   setEndMinute,
   isMobile,
 }: {
+  location: string;
   departName: string;
   boothName: string;
   setBoothName: (val: string) => void;
@@ -74,7 +76,7 @@ const BoothSection = ({
       <div className="flex flex-col items-center pb-[50px] max-w-[614px]">
         <div className="flex justify-between items-center w-full my-[40px]">
           {/* 좌측 타이틀 */}
-          <h2 className="text-title-18-bold text-black-80">부스 프로필</h2>
+          <h2 className="text-headline-22-bold text-black-80">부스 프로필</h2>
 
           {/* 우측 버튼 */}
           {!isMobile && (
@@ -88,6 +90,7 @@ const BoothSection = ({
           {showPreview && (
             <PreviewModal
               onClose={() => setShowPreview(false)}
+              location={location}
               boothName={boothName}
               departName={departName}
               boothIntro={boothIntro}
@@ -215,7 +218,7 @@ const BoothSection = ({
             .map((_, i) => (
               <label
                 key={i}
-                className="w-[150px] h-[99px] bg-black-5 border border-[#DDDDDD] rounded-xl flex items-center justify-center cursor-pointer relative"
+                className="w-[150px] h-[99px] bg-black-5 border border-[#dddddd] rounded-xl flex items-center justify-center cursor-pointer relative"
               >
                 <input
                   type="file"
@@ -241,7 +244,7 @@ const BoothSection = ({
                           : (bannerImages[i] as any).imageUrl
                       }
                       alt={`배너 ${i + 1}`}
-                      className="object-cover w-full h-full rounded-lg"
+                      className="object-cover w-full h-full rounded-xl overflow-hidden"
                     />
 
                     {/* 대표 사진 라벨 */}

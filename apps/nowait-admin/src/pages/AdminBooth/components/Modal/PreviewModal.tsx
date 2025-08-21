@@ -17,6 +17,7 @@ interface PreviewProfileImage {
   imageType: "PROFILE";
 }
 interface PreviewModalProps {
+  location: string;
   boothName: string;
   departName: string;
   boothIntro: string;
@@ -31,6 +32,7 @@ interface PreviewModalProps {
   onClose: () => void;
 }
 const PreviewModal: React.FC<PreviewModalProps> = ({
+  location,
   boothName,
   departName,
   boothIntro,
@@ -83,7 +85,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
             <RedBadge label="대기 0팀" small={true} />
             <div className="h-[1px] my-[13px] bg-[#F4F4F4]" />
             <span className="flex text-location text-black-80 gap-[3.78px]">
-              <img src={pin} /> {"가천대학교 운동장"}
+              <img src={pin} /> {location}
             </span>
             <span className="flex text-location text-black-80 gap-[3.78px]">
               <img src={clock} /> {startHour || "18"}:{startMinute || "00"} ~
@@ -111,7 +113,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
         <div className="w-full">
           <button
             onClick={onClose}
-            className="w-full h-[48px] mt-[30px] bg-gray-100 rounded-lg py-2 text-sm font-medium text-gray-700"
+            className="w-full h-[48px] mt-[30px] bg-gray-100 rounded-lg py-2 text-16-semibold text-gray-700"
           >
             닫기
           </button>
