@@ -300,7 +300,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
                             />
                           </div>
                           <div className="flex flex-col">
-                            <span className="text-16-bold font-semibold">
+                            <span className="text-16-semibold">
                               {menu.name}
                             </span>
                             <span className="text-16-regular text-black-60">

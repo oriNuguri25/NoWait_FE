@@ -163,7 +163,7 @@ const MenuModal = ({
                   value={name}
                   onChange={(e) => setName(removeEmojiSome(e.target.value))}
                   maxLength={25}
-                  className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-sm"
+                  className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-14-regular"
                   placeholder="메뉴명을 입력해주세요"
                 />
                 <p
@@ -204,7 +204,7 @@ const MenuModal = ({
           {/* 관리자용 메뉴명 */}
           <div className="mb-[30px] relative">
             <label className="block text-title-16-bold mb-3">
-              관리자용 메뉴명
+              관리자 용 메뉴명
             </label>
             <div className="relative">
               <input
@@ -214,7 +214,7 @@ const MenuModal = ({
                   setAdminDisplayName(removeEmojiAll(e.target.value))
                 }
                 maxLength={10}
-                className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-sm"
+                className="w-full h-[52px] border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white px-4 py-2 border rounded-lg text-14-regular"
                 placeholder={`${
                   isTablet
                     ? "주문 확인에 용이한 메뉴명으로 설정해주세요."
@@ -248,10 +248,10 @@ const MenuModal = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               maxLength={250}
-              className="w-full border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white h-[120px] px-4 py-2 border rounded-lg text-sm h-24"
+              className="w-full border border-[#DDDDDD] bg-black-5 bg-black-5 focus:bg-white h-[120px] px-4 py-2 border rounded-lg text-14-regular h-24"
               placeholder="메뉴 소개를 입력해주세요."
             />
-            <p className="absolute bottom-[12px] right-4 text-right text-xs text-gray-400">
+            <p className="absolute bottom-[12px] right-4 text-right text-13-regular text-gray-400">
               <span
                 className={`${
                   description.length > 0 ? "text-black" : "text-gray-400"

@@ -13,6 +13,7 @@ import orderIconActive from "../assets/orderIconActive.svg";
 import statIconActive from "../assets/statIconActive.svg";
 import boothIconActive from "../assets/boothIconActive.svg";
 import logout from "../assets/log-out.svg";
+import logout_text from "../assets/logout_text.svg";
 
 const AdminSidebar = ({
   handleClickLogout,
@@ -124,9 +125,7 @@ const AdminSidebar = ({
       {/* 하단: 프로필 */}
       <div className="px-4 flex items-center gap-2" onClick={handleClickLogout}>
         <img src={logout} alt="gnb" />
-        {!isCompact && (
-          <span className=" text-16-semibold text-black-55">로그아웃</span>
-        )}
+        {!isCompact && <img src={logout_text} />}
       </div>
     </aside>
   );
