@@ -1,3 +1,4 @@
+import heic2any from "heic2any";
 export async function cropCenterToSize(
   file: File,
   targetW = 375,
@@ -5,7 +6,32 @@ export async function cropCenterToSize(
   mime = "image/jpeg",
   quality = 0.9
 ): Promise<File> {
-  const img = await fileToImage(file);
+  let convertedFile = file;
+
+  // HEIC 필터링 및 변환
+  if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic")) {
+    try {
+      const blob = await heic2any({
+        blob: file,
+        toType: "image/jpeg",
+        quality,
+      });
+
+      // Blob을 File로 변환
+      convertedFile = new File(
+        [blob as BlobPart],
+        file.name.replace(/\.heic$/i, ".jpg"),
+        {
+          type: "image/jpeg",
+          lastModified: Date.now(),
+        }
+      );
+    } catch (e) {
+      console.error("HEIC 변환 실패:", e);
+      throw new Error("HEIC 이미지를 변환하는 데 실패했습니다.");
+    }
+  }
+  const img = await fileToImage(convertedFile);
 
   const srcW = img.naturalWidth || img.width;
   const srcH = img.naturalHeight || img.height;
