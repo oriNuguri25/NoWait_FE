@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import placeholderIcon from "../../../../assets/image_placeholder.svg";
 import closeIcon from "../../../../assets/close.svg";
 import { useRemoveEmoji } from "../../../../hooks/useRemoveEmoji"; //자동화
+import { cropCenterToSize } from "../../../../utils/imageCrop";
 
 interface MenuModalProps {
   isEdit: boolean;
@@ -11,7 +12,7 @@ interface MenuModalProps {
     adminDisplayName?: string;
     price: string;
     description: string;
-    image?: File;
+    imageUrl?: string;
   };
   isTablet: boolean;
   onClose: () => void;
@@ -69,6 +70,8 @@ const MenuModal = ({
   onSubmit,
   onDelete,
 }: MenuModalProps) => {
+  console.log(initialData);
+
   const [name, setName] = useState(initialData?.name || "");
   const [adminDisplayName, setAdminDisplayName] = useState(
     initialData?.adminDisplayName || ""
@@ -79,7 +82,9 @@ const MenuModal = ({
     initialData?.description || ""
   );
 
-  const [image, setImage] = useState<File | null>(initialData?.image || null);
+  const [image, setImage] = useState<string | File | null>(
+    initialData?.imageUrl || null
+  );
   const { removeEmojiAll, removeEmojiSome } = useRemoveEmoji();
 
   const isFormValid =
@@ -95,17 +100,18 @@ const MenuModal = ({
     description: initialData?.description ?? "",
     price: normalizePrice(initialData?.price ?? ""),
     // 편의를 위해 초기 이미지는 늘 "없음"으로 가정 (URL 기반이면 File이 아님)
-    imageExists: !!initialData?.image,
+    image: initialData?.imageUrl,
   });
 
   // 수정 여부
   const isDirty = useMemo(() => {
+    const hasImageChanged = initialRef.current.image !== image;
     const changed =
       name !== initialRef.current.name ||
       adminDisplayName !== initialRef.current.adminDisplayName ||
       description !== initialRef.current.description ||
       normalizePrice(price) !== initialRef.current.price ||
-      !!image !== initialRef.current.imageExists; // 이미지 추가/삭제
+      hasImageChanged;
     return changed;
   }, [name, adminDisplayName, description, price, image]);
 
@@ -187,13 +193,29 @@ const MenuModal = ({
               <input
                 type="file"
                 className="hidden"
-                onChange={(e) => e.target.files && setImage(e.target.files[0])}
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+
+                  try {
+                    const cropped = await cropCenterToSize(file, 375, 246);
+                    setImage(cropped);
+                  } catch (err) {
+                    console.error("이미지 크롭 실패:", err);
+                  } finally {
+                    e.target.value = "";
+                  }
+                }}
               />
               {image ? (
                 <img
-                  src={URL.createObjectURL(image)}
+                  src={
+                    typeof image === "string"
+                      ? image
+                      : URL.createObjectURL(image)
+                  }
                   alt="업로드된 이미지"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover"
                 />
               ) : (
                 <img src={placeholderIcon} alt="업로드" />
