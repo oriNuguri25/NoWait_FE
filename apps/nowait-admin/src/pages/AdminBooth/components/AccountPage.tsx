@@ -410,14 +410,14 @@ const AccountPage = () => {
             placeholder="예금주 이름"
             value={accountName}
             onChange={(e) => setAccountName(e.target.value)}
-            className="w-1/4 border border-[#dddddd] bg-black-5 text-black-90 rounded-xl p-4"
+            className="w-1/4 border border-[#dddddd] bg-black-5 text-14-regular text-black-90 rounded-xl p-4"
           />
           <input
             type="number"
             placeholder="계좌번호"
             value={accountNumber}
             onChange={(e) => setAccountNumber(e.target.value)}
-            className="w-1/2 border border-[#dddddd] bg-black-5 text-black-90 rounded-xl p-4"
+            className="w-1/2 border border-[#dddddd] bg-black-5 text-14-regular text-black-90 rounded-xl p-4"
           />
         </div>
       </section>

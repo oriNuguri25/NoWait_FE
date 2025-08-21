@@ -32,7 +32,7 @@ export const HalfLabelInput = ({
     >
       {/* 라벨: 위 절반의 맨 아래(반분 상태에서만 보임) */}
       <span
-        className={`absolute left-4 bottom-[30px] text-13-regular text-black-40 leading-none
+        className={`absolute left-4 bottom-[30px] text-12-regular text-black-40 leading-none
                     transition-opacity duration-150
                     ${
                       floating ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -50,7 +50,7 @@ export const HalfLabelInput = ({
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         placeholder={floating ? "" : label}
-        className={`absolute left-0 w-full px-4 bg-transparent outline-none text-14-regular text-black appearance-none
+        className={`absolute left-0 w-full px-4 bg-transparent outline-none text-16-regular text-black appearance-none
         ${
           floating
             ? "top-[20px] h-[30px] leading-[14px] pt-0 pb-0 align-top"

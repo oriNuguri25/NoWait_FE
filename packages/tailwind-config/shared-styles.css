@@ -278,8 +278,22 @@ pre {
     font-weight: 500;
   }
 
+  .text-13-bold {
+    font-size: 13px;
+    line-height: 136%;
+    letter-spacing: -1%;
+    font-weight: 700;
+  }
+
   .text-13-regular {
     font-size: 13px;
+    line-height: 144%;
+    letter-spacing: 0em;
+    font-weight: 400;
+  }
+
+  .text-12-regular {
+    font-size: 12px;
     line-height: 144%;
     letter-spacing: 0em;
     font-weight: 400;
@@ -300,6 +314,13 @@ pre {
   }
 
   /* Button */
+
+  .text-18-bold {
+    font-size: 18px;
+    line-height: 130%;
+    letter-spacing: 0em;
+    font-weight: 700;
+  }
   .text-button-18-semibold {
     font-size: 18px;
     line-height: 136%;
@@ -367,7 +388,7 @@ pre {
 
   /* 미리보기 하단 "공지" 폰트 */
   .text-notice {
-    font-size: 8.81px;
+    font-size: 9px;
     line-height: 144%;
     letter-spacing: 0%;
     font-weight: 700;
