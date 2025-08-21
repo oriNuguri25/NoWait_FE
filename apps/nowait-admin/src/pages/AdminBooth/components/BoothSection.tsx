@@ -218,7 +218,7 @@ const BoothSection = ({
             .map((_, i) => (
               <label
                 key={i}
-                className="w-[150px] h-[99px] bg-black-5 border border-[#DDDDDD] rounded-xl flex items-center justify-center cursor-pointer relative"
+                className="w-[150px] h-[99px] bg-black-5 border border-[#dddddd] rounded-xl flex items-center justify-center cursor-pointer relative"
               >
                 <input
                   type="file"
@@ -244,7 +244,7 @@ const BoothSection = ({
                           : (bannerImages[i] as any).imageUrl
                       }
                       alt={`배너 ${i + 1}`}
-                      className="object-cover w-full h-full rounded-lg"
+                      className="object-cover w-full h-full rounded-xl overflow-hidden"
                     />
 
                     {/* 대표 사진 라벨 */}

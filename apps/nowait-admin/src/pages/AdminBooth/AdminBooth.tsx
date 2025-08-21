@@ -179,7 +179,7 @@ const BoothForm = () => {
         );
       });
 
-      // 2) 프로필(옵션) 100×100 크롭 후 업로드
+      //  프로필 이미지 100×100 크롭 후 업로드
       if (profileImage && profileImage instanceof File) {
         const avatar100 = await cropCenterToSize(
           profileImage,

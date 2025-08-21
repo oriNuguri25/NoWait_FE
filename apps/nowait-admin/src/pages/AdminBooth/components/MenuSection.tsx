@@ -228,8 +228,6 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     setMenus(transformed);
   }, [fetchedMenus]);
 
-  console.log(fetchedMenus);
-
   return (
     <div className="mt-[40px] mb-[20px] max-w-[614px]">
       <div className="flex justify-between items-center mb-[20px]">
