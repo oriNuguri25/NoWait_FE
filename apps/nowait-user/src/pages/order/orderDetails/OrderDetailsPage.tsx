@@ -27,7 +27,7 @@ const OrderDetailsPage = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["orderDetails", storeId, tableId],
-    queryFn: () => getOrderDetails(storeId, tableId!),
+    queryFn: () => getOrderDetails(Number(storeId), Number(tableId!)),
     select: (data) => data.response,
   });
 
