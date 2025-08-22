@@ -29,11 +29,11 @@ const RemittancePage = () => {
 
   const { data: remittance, isLoading } = useQuery({
     queryKey: ["remittance", storeId],
-    queryFn: () => getStorePayments(Number(!storeId)),
+    queryFn: () => getStorePayments(storeId),
     enabled: !!storeId,
-    select: (data) => data.response,
+    select: (data) => data?.response,
   });
-
+  console.log(remittance)
   // 기본 선택 값 지정하기
   useEffect(() => {
     if (!remittance) return;
