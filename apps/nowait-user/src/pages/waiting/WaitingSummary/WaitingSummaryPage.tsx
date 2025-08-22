@@ -7,7 +7,8 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
 import { WAITING_GUIDE } from "../../../constants/guides";
-import LoadingPage from "../../../components/LoadingPage";
+import FullPageLoader from "../../../components/FullPageLoader";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const WaitingSummaryPage = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const WaitingSummaryPage = () => {
     }
   }, 3000);
 
-  if (isLoading) return <LoadingPage />;
+  if (isLoading) return <FullPageLoader />;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -82,7 +83,7 @@ const WaitingSummaryPage = () => {
       </div>
       <PageFooterButton background="transparent">
         <Button onClick={handleSubmitReservation}>
-          {reservationIsLoading ? "등록중...." : "등록하기"}
+          {reservationIsLoading ? <LoadingSpinner loadingType="dotsWhite"/> : "등록하기"}
         </Button>
       </PageFooterButton>
     </div>
