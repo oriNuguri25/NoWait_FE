@@ -9,8 +9,7 @@ import StoreHeader from "./components/StoreHeader";
 import MenuList from "../../../components/common/MenuList";
 import SectionDivider from "../../../components/SectionDivider";
 import { useQuery } from "@tanstack/react-query";
-import NotFound from "../../NotFound/NotFound";
-import { getStoreMenu } from "../../../api/menu";
+import { getStoreMenus } from "../../../api/menu";
 
 const StorePage = () => {
   const navigate = useNavigate();
@@ -22,31 +21,26 @@ const StorePage = () => {
   const { cart } = useCartStore();
   const { showToast } = useToastStore();
 
-  // const {
-  //   data: storeName,
-  //   isLoading,
-  //   isError,
-  // } = useQuery({
-  //   queryKey: ["store", storeId],
-  //   queryFn: () => getStoreMenu(Number(storeId!)),
-  //   select: (data) => data?.response?.name,
-  // });
-
   //메뉴 추가 시 toast 띄우기
   useEffect(() => {
     if (added) showToast("메뉴를 담았습니다");
     navigate(location.pathname, { replace: true });
   }, [added]);
 
-  // if (!isLoading && isError) return <NotFound />;
+    const { data: menus, isLoading } = useQuery({
+    queryKey: ["storeMenus", storeId],
+    queryFn: () => getStoreMenus(Number(storeId!)),
+    select: (data) => data?.response,
+  });
+
 
   return (
     <div>
       <div className="flex flex-col flex-grow pb-[112px] min-h-dvh pt-7.5 px-5">
         <div className="flex-grow">
-          {/* <StoreHeader storeName={storeName} /> */}
+          <StoreHeader storeName={menus?.storeName} isLoading={isLoading}/>
           <SectionDivider />
-          <MenuList mode="order" storeId={storeId} />
+          <MenuList mode="order" menus={menus?.menuReadDto} isLoading={isLoading}/>
         </div>
       </div>
       {cart && cart.length > 0 && (

@@ -5,7 +5,9 @@ const API_URI = import.meta.env.VITE_SERVER_URI;
 
 interface AllMenuServerResponse {
   success: boolean;
+
   response: {
+    storeName: string;
     menuReadDto: MenuType[];
   };
   status: number;
