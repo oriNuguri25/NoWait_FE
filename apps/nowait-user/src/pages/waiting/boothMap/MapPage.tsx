@@ -124,7 +124,7 @@ const MapPage = () => {
       {selectedBooth !== null ? (
         <BoothDetail booth={detailBooth} />
       ) : (
-        <BoothList />
+        <BoothList totalBooth={storeMarkers!.length}/>
       )}
     </div>
   );
