@@ -23,8 +23,8 @@ export const createOrder = async (
 
 //주문 내역 조회
 export const getOrderDetails = async (
-  storeId: string | undefined,
-  tableId: string
+  storeId: number | undefined,
+  tableId: number
 ): Promise<OrderDetailsServerResponse> => {
   const res = await api.get(`/orders/items/${storeId}/${tableId}`);
   return res.data;
@@ -32,7 +32,7 @@ export const getOrderDetails = async (
 
 //주점 QR, 계좌번호 조회
 export const getStorePayments = async (
-  storeId: string | undefined
+  storeId: number | undefined
 ): Promise<StorePaymentsResponse> => {
   try {
     const res = await api.get(`/v1/store-payments/${storeId}`);
