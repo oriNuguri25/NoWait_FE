@@ -46,7 +46,7 @@ export interface StorePaymentsResponse {
   success: boolean;
   response: {
     paymentMethodId: number;
-    storeId: string;
+    storeId: number;
     tossUrl?: string;
     kakaoPayUrl?: string;
     naverPayUrl?: string;
