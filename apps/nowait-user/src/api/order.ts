@@ -31,14 +31,13 @@ export const getOrderDetails = async (
 };
 
 //주점 QR, 계좌번호 조회
-export const getStorePayments = async (
-  storeId: number | undefined
-): Promise<StorePaymentsResponse> => {
+export const getStorePayments = async (storeId: string | undefined) => {
   try {
-    const res = await api.get(`/v1/store-payments/${storeId}`);
+    const res = await api.get<StorePaymentsResponse>(
+      `/v1/store-payments/${storeId}`
+    );
     return res.data;
   } catch (error) {
     console.log(error);
-    throw error;
   }
 };

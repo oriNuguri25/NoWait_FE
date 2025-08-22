@@ -15,6 +15,7 @@ import SectionDivider from "../../../components/SectionDivider";
 import { formatTimeRange } from "../../../utils/formatTimeRange";
 import DepartmentImage from "../../../components/DepartmentImage";
 import NotFound from "../../NotFound/NotFound";
+import FullPageLoader from "../../../components/FullPageLoader";
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const StoreDetailPage = () => {
       console.log(error);
     }
   };
-  if (isLoading) return <div>로딩중...</div>;
+  if (isLoading) return <FullPageLoader />;
   if (isError) return <NotFound />;
   return (
     <div>
