@@ -29,7 +29,7 @@ const RemittancePage = () => {
 
   const { data: remittance, isLoading } = useQuery({
     queryKey: ["remittance", storeId],
-    queryFn: () => getStorePayments(storeId),
+    queryFn: () => getStorePayments(Number(!storeId)),
     enabled: !!storeId,
     select: (data) => data.response,
   });
