@@ -36,7 +36,7 @@ const OrderListPage = () => {
   }, [cart]);
 
   const { data: menus } = useQuery({
-    queryKey: ["storeMenus", storeId],
+    queryKey: ["storeMenuList", storeId],
     queryFn: () => getStoreMenus(Number(storeId!)),
     select: (data) => data?.response?.menuReadDto,
   });

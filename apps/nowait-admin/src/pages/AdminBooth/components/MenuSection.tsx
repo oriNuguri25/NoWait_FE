@@ -12,6 +12,7 @@ import MenuRemoveModal from "./Modal/MenuRemoveModal";
 import { useDeleteMenu } from "../../../hooks/booth/menu/useDeleteMenu";
 import { useToggleMenuSoldOut } from "../../../hooks/booth/menu/useToggleMenuSoldOut";
 import { useUpdateMenuSort } from "../../../hooks/booth/menu/useUpadateMenuSort";
+import { useVerticalLockStyle } from "../../../utils/useVerticalLockStyle";
 
 // 세 자리마다 , 붙여서 가격표시
 const formatNumber = (num: number) => {
@@ -39,7 +40,7 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
 
   const { mutate: soldOut } = useToggleMenuSoldOut();
   const storeId = Number(localStorage.getItem("storeId"));
-  const { data: fetchedMenus = [] } = useGetAllMenus(storeId);
+  const { data: fetchedMenus = [], refetch } = useGetAllMenus(storeId);
 
   // 메뉴 생성 훅
   const { mutate: createMenu } = useCreateMenu();
@@ -199,14 +200,17 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
     const reordered = Array.from(menus);
     const [removed] = reordered.splice(result.source.index, 1);
     reordered.splice(result.destination.index, 0, removed);
-    setMenus(reordered);
-    const body = reordered.map((menu, index) => ({
-      menuId: menu.id,
-      sortOrder: index,
+    const next = reordered.map((m, i) => ({ ...m, sortOrder: i })); // 서버가 1-base면 i+1
+    setMenus(next);
+
+    const body = next.map(({ id, sortOrder }) => ({
+      menuId: id,
+      sortOrder, // 1-base면 sortOrder: sortOrder + 1
     }));
     updateMenuSort(body, {
       onSuccess: (res) => {
         console.log("순서 저장 성공", res);
+        refetch();
       },
       onError: (err) => {
         console.log("순서 저장 에러", err);
@@ -215,16 +219,18 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
   };
 
   useEffect(() => {
-    const transformed = fetchedMenus.map((menu) => ({
-      id: menu.menuId,
-      name: menu.name,
-      adminDisplayName: menu.adminDisplayName,
-      description: menu.description,
-      price: menu.price,
-      soldOut: menu.isSoldOut,
-      imageUrl: menu.images?.[0]?.imageUrl,
-      sortOrder: menu.sortOrder,
-    }));
+    const transformed = fetchedMenus
+      .map((menu) => ({
+        id: menu.menuId,
+        name: menu.name,
+        adminDisplayName: menu.adminDisplayName,
+        description: menu.description,
+        price: menu.price,
+        soldOut: menu.isSoldOut,
+        imageUrl: menu.images?.[0]?.imageUrl,
+        sortOrder: menu.sortOrder,
+      }))
+      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
     setMenus(transformed);
   }, [fetchedMenus]);
 
@@ -274,56 +280,62 @@ const MenuSection = ({ isTablet }: { isTablet: boolean }) => {
               <div {...provided.droppableProps} ref={provided.innerRef}>
                 {menus.map((menu, idx) => (
                   <Draggable
-                    key={`menu-${idx}`}
-                    draggableId={`menu-${idx}`}
+                    key={menu.id}
+                    draggableId={String(menu.id)}
                     index={idx}
                     isDragDisabled={!editMode}
                   >
-                    {(provided) => (
-                      <div
-                        className="flex justify-between items-center py-4"
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...(editMode ? provided.dragHandleProps : {})}
-                      >
-                        <div
-                          className="flex items-center w-full gap-4"
-                          onClick={() => !editMode && openEditModal(menu)}
-                        >
-                          <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
-                            <img
-                              src={menu.imageUrl}
-                              className="w-full h-full object-cover"
-                              alt="placeholder"
-                            />
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-16-semibold">
-                              {menu.name}
-                            </span>
-                            <span className="text-16-regular text-black-60">
-                              {formatNumber(menu.price)}원
-                            </span>
-                          </div>
-                        </div>
+                    {(provided) => {
+                      const lockedStyle = useVerticalLockStyle(
+                        provided.draggableProps.style
+                      );
 
-                        <div className="text-black-60">
-                          {editMode ? (
-                            <img
-                              src={editOrderIcon}
-                              alt="순서 변경"
-                              className="w-5 h-5"
-                              {...provided.dragHandleProps}
-                            />
-                          ) : (
-                            <ToggleSwitch
-                              isOn={menu.soldOut}
-                              toggle={() => toggleSoldOut(idx)}
-                            />
-                          )}
+                      return (
+                        <div
+                          className="flex justify-between items-center py-4"
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          style={lockedStyle}
+                        >
+                          <div
+                            className="flex items-center w-full gap-4"
+                            onClick={() => !editMode && openEditModal(menu)}
+                          >
+                            <div className="w-[70px] h-[70px] bg-black-5 rounded-md flex items-center justify-center overflow-hidden">
+                              <img
+                                src={menu.imageUrl}
+                                className="w-full h-full object-cover"
+                                alt="placeholder"
+                              />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-16-semibold">
+                                {menu.name}
+                              </span>
+                              <span className="text-16-regular text-black-60">
+                                {formatNumber(menu.price)}원
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="text-black-60">
+                            {editMode ? (
+                              <img
+                                src={editOrderIcon}
+                                alt="순서 변경"
+                                className="w-5 h-5 cursor-grab"
+                                {...provided.dragHandleProps}
+                              />
+                            ) : (
+                              <ToggleSwitch
+                                isOn={menu.soldOut}
+                                toggle={() => toggleSoldOut(idx)}
+                              />
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    }}
                   </Draggable>
                 ))}
                 {provided.placeholder}

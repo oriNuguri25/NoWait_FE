@@ -68,6 +68,7 @@ const RAW_RUNTIME_STATE =
           ["framer-motion", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:12.23.12"],\
           ["heic2any", "npm:0.0.4"],\
           ["jsqr", "npm:1.4.0"],\
+          ["lottie-react", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:2.4.1"],\
           ["monorepo-nowaitFE", "workspace:."],\
           ["prop-types", "npm:15.8.1"],\
           ["prosemirror-model", "npm:1.25.3"],\
@@ -6604,6 +6605,60 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["lottie-react", [\
+      ["npm:2.4.1", {\
+        "packageLocation": "./.yarn/cache/lottie-react-npm-2.4.1-91badf61e2-7f6a0a2cf2.zip/node_modules/lottie-react/",\
+        "packageDependencies": [\
+          ["lottie-react", "npm:2.4.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:2.4.1", {\
+        "packageLocation": "./.yarn/__virtual__/lottie-react-virtual-c2aff3c3e3/0/cache/lottie-react-npm-2.4.1-91badf61e2-7f6a0a2cf2.zip/node_modules/lottie-react/",\
+        "packageDependencies": [\
+          ["@types/react", null],\
+          ["@types/react-dom", null],\
+          ["lottie-react", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:2.4.1"],\
+          ["lottie-web", "npm:5.13.0"],\
+          ["react", null],\
+          ["react-dom", null]\
+        ],\
+        "packagePeers": [\
+          "@types/react-dom",\
+          "@types/react",\
+          "react-dom",\
+          "react"\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["virtual:2fb7e13bcbc24e77d357ed68b75b19744e934ae2d614ddea7b43a10b4e02ae8e0572e27e2c3a0691906d2d7f03ee876b6fcb59bf03c28692b4236510131025d6#npm:2.4.1", {\
+        "packageLocation": "./.yarn/__virtual__/lottie-react-virtual-b1be1df16d/0/cache/lottie-react-npm-2.4.1-91badf61e2-7f6a0a2cf2.zip/node_modules/lottie-react/",\
+        "packageDependencies": [\
+          ["@types/react", "npm:19.1.10"],\
+          ["@types/react-dom", "virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:19.1.7"],\
+          ["lottie-react", "virtual:2fb7e13bcbc24e77d357ed68b75b19744e934ae2d614ddea7b43a10b4e02ae8e0572e27e2c3a0691906d2d7f03ee876b6fcb59bf03c28692b4236510131025d6#npm:2.4.1"],\
+          ["lottie-web", "npm:5.13.0"],\
+          ["react", "npm:19.1.1"],\
+          ["react-dom", "virtual:90ba738da64cc41a6a40703c7ac5e2c2c261729a24fb736c3057b9db1463c5ff20217c4c849e768425e7a5dbbcc4a4c1acbda29afa5757900668d8ef42dd597e#npm:19.1.1"]\
+        ],\
+        "packagePeers": [\
+          "@types/react-dom",\
+          "@types/react",\
+          "react-dom",\
+          "react"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["lottie-web", [\
+      ["npm:5.13.0", {\
+        "packageLocation": "./.yarn/cache/lottie-web-npm-5.13.0-eada0c2e04-b463ad4621.zip/node_modules/lottie-web/",\
+        "packageDependencies": [\
+          ["lottie-web", "npm:5.13.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["lower-case", [\
       ["npm:2.0.2", {\
         "packageLocation": "./.yarn/cache/lower-case-npm-2.0.2-151055f1c2-3d925e0903.zip/node_modules/lower-case/",\
@@ -6933,6 +6988,7 @@ const RAW_RUNTIME_STATE =
           ["framer-motion", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:12.23.12"],\
           ["heic2any", "npm:0.0.4"],\
           ["jsqr", "npm:1.4.0"],\
+          ["lottie-react", "virtual:126cdbadba5e8bc60c16e5ca60a6b6a066859a2a3035538550c2863938d34232c6957439128f75a42d45e171e70ca3d5212b1883f69b095de34326e72923545d#npm:2.4.1"],\
           ["monorepo-nowaitFE", "workspace:."],\
           ["prop-types", "npm:15.8.1"],\
           ["prosemirror-model", "npm:1.25.3"],\
@@ -7208,6 +7264,7 @@ const RAW_RUNTIME_STATE =
           ["framer-motion", "virtual:2fb7e13bcbc24e77d357ed68b75b19744e934ae2d614ddea7b43a10b4e02ae8e0572e27e2c3a0691906d2d7f03ee876b6fcb59bf03c28692b4236510131025d6#npm:12.23.12"],\
           ["globals", "npm:16.3.0"],\
           ["leaflet", "npm:1.9.4"],\
+          ["lottie-react", "virtual:2fb7e13bcbc24e77d357ed68b75b19744e934ae2d614ddea7b43a10b4e02ae8e0572e27e2c3a0691906d2d7f03ee876b6fcb59bf03c28692b4236510131025d6#npm:2.4.1"],\
           ["nowait-user", "workspace:apps/nowait-user"],\
           ["postcss", "npm:8.5.6"],\
           ["react", "npm:19.1.1"],\

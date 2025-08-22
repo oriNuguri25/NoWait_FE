@@ -4,6 +4,7 @@ import { getOrderDetails } from "../../../api/order";
 import { useParams } from "react-router-dom";
 import { formatDate } from "../../../utils/formatDate";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
+import FullPageLoader from "../../../components/FullPageLoader";
 
 interface OrderDetailsType {
   menuId: number;
@@ -24,13 +25,13 @@ const OrderDetailsPage = () => {
   const { storeId } = useParams();
   const tableId = localStorage.getItem("tableId");
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["orderDetails", storeId, tableId],
-    queryFn: () => getOrderDetails(storeId, tableId!),
+    queryFn: () => getOrderDetails(Number(storeId), Number(tableId!)),
     select: (data) => data.response,
   });
-  console.log(data);
 
+  if (isLoading) return <FullPageLoader />;
   //주문내역 없을 시
   if (!data || data?.length < 1) return <EmptyOrderDetails />;
 

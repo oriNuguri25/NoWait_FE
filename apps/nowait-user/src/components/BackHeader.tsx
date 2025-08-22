@@ -9,12 +9,12 @@ const BackHeader = ({ title }: PropsType) => {
   const navigate = useNavigate()
   return (
     <header className="w-full fixed left-0 top-0 bg-white">
-      <div className="flex justify-between items-center px-5 py-2.5">
-        <button onClick={()=>navigate(-1)}>
+      <div className="flex justify-between items-center">
+        <button onClick={()=>navigate(-1)} className="p-2.5">
           <Back />
         </button>
         <h1 className="text-title-16-bold">{title}</h1>
-        <div className="w-2.5"></div>
+        <div className="w-[48px] h-[48px]"></div>
       </div>
     </header>
   );

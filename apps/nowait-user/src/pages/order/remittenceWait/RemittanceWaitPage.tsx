@@ -6,6 +6,7 @@ import { useState } from "react";
 import remittanceWait from "../../../assets/remittanceWait.webp";
 import CenteredContentLayout from "../../../components/layout/CenteredContentLayout";
 import BackOnlyHeader from "../../../components/BackOnlyHeader";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const RemittanceWaitPage = () => {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const RemittanceWaitPage = () => {
       <BackOnlyHeader />
       <CenteredContentLayout
         onClick={orderButton}
-        buttonText={isLoading ? "이체중..." : "이체했어요"}
+        buttonText={isLoading ? <LoadingSpinner loadingType="dotsWhite"/> : "이체했어요"}
       >
         <img
           src={remittanceWait}
