@@ -34,8 +34,9 @@ const RemittanceWaitPage = () => {
         Number(tableId!),
         payload
       );
+      console.log(res)
       if (res?.success) {
-        //세션 아이디, 입금자명 로컬스토리지 저장
+        //입금자명 로컬스토리지 저장
         localStorage.setItem("depositorName", res.response.depositorName);
       }
       //장바구니 비우기
