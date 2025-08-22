@@ -9,7 +9,7 @@ import NumberFlow from "@number-flow/react";
 import defaultMenuImageLg from "../../../assets/default-image-lg.png";
 import { useQuery } from "@tanstack/react-query";
 import { getStoreMenu } from "../../../api/menu";
-import LoadingSpinner from "../../../assets/loading2_black.gif";
+import FullPageLoader from "../../../components/FullPageLoader";
 
 const AddMenuPage = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const AddMenuPage = () => {
     queryFn: () => getStoreMenu(Number(storeId!), Number(menuId!)),
     select: (data) => data?.response,
   });
-  
+
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCartStore();
 
@@ -41,17 +41,7 @@ const AddMenuPage = () => {
     });
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <img
-          src={LoadingSpinner}
-          alt="로딩 중"
-          className="w-[100px] h-[100px]"
-        />
-      </div>
-    );
-  }
+  if (isLoading) return <FullPageLoader />;
 
   return (
     <div className="flex flex-col min-h-dvh">
