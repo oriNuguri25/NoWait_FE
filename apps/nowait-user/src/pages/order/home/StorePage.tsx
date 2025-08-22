@@ -10,7 +10,7 @@ import MenuList from "../../../components/common/MenuList";
 import SectionDivider from "../../../components/SectionDivider";
 import { useQuery } from "@tanstack/react-query";
 import NotFound from "../../NotFound/NotFound";
-import { getStore } from "../../../api/reservation";
+import { getStoreMenu } from "../../../api/menu";
 
 const StorePage = () => {
   const navigate = useNavigate();
@@ -22,15 +22,15 @@ const StorePage = () => {
   const { cart } = useCartStore();
   const { showToast } = useToastStore();
 
-  const {
-    data: storeName,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["store", storeId],
-    queryFn: () => getStore(Number(storeId!)),
-    select: (data) => data?.response?.name,
-  });
+  // const {
+  //   data: storeName,
+  //   isLoading,
+  //   isError,
+  // } = useQuery({
+  //   queryKey: ["store", storeId],
+  //   queryFn: () => getStoreMenu(Number(storeId!)),
+  //   select: (data) => data?.response?.name,
+  // });
 
   //메뉴 추가 시 toast 띄우기
   useEffect(() => {
@@ -38,13 +38,13 @@ const StorePage = () => {
     navigate(location.pathname, { replace: true });
   }, [added]);
 
-  if (!isLoading && isError) return <NotFound />;
+  // if (!isLoading && isError) return <NotFound />;
 
   return (
     <div>
       <div className="flex flex-col flex-grow pb-[112px] min-h-dvh pt-7.5 px-5">
         <div className="flex-grow">
-          <StoreHeader storeName={storeName} />
+          {/* <StoreHeader storeName={storeName} /> */}
           <SectionDivider />
           <MenuList mode="order" storeId={storeId} />
         </div>
