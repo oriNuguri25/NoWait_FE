@@ -37,7 +37,7 @@ const StoreDetailPage = () => {
     queryFn: () => getStore(Number(storeId!)),
     select: (data) => data?.response,
   });
-
+  console.log(store)
   const { data: menus, isLoading: menusIsLoading } = useQuery({
     queryKey: ["storeMenus", storeId],
     queryFn: () => getStoreMenus(Number(storeId!)),
@@ -109,7 +109,7 @@ const StoreDetailPage = () => {
           >
             {store?.description}
           </h2>
-          {/* 공지사항(데이터 변경 예정) */}
+          {/* 공지사항 */}
           {store?.noticeTitle && (
             <button
               onClick={() =>
@@ -127,8 +127,7 @@ const StoreDetailPage = () => {
                   공지
                 </p>
                 <h1 className="text-14-medium text-black-70 truncate">
-                  입장 시 신분증 검사 필수 입장 시 신분증
-                  검사필수필수필수필수필수필수필수필수필수필수필수필수
+                  {store?.noticeTitle}
                 </h1>
               </div>
               <Arrow className="shrink-0" fill="#AAAAAA" />
