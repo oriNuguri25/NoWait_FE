@@ -2,7 +2,7 @@ import Lottie from "lottie-react";
 import LoadingCircleBlack from "../assets/lottie/loadingCircle_black.json";
 import LoadingCircleWhite from "../assets/lottie/loadingCircle_white.json";
 import LoadingDotsBlack from "../assets/lottie/loadingDots_black.json";
-import LoadingDotsWhite from "../assets/lottie/loadingDots_White.json";
+import LoadingDotsWhite from "../assets/lottie/loadingDots_white.json";
 
 type LoadingType = "circleBlack" | "circleWhite" | "dotsBlack" | "dotsWhite";
 

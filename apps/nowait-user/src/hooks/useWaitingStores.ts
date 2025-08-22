@@ -7,7 +7,7 @@ import { useEffect } from "react";
 interface WaitingStore {
   bannerImageUrl: string | null;
   departmentName: string;
-  storeId: string;
+  storeId: number;
   storeName: string;
   waitingCount: number;
 }
