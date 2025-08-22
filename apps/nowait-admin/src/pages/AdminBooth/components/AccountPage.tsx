@@ -350,7 +350,7 @@ const AccountPage = () => {
                       placeholder={
                         errors[option.id] ? "" : REQUIRED_PREFIX[option.id]
                       }
-                      className={`flex w-full bg-transparent outline-none text-14-regular text-black-90`}
+                      className={`flex-1 w-[calc(100%-4px)] bg-transparent outline-none text-14-regular text-black-90`}
                       readOnly={sources[option.id] === "image"}
                     />
                     {errors[option.id] && (
