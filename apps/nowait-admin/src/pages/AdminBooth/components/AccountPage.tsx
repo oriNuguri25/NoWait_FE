@@ -141,7 +141,7 @@ const AccountPage = () => {
   };
 
   const paymentFilled = paymentOptions.some(
-    (opt) => urls[opt.id]?.trim().length > 0
+    (opt) => (inputs[opt.id] ?? "").trim().length > 0
   );
 
   const serverKakao = storePayment?.response.kakaoPayUrl;
