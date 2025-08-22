@@ -44,7 +44,7 @@ const StorePage = () => {
         </div>
       </div>
       {cart && cart.length > 0 && (
-        <PageFooterButton>
+        <PageFooterButton background="gradient">
           <Button
             textColor="white"
             onClick={() => navigate(`/${storeId}/order`)}

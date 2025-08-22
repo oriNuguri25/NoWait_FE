@@ -90,7 +90,7 @@ const OrderListPage = () => {
           </AnimatePresence>
         </motion.ul>
       </section>
-      <PageFooterButton>
+      <PageFooterButton background="gradient">
         <Button
           textColor="white"
           onClick={() => navigate(`/${storeId}/remittance`)}
