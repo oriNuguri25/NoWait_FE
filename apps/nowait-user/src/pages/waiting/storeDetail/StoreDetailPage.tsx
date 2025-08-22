@@ -47,7 +47,7 @@ const StoreDetailPage = () => {
       console.log(error);
     }
   };
-  if(isLoading) return <div>로딩중...</div>
+  if (isLoading) return <div>로딩중...</div>;
   if (isError) return <NotFound />;
   return (
     <div>
@@ -125,7 +125,7 @@ const StoreDetailPage = () => {
         </section>
         <SectionDivider />
         {/* 주점 메뉴 리스트 */}
-        <MenuList isLoading={isLoading} mode="store" />
+        <MenuList mode="store" storeId={storeId} />
       </div>
       <PageFooterButton className="gap-2">
         <Button

@@ -1,15 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
 import type { MenuType } from "../../types/order/menu";
 import MenuItem from "./MenuItem";
+import { getStoreMenus } from "../../api/menu";
 
 const MenuList = ({
-  menus,
   mode,
-  isLoading,
+  storeId,
 }: {
-  menus?: MenuType[];
   mode: string;
-  isLoading: boolean;
+  storeId: string | undefined;
 }) => {
+  const { data: menus, isLoading } = useQuery({
+    queryKey: ["storeMenus", storeId],
+    queryFn: () => getStoreMenus(Number(storeId!)),
+    select: (data) => data?.response?.menuReadDto,
+  });
+
   if (isLoading)
     return (
       <div className="py-[30px]">

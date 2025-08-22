@@ -3,11 +3,16 @@ import React, { useEffect } from "react";
 interface PropsType {
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
-  payerError: boolean;
+  errorMessage: string | null;
   payerFocus: React.ForwardedRef<HTMLInputElement>;
 }
 
-const PayerInput = ({ value, setValue, payerError, payerFocus }: PropsType) => {
+const PayerInput = ({
+  value,
+  setValue,
+  errorMessage,
+  payerFocus,
+}: PropsType) => {
   const depositorName = localStorage.getItem("depositorName");
   //재주문 시 입금자명 input에 이전 입금자명 설정
   useEffect(() => {
@@ -32,9 +37,9 @@ const PayerInput = ({ value, setValue, payerError, payerFocus }: PropsType) => {
           onChange={(e) => setValue(e.target.value)}
           ref={payerFocus}
         />
-        {payerError && (
+        {errorMessage && (
           <p className="pt-2.5 pl-2.5 text-14-regular text-primary">
-            입금자명을 입력해주세요
+            {errorMessage}
           </p>
         )}
       </div>

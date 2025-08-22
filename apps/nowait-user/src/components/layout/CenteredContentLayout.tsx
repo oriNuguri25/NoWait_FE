@@ -9,7 +9,7 @@ const CenteredContentLayout = ({
 }: {
   children: React.ReactNode;
   onClick: () => void;
-  buttonText: string;
+  buttonText: string | React.ReactNode;
 }) => {
   return (
     <div className="flex justify-center items-center min-h-dvh">
