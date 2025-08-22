@@ -15,6 +15,7 @@ import SectionDivider from "../../../components/SectionDivider";
 import { formatTimeRange } from "../../../utils/formatTimeRange";
 import DepartmentImage from "../../../components/DepartmentImage";
 import NotFound from "../../NotFound/NotFound";
+import { getStoreMenus } from "../../../api/menu";
 
 const StoreDetailPage = () => {
   const navigate = useNavigate();
@@ -33,6 +34,12 @@ const StoreDetailPage = () => {
   } = useQuery({
     queryKey: ["store", storeId],
     queryFn: () => getStore(Number(storeId!)),
+    select: (data) => data?.response,
+  });
+
+  const { data: menus, isLoading: menusIsLoading } = useQuery({
+    queryKey: ["storeMenus", storeId],
+    queryFn: () => getStoreMenus(Number(storeId!)),
     select: (data) => data?.response,
   });
 
@@ -125,7 +132,7 @@ const StoreDetailPage = () => {
         </section>
         <SectionDivider />
         {/* 주점 메뉴 리스트 */}
-        <MenuList mode="store" storeId={storeId} />
+        <MenuList mode="store" menus={menus?.menuReadDto!} isLoading={menusIsLoading}/>
       </div>
       <PageFooterButton className="gap-2">
         <Button
