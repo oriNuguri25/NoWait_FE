@@ -11,6 +11,9 @@ export const api = axios.create({
   withCredentials: true,
 });
 
+const API_URI = import.meta.env.VITE_SERVER_URI;
+
+
 //주문 생성
 export const createOrder = async (
   storeId: number,
@@ -34,7 +37,7 @@ export const getOrderDetails = async (
 export const getStorePayments = async (storeId: number) => {
   try {
     const res = await api.get<StorePaymentsResponse>(
-      `/v1/store-payments/${storeId}`
+      `${API_URI}/v1/store-payments/${storeId}`
     );
     return res.data;
   } catch (error) {
