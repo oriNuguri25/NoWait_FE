@@ -320,7 +320,6 @@ const AccountPage = () => {
                       value={inputs[option.id]}
                       onFocus={() => {
                         if (errors[option.id]) {
-                          // 에러 상태일 때만 초기화
                           setInputs((prev) => ({ ...prev, [option.id]: "" }));
                           setErrors((prev) => ({ ...prev, [option.id]: null }));
                         }
@@ -351,7 +350,7 @@ const AccountPage = () => {
                       placeholder={
                         errors[option.id] ? "" : REQUIRED_PREFIX[option.id]
                       }
-                      className="flex-1 w-full bg-transparent outline-none text-14-regular text-black-90"
+                      className={`flex w-full bg-transparent outline-none text-14-regular text-black-90`}
                       readOnly={sources[option.id] === "image"}
                     />
                     {errors[option.id] && (
@@ -371,7 +370,7 @@ const AccountPage = () => {
 
                 {urls[option.id].length > 0 ? (
                   <button
-                    className="bg-[#FFF0EB] text-primary text-12-bold rounded-[6px] p-[10px] hover:scale-[105%]"
+                    className="bg-black-30 text-black-80 text-12-bold rounded-[6px] p-[10px] hover:scale-[105%]"
                     onClick={() => {
                       setInputs((prev) => ({ ...prev, [option.id]: "" }));
                       setUrls((prev) => ({ ...prev, [option.id]: "" }));
