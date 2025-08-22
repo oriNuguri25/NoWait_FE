@@ -29,13 +29,13 @@ const ConfirmRemoveModal = ({
       >
         <div
           className={`pt-5 px-[22px] ${
-            mode === "logout" ? "mb-[30px]" : "mb-5"
+            mode === "logout" ? "pt-[30px] mb-[30px]" : "mb-5"
           }`}
         >
           <h2 className="text-title-20-bold text-black-85 mb-2">{title}</h2>
           <p className={`text-14-regular text-black-60 `}>{content}</p>
         </div>
-        <div className="flex gap-2 px-[22px] h-[48px]">
+        <div className="flex gap-2 px-[22px] h-[48px] mb-[22px]">
           <button
             onClick={onCancel}
             className="flex-1 py-[10px] px-3 rounded-[10px] text-16-semibold text-black-65 bg-black-20"
