@@ -31,7 +31,7 @@ export const getOrderDetails = async (
 };
 
 //주점 QR, 계좌번호 조회
-export const getStorePayments = async (storeId: string | undefined) => {
+export const getStorePayments = async (storeId: string) => {
   try {
     const res = await api.get<StorePaymentsResponse>(
       `/v1/store-payments/${storeId}`
