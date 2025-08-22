@@ -8,7 +8,7 @@ const MenuList = ({
   storeId,
 }: {
   mode: string;
-  storeId: number | undefined;
+  storeId: string | undefined;
 }) => {
   const { data: menus, isLoading } = useQuery({
     queryKey: ["storeMenus", storeId],
