@@ -151,7 +151,7 @@ const MyWaitingCard = memo(
 
           <div className="flex flex-row mt-1 items-center">
             <div className="flex mr-1 text-title-20-bold leading-[130%] tracking-[0em] text-[#512727]">
-              내 앞에 대기
+              내 앞 대기
             </div>
             <div className="flex text-title-20-bold leading-[130%] tracking-[0em] text-primary mr-1.5">
               {currentStore?.teamsAhead || 0}팀
@@ -207,7 +207,7 @@ const MyWaitingCard = memo(
                     {/* 안쪽 원 (이미지/배경색) */}
                     <div className="relative w-full h-full p-[3.5px]">
                       <div
-                        className={`relative w-full h-full rounded-full transition-all duration-500 ease-in-out ${
+                        className={`relative rounded-full transition-all duration-500 ease-in-out ${
                           hasImage
                             ? "bg-cover bg-center"
                             : bgColors[imageIndex % bgColors.length]
@@ -216,7 +216,8 @@ const MyWaitingCard = memo(
                           backgroundImage: hasImage
                             ? `url(${currentStoreAtIndex.profileImageUrl})`
                             : undefined,
-                          transform: `scale(${isActivePosition ? 1 : 0.95})`,
+                          width: "100%",
+                          height: "100%",
                         }}
                       >
                         {/* 투명도 오버레이 원 */}
