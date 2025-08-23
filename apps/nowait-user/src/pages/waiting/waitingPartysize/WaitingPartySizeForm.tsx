@@ -25,6 +25,8 @@ const WaitingPartySizeForm = () => {
             mode="state"
             quantity={partySize}
             setQuantity={setPartySize}
+            min={1}
+            max={10}
           />
         </div>
       </div>

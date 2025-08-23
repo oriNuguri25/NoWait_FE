@@ -18,7 +18,6 @@ import NotFound from "../../NotFound/NotFound";
 import { getStoreMenus } from "../../../api/menu";
 import FullPageLoader from "../../../components/FullPageLoader";
 
-
 const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id: storeId } = useParams();
@@ -38,7 +37,7 @@ const StoreDetailPage = () => {
     queryFn: () => getStore(Number(storeId!)),
     select: (data) => data?.response,
   });
-
+  console.log(store)
   const { data: menus, isLoading: menusIsLoading } = useQuery({
     queryKey: ["storeMenus", storeId],
     queryFn: () => getStoreMenus(Number(storeId!)),
@@ -103,10 +102,14 @@ const StoreDetailPage = () => {
               {formatTimeRange(store?.openTime)}
             </p>
           </div>
-          <h2 className="mb-10 text-16-regular text-black-80 whitespace-pre-line break-keep">
+          <h2
+            className={`${
+              store?.noticeTitle ? "mb-10" : "mb-0"
+            } text-16-regular text-black-80 whitespace-pre-line break-keep`}
+          >
             {store?.description}
           </h2>
-          {/* 공지사항(데이터 변경 예정) */}
+          {/* 공지사항 */}
           {store?.noticeTitle && (
             <button
               onClick={() =>
@@ -123,9 +126,8 @@ const StoreDetailPage = () => {
                 <p className="text-[14px] font-bold text-black-50 shrink-0">
                   공지
                 </p>
-                <h1 className="text-14-medium text-black-70 overflow-hidden whitespace-nowrap text-ellipsis line-clamp-1">
-                  입장 시 신분증 검사 필수 입장 시 신분증
-                  검사필수필수필수필수필수필수필수필수필수필수필수필수
+                <h1 className="text-14-medium text-black-70 truncate">
+                  {store?.noticeTitle}
                 </h1>
               </div>
               <Arrow className="shrink-0" fill="#AAAAAA" />
@@ -134,9 +136,13 @@ const StoreDetailPage = () => {
         </section>
         <SectionDivider />
         {/* 주점 메뉴 리스트 */}
-        <MenuList mode="store" menus={menus?.menuReadDto!} isLoading={menusIsLoading}/>
+        <MenuList
+          mode="store"
+          menus={menus?.menuReadDto!}
+          isLoading={menusIsLoading}
+        />
       </div>
-      <PageFooterButton className="gap-2">
+      <PageFooterButton background="gradient" className="gap-2">
         <Button
           className="border"
           backgroundColor="white"

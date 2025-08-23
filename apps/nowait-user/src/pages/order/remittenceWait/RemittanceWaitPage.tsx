@@ -11,7 +11,7 @@ import LoadingSpinner from "../../../components/LoadingSpinner";
 const RemittanceWaitPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const payer = location.state;
+  const payer = location.state as string;
   const { storeId } = useParams();
   const tableId = localStorage.getItem("tableId");
   const { cart, clearCart } = useCartStore();
@@ -34,18 +34,23 @@ const RemittanceWaitPage = () => {
         Number(tableId!),
         payload
       );
+      console.log(res, "주문 생성");
       if (res?.success) {
-        //세션 아이디, 입금자명 로컬스토리지 저장
+        //입금자명 로컬스토리지 저장
         localStorage.setItem("depositorName", res.response.depositorName);
+        //장바구니 비우기
+        clearCart();
+        navigate(`/${storeId}/order/success`);
+      } else {
+        // 서버가 success:false 반환한 경우
+        console.error("주문 실패:", res);
+        alert("주문 처리에 실패했습니다. 다시 시도해주세요.");
       }
-      //장바구니 비우기
-      clearCart();
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(true);
     }
-    navigate(`/${storeId}/order/success`);
   };
 
   return (
@@ -53,7 +58,9 @@ const RemittanceWaitPage = () => {
       <BackOnlyHeader />
       <CenteredContentLayout
         onClick={orderButton}
-        buttonText={isLoading ? <LoadingSpinner loadingType="dotsWhite"/> : "이체했어요"}
+        buttonText={
+          isLoading ? <LoadingSpinner loadingType="dotsWhite" /> : "이체했어요"
+        }
       >
         <img
           src={remittanceWait}

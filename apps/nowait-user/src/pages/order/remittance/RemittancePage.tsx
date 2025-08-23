@@ -21,7 +21,7 @@ const RemittancePage = () => {
   const { storeId } = useParams();
   const modal = useModal();
   const { cart } = useCartStore();
-  const [payer, setPayer] = useState("");
+  const [payer, setPayer] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>("");
   const [remitValue, setRemitValue] = useState("");
   const totalPrice = sumTotalPrice(cart);
@@ -33,7 +33,7 @@ const RemittancePage = () => {
     enabled: !!storeId,
     select: (data) => data?.response,
   });
-  console.log(remittance)
+  console.log(remittance);
   // 기본 선택 값 지정하기
   useEffect(() => {
     if (!remittance) return;
@@ -93,7 +93,7 @@ const RemittancePage = () => {
           </div>
         </section>
       </section>
-      <PageFooterButton>
+      <PageFooterButton background="gradient">
         <Button textColor="white" onClick={orderHandleButton}>
           <TotalButton variant="orderPage" actionText="이체하기" />
         </Button>

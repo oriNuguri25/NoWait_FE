@@ -7,6 +7,8 @@ interface stateProps {
   mode: "state";
   quantity: number;
   setQuantity: React.Dispatch<React.SetStateAction<number>>;
+  min?: number;
+  max?: number;
 }
 
 interface storeProps {
@@ -16,13 +18,18 @@ interface storeProps {
   price: number;
   increaseQuantity: (id: number, price: number) => void;
   decreaseQuantity: (id: number, price: number) => void;
+  min?: number;
+  max?: number;
 }
 
 type PropsType = stateProps | storeProps;
 
 const QuantitySelector = (props: PropsType) => {
-  const isQuantityMin = props.quantity === 1;
-  const isQuantityMax = props.quantity === 99;
+  // min과 max를 props로 받고 기본값은 1,99
+  const min = props.min ?? 1;
+  const max = props.max ?? 99;
+  const isQuantityMin = props.quantity <= min;
+  const isQuantityMax = props.quantity >= max;
 
   const increaseQuantityButton = () => {
     // 전체 주문 페이지에서 수량 컨트롤(로컬 스토리지에 바로 반영)
