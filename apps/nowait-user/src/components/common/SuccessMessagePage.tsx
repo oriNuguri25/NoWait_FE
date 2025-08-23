@@ -5,6 +5,8 @@ import CenteredContentLayout from "../layout/CenteredContentLayout";
 interface PropsType {
   imageSrc: string;
   imageAlt: string;
+  width?: string;
+  height?: string;
   title: string;
   message: string;
   onClick: () => void;
@@ -14,6 +16,8 @@ interface PropsType {
 const SuccessMessagePage = ({
   imageSrc,
   imageAlt,
+  width = "150px",
+  height = "150px",
   title,
   message,
   onClick,
@@ -23,7 +27,7 @@ const SuccessMessagePage = ({
   const { storeId } = useParams();
   return (
     <CenteredContentLayout onClick={onClick} buttonText={buttonText}>
-      <img src={imageSrc} alt={imageAlt} width="150px" height="150px" />
+      <img src={imageSrc} alt={imageAlt} width={width} height={height} />
       <h1 className="text-headline-24-bold mb-2">{title}</h1>
       <h2 className="whitespace-pre-line text-16-regular text-black-70 mb-3.5">
         {message}
