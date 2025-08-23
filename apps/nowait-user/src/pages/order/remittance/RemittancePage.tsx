@@ -93,7 +93,7 @@ const RemittancePage = () => {
           </div>
         </section>
       </section>
-      <PageFooterButton>
+      <PageFooterButton background="gradient">
         <Button textColor="white" onClick={orderHandleButton}>
           <TotalButton variant="orderPage" actionText="이체하기" />
         </Button>
