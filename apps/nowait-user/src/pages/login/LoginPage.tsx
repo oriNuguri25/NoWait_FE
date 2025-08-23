@@ -6,7 +6,7 @@ import LoginImage_3 from "../../assets/login/login_img_3.svg?react";
 
 const LoginPage = () => {
   return (
-    <div className="flex flex-col px-6">
+    <div className="flex flex-col px-6 overflow-x-hidden">
       <div className="mt-15 flex justify-start">
         <Logo className="w-14.5 h-6" />
       </div>
@@ -25,7 +25,7 @@ const LoginPage = () => {
 
       <div className="mt-20">
         <div className="flex justify-start">
-          <div className="bg-[#FFECE6] rounded-lg px-2.5 py-1.25 text-14-semibold text-primary h-8">
+          <div className="bg-[#FFECE6] rounded-lg px-2.5 py-1.25 text-14-semibold text-primary h-8 flex items-center justify-center">
             웨이팅
           </div>
         </div>
@@ -69,8 +69,8 @@ const LoginPage = () => {
 
       <div className="mt-22.5">
         <div className="flex justify-start">
-          <div className="bg-[#FFECE6] rounded-lg px-2.5 py-1.25 text-14-semibold text-primary h-8">
-            축제 앱
+          <div className="bg-[#FFECE6] rounded-lg px-2.5 py-1.25 text-14-semibold text-primary h-8 flex items-center justify-center">
+            축제 맵
           </div>
         </div>
         <div className="mt-3 text-start text-headline-24-bold text-black-100 justify-center">
@@ -79,7 +79,7 @@ const LoginPage = () => {
           한눈에!
         </div>
         <div className="mt-3 text-start text-16-regular text-black-70">
-          앱에서 위치, 메뉴, 가격까지 한 번에 확인해
+          맵에서 위치, 메뉴, 가격까지 한 번에 확인해
           <br />
           혼잡한 동선 없이 원하는 부스를 바로 찾아가요.
         </div>
