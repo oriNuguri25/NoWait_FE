@@ -170,7 +170,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
           >
             <div
               className="max-w-[430px] min-w-[360px] w-full bg-white mx-auto overflow-y-auto"
-              style={{ height: "100vh" }}
+              style={{ height: "100dvh" }}
             >
               {/* 검색 헤더 */}
               <motion.div
@@ -205,7 +205,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 20, opacity: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
-                className="pb-5"
+                className="pb-7"
               >
                 {searchQuery.trim() ? (
                   // 검색 결과 표시
