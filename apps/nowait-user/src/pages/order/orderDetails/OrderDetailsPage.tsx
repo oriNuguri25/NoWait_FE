@@ -38,7 +38,7 @@ const OrderDetailsPage = () => {
   return (
     <div>
       <BackOnlyHeader />
-      <div className="bg-black-15 min-h-screen py-[30px] px-5">
+      <div className="bg-black-15 min-h-screen py-[64px] px-5">
         <h1 className="text-headline-22-bold mb-[23px] text-black-90">
           주문내역 <span className="text-primary">{data.length}건</span>
         </h1>
