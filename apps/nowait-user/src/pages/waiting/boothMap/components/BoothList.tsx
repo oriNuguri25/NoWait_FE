@@ -7,7 +7,7 @@ import { getInfiniteAllStores } from "../../../../api/reservation";
 
 const snapPoints = [0, -400]; // 0: 닫힘, -400: 열림
 
-const BoothList = ({ totalBooth }: { totalBooth: number }) => {
+const BoothList = ({ totalBooth }: { totalBooth: number | undefined }) => {
   const y = useMotionValue(0);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
