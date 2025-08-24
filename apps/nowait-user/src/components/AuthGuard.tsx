@@ -11,8 +11,24 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 토큰이 명확히 없는 경우에만 로그인 페이지로 이동
     const token = localStorage.getItem("accessToken");
+
+    // 현재 경로가 /login이고 토큰이 있는 경우 홈으로 리다이렉트
+    if (window.location.pathname === "/login" && token) {
+      navigate("/", { replace: true });
+      return;
+    }
+
+    // 토큰이 있지만 인증 상태가 false인 경우 (토큰이 유효하지 않음)
+    if (token && !isAuthenticated) {
+      // 유효하지 않은 토큰 삭제
+      localStorage.removeItem("accessToken");
+      navigate("/login", { replace: true });
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    // 토큰이 명확히 없는 경우에만 로그인 페이지로 이동
     if (!token && !isAuthenticated) {
       navigate("/login", { replace: true });
       window.scrollTo(0, 0); // 화면을 맨 위로 스크롤
