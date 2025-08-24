@@ -6,7 +6,7 @@ import LoginImage_3 from "../../assets/login/login_img_3.svg?react";
 
 const LoginPage = () => {
   return (
-    <div className="flex flex-col px-6 overflow-x-hidden">
+    <div className="flex flex-col px-6 overflow-x-hidden h-[100dvh]">
       <div className="mt-15 flex justify-start">
         <Logo className="w-14.5 h-6" />
       </div>
