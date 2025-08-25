@@ -1,10 +1,20 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SuccessMessagePage from "../../../components/common/SuccessMessagePage";
 import OrderSuccess from "../../../assets/orderSuccess.webp";
+import { useEffect } from "react";
 
 const OrderSuccessPage = () => {
   const navigate = useNavigate();
+  const location = useLocation()
   const { storeId } = useParams();
+  console.log(location)
+
+  useEffect(() => {
+    // 이미 /d인데, 히스토리에 C가 남아있는 경우 replace 실행
+    if (location.key) {
+      navigate("/d", { replace: true });
+    }
+  }, [navigate, location]);
 
   return (
     <SuccessMessagePage

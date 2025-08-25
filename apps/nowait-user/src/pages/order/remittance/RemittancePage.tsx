@@ -23,10 +23,10 @@ const RemittancePage = () => {
   const { cart } = useCartStore();
   const [payer, setPayer] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>("");
-  const [remitValue, setRemitValue] = useState("");
+  const [remitValue, setRemitValue] = useState<string>("");
   const totalPrice = sumTotalPrice(cart);
   const payerFocus = useRef<HTMLInputElement>(null);
-
+  console.log(remitValue,"레밋")
   const { data: remittance, isLoading } = useQuery({
     queryKey: ["remittance", storeId],
     queryFn: () => getStorePayments(Number(storeId!)),
@@ -41,8 +41,8 @@ const RemittancePage = () => {
     if (!(remittance.kakaoPayUrl === "")) setRemitValue("kakao");
     else if (!(remittance.tossUrl === "")) setRemitValue("toss");
     else if (!(remittance.naverPayUrl === "")) setRemitValue("naver");
-    else if (!(remittance.accountNumber === "")) setRemitValue("remit");
-  }, []);
+    else if (!(remittance.accountNumber === "")) setRemitValue("direct");
+  }, [remittance]);
 
   const orderHandleButton = () => {
     //입금자명을 입력하지 않고 이체 버튼 클릭 시 입금자명 input으로 포커스
