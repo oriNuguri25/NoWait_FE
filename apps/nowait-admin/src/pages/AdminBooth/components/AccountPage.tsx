@@ -270,7 +270,7 @@ const AccountPage = () => {
     let nameInfo = accountInfo[1];
     let numberInfo = accountInfo[0];
     if (accountInfo.length === 4) {
-      bankInfo = accountInfo[2] + " " + accountInfo[3];
+      bankInfo = accountInfo[2] + accountInfo[3];
     }
     setBank(bankInfo);
     setAccountName(nameInfo);
