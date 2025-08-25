@@ -6,23 +6,6 @@ import { useEffect, useState } from "react";
 
 const totalDurationSec = 10; // 10초, 10분은 600
 
-const setActionTime = (
-  reservationNumber: string,
-  field: "confirmedAt" | "cancelledAt",
-  iso: string
-) => localStorage.setItem(`${field}:${reservationNumber}`, iso);
-
-const getActionTime = (
-  reservationNumber: string,
-  field: "confirmedAt" | "cancelledAt"
-): string | undefined =>
-  localStorage.getItem(`${field}:${reservationNumber}`) || undefined;
-
-const clearActionTimes = (reservationNumber: string) => {
-  localStorage.removeItem(`confirmedAt:${reservationNumber}`);
-  localStorage.removeItem(`cancelledAt:${reservationNumber}`);
-};
-
 type WaitingCardStatus = "WAITING" | "CALLING" | "CONFIRMED" | "CANCELLED";
 interface WaitingCardProps {
   number: number;
