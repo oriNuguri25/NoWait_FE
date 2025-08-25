@@ -25,12 +25,12 @@ const OrderDetailsPage = () => {
   const { storeId } = useParams();
   const tableId = localStorage.getItem("tableId");
 
-  const { data:orderDetails, isLoading } = useQuery({
+  const { data: orderDetails, isLoading } = useQuery({
     queryKey: ["orderDetails", storeId],
     queryFn: () => getOrderDetails(Number(storeId!), Number(tableId!)),
     select: (data) => data?.response,
   });
-  console.log(orderDetails)
+  console.log(orderDetails);
   if (isLoading) return <FullPageLoader />;
   //주문내역 없을 시
   if (!orderDetails || orderDetails?.length < 1) return <EmptyOrderDetails />;

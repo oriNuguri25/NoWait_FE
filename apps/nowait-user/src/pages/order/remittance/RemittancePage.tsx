@@ -26,14 +26,19 @@ const RemittancePage = () => {
   const [remitValue, setRemitValue] = useState<string>("");
   const totalPrice = sumTotalPrice(cart);
   const payerFocus = useRef<HTMLInputElement>(null);
-  console.log(remitValue,"레밋")
+
   const { data: remittance, isLoading } = useQuery({
     queryKey: ["remittance", storeId],
     queryFn: () => getStorePayments(Number(storeId!)),
     enabled: !!storeId,
     select: (data) => data?.response,
   });
-  console.log(remittance);
+  // 정보 없으면 홈으로 이동
+  useEffect(() => {
+    if (cart.length === 0) {
+      navigate(`/${storeId}`, { replace: true });
+    }
+  }, []);
   // 기본 선택 값 지정하기
   useEffect(() => {
     if (!remittance) return;
