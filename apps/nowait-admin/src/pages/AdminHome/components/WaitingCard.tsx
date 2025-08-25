@@ -16,6 +16,9 @@ interface WaitingCardProps {
   phone: string;
   status: WaitingCardStatus;
   calledAt: string | undefined;
+  requestedAt?: string;
+  confirmedAt?: string;
+  cancelledAt?: string;
   isNoShow: boolean;
   onCall: () => void;
   onEnter: () => void;
@@ -27,6 +30,13 @@ const truncateName = (name: string, maxLength: number = 3) => {
   return name?.length > maxLength ? name.slice(0, maxLength) + "..." : name;
 };
 
+const diffMinutes = (start?: string, end?: string) => {
+  if (!start || !end) return 0;
+  return Math.floor(
+    (new Date(end).getTime() - new Date(start).getTime()) / 60000
+  );
+};
+
 export function WaitingCard({
   number,
   time,
@@ -35,7 +45,10 @@ export function WaitingCard({
   name,
   phone,
   status,
+  requestedAt,
   calledAt,
+  confirmedAt,
+  cancelledAt,
   isNoShow,
   onCall,
   onEnter,
@@ -79,9 +92,29 @@ export function WaitingCard({
           #{number < 10 ? `0${number}` : number}번
         </p>
         <div className="flex items-center text-13-medium text-black-50">
-          <span>{time}</span>
+          <span>
+            {status === "CONFIRMED" && confirmedAt
+              ? `${new Date(confirmedAt).toLocaleTimeString("ko-KR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })}`
+              : status === "CANCELLED" && cancelledAt
+              ? `${new Date(cancelledAt).toLocaleTimeString("ko-KR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })}`
+              : time}
+          </span>
           <span className="px-[2px]">·</span>
-          <span>{waitMinutes}분 대기 중</span>
+          <span>
+            {status === "CONFIRMED" && confirmedAt
+              ? `${diffMinutes(requestedAt, confirmedAt)}분 대기`
+              : status === "CANCELLED" && cancelledAt
+              ? `${diffMinutes(requestedAt, cancelledAt)}분 대기`
+              : `${waitMinutes}분 대기 중`}
+          </span>
           {(status === "WAITING" || status === "CALLING") && (
             <CloseButton onClick={onDelete} />
           )}
