@@ -225,6 +225,7 @@ const AdminHome = () => {
   console.log("대기 활성화 on", isOn);
 
   return (
+    // max-w-[804px]
     <div
       className={`w-full md:w-[752px] max-w-[804px] flex flex-col items-center mx-auto space-y-6`}
     >
