@@ -216,10 +216,12 @@ const AccountPage = () => {
       tossUrl: nextUrls.toss,
       kakaoPayUrl: nextUrls.kakao,
       naverPayUrl: nextUrls.naver,
-      accountNumber: accountNumber + " " + bank + " " + accountName,
+      accountNumber: curAccount,
     };
 
     setSaving(true);
+
+    console.log(payload.accountNumber, "전송 계좌 정보");
 
     if (!storePayment || typeof storePayment.response === "string") {
       createPayment(payload, {
@@ -232,7 +234,7 @@ const AccountPage = () => {
     } else {
       updatePayment(payload, {
         onSuccess: () => {
-          console.log("결제 정보가 수정되었습니다.");
+          console.log("결제 정보가 수정되었습니다.", payload);
           refetch();
           setSaving(false);
         },
@@ -247,7 +249,7 @@ const AccountPage = () => {
     if (!res || typeof res === "string") {
       setUrls({ kakao: "", toss: "", naver: "" });
       setInputs({ kakao: "", toss: "", naver: "" });
-      setBank("IBK 기업");
+      setBank("");
       setAccountName("");
       setAccountNumber("");
       return;
@@ -262,11 +264,13 @@ const AccountPage = () => {
     setUrls(next);
     setInputs(next);
     const accountInfo = res.accountNumber.split(" ");
+    console.log(storePayment, "서버 데이터");
+
     let bankInfo = accountInfo[2];
     let nameInfo = accountInfo[1];
     let numberInfo = accountInfo[0];
     if (accountInfo.length === 4) {
-      bankInfo = accountInfo[2] + " " + accountInfo[3];
+      bankInfo = accountInfo[2] + accountInfo[3];
     }
     setBank(bankInfo);
     setAccountName(nameInfo);

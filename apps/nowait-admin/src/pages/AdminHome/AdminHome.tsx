@@ -18,6 +18,8 @@ interface Reservation {
   reservationNumber: string;
   time: string;
   requestedAt: string;
+  confirmedAt?: string; // 입장한 시각
+  cancelledAt?: string; // 취소된 시각
   waitMinutes: number;
   peopleCount: number;
   name: string;
@@ -25,6 +27,23 @@ interface Reservation {
   status: WaitingStatus;
   calledAt?: string;
 }
+
+const setActionTime = (
+  reservationNumber: string,
+  field: "confirmedAt" | "cancelledAt",
+  iso: string
+) => localStorage.setItem(`${field}:${reservationNumber}`, iso);
+
+const getActionTime = (
+  reservationNumber: string,
+  field: "confirmedAt" | "cancelledAt"
+): string | undefined =>
+  localStorage.getItem(`${field}:${reservationNumber}`) || undefined;
+
+const clearActionTimes = (reservationNumber: string) => {
+  localStorage.removeItem(`confirmedAt:${reservationNumber}`);
+  localStorage.removeItem(`cancelledAt:${reservationNumber}`);
+};
 
 const AdminHome = () => {
   const [noShowIds, setNoShowIds] = useState<number[]>([]);
@@ -113,31 +132,39 @@ const AdminHome = () => {
           setReservations((prev) =>
             prev.map((res) =>
               res.id === id
-                ? {
-                    ...res,
-                    status: "CALLING",
-                    calledAt: new Date().toISOString(),
-                  }
+                ? (() => {
+                    // 입장/취소 기록은 흐름상 초기화하는게 보통 자연스러움
+                    clearActionTimes(res.reservationNumber);
+                    return {
+                      ...res,
+                      status: "CALLING",
+                      calledAt: new Date().toISOString(),
+                      confirmedAt: undefined,
+                      cancelledAt: undefined,
+                    };
+                  })()
                 : res
             )
           );
         },
-        onError: () => {
-          alert("호출 상태 변경 실패");
-        },
       }
     );
   };
-
   const handleEnter = (id: number, userId: number) => {
+    const now = new Date().toISOString();
     updateStatus(
       { storeId, userId, status: "CONFIRMED" },
       {
         onSuccess: () => {
           setReservations((prev) =>
-            prev.map((res) =>
-              res.id === id ? { ...res, status: "CONFIRMED" } : res
-            )
+            prev.map((res) => {
+              if (res.id !== id) return res;
+              // localStorage 기록
+              setActionTime(res.reservationNumber, "confirmedAt", now);
+              // 취소 시간은 정합상 같이 지워주자(선택)
+              localStorage.removeItem(`cancelledAt:${res.reservationNumber}`);
+              return { ...res, status: "CONFIRMED", confirmedAt: now };
+            })
           );
         },
       }
@@ -145,14 +172,18 @@ const AdminHome = () => {
   };
 
   const handleClose = (id: number, userId: number) => {
+    const now = new Date().toISOString();
     updateStatus(
       { storeId, userId, status: "CANCELLED" },
       {
         onSuccess: () => {
           setReservations((prev) =>
-            prev.map((res) =>
-              res.id === id ? { ...res, status: "CANCELLED" } : res
-            )
+            prev.map((res) => {
+              if (res.id !== id) return res;
+              setActionTime(res.reservationNumber, "cancelledAt", now);
+              localStorage.removeItem(`confirmedAt:${res.reservationNumber}`);
+              return { ...res, status: "CANCELLED", cancelledAt: now };
+            })
           );
         },
       }
@@ -188,6 +219,8 @@ const AdminHome = () => {
       const called = calledAtValid ? new Date(res.calledAt) : undefined;
       // reservationNumber 끝의 4자리 추출
       const idFromNumber = parseInt(res.reservationNumber.slice(-4), 10);
+      const lsConfirmedAt = getActionTime(res.reservationNumber, "confirmedAt");
+      const lsCancelledAt = getActionTime(res.reservationNumber, "cancelledAt");
       return {
         id: Number(idFromNumber),
         userId: Number(res.userId),
@@ -205,6 +238,8 @@ const AdminHome = () => {
         status: res.status,
         calledAt:
           res.status === "CALLING" && called ? called.toISOString() : undefined,
+        confirmedAt: res.confirmedAt ?? lsConfirmedAt ?? undefined,
+        cancelledAt: res.cancelledAt ?? lsCancelledAt ?? undefined,
       };
     };
 
@@ -225,9 +260,8 @@ const AdminHome = () => {
   console.log("대기 활성화 on", isOn);
 
   return (
-    <div
-      className={`w-full md:w-[752px] max-w-[804px] flex flex-col items-center mx-auto space-y-6`}
-    >
+    //md:w-[752px]
+    <div className={`w-full flex flex-col items-center mx-[30px] space-y-6`}>
       <section
         id="대기 현황"
         className="flex w-full [@media(min-width:375px)_and_(max-width:431px)]:justify-center m-0"
@@ -287,7 +321,7 @@ const AdminHome = () => {
         </div>
       </section>
 
-      <div className="w-full grid grid-cols-1 gap-[10px] md:grid-cols-2 md:gap-[8px] [@media(max-width:431px)]:place-items-center">
+      <div className="w-full grid grid-cols-1 gap-[10px] md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 md:gap-[8px] xl:gap-[30px] [@media(max-width:431px)]:place-items-center">
         {filteredReservations.map((res) => {
           const requested = new Date(res.requestedAt);
           console.log(res, "웨이팅 카드 정보");
@@ -308,7 +342,10 @@ const AdminHome = () => {
               name={res.name}
               phone="010-1234-1234"
               status={res.status}
+              requestedAt={res.requestedAt}
               calledAt={res.calledAt}
+              confirmedAt={res.confirmedAt}
+              cancelledAt={res.cancelledAt}
               isNoShow={noShowIds.includes(res.id)}
               onCall={() => handleCall(res.id, res.userId)}
               onEnter={() => handleEnter(res.id, res.userId)}

@@ -17,15 +17,20 @@ const RoundTabButton: React.FC<RoundTabButtonProps> = ({
 }) => {
   return (
     <button
+      type="button"
       onClick={onClick}
+      aria-current={active ? "page" : undefined}
       className={clsx(
-        "px-4 h-[33px] mr-2 rounded-full text-14-semibold transition cursor-pointer",
-        "whitespace-nowrap",
-        active ? "text-white bg-navy-80" : "bg-white text-navy-30"
+        "text-14-semibold rounded-full transition-colors",
+        "px-4 py-2", // pill spacing
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30",
+        active
+          ? "bg-black text-white"
+          : "bg-transparent text-black-60 hover:bg-black-5 hover:text-black-80"
       )}
     >
       {label}
-      {count !== undefined && count > 0 && <span>&nbsp;{count}</span>}
+      {count !== undefined && count > 0 && <span>&nbsp;{`(${count})`}</span>}
     </button>
   );
 };

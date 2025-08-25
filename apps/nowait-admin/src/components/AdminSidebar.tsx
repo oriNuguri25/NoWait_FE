@@ -123,7 +123,10 @@ const AdminSidebar = ({
       </div>
 
       {/* 하단: 프로필 */}
-      <div className="px-4 flex items-center gap-2" onClick={handleClickLogout}>
+      <div
+        className={`${isCompact ? "" : "px-4"} flex items-center gap-2`}
+        onClick={handleClickLogout}
+      >
         <img src={logout} alt="gnb" />
         {!isCompact && <img src={logout_text} />}
       </div>
