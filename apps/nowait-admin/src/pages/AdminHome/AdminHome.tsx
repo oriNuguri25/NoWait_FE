@@ -225,10 +225,8 @@ const AdminHome = () => {
   console.log("대기 활성화 on", isOn);
 
   return (
-    // max-w-[804px]
-    <div
-      className={`w-full md:w-[752px] max-w-[804px] flex flex-col items-center mx-auto space-y-6`}
-    >
+    //md:w-[752px]
+    <div className={`w-full flex flex-col items-center mx-[30px] space-y-6`}>
       <section
         id="대기 현황"
         className="flex w-full [@media(min-width:375px)_and_(max-width:431px)]:justify-center m-0"
@@ -288,7 +286,7 @@ const AdminHome = () => {
         </div>
       </section>
 
-      <div className="w-full grid grid-cols-1 gap-[10px] md:grid-cols-2 md:gap-[8px] [@media(max-width:431px)]:place-items-center">
+      <div className="w-full grid grid-cols-1 gap-[10px] md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 md:gap-[8px] xl:gap-[30px] [@media(max-width:431px)]:place-items-center">
         {filteredReservations.map((res) => {
           const requested = new Date(res.requestedAt);
           console.log(res, "웨이팅 카드 정보");
