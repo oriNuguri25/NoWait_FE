@@ -6,12 +6,14 @@ interface RoundTabButtonProps {
   label: string;
   active?: boolean;
   onClick?: () => void;
+  count?: number;
 }
 
 const RoundTabButton: React.FC<RoundTabButtonProps> = ({
   label,
   active = false,
   onClick,
+  count,
 }) => {
   return (
     <button
@@ -28,6 +30,7 @@ const RoundTabButton: React.FC<RoundTabButtonProps> = ({
       )}
     >
       {label}
+      {count !== undefined && count > 0 && <span>&nbsp;{`(${count})`}</span>}
     </button>
   );
 };
