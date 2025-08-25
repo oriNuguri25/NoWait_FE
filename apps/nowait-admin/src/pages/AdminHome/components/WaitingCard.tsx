@@ -16,6 +16,9 @@ interface WaitingCardProps {
   phone: string;
   status: WaitingCardStatus;
   calledAt: string | undefined;
+  requestedAt?: string;
+  confirmedAt?: string;
+  cancelledAt?: string;
   isNoShow: boolean;
   onCall: () => void;
   onEnter: () => void;
@@ -27,6 +30,13 @@ const truncateName = (name: string, maxLength: number = 3) => {
   return name?.length > maxLength ? name.slice(0, maxLength) + "..." : name;
 };
 
+const diffMinutes = (start?: string, end?: string) => {
+  if (!start || !end) return 0;
+  return Math.floor(
+    (new Date(end).getTime() - new Date(start).getTime()) / 60000
+  );
+};
+
 export function WaitingCard({
   number,
   time,
@@ -35,7 +45,10 @@ export function WaitingCard({
   name,
   phone,
   status,
+  requestedAt,
   calledAt,
+  confirmedAt,
+  cancelledAt,
   isNoShow,
   onCall,
   onEnter,
@@ -72,16 +85,36 @@ export function WaitingCard({
   }, [status, calledAt]);
 
   return (
-    <div className="[@media(max-width:431px)]:w-[335px] [@media(min-width:768px)_and_(max-width:821px)]:w-[329px] relative lg:w-[372px] h-[200px] bg-white rounded-[16px] px-6 py-[18px]">
+    <div className="[@media(max-width:431px)]:w-[335px] [@media(min-width:768px)_and_(max-width:821px)]:w-[329px] relative lg:w-[372px] h-[200px] bg-white rounded-[16px] px-6 py-[18px] xl:w-[323px] ">
       {/* 헤더 */}
       <div className="flex justify-between items-start mb-4">
         <p className="text-20-bold text-black-80">
           #{number < 10 ? `0${number}` : number}번
         </p>
         <div className="flex items-center text-13-medium text-black-50">
-          <span>{time}</span>
+          <span>
+            {status === "CONFIRMED" && confirmedAt
+              ? `${new Date(confirmedAt).toLocaleTimeString("ko-KR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })}`
+              : status === "CANCELLED" && cancelledAt
+              ? `${new Date(cancelledAt).toLocaleTimeString("ko-KR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })}`
+              : time}
+          </span>
           <span className="px-[2px]">·</span>
-          <span>{waitMinutes}분 대기 중</span>
+          <span>
+            {status === "CONFIRMED" && confirmedAt
+              ? `${diffMinutes(requestedAt, confirmedAt)}분 대기`
+              : status === "CANCELLED" && cancelledAt
+              ? `${diffMinutes(requestedAt, cancelledAt)}분 대기`
+              : `${waitMinutes}분 대기 중`}
+          </span>
           {(status === "WAITING" || status === "CALLING") && (
             <CloseButton onClick={onDelete} />
           )}
