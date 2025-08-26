@@ -6,9 +6,12 @@ import type {
   StorePaymentsResponse,
 } from "../types/order/order";
 
-export const api = axios.create({
-  baseURL: "/",
-  withCredentials: true,
+const api = axios.create({
+  baseURL:
+    import.meta.env.MODE === "development"
+      ? "" 
+      : import.meta.env.VITE_SERVER_URI, 
+  withCredentials: true, // 세션 쿠키 필요하면 true
 });
 
 const API_URI = import.meta.env.VITE_SERVER_URI;
@@ -19,7 +22,7 @@ export const createOrder = async (
   tableId: number,
   payload: OrderType
 ): Promise<CreateOrderServerResponse> => {
-  const res = await axios.post(`/orders/create/${storeId}/${tableId}`, payload);
+  const res = await api.post(`/orders/create/${storeId}/${tableId}`, payload);
   return res.data;
 };
 
@@ -28,7 +31,7 @@ export const getOrderDetails = async (
   storeId: number | undefined,
   tableId: number
 ): Promise<OrderDetailsServerResponse> => {
-  const res = await axios.get(`/orders/items/${storeId}/${tableId}`);
+  const res = await api.get(`/orders/items/${storeId}/${tableId}`);
   return res.data;
 };
 
