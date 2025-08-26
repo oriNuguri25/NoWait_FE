@@ -20,10 +20,10 @@ interface MenuServerResponse {
 }
 
 //주점에 해당하는 모든 메뉴 조회
-export const getStoreMenus = async (storeId: number) => {
+export const getStoreMenus = async (publicCode: string) => {
   try {
     const res = await axios.get<AllMenuServerResponse>(
-      `${API_URI}/v1/menus/all-menus/stores/${storeId}`
+      `${API_URI}/v1/menus/all-menus/stores/${publicCode}`
     );
     if (res?.data.success) return res.data;
   } catch (error) {
@@ -33,9 +33,9 @@ export const getStoreMenus = async (storeId: number) => {
 
 // 단일 메뉴 조회
 export const getStoreMenu = async (
-  storeId: number,
+  publicCode: string,
   menuId: number
 ): Promise<MenuServerResponse> => {
-  const res = await axios.get(`${API_URI}/v1/menus/${storeId}/${menuId}`);
+  const res = await axios.get(`${API_URI}/v1/menus/${publicCode}/${menuId}`);
   return res.data;
 };
