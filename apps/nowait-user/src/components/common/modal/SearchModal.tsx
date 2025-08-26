@@ -178,7 +178,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -20, opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="flex items-center gap-4 pt-4 mb-10 sticky top-0 bg-white z-10"
+                className="flex items-center gap-4 pt-4 py-5 mb-10 sticky top-0 bg-white z-10"
               >
                 <div className="flex-1 relative">
                   <Search_black className="absolute left-4 top-1/2 transform -translate-y-1/2 icon-s text-black-50" />
