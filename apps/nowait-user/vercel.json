@@ -10,7 +10,7 @@
     },
     {
       "source": "/orders/:path*",
-      "destination": "https://nowait.co.kr/orders/:path*"
+      "destination": "https://nowait.co.kr/:path*"
     },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
