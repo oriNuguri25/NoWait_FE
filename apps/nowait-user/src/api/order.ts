@@ -15,28 +15,28 @@ const API_URI = import.meta.env.VITE_SERVER_URI;
 
 //주문 생성
 export const createOrder = async (
-  storeId: number,
+  publicCode: string,
   tableId: number,
   payload: OrderType
 ): Promise<CreateOrderServerResponse> => {
-  const res = await api.post(`/orders/create/${storeId}/${tableId}`, payload);
+  const res = await api.post(`/orders/create/${publicCode}/${tableId}`, payload);
   return res.data;
 };
 
 //주문 내역 조회
 export const getOrderDetails = async (
-  storeId: number | undefined,
+  publicCode: string,
   tableId: number
 ): Promise<OrderDetailsServerResponse> => {
-  const res = await api.get(`/orders/items/${storeId}/${tableId}`);
+  const res = await api.get(`/orders/items/${publicCode}/${tableId}`);
   return res.data;
 };
 
 //주점 QR, 계좌번호 조회
-export const getStorePayments = async (storeId: number) => {
+export const getStorePayments = async (publicCode: string) => {
   try {
     const res = await axios.get<StorePaymentsResponse>(
-      `${API_URI}/v1/store-payments/${storeId}`
+      `${API_URI}/v1/store-payments/${publicCode}`
     );
     return res.data;
   } catch (error) {
