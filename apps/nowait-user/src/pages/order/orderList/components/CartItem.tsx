@@ -25,10 +25,10 @@ const CartItem = ({ id, name, originPrice, price, quantity }: PropsType) => {
       <div className="w-full p-5">
         <div className="flex justify-between items-start">
           <div className="max-w-[12.5rem]">
-            <h1 className="text-title-18-medium text-ellipsis line-clamp-2">
+            <h1 className="text-title-18-semibold text-black-90 text-ellipsis line-clamp-2">
               {name}
             </h1>
-            <h2 className="text-title-18-bold">
+            <h2 className="text-title-18-bold text-black-90">
               {originPrice.toLocaleString()}원
             </h2>
           </div>
