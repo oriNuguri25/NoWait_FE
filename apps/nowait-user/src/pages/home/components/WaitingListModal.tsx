@@ -58,7 +58,7 @@ const WaitingListModal = ({
                 key={option.id}
                 className="flex items-center justify-between cursor-pointer"
               >
-                <span className="text-16-semibold text-black-90">
+                <span className="text-title-18-semibold text-black-90">
                   {option.label}
                 </span>
 
@@ -73,7 +73,7 @@ const WaitingListModal = ({
                     className="sr-only"
                   />
                   <div
-                    className={`w-4.5 h-4.5 rounded-full border-[1px] flex items-center justify-center transition-colors ${
+                    className={`w-5 h-5 rounded-full border-[1.5px] flex items-center justify-center transition-colors ${
                       tempSelectedOption === option.label
                         ? "border-black-90 bg-white"
                         : "border-black-35 bg-white"

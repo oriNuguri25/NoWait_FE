@@ -36,17 +36,21 @@ const AdminOrders = () => {
     refetch,
   } = useGetOrderList(storeId);
 
-  // 시간만 포맷팅 함수 (10:15 형식)
+  // 시간만 포맷팅 함수 (10:15 형식) - 9시간 추가
   const getFormattedTime = (createdAt: string) => {
     const date = new Date(createdAt);
+    // 9시간 추가 (한국 시간대)
+    date.setHours(date.getHours() + 9);
     const hours = date.getHours().toString().padStart(2, "0");
     const minutes = date.getMinutes().toString().padStart(2, "0");
     return `${hours}:${minutes}`;
   };
 
-  // 날짜와 시간 포맷팅 함수 (2025년 6월 2일 08:02 형식) - Detail에서만 사용
+  // 날짜와 시간 포맷팅 함수 (2025년 6월 2일 08:02 형식) - Detail에서만 사용 - 9시간 추가
   const getFormattedDateTime = (createdAt: string) => {
     const date = new Date(createdAt);
+    // 9시간 추가 (한국 시간대)
+    date.setHours(date.getHours() + 9);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();

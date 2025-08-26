@@ -9,7 +9,7 @@ const MyWaitingSection = ({ children }: MyWaitingSectionProps) => {
     <div className="flex flex-col px-5 mb-10">
       {/* 내 대기 순서 */}
       <div className="flex flex-col">
-        <div className="flex flex-row gap-1.5 text-title-20-bold text-black-100">
+        <div className="flex flex-row gap-1.5 text-title-20-bold text-black-90">
           <div className="flex">나의 대기카드</div>
         </div>
         {children}
