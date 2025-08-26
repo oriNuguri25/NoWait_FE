@@ -19,7 +19,7 @@ export const createOrder = async (
   tableId: number,
   payload: OrderType
 ): Promise<CreateOrderServerResponse> => {
-  const res = await api.post(`${API_URI}/orders/create/${storeId}/${tableId}`, payload);
+  const res = await axios.post(`/orders/create/${storeId}/${tableId}`, payload);
   return res.data;
 };
 
@@ -28,7 +28,7 @@ export const getOrderDetails = async (
   storeId: number | undefined,
   tableId: number
 ): Promise<OrderDetailsServerResponse> => {
-  const res = await api.get(`/orders/items/${storeId}/${tableId}`);
+  const res = await axios.get(`/orders/items/${storeId}/${tableId}`);
   return res.data;
 };
 
