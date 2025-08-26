@@ -7,7 +7,7 @@ import type {
 } from "../types/order/order";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_URI, 
+  baseURL: "", 
   withCredentials: true,
 });
 
