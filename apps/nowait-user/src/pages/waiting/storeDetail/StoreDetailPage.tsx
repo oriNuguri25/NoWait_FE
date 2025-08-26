@@ -34,13 +34,12 @@ const StoreDetailPage = () => {
     isError,
   } = useQuery({
     queryKey: ["store", storeId],
-    queryFn: () => getStore(Number(storeId!)),
+    queryFn: () => getStore(storeId!),
     select: (data) => data?.response,
   });
-  console.log(store)
   const { data: menus, isLoading: menusIsLoading } = useQuery({
     queryKey: ["storeMenus", storeId],
-    queryFn: () => getStoreMenus(Number(storeId!)),
+    queryFn: () => getStoreMenus(storeId!),
     select: (data) => data?.response,
   });
 

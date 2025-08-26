@@ -29,11 +29,11 @@ const StorePage = () => {
 
     const { data: menus, isLoading } = useQuery({
     queryKey: ["storeMenus", storeId],
-    queryFn: () => getStoreMenus(Number(storeId!)),
+    queryFn: () => getStoreMenus(storeId!),
     select: (data) => data?.response,
   });
 
-
+  console.log(menus,"asd")
   return (
     <div>
       <div className="flex flex-col flex-grow pb-[112px] min-h-dvh pt-7.5 px-5">

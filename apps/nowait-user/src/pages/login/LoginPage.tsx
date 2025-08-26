@@ -7,7 +7,7 @@ import LoginImage_3 from "../../assets/login/login_img_3.svg?react";
 const LoginPage = () => {
   return (
     <div className="flex flex-col px-6 overflow-x-hidden h-[100dvh]">
-      <div className="mt-15 flex justify-start">
+      <div className="mt-10 flex justify-start">
         <Logo className="w-14.5 h-6" />
       </div>
       <div className="mt-3 text-start">
@@ -17,7 +17,7 @@ const LoginPage = () => {
           우리의 즐거운 축제
         </text>
       </div>
-      <div className="mt-16 mx-[-24px] flex justify-center">
+      <div className="mt-12.5 mx-[-24px] flex justify-center">
         <div className="w-[432px] aspect-square flex-shrink-0 flex items-center justify-center">
           <img src={LoginImage_1} alt="login_img_1" className="w-full" />
         </div>

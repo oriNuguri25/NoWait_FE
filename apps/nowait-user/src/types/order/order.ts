@@ -10,6 +10,7 @@ export interface CreateOrderServerResponse {
   response: {
     orderId: number;
     storeId: number;
+    publicCode: string;
     storeName: string;
     sessionId: string;
     depositorName: string;
