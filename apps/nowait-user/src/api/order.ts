@@ -7,11 +7,8 @@ import type {
 } from "../types/order/order";
 
 const api = axios.create({
-  baseURL:
-    import.meta.env.MODE === "development"
-      ? "" 
-      : import.meta.env.VITE_SERVER_URI, 
-  withCredentials: true, // 세션 쿠키 필요하면 true
+  baseURL: import.meta.env.VITE_SERVER_URI, 
+  withCredentials: true,
 });
 
 const API_URI = import.meta.env.VITE_SERVER_URI;
