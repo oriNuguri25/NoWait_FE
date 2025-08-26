@@ -37,7 +37,7 @@ const OrderListPage = () => {
 
   const { data: menus } = useQuery({
     queryKey: ["storeMenuList", storeId],
-    queryFn: () => getStoreMenus(Number(storeId!)),
+    queryFn: () => getStoreMenus(storeId!),
     select: (data) => data?.response?.menuReadDto,
   });
   // 장바구니와 최신 메뉴 데이터 동기화

@@ -32,7 +32,7 @@ const RemittanceWaitPage = () => {
         totalPrice,
       };
       const res = await createOrder(
-        Number(storeId!),
+        storeId!,
         Number(tableId!),
         payload
       );
