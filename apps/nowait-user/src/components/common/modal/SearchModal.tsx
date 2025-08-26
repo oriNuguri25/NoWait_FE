@@ -233,7 +233,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                 ) : (
                   // 최근 검색 표시
                   <div className="flex flex-col">
-                    <div className="flex text-16-bold leading-[144%] tracking-[-0.01em] text-black-90 mb-4">
+                    <div className="flex text-title-16-bold leading-[144%] tracking-[-0.01em] text-black-90 mb-4">
                       최근 검색
                     </div>
                     {recentSearches.length > 0 ? (
