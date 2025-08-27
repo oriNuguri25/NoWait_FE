@@ -36,7 +36,6 @@ const AdminOrders = () => {
     refetch,
   } = useGetOrderList(storeId);
 
-
   const getFormattedTime = (createdAt: string) => {
     const date = new Date(createdAt);
     // 9시간 추가 (한국 시간대)
@@ -118,7 +117,7 @@ const AdminOrders = () => {
 
   return (
     <div
-      className="w-full md:w-[752px] max-w-[804px] flex flex-col items-center mx-auto overflow-hidden"
+      className="w-full flex flex-col items-center mx-auto overflow-hidden"
       style={{ height: "calc(100vh - 2.5rem)" }}
     >
       {/* 헤더 영역 - 고정 높이 */}
