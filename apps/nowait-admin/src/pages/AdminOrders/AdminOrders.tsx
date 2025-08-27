@@ -36,7 +36,7 @@ const AdminOrders = () => {
     refetch,
   } = useGetOrderList(storeId);
 
-  // 시간만 포맷팅 함수 (10:15 형식) - 9시간 추가
+
   const getFormattedTime = (createdAt: string) => {
     const date = new Date(createdAt);
     // 9시간 추가 (한국 시간대)
