@@ -53,7 +53,7 @@ const BoothListItem = ({
           />
           {waitingCount !== 0 && (
             <p className="absolute top-[12px] right-[12px] text-primary bg-[#ffe9df] px-2 py-[7px] font-bold text-[12px] rounded-[6px]">
-              {waitingCount}
+              대기 {waitingCount}팀
             </p>
           )}
         </div>

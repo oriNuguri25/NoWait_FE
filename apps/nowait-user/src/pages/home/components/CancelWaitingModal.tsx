@@ -35,7 +35,7 @@ const CancelWaitingModal = ({
             {/* 취소 버튼 */}
             <button
               onClick={onClose}
-              className="flex-1 px-3 py-2.5 rounded-[10px] bg-black-20 text-[16px] font-semibold leading-[136%] tracking-normal text-black-65 items-center justify-center"
+              className="flex-1 py-2.5 rounded-[10px] bg-black-20 text-[16px] font-semibold leading-[136%] tracking-normal text-black-65 items-center justify-center"
             >
               취소
             </button>

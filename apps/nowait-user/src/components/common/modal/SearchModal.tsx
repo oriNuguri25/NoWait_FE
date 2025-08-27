@@ -170,7 +170,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
           >
             <div
               className="max-w-[430px] min-w-[360px] w-full bg-white mx-auto overflow-y-auto"
-              style={{ height: "100vh" }}
+              style={{ height: "100dvh" }}
             >
               {/* 검색 헤더 */}
               <motion.div
@@ -178,7 +178,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -20, opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="flex items-center gap-4 pt-4 mb-10 sticky top-0 bg-white z-10"
+                className="flex items-center gap-4 pt-4 py-5 mb-10 sticky top-0 bg-white z-10"
               >
                 <div className="flex-1 relative">
                   <Search_black className="absolute left-4 top-1/2 transform -translate-y-1/2 icon-s text-black-50" />
@@ -205,7 +205,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 20, opacity: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
-                className="pb-5"
+                className="pb-7"
               >
                 {searchQuery.trim() ? (
                   // 검색 결과 표시
@@ -233,7 +233,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                 ) : (
                   // 최근 검색 표시
                   <div className="flex flex-col">
-                    <div className="flex text-16-bold leading-[144%] tracking-[-0.01em] text-black-90 mb-4">
+                    <div className="flex text-title-16-bold leading-[144%] tracking-[-0.01em] text-black-90 mb-4">
                       최근 검색
                     </div>
                     {recentSearches.length > 0 ? (

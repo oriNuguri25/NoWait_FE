@@ -77,29 +77,92 @@ type MainCardProps =
 const WaitingCard = ({ item }: { item: WaitingItem }) => {
   // S3 URL을 프록시 URL로 변환
   const getProxyImageUrl = (originalUrl: string) => {
+    console.log("🔍 [WaitingCard] 원본 이미지 URL:", originalUrl);
+
     if (originalUrl.includes("gtablestoreimage-resize-bucket")) {
       const path = originalUrl.replace(
         "https://gtablestoreimage-resize-bucket.s3.ap-northeast-2.amazonaws.com",
         ""
       );
-      return `/api/images${path}`; // 프록시 경로 사용
+      const proxyUrl = `/api/images${path}`;
+      console.log("📸 [WaitingCard] 리사이즈 이미지 프록시 URL:", proxyUrl);
+      return proxyUrl;
     } else if (originalUrl.includes("gtablestoreimage")) {
       const path = originalUrl.replace(
         "https://gtablestoreimage.s3.ap-northeast-2.amazonaws.com",
         ""
       );
-      return `/api/banner-images${path}`; // 다른 프록시 경로 사용
+      const proxyUrl = `/api/banner-images${path}`;
+      console.log("🖼️ [WaitingCard] 배너 이미지 프록시 URL:", proxyUrl);
+      return proxyUrl;
     }
+
+    console.log("⚠️ [WaitingCard] 프록시 처리되지 않은 URL:", originalUrl);
     return originalUrl;
   };
 
   const proxyImageUrl = getProxyImageUrl(item.imageUrl);
 
+  // 이미지 로드 상태 체크를 위한 함수
+  const checkImageLoad = (url: string) => {
+    const img = new Image();
+    img.onload = () => {
+      console.log("✅ [WaitingCard] 이미지 로드 성공:", url);
+    };
+    img.onerror = (error) => {
+      console.error("❌ [WaitingCard] 이미지 로드 실패:", url, error);
+
+      // 네트워크 요청 상태 확인
+      fetch(url)
+        .then((response) => {
+          console.log(
+            "🌐 [WaitingCard] 네트워크 응답 상태:",
+            response.status,
+            response.statusText
+          );
+          console.log(
+            "🌐 [WaitingCard] 응답 헤더:",
+            Object.fromEntries(response.headers.entries())
+          );
+        })
+        .catch((fetchError) => {
+          console.error("🚫 [WaitingCard] 네트워크 요청 실패:", fetchError);
+        });
+    };
+    img.src = url;
+  };
+
+  // 이미지 로드 체크 실행
+  checkImageLoad(proxyImageUrl);
+
   // 각 카드마다 개별적으로 색상 추출 (프록시 URL 사용)
-  const { data: dominantColor } = useColor(proxyImageUrl, "rgbArray", {
+  const {
+    data: dominantColor,
+    loading: colorLoading,
+    error: colorError,
+  } = useColor(proxyImageUrl, "rgbArray", {
     crossOrigin: "anonymous",
     quality: 10,
   });
+
+  // 색상 추출 관련 로그
+  if (colorLoading) {
+    console.log("🎨 [WaitingCard] 색상 추출 중...", proxyImageUrl);
+  }
+  if (colorError) {
+    console.error(
+      "🎨❌ [WaitingCard] 색상 추출 실패:",
+      colorError,
+      proxyImageUrl
+    );
+  }
+  if (dominantColor) {
+    console.log(
+      "🎨✅ [WaitingCard] 색상 추출 성공:",
+      dominantColor,
+      proxyImageUrl
+    );
+  }
 
   // RGB 배열을 RGBA 문자열로 변환하는 함수
   const formatRgbaColor = (
@@ -141,6 +204,18 @@ const WaitingCard = ({ item }: { item: WaitingItem }) => {
               "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 60%)",
             WebkitMaskImage:
               "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 60%)",
+          }}
+          onLoad={() => {
+            console.log(
+              "✅ [WaitingCard] 배경 이미지 div 로드 완료:",
+              proxyImageUrl
+            );
+          }}
+          onError={() => {
+            console.error(
+              "❌ [WaitingCard] 배경 이미지 div 로드 실패:",
+              proxyImageUrl
+            );
           }}
         >
           {/* 이미지 위 그라데이션 오버레이 (기존과 동일하게 70에서 100으로) */}

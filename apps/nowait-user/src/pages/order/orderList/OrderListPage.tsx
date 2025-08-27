@@ -36,8 +36,8 @@ const OrderListPage = () => {
   }, [cart]);
 
   const { data: menus } = useQuery({
-    queryKey: ["storeMenus", storeId],
-    queryFn: () => getStoreMenus(Number(storeId!)),
+    queryKey: ["storeMenuList", storeId],
+    queryFn: () => getStoreMenus(storeId!),
     select: (data) => data?.response?.menuReadDto,
   });
   // 장바구니와 최신 메뉴 데이터 동기화
@@ -90,7 +90,7 @@ const OrderListPage = () => {
           </AnimatePresence>
         </motion.ul>
       </section>
-      <PageFooterButton>
+      <PageFooterButton background="gradient">
         <Button
           textColor="white"
           onClick={() => navigate(`/${storeId}/remittance`)}

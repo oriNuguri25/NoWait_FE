@@ -13,7 +13,7 @@ const WaitingPartySizeForm = () => {
   return (
     <div>
       <BackOnlyHeader />
-      <div className="px-5 mt-[38px]">
+      <div className="px-5 mt-[74px]">
         <h1 className="text-headline-24-bold mb-[50px]">
           대기 등록을 위해
           <br />
@@ -25,6 +25,8 @@ const WaitingPartySizeForm = () => {
             mode="state"
             quantity={partySize}
             setQuantity={setPartySize}
+            min={1}
+            max={10}
           />
         </div>
       </div>

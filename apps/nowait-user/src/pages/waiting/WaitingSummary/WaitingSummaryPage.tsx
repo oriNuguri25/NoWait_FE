@@ -18,7 +18,7 @@ const WaitingSummaryPage = () => {
   const [reservationIsLoading, setReservationIsLoading] = useState(false);
   const { data: store, isLoading } = useQuery({
     queryKey: ["store", storeId],
-    queryFn: () => getStore(storeId ? parseInt(storeId) : undefined),
+    queryFn: () => getStore(storeId!),
     select: (data) => data?.response,
   });
 
@@ -41,7 +41,7 @@ const WaitingSummaryPage = () => {
   if (isLoading) return <FullPageLoader />;
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-dvh">
       <BackOnlyHeader />
       <div className="flex flex-col flex-1">
         <div className="px-5 mt-[74px]">
@@ -51,11 +51,18 @@ const WaitingSummaryPage = () => {
             대기하고 있어요
           </h1>
           <div className="p-5.5 rounded-[16px] bg-black-10 mb-[30px]">
-            <div className="flex justify-between items-center mb-2.5">
+            <div className="flex justify-between items-start mb-2.5 ">
               <p className="text-16-semibold text-black-50">부스</p>
-              <p className="text-16-medium text-black-90">
-                {store?.name} / {store?.departmentName}
-              </p>
+              <div className="max-w-[205px] text-16-medium text-black-90 text-right break-keep">
+                <p className="inline">{store?.name} / </p>
+                <span
+                  className={`${
+                    store!.departmentName.length > 14 ? "block" : "inline"
+                  } w-[100%] truncate`}
+                >
+                  {store?.departmentName}
+                </span>
+              </div>
             </div>
             <div className="flex justify-between items-center">
               <p className="text-16-semibold text-black-50">입장 인원</p>
@@ -83,7 +90,11 @@ const WaitingSummaryPage = () => {
       </div>
       <PageFooterButton background="transparent">
         <Button onClick={handleSubmitReservation}>
-          {reservationIsLoading ? <LoadingSpinner loadingType="dotsWhite"/> : "등록하기"}
+          {reservationIsLoading ? (
+            <LoadingSpinner loadingType="dotsWhite" />
+          ) : (
+            "등록하기"
+          )}
         </Button>
       </PageFooterButton>
     </div>
