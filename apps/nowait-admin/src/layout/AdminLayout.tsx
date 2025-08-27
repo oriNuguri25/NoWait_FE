@@ -6,11 +6,20 @@ import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import ConfirmRemoveModal from "../components/ConfirmRemoveModal";
 
+import { useGetOrderList } from "../hooks/useGetOrderList";
+import { useDetectNewOrders } from "../hooks/useDetectNewOrders";
+import NewOrderToast from "../components/NewOrderToast";
+
 const AdminLayout = () => {
   const width = useWindowWidth();
   const navigate = useNavigate();
   const isCompact = width < 1024;
   const isMobile = width <= 767;
+
+  const storeId = Number(localStorage.getItem("storeId"));
+  // API에서 주문 데이터 가져오기
+  const { data: orders = [] } = useGetOrderList(storeId);
+  useDetectNewOrders(orders);
 
   const { pathname } = useLocation();
   const isBoothPage =
@@ -57,6 +66,7 @@ const AdminLayout = () => {
           onConfirm={handleLogout}
         />
       )}
+      <NewOrderToast />
     </div>
   );
 };

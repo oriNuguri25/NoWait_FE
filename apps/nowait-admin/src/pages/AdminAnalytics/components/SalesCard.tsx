@@ -104,7 +104,7 @@ const SalesCard: React.FC<SalesCardProps> = ({
         {!disabled && showToday && (
           <p className="text-13-regular text-black-80">
             {today.diffAmount > 0
-              ? `어제보다 ${today.diffAmount.toLocaleString()}원{" "}더 벌었어요!`
+              ? `어제보다 ${today.diffAmount.toLocaleString()}원 더 벌었어요!`
               : ""}
           </p>
         )}

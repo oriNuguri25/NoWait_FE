@@ -36,6 +36,8 @@ const AdminOrders = () => {
     refetch,
   } = useGetOrderList(storeId);
 
+  console.log(orders, "주문목록");
+
   // 시간만 포맷팅 함수 (10:15 형식)
   const getFormattedTime = (createdAt: string) => {
     const date = new Date(createdAt);

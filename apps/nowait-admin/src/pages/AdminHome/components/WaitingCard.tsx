@@ -57,7 +57,7 @@ export function WaitingCard({
   onDelete,
 }: WaitingCardProps) {
   const [elapsed, setElapsed] = useState("10:00");
-  console.log(calledAt, "호출시간");
+  console.log(time, "카드 생성 시간?");
 
   useEffect(() => {
     if (status === "CALLING" && calledAt) {
@@ -94,13 +94,17 @@ export function WaitingCard({
         <div className="flex items-center text-13-medium text-black-50">
           <span>
             {status === "CONFIRMED" && confirmedAt
-              ? `${new Date(confirmedAt).toLocaleTimeString("ko-KR", {
+              ? `${new Date(
+                  new Date(confirmedAt).getTime() + 9 * 60 * 60 * 1000
+                ).toLocaleTimeString("ko-KR", {
                   hour: "2-digit",
                   minute: "2-digit",
                   hour12: false,
                 })}`
               : status === "CANCELLED" && cancelledAt
-              ? `${new Date(cancelledAt).toLocaleTimeString("ko-KR", {
+              ? `${new Date(
+                  new Date(cancelledAt).getTime() + 9 * 60 * 60 * 1000
+                ).toLocaleTimeString("ko-KR", {
                   hour: "2-digit",
                   minute: "2-digit",
                   hour12: false,
@@ -110,9 +114,19 @@ export function WaitingCard({
           <span className="px-[2px]">·</span>
           <span>
             {status === "CONFIRMED" && confirmedAt
-              ? `${diffMinutes(requestedAt, confirmedAt)}분 대기`
+              ? `${diffMinutes(
+                  requestedAt,
+                  new Date(
+                    new Date(confirmedAt).getTime() + 9 * 60 * 60 * 1000
+                  ).toString()
+                )}분 대기`
               : status === "CANCELLED" && cancelledAt
-              ? `${diffMinutes(requestedAt, cancelledAt)}분 대기`
+              ? `${diffMinutes(
+                  requestedAt,
+                  new Date(
+                    new Date(cancelledAt).getTime() + 9 * 60 * 60 * 1000
+                  ).toString()
+                )}분 대기`
               : `${waitMinutes}분 대기 중`}
           </span>
           {(status === "WAITING" || status === "CALLING") && (
