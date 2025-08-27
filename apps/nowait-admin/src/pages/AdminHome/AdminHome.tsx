@@ -231,7 +231,7 @@ const AdminHome = () => {
 
   return (
     //md:w-[752px]
-    <div className={`w-full flex flex-col items-center mx-[30px] space-y-6`}>
+    <div className={`w-full flex flex-col items-center space-y-6`}>
       <section
         id="대기 현황"
         className="flex w-full [@media(min-width:375px)_and_(max-width:431px)]:justify-center m-0"

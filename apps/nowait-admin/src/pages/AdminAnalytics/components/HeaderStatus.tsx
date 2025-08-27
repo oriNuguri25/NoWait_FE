@@ -61,7 +61,7 @@ const HeaderStatus: React.FC<HeaderStatusProps> = ({
     <div
       className={`${
         isTablet
-          ? "grid grid-cols-1 lg:grid-cols-2 gap-[10px] w-[754px] h-[50%]"
+          ? "grid grid-cols-1 lg:grid-cols-2 gap-[10px] w-full h-[50%]"
           : "flex flex-col gap-[10px]"
       }`}
     >
