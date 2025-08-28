@@ -34,13 +34,14 @@ const StoreDetailPage = () => {
     isError,
   } = useQuery({
     queryKey: ["store", storeId],
-    queryFn: () => getStore(storeId!),
+    queryFn: () => getStore(Number(storeId)),
     select: (data) => data?.response,
   });
   const { data: menus, isLoading: menusIsLoading } = useQuery({
-    queryKey: ["storeMenus", storeId],
-    queryFn: () => getStoreMenus(storeId!),
+    queryKey: ["storeMenus", store?.publicCode],
+    queryFn: () => getStoreMenus(store!.publicCode),
     select: (data) => data?.response,
+    enabled: !!store?.publicCode,
   });
 
   const handleBookmarkButton = async () => {
