@@ -18,7 +18,7 @@ const WaitingSummaryPage = () => {
   const [reservationIsLoading, setReservationIsLoading] = useState(false);
   const { data: store, isLoading } = useQuery({
     queryKey: ["store", storeId],
-    queryFn: () => getStore(storeId!),
+    queryFn: () => getStore(Number(storeId)),
     select: (data) => data?.response,
   });
 
