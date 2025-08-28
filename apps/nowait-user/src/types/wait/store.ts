@@ -3,6 +3,7 @@ export interface StoreResponse {
   success: boolean;
   response: {
     storeId: number;
+    publicCode: string;
     waitingCount: number;
     isWaiting: false;
     departmentId: number;
