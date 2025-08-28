@@ -79,8 +79,7 @@ const AdminAuth = () => {
       </section>
 
       <div
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[576px] 
-  [@media(max-width:431px)]:bottom-[60px] 
+        className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[576px]  
   [@media(max-width:431px)]:mb-0 
   [@media(max-width:431px)]:w-[325px] rounded-[12px]"
       >
