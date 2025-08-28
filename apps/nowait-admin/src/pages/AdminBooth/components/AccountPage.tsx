@@ -433,7 +433,7 @@ const AccountPage = () => {
             onChange={setBank}
             options={bankOptions}
             placeholder="은행 선택"
-            className="w-1/4 h-[53.93px]" // 기존 select의 w-1/4 유지
+            className="w-1/4 h-[53.93px]"
           />
           <input
             type="text"
