@@ -310,9 +310,9 @@ const BoothForm = () => {
         isTablet ? "px-[100px] py-[20px]" : "px-[20px] py-[20px]"
       }`}
     >
-      <div className="max-w-[614px] w-full mx-auto">
+      <div className="w-full mx-auto">
         {/* 탭 */}
-        <div className="flex gap-2">
+        <div className="flex w-full gap-2">
           <button
             className={`px-4 py-2 rounded-full text-14-semibold ${
               activeTab === "menu"
