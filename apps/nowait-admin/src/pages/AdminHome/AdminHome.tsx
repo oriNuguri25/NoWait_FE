@@ -230,7 +230,6 @@ const AdminHome = () => {
   }, [store]);
 
   return (
-    //md:w-[752px]
     <div className={`w-full flex flex-col items-center space-y-6`}>
       <section
         id="대기 현황"

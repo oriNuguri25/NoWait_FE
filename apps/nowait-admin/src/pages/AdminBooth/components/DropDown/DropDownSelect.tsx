@@ -78,7 +78,7 @@ export const DropdownSelect = ({
           type === "bank" ? "rounded-xl" : "rounded-lg"
         } border border-[#DDDDDD] bg-white focus:bg-[#FAFAFA] p-[10px] text-13-regular text-left`}
       >
-        <span className={isPlaceholder ? "text-black-35" : "text-black-90"}>
+        <span className={isPlaceholder ? "text-gray-400" : "text-black-90"}>
           {display}
         </span>
         <img
