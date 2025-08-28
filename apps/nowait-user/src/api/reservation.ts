@@ -37,9 +37,9 @@ export const getInfiniteAllStores = async (
 };
 
 // 주점 상세 정보 가져오기
-export const getStore = async (publicCode: string) => {
+export const getStore = async (storeId: number) => {
   try {
-    const res = await UserApi.get<StoreResponse>(`/v1/stores/${publicCode}`);
+    const res = await UserApi.get<StoreResponse>(`/v1/stores/${storeId}`);
     return res.data;
   } catch (error) {
     console.log(error);

@@ -39,25 +39,23 @@ const BoothSalesRankingCard: React.FC<BoothSalesRankingCardProps> = ({
 }) => {
   return (
     <div
-      className={`bg-white  rounded-[16px] mt-[10px] ${
+      className={`bg-white w-full rounded-[16px] mt-[10px] ${
         disabled ? "flex flex-col justify-center items-center relative" : ""
       } ${
-        isTablet
-          ? "h-[364px] max-h-[50%] p-6 w-[754px]"
-          : "w-[335px] h-[410px] p-[22px]"
+        isTablet ? "h-[364px] max-h-[50%] p-6 w-[754px]" : " h-[410px] p-[22px]"
       }`}
     >
       <div
-        className={`flex justify-between mb-4 ${
+        className={`flex w-full justify-between mb-4 ${
           disabled ? "absolute left-[22px] top-[22px] w-[710px]" : ""
         }`}
       >
-        <div className="flex items-center">
+        <div className="flex w-full items-center justify-between ">
           <h2 className="text-title-18-bold text-navy-80">부스별 판매순위</h2>
+          <span className="flex text-[12px] text-gray-400 items-center absolute right-[48px]">
+            {formatDateWithDay(date)}
+          </span>
         </div>
-        <span className="flex text-[12px] text-gray-400 items-center">
-          {formatDateWithDay(date)}
-        </span>
       </div>
       {disabled && (
         <div className="flex flex-col justify-center items-center text-black-60 text-13-regular">

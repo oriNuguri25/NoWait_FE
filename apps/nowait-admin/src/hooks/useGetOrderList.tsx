@@ -38,6 +38,8 @@ export const useGetOrderList = (storeId: number) => {
   return useQuery({
     queryKey: ["orders", storeId],
     queryFn: () => fetchOrders(storeId),
-    refetchInterval: 30000, // 30초마다 자동 새로고침
+    refetchInterval: 1000,
+    refetchIntervalInBackground: true,
+    staleTime: 0, // 30초마다 자동 새로고침
   });
 };

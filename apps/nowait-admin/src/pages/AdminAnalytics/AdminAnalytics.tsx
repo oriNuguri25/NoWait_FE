@@ -23,10 +23,7 @@ const AdminAnalytics = () => {
   const { data: boothRank } = useGetTopSales();
   const { data: sales } = useGetSalesByDate(formatted);
   const { data: popularMenu } = useGetPopularMenu();
-  console.log(boothRank, "부스별 판매순위");
-  console.log(sales, formatted, "판매량");
 
-  console.log(popularMenu, "인기 메뉴");
   const boothDisabled = boothRank?.length === 0;
   const storeId = localStorage.getItem("storeId");
   const saleDisabled =
