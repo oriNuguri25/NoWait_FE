@@ -1,5 +1,6 @@
 export interface SearchStore {
   storeId: number;
+  publicCode : string;
   departmentId: number;
   departmentName: string;
   name: string;
