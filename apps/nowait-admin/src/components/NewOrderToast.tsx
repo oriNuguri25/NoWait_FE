@@ -27,7 +27,7 @@ export default function NewOrderToast() {
     <>
       <audio
         id="new-order-audio"
-        src="/assets/sounds/new-order.mp3"
+        src="/assets/sound/newOrder.mp3"
         preload="auto"
       />
       <div className="fixed top-4 right-4 z-[1000] flex flex-col gap-2">

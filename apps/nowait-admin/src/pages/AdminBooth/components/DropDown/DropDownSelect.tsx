@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import dropIcon from "../../../../assets/drop_down.svg";
 
 export const DropdownSelect = ({
+  type,
   value,
   onChange,
   options,
   placeholder,
   className = "w-[124.25px]",
 }: {
+  type?: string;
   value: string;
   onChange: (val: string) => void;
   options: string[];
@@ -18,8 +20,8 @@ export const DropdownSelect = ({
   const [highlight, setHighlight] = useState<number>(-1);
   const rootRef = useRef<HTMLDivElement | null>(null);
 
-  const display = value || placeholder;
-  const isPlaceholder = !value;
+  const isPlaceholder = value == null || value.trim().length === 0;
+  const display = isPlaceholder ? placeholder : value;
 
   // 바깥 클릭 닫기
   useEffect(() => {
@@ -72,9 +74,11 @@ export const DropdownSelect = ({
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
         onKeyDown={onKeyDown}
-        className={`h-10 w-full rounded-lg border border-[#DDDDDD] bg-white focus:bg-[#FAFAFA] p-[10px] text-13-regular text-left`}
+        className={`h-full w-full ${
+          type === "bank" ? "rounded-xl" : "rounded-lg"
+        } border border-[#DDDDDD] bg-white focus:bg-[#FAFAFA] p-[10px] text-13-regular text-left`}
       >
-        <span className={isPlaceholder ? "text-black-35" : "text-black-90"}>
+        <span className={isPlaceholder ? "text-gray-400" : "text-black-90"}>
           {display}
         </span>
         <img

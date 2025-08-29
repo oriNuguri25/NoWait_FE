@@ -14,9 +14,12 @@ import { REQUIRED_PREFIX, validateUrlPrefix } from "./Rule/payUrlRule";
 import { useWindowWidth } from "../../../hooks/useWindowWidth";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FaFileUpload } from "react-icons/fa";
+import { DropdownSelect } from "./DropDown/DropDownSelect";
+
+const bankOptions = ["IBK 기업", "신한은행", "국민은행", "하나은행"];
 
 const AccountPage = () => {
-  const [bank, setBank] = useState("IBK기업");
+  const [bank, setBank] = useState("");
   const [accountName, setAccountName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [errors, setErrors] = useState<Record<PaymentId, string | null>>({
@@ -271,21 +274,37 @@ const AccountPage = () => {
     let numberInfo = accountInfo[0];
     if (accountInfo.length === 4) {
       bankInfo = accountInfo[2] + accountInfo[3];
+    } else if (accountInfo.length < 3) {
+      bankInfo = "";
+      nameInfo = "";
+      numberInfo = "";
     }
-    setBank(bankInfo);
-    setAccountName(nameInfo);
-    setAccountNumber(numberInfo);
+
+    if (!numberInfo || !nameInfo || !bankInfo) {
+      setBank("");
+      setAccountName("");
+      setAccountNumber("");
+    } else {
+      setBank(bankInfo);
+      setAccountName(nameInfo);
+      setAccountNumber(numberInfo);
+    }
   }, [storePayment]);
 
   return (
     <div>
       {/* Guide Banner */}
       <div className="my-10">
-        <img src={banner} alt="배너" onClick={() => navigate("guides")} />
+        <img
+          src={banner}
+          alt="배너"
+          className="w-full"
+          onClick={() => navigate("guides")}
+        />
       </div>
 
       {/* QR Code Section */}
-      <section>
+      <section className="w-full">
         <h2 className="flex items-center text-navy-80 text-18-bold gap-[6px]">
           간편 송금 QR코드 <RedBadge label="필수" small={true} />
         </h2>
@@ -316,7 +335,7 @@ const AccountPage = () => {
                   <span className="text-14-semibold">{option.name}</span>
                 )}
               </div>
-              <div className="flex justify-between h-[52px] w-[474px] min-w-[236px] items-center bg-black-5 rounded-xl border border-[#dddddd] pl-4 pr-[10px] py-4">
+              <div className="flex justify-between h-[52px] w-full min-w-[236px] items-center bg-black-5 rounded-xl border border-[#dddddd] pl-4 pr-[10px] py-4">
                 <div className={`flex flex-col w-[79%] w-overflow-scroll`}>
                   <div className="relative w-full">
                     <input
@@ -408,21 +427,21 @@ const AccountPage = () => {
       <section className="my-[60px]">
         <h2 className="text-navy-80 text-18-bold mb-[20px]">입금받을 계좌</h2>
         <div className="flex space-x-[10px]">
-          <select
+          <DropdownSelect
+            type="bank"
             value={bank}
-            onChange={(e) => setBank(e.target.value)}
-            className="w-1/4 border border-[#dddddd] rounded-md p-4 text-black-70 text-14-regular rounded-xl"
-          >
-            <option>IBK 기업</option>
-            <option>신한은행</option>
-            <option>국민은행</option>
-            <option>하나은행</option>
-          </select>
+            onChange={setBank}
+            options={bankOptions}
+            placeholder="은행 선택"
+            className="w-1/4 h-[53.93px]"
+          />
           <input
             type="text"
-            placeholder="예금주 이름"
+            placeholder="예금주"
             value={accountName}
-            onChange={(e) => setAccountName(e.target.value)}
+            onChange={(e) => {
+              setAccountName(e.target.value);
+            }}
             className="w-1/4 border border-[#dddddd] bg-black-5 text-14-regular text-black-90 rounded-xl p-4"
           />
           <input

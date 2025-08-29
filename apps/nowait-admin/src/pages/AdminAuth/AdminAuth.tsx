@@ -1,6 +1,6 @@
 import { Button } from "@repo/ui/button";
 import RedBadge from "../../components/RedBadge";
-import redLogo from "../../assets/redLogo.svg";
+import blackLogo from "../../assets/blackLogo.svg";
 import { useNavigate } from "react-router";
 import bg_festival from "../../assets/startPage/bg_festival.svg";
 import bg_order from "../../assets/startPage/bg_order.svg";
@@ -14,7 +14,7 @@ const AdminAuth = () => {
       {/* 1. Hero Section */}
       <section className="w-[576px] [@media(max-width:431px)]:w-[325px] text-left mx-auto mt-[50px] ">
         <div>
-          <img src={redLogo} />
+          <img src={blackLogo} />
         </div>
         <h2 className="text-3xl font-bold leading-snug mt-4">
           기다림 없는 <br /> 우리의 즐거운 축제
@@ -26,7 +26,7 @@ const AdminAuth = () => {
 
       {/* 2. Feature Section 1 */}
       <section className="w-[576px] [@media(max-width:431px)]:w-[325px] mx-auto ">
-        <RedBadge label="웨이팅 관리" small={false} />
+        <RedBadge label="웨이팅 관리" small={false} changeColor={true} />
         <h3 className="text-headline-28-bold mb-3 mt-3">
           대기 없이 빠르게
           <br />
@@ -44,7 +44,7 @@ const AdminAuth = () => {
 
       {/* 3. Feature Section 2 */}
       <section className="w-[576px] [@media(max-width:431px)]:w-[325px] mx-auto text-right">
-        <RedBadge label="주문 관리" small={false} />
+        <RedBadge label="주문 관리" small={false} changeColor={true} />
         <h3 className="text-headline-28-bold mb-3 mt-3">
           주문 접수, 입금 확인도
           <br />
@@ -62,7 +62,7 @@ const AdminAuth = () => {
 
       {/* 4. Feature Section 3 */}
       <section className="w-[576px]  [@media(max-width:431px)]:w-[325px] mx-auto mb-[200px]">
-        <RedBadge label="운영 현황 요약" small={false} />
+        <RedBadge label="운영 현황 요약" small={false} changeColor={true} />
         <h3 className="text-headline-28-bold mb-3 mt-3">
           운영 상황을 한눈에
           <br />
@@ -79,8 +79,7 @@ const AdminAuth = () => {
       </section>
 
       <div
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[576px] 
-  [@media(max-width:431px)]:bottom-[60px] 
+        className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[576px]  
   [@media(max-width:431px)]:mb-0 
   [@media(max-width:431px)]:w-[325px] rounded-[12px]"
       >
