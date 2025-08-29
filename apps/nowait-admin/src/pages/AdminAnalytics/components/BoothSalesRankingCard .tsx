@@ -39,10 +39,14 @@ const BoothSalesRankingCard: React.FC<BoothSalesRankingCardProps> = ({
 }) => {
   return (
     <div
-      className={`bg-white w-full rounded-[16px] mt-[10px] ${
-        disabled ? "flex flex-col justify-center items-center relative" : ""
+      className={`bg-white rounded-[16px] mt-[10px] ${
+        disabled
+          ? "w-full flex flex-col justify-center items-center relative"
+          : ""
       } ${
-        isTablet ? "h-[364px] max-h-[50%] p-6 w-[754px]" : " h-[410px] p-[22px]"
+        isTablet
+          ? "h-[364px] max-h-[50%] p-6 w-full"
+          : "max-w-[335px] h-[410px] p-[22px]"
       }`}
     >
       <div

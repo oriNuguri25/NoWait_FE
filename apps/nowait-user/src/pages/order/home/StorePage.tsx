@@ -10,6 +10,7 @@ import MenuList from "../../../components/common/MenuList";
 import SectionDivider from "../../../components/SectionDivider";
 import { useQuery } from "@tanstack/react-query";
 import { getStoreMenus } from "../../../api/menu";
+import { getStore } from "../../../api/reservation";
 
 const StorePage = () => {
   const navigate = useNavigate();
@@ -27,11 +28,22 @@ const StorePage = () => {
     navigate(location.pathname, { replace: true });
   }, [added]);
 
-  const { data: menus, isLoading } = useQuery({
-    queryKey: ["storeMenus", storeId],
-    queryFn: () => getStoreMenus(storeId!),
+  // 매장 정보 조회
+  const { data: store, isLoading: storeLoading } = useQuery({
+    queryKey: ["store", storeId],
+    queryFn: () => getStore(Number(storeId)),
     select: (data) => data?.response,
   });
+
+  // 메뉴 조회 (publicCode 사용)
+  const { data: menus, isLoading: menusLoading } = useQuery({
+    queryKey: ["storeMenus", store?.publicCode],
+    queryFn: () => getStoreMenus(store!.publicCode),
+    select: (data) => data?.response,
+    enabled: !!store?.publicCode,
+  });
+
+  const isLoading = storeLoading || menusLoading;
 
   console.log(menus, "asd");
   return (
