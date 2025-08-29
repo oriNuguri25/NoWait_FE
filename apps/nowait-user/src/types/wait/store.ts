@@ -86,5 +86,6 @@ export interface BookmarkListType {
   openTime: string;
   profileImage: ProfileImage;
   storeId: number;
+  publicCode: string;
   waitingCount: number;
 }
