@@ -28,7 +28,7 @@ const WaitingSummaryPage = () => {
       const payload = {
         partySize,
       };
-      const res = await createReservation(parseInt(storeId!), payload);
+      const res = await createReservation(Number(store?.storeId!), payload);
       console.log(res, "예약 응답");
       navigate(`/store/${storeId}/waiting/success`, { replace: true });
     } catch (error) {

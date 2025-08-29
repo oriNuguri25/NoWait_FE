@@ -22,12 +22,6 @@ const StoreDetailPage = () => {
   const navigate = useNavigate();
   const { id: storeId } = useParams();
 
-  const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
-    { withInvalidate: true },
-    Number(storeId)
-  );
-  const { isBookmarked } = useBookmarkState(Number(storeId));
-
   const {
     data: store,
     isLoading,
@@ -37,12 +31,18 @@ const StoreDetailPage = () => {
     queryFn: () => getStore(storeId!),
     select: (data) => data?.response,
   });
-  
+
   const { data: menus, isLoading: menusIsLoading } = useQuery({
     queryKey: ["storeMenus", storeId],
     queryFn: () => getStoreMenus(storeId!),
     select: (data) => data?.response,
   });
+
+    const { createBookmarkMutate, deleteBookmarkMutate } = useBookmarkMutation(
+    { withInvalidate: true },
+    Number(store?.storeId!)
+  );
+  const { isBookmarked } = useBookmarkState(Number(store?.storeId!));
 
   const handleBookmarkButton = async () => {
     try {
