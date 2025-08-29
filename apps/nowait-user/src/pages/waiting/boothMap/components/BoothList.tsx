@@ -122,6 +122,7 @@ const BoothList = ({ totalBooth }: { totalBooth: number | undefined }) => {
                         name={store?.name}
                         departmentName={store?.departmentName}
                         storeId={store?.storeId || 0}
+                        publicCode={store?.publicCode}
                       />
                     </li>
                   );

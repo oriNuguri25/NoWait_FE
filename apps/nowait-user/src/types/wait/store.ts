@@ -65,6 +65,7 @@ export interface StoreType {
   openTime: string;
   profileImage: ProfileImage;
   storeId: number;
+  publicCode: string;
   waitingCount: number;
   createdAt: string;
   deleted: boolean;

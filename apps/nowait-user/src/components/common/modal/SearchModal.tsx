@@ -102,7 +102,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
     saveRecentSearch(store.departmentName);
 
     // 학과별 주점 목록 페이지로 이동 (storeId를 query parameter로 전달)
-    navigate(`/store/${store.storeId}`);
+    navigate(`/store/${store.publicCode}`);
     onClose();
   };
 
